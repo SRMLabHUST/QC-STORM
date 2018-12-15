@@ -1,7 +1,7 @@
 # QC-STORM
 Online processing plugins for super-resolution localization microscopy based on Micro-Manager and ImageJ
 
-# System requirements
+# System requirements and installation
 1, Windows 7 sp1 or newer, x64.
 
 2, NVidia CUDA enabled GPU with compute capability no less than 3.5.
