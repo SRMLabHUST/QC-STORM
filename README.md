@@ -1,12 +1,12 @@
 # QC-STORM
-Online processing plugin for super-resolution localization microscopy based on sCMOS camera
+Online processing plugin (ImageJ & Micro-Manager) for super-resolution localization microscopy based on sCMOS camera
 
 # System requirements and installation
 1, Windows 7 sp1 or newer, x64.
 
 2, NVidia CUDA enabled GPU with compute capability no less than 3.5.
 
-3, ImageJ/Fiji, Micro-Manager 2.0.
+3, ImageJ/Fiji, Micro-Manager 2.0 (beta 3).
 
 4, Download and install Microsoft Visual C++ 2015 Redistributable Update 3.
 
