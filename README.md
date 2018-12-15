@@ -1,5 +1,26 @@
 # QC-STORM
-Online processing plugin (ImageJ & Micro-Manager) for quality-controlled super-resolution localization imaging
+Online processing plugin (ImageJ & Micro-Manager) for quality-controlled super-resolution localization imaging.
+
+# features
+MLE Localization type: 2D, Astigmatism 3D
+
+Merge molecules emitting consecutively in adjacent frames (by localization precision weighted average)
+
+Online super-resolution image rendering and statistical information analyzing (photon number, background intensity, SNR, PSF width, localization density, localization precision (CRLB for 2D), on time)
+
+Online Nyquist resolution and convolved spatial resolution estimation
+
+Background noise filtering
+
+Drift correction by cross-correlation
+
+Online feedback control
+
+Spatial resolution controlled acquisition
+
+Sequential Multi-FOV acquisition
+
+
 
 # System requirements and installation
 1, Windows 7 sp1 or newer, x64.
