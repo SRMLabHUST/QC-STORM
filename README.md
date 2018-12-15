@@ -4,6 +4,8 @@ Online processing plugin (ImageJ & Micro-Manager) for quality-controlled super-r
 # features
 MLE Localization type: 2D, Astigmatism 3D
 
+Online processing for sCMOS camera based imaging at full FOV and fastest frame rate (localization speed > 5x10^6 for 7x7 pixels ROI based on NVidia Titan xp graphics card)
+
 Merge molecules emitting consecutively in adjacent frames (by localization precision weighted average)
 
 Online super-resolution image rendering and statistical information analyzing (photon number, background intensity, SNR, PSF width, localization density, localization precision (CRLB for 2D), on time)
