@@ -12,7 +12,7 @@ Online super-resolution image rendering and statistical information analyzing (p
 
 Online Nyquist resolution and convolved spatial resolution calculation
 
-Background noise filtering
+Online Background noise filtering
 
 Drift correction by cross-correlation
 
