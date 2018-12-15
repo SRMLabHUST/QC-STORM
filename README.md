@@ -1,5 +1,5 @@
 # QC-STORM
-Online processing plugin (ImageJ & Micro-Manager) for quality-controled super-resolution localization microscopy based on sCMOS camera
+Online processing plugin (ImageJ & Micro-Manager) for quality-controled super-resolution localization microscopy
 
 # System requirements and installation
 1, Windows 7 sp1 or newer, x64.
