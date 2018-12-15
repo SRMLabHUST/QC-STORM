@@ -10,7 +10,7 @@ Online processing plugin (ImageJ & Micro-Manager) for quality-controlled super-r
 
 4, Download and install Microsoft Visual C++ 2015 Redistributable Update 3.
 
-5, Copy .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into plugins and mmplugins of ImageJ and Micro-Manager respectively.
+5, Download QC-STORM release version, and simply copy .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into folder plugins and mmplugins of ImageJ and Micro-Manager respectively.
 
 # Recompile the source codes
 1, The Java GUI for ImageJ and Micro-Manager are develped by NetBeans IDE 7.3.1 with Java jdk1.6.0_45.
