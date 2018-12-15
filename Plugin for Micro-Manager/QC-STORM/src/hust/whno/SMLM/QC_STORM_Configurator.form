@@ -43,7 +43,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="453" max="32767" attributes="0"/>
+              <EmptySpace pref="478" max="32767" attributes="0"/>
               <Component id="jButton_NewSRImage" min="-2" pref="52" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jButton_BurstLive" min="-2" pref="57" max="-2" attributes="0"/>
@@ -52,8 +52,8 @@
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jTabbedPane1" min="-2" pref="440" max="-2" attributes="0"/>
-                  <EmptySpace pref="128" max="32767" attributes="0"/>
+                  <Component id="jTabbedPane1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="142" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -101,7 +101,7 @@
                                               </Group>
                                               <EmptySpace min="45" pref="45" max="-2" attributes="0"/>
                                           </Group>
-                                          <Group type="102" alignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
                                               <Group type="103" groupAlignment="0" attributes="0">
                                                   <Component id="jLabel4" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
                                                   <Component id="jTextField_ParaFile" alignment="0" min="-2" pref="176" max="-2" attributes="0"/>
@@ -109,6 +109,7 @@
                                                   <Component id="jLabel17" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
                                                   <Component id="jLabel18" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
                                                   <Component id="jLabel19" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="jCheckBox_Stat_BackgroundFilterEn" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                               <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                                           </Group>
@@ -159,18 +160,25 @@
                           <Component id="jLabel22" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jComboBox_LocType" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
-                          <Component id="jLabel26" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jComboBox_LocType" min="-2" pref="23" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel26" min="-2" pref="21" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="32767" attributes="0"/>
+                              <Component id="jCheckBox_Stat_BackgroundFilterEn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                       <Component id="jCheckBox_Stat_ConsecutiveFit" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel44" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
                           <Component id="jTextField_ConsecFilterRadius" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jButton_LoadParaFile" alignment="3" max="32767" attributes="0"/>
                           <Component id="jTextField_ParaFile" alignment="3" max="32767" attributes="0"/>
@@ -180,7 +188,7 @@
                           <Component id="jButton_LoadResultPath" alignment="3" max="32767" attributes="0"/>
                           <Component id="jTextField_ResultPath" alignment="3" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jTextField_BurstFrameNum" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel17" alignment="3" max="32767" attributes="0"/>
@@ -346,6 +354,13 @@
                 <Property name="text" type="java.lang.String" value="80"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_BackgroundFilterEn">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Background noise filter"/>
+                <Property name="toolTipText" type="java.lang.String" value="Be careful for clustered structure like NPC and on time is much longer than exposure time, recommended in postprocessing"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel2">
@@ -462,7 +477,7 @@
                           <Component id="jTextField_RotateType" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
                           <Component id="jLabel31" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="135" max="32767" attributes="0"/>
+                      <EmptySpace pref="146" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -738,7 +753,7 @@
                           <Component id="jCheckBox_Stat_DimensionFDVary" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jCheckBox_Stat_LocDensityFDVary" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="31" max="32767" attributes="0"/>
+                      <EmptySpace pref="42" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1004,7 +1019,7 @@
                           <Component id="jTextField_Offset" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="273" max="32767" attributes="0"/>
+                      <EmptySpace pref="284" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

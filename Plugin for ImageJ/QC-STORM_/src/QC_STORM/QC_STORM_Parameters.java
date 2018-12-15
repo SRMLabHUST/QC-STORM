@@ -40,7 +40,10 @@ public class QC_STORM_Parameters {
         
         
         int LocTypeI=0;
-        int ConsecutiveFitEnI=0;
+        
+        int BackgroundNoiseFilterEn = 1;
+        
+        int ConsecutiveFitEnI = 0;
         float ConsecFilterRadius = 80;
         
     	float MinZDepthF = 0;
@@ -70,7 +73,6 @@ public class QC_STORM_Parameters {
         
         int OnTimeEn=1;
         int SpatialResolutionEn=1;
-
 
     }
         

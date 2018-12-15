@@ -77,8 +77,8 @@ public class QC_STORM_ implements PlugInFilter{
     // wrapper of CPP & CUDA library
     public native static void lm_SetImagePara(int ImageWidth, int ImageHigh, int SRImageWidth, int SRImageHigh, int FrameNum, char ImageName[]);
 
-    public native static void lm_SetLocPara(float KAdc, float Offset, float QE, int ROISizeI, int LocTypeI, int ConsecutiveFitEnI, float ConsecFilterRadiusF, float RawPixelSizeF, float RenderPixelZoomF, float SNR_th);
-    public native static void lm_SetLocPara3D(float MinZDepthF, float MaxZDepthF, float p4, float p3, float p2, float p1, float p0, float MeanDistance, float DistanceTh, int RotateType);
+    public native static void lm_SetLocPara(float KAdc, float Offset, float QE, int ROISize, int LocType, int BkgNoiseFilterEn, int ConsecutiveFitEn, float ConsecFilterRadius, float RawPixelSize, float RenderPixelZoom, float SNR_th);
+    public native static void lm_SetLocPara3D(float MinZDepth, float MaxZDepth, float p4, float p3, float p2, float p1, float p0, float MeanDistance, float DistanceTh, int RotateType);
     
     public native static void lm_SetStatInfSelection(int DispSel, int OnTimeEn, int SpatialResolutionEn);
 

@@ -118,13 +118,14 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jComboBox_LocType = new javax.swing.JComboBox();
-        jCheckBox_Stat_ConsecutiveFit = new javax.swing.JCheckBox();
+        jCheckBox_Stat_ConsecutiveFitEn = new javax.swing.JCheckBox();
         jButton_LoadParaFile = new javax.swing.JButton();
         jTextField_ParaFile = new javax.swing.JTextField();
         jTextField_ResultPath = new javax.swing.JTextField();
         jButton_LoadResultPath = new javax.swing.JButton();
         jLabel29 = new javax.swing.JLabel();
         jTextField_ConsecFilterRadius = new javax.swing.JTextField();
+        jCheckBox_Stat_BackgroundFilterEn = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jTextField_MaxZDepth = new javax.swing.JTextField();
@@ -241,7 +242,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
             }
         });
 
-        jCheckBox_Stat_ConsecutiveFit.setText("Consecutive fitting");
+        jCheckBox_Stat_ConsecutiveFitEn.setText("Consecutive fitting");
 
         jButton_LoadParaFile.setText("Load configuration file");
         jButton_LoadParaFile.setActionCommand("");
@@ -265,6 +266,10 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
             jTextField_ConsecFilterRadius.setText("80");
 
+            jCheckBox_Stat_BackgroundFilterEn.setSelected(true);
+            jCheckBox_Stat_BackgroundFilterEn.setText("Background noise filter");
+            jCheckBox_Stat_BackgroundFilterEn.setToolTipText("Be careful for clustered structure like NPC and on time is much longer than exposure time, recommended in postprocessing");
+
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
             jPanel1.setLayout(jPanel1Layout);
             jPanel1Layout.setHorizontalGroup(
@@ -272,7 +277,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(22, 22, 22)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jCheckBox_Stat_ConsecutiveFit)
+                        .addComponent(jCheckBox_Stat_BackgroundFilterEn)
+                        .addComponent(jCheckBox_Stat_ConsecutiveFitEn)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jTextField_ParaFile, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -326,7 +332,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                         .addComponent(jComboBox_LocType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jCheckBox_Stat_ConsecutiveFit)
+                    .addComponent(jCheckBox_Stat_BackgroundFilterEn)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+                    .addComponent(jCheckBox_Stat_ConsecutiveFitEn)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -339,7 +347,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jButton_LoadResultPath, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jTextField_ResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(122, Short.MAX_VALUE))
+                    .addContainerGap(93, Short.MAX_VALUE))
             );
 
             jTabbedPane1.addTab("Imaging basics", jPanel1);
@@ -995,8 +1003,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JButton jButton_Start;
     private javax.swing.JButton jButton_Start2;
     private javax.swing.JCheckBox jCheckBox_ShiftCorrection;
+    private javax.swing.JCheckBox jCheckBox_Stat_BackgroundFilterEn;
     private javax.swing.JCheckBox jCheckBox_Stat_BackgroundVary;
-    private javax.swing.JCheckBox jCheckBox_Stat_ConsecutiveFit;
+    private javax.swing.JCheckBox jCheckBox_Stat_ConsecutiveFitEn;
     private javax.swing.JCheckBox jCheckBox_Stat_DimensionFDVary;
     private javax.swing.JCheckBox jCheckBox_Stat_LocDensityFDVary;
     private javax.swing.JCheckBox jCheckBox_Stat_LocDensityVary;
@@ -1089,7 +1098,10 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         LocPara.RenderingPixelZoom = LocPara.RawImgPixelSize/LocPara.RenderingPixelSize;
             
         LocPara.LocTypeI=jComboBox_LocType.getSelectedIndex();
-        LocPara.ConsecutiveFitEnI = jCheckBox_Stat_ConsecutiveFit.isSelected()? 1 : 0;
+        
+        LocPara.BackgroundNoiseFilterEn = jCheckBox_Stat_BackgroundFilterEn.isSelected()? 1 : 0;
+        
+        LocPara.ConsecutiveFitEnI = jCheckBox_Stat_ConsecutiveFitEn.isSelected()? 1 : 0;
         LocPara.ConsecFilterRadius = Float.parseFloat(jTextField_ConsecFilterRadius.getText());
         
         LocPara.MinZDepthF = Float.parseFloat(jTextField_MinZDepth.getText());
@@ -1132,7 +1144,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     {
         GetLocalizationPara();
         
-        QC_STORM_.lm_SetLocPara(LocPara.KadcF,LocPara.OffsetF,LocPara.QEF,LocPara.RegionSizeI,LocPara.LocTypeI, LocPara.ConsecutiveFitEnI, LocPara.ConsecFilterRadius, LocPara.RawImgPixelSize,LocPara.RenderingPixelZoom,LocPara.SNR_thF);
+        QC_STORM_.lm_SetLocPara(LocPara.KadcF,LocPara.OffsetF,LocPara.QEF,LocPara.RegionSizeI,LocPara.LocTypeI, LocPara.BackgroundNoiseFilterEn, LocPara.ConsecutiveFitEnI, LocPara.ConsecFilterRadius, LocPara.RawImgPixelSize,LocPara.RenderingPixelZoom,LocPara.SNR_thF);
         QC_STORM_.lm_SetLocPara3D(LocPara.MinZDepthF, LocPara.MaxZDepthF,LocPara.p4F,LocPara.p3F,LocPara.p2F,LocPara.p1F,LocPara.p0F, LocPara.MeanDistance,LocPara.DistanceTh, LocPara.RotateType);
        
         QC_STORM_. lm_SetStatInfSelection(LocPara.StatDispSelI, LocPara.OnTimeEn, LocPara.SpatialResolutionEn);            
@@ -1213,8 +1225,10 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 		jTextField_RenderPixelSize.setText(pps.getProperty("RenderingPixelSize", Float.toString(LocPara.RenderingPixelSize)));
 
         jComboBox_LocType.setSelectedIndex(Integer.parseInt(pps.getProperty("LocType", Integer.toString(LocPara.LocTypeI))));
-
-        jCheckBox_Stat_ConsecutiveFit.setSelected(Boolean.parseBoolean(pps.getProperty("ConsecutiveFitEnable", "true")));
+        
+        jCheckBox_Stat_BackgroundFilterEn.setSelected(Boolean.parseBoolean(pps.getProperty("BackgroundNoiseFilterEnable", "true")));
+        
+        jCheckBox_Stat_ConsecutiveFitEn.setSelected(Boolean.parseBoolean(pps.getProperty("ConsecutiveFitEnable", "false")));
         jTextField_ConsecFilterRadius.setText(pps.getProperty("ConsecFilterRadius", Float.toString(80.0f)));
 
         
@@ -1299,6 +1313,14 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         
         pps.setProperty("LocType", Integer.toString(jComboBox_LocType.getSelectedIndex()));
 
+        if(LocPara.BackgroundNoiseFilterEn!=0)
+        {
+            pps.setProperty("BackgroundNoiseFilterEnable", "true");
+        }else
+        {
+            pps.setProperty("BackgroundNoiseFilterEnable", "false");
+        }
+        
         if(LocPara.ConsecutiveFitEnI!=0)
         {
             pps.setProperty("ConsecutiveFitEnable", "true");
