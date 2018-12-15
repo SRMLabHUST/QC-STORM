@@ -10,7 +10,7 @@ Merging molecules emitting consecutively in adjacent frames (by localization pre
 
 Online super-resolution image rendering and statistical information analyzing (photon number, background intensity, SNR, PSF width, localization density, localization precision (CRLB for 2D), on time)
 
-Online Nyquist resolution and convolved spatial resolution estimation
+Online Nyquist resolution and convolved spatial resolution calculation
 
 Background noise filtering
 
