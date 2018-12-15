@@ -15,7 +15,7 @@ Online processing plugins for super-resolution localization microscopy based on 
 # Recompile the source codes
 1, The Java GUI for ImageJ and Micro-Manager are develped by NetBeans IDE 7.3.1 with Java jdk1.6.0_45.
 
-2, The DLL wrapped image processing is developed by Visual Studio 2015 end accelerated by CUDA 9.0.
+2, The DLL wrapped image processing are developed by Visual Studio 2015 end accelerated by CUDA 9.0.
 
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
