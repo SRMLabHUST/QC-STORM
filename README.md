@@ -1,5 +1,5 @@
 # QC-STORM
-Online processing plugins for super-resolution localization microscopy based on sCMOS camera
+Online processing plugin for super-resolution localization microscopy based on sCMOS camera
 
 # System requirements and installation
 1, Windows 7 sp1 or newer, x64.
