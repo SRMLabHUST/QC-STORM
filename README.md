@@ -1,5 +1,5 @@
 # QC-STORM
-QC-STORM is an online processing plugin (ImageJ & Micro-Manager) for quality-controlled super-resolution localization imaging.
+QC-STORM is an online processing plugin (Micro-Manager & ImageJ) for quality-controlled super-resolution localization imaging.
 
 # Features
 MLE Localization type: 2D, Astigmatism 3D
