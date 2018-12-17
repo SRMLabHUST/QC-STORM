@@ -7,22 +7,21 @@ Very efficient: online processing for sCMOS camera based imaging at full FOV and
 
 MLE Localization type: 2D, Astigmatism 3D
 
-Merging molecules emitting consecutively in adjacent frames (by localization precision weighted average)
-
 Online super-resolution image rendering and statistical information analyzing (photon number, background intensity, SNR, PSF width, localization density, localization precision (CRLB for 2D), on time)
 
 Online Nyquist resolution and convolved spatial resolution calculation
 
 Online Background noise filtering
 
-Drift correction by cross-correlation
-
 Online feedback control
 
-Spatial resolution controlled acquisition
+Online spatial resolution controlled acquisition
 
 Sequential Multi-FOV acquisition
 
+Drift correction by cross-correlation
+
+Merging molecules emitting consecutively in adjacent frames (by localization precision weighted average)
 
 
 # System requirements and installation
