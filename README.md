@@ -9,15 +9,16 @@ MLE Localization type: 2D, Astigmatism 3D
 
 Online super-resolution image rendering and statistical information analyzing (photon number, background intensity, SNR, PSF width, localization density, localization precision (CRLB for 2D), on time)
 
+
 Online Nyquist resolution and convolved spatial resolution calculation
-
-Online Background noise filtering
-
-Online feedback control
 
 Online spatial resolution controlled acquisition
 
-Sequential Multi-FOV acquisition
+Online feedback control (hardware dependent)
+
+Sequential Multi-FOV acquisition (hardware dependent)
+
+Online Background noise filtering
 
 Drift correction by cross-correlation
 
