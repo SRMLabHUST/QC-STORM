@@ -2,9 +2,10 @@
 QC-STORM is an online processing plugin (Micro-Manager & ImageJ) for quality-controlled super-resolution localization imaging.
 
 # Features
-MLE Localization type: 2D, Astigmatism 3D
 
-Online processing for sCMOS camera based imaging at full FOV and fastest frame rate (localization speed > 5x10^6 for 7x7 pixels ROI based on NVidia Titan xp graphics card)
+Very efficient: online processing for sCMOS camera based imaging at full FOV and fastest frame rate (localization speed > 5x10^6 for 7x7 pixels ROI based on NVidia Titan xp graphics card)
+
+MLE Localization type: 2D, Astigmatism 3D
 
 Merging molecules emitting consecutively in adjacent frames (by localization precision weighted average)
 
