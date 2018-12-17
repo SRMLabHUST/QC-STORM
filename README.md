@@ -20,7 +20,7 @@ Sequential Multi-FOV acquisition (hardware dependent)
 
 Online Background noise filtering
 
-Drift correction by cross-correlation
+Drift correction by cross-correlation (post-processing)
 
 Merging molecules emitting consecutively in adjacent frames (by localization precision weighted average)
 
