@@ -42,7 +42,7 @@ Merging molecules emitting consecutively in adjacent frames (by localization pre
 # Recompile the source codes
 1, The Java GUI for ImageJ (v1.52g) and Micro-Manager (MMSetup_64bit_2.0.0-beta3 from nightly builds of Micro-Manager 2.0) are develped by NetBeans IDE 7.3.1 with Java jdk1.6.0_45.
 
-2, The C++ core image processing are developed by Visual Studio 2015, and accelerated by CUDA 9.0.
+2, The C++ core image processing algorithms are developed by Visual Studio 2015, and accelerated by CUDA 9.0.
 
 
 
