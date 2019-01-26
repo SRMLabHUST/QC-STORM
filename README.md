@@ -36,7 +36,7 @@ Merging molecules emitting consecutively in adjacent frames (by localization pre
 
 5, Download QC-STORM release version from https://github.com/SRMLabHUST/QC-STORM/releases.
 
-6, Copy .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into folder plugins or mmplugins for ImageJ and Micro-Manager respectively.
+6, Copy .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into "plugins" or "mmplugins" folder for ImageJ and Micro-Manager respectively.
 
 
 # Recompile the source codes
