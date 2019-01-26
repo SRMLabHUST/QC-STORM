@@ -78,7 +78,7 @@ public class QC_STORM_ implements PlugInFilter{
     public native static void lm_SetImagePara(int ImageWidth, int ImageHigh, int SRImageWidth, int SRImageHigh, int FrameNum, char ImageName[]);
 
     public native static void lm_SetLocPara(float KAdc, float Offset, float QE, int ROISize, int LocType, int BkgNoiseFilterEn, int ConsecutiveFitEn, float ConsecFilterRadius, float RawPixelSize, float RenderPixelZoom, float SNR_th);
-    public native static void lm_SetLocPara3D(float MinZDepth, float MaxZDepth, float p4, float p3, float p2, float p1, float p0, float MeanDistance, float DistanceTh, int RotateType);
+    public native static void lm_SetLocPara3D(float MinZDepth, float MaxZDepth, float ZDepthCorrFactor, float p4, float p3, float p2, float p1, float p0);
     
     public native static void lm_SetStatInfSelection(int DispSel, int OnTimeEn, int SpatialResolutionEn);
 
@@ -92,7 +92,7 @@ public class QC_STORM_ implements PlugInFilter{
     public native static float [] lm_GetSMLMImage();
     public native static int [] lm_GetSMLMImage3D();
     
-    public native static void lm_SetSpatialResolutionInf(int FramePerGroup, float StructureSize);
+    public native static void lm_SetSpatialResolutionInf(int FramePerGroup, int IsHollowTube, float StructureSize, float RSCResolutionTh);
     
     public native static int [] lm_GetStatInfImageSize();
     public native static int [] lm_GetStatInfImage(int n);
@@ -184,7 +184,7 @@ public class QC_STORM_ implements PlugInFilter{
         SRImgName = RawImgName;
         SRImgName = SRImgName.replace(".tif", "");
 
-        SRImgName=String.format("%s_SR%dD%d_rend%.2fnm.tif", SRImgName, MyConfigurator.LocPara.LocTypeI+2, MyConfigurator.LocPara.RegionSizeI, MyConfigurator.LocPara.RenderingPixelSize);
+        SRImgName=String.format("%s_SR%dD%d_rend%.2fnm.tif", SRImgName, MyConfigurator.LocPara.LocType+2, MyConfigurator.LocPara.RegionSize, MyConfigurator.LocPara.RenderingPixelSize);
 
 
         CurSRImagePlus.setTitle(SRImgName);
@@ -198,10 +198,10 @@ public class QC_STORM_ implements PlugInFilter{
     private void InitSRDisplay()
     {
 //            String str1=String.format("sr %d %d", SRImageWidthI, SRImageHighI);
-//            JOptionPane.showMessageDialog(null, "InitSRDisplay "+Integer.toString(MyConfigurator.LocPara.LocTypeI), "InitSRDisplay finish!", JOptionPane.PLAIN_MESSAGE);
+//            JOptionPane.showMessageDialog(null, "InitSRDisplay "+Integer.toString(MyConfigurator.LocPara.LocType), "InitSRDisplay finish!", JOptionPane.PLAIN_MESSAGE);
            
         // for display rendered image, pre create them since create takes a lot of time
-        if(MyConfigurator.LocPara.LocTypeI == 0)
+        if(MyConfigurator.LocPara.LocType == 0)
         {
             CurSRImageProcessor2D = new FloatProcessor(SRImageWidthI, SRImageHighI);
             CurSRImageProcessor3D = null;
@@ -232,7 +232,7 @@ public class QC_STORM_ implements PlugInFilter{
             lm_StartLocThread();    
 
             // stastic inf display
-            StatDispSelI = MyConfigurator.LocPara.StatDispSelI;
+            StatDispSelI = MyConfigurator.LocPara.StatDispSel;
 
             InitSRDisplay();
             // receive rendered image        
@@ -243,7 +243,7 @@ public class QC_STORM_ implements PlugInFilter{
             int curf=0;
             short RawImgDatS[];
 
-            int ProcGroupNum=(FrameNum + BatchedImgNum-1)/BatchedImgNum;
+            int ProcGroupNum = (FrameNum + BatchedImgNum-1)/BatchedImgNum;
             
             int gcntI;
             int CurFrameNum;
@@ -252,7 +252,7 @@ public class QC_STORM_ implements PlugInFilter{
             
             for(gcntI=0;gcntI<ProcGroupNum;gcntI++)
             {
-                if(gcntI==ProcGroupNum-1)
+                if(gcntI == ProcGroupNum-1)
                 {
                     CurFrameNum = FrameNum - gcntI*BatchedImgNum;
                 }else
@@ -404,7 +404,7 @@ public class QC_STORM_ implements PlugInFilter{
                     IsBreakB=true;
                 }              
 
-                if(MyConfigurator.LocPara.LocTypeI == 0)
+                if(MyConfigurator.LocPara.LocType == 0)
                 {
                     // get 2d display rended image
                     float RecImgF[] = lm_GetSMLMImage();  
@@ -457,7 +457,7 @@ public class QC_STORM_ implements PlugInFilter{
                 }
                 // get current para set
                 MyConfigurator.LocPara = MyConfigurator.GetLocalizationPara();
-                StatDispSelI = MyConfigurator.LocPara.StatDispSelI;
+                StatDispSelI = MyConfigurator.LocPara.StatDispSel;
             
                 CurStatInfoDisplay.UpdateDisplay(StatDispSelI);
               

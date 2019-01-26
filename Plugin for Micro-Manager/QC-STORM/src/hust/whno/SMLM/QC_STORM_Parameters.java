@@ -60,48 +60,53 @@ public class QC_STORM_Parameters {
     // parameters for localization
     public static class LocalizationPara
     {   
-        float KadcF    = 0.45f;
-        float OffsetF  = 100;
-        float QEF      = 0.72f;
-        int RegionSizeI= 7;
+        float Kadc = 0.45f;
+        float Offset = 100;
+        float QE = 0.72f;
+        int RegionSize = 7;
 
         float RawImgPixelSize = 100;
         float RenderingPixelSize =10;
         float RenderingPixelZoom = 10;
         
         
-        int LocTypeI=0;
+        int LocType = 0;
         
         int BackgroundNoiseFilterEn = 1;
         
-        int ConsecutiveFitEnI = 0;
+        int ConsecutiveFitEn = 0;
         float ConsecFilterRadius = 80;
         
-        float MinZDepthF = 0;
-        float MaxZDepthF = 1000;
-
-        float p4F = 0;
-        float p3F = -4.217f;
-        float p2F = 13.08f;
-        float p1F = -278.79f;
-        float p0F = 0;
+        float MinZDepth = -500;
+        float MaxZDepth = 500;
         
-        // double helix 3d
-        float MeanDistance=10.1f;
-        float DistanceTh  =0.9f;
-        int RotateType    =0;
+        float ZDepthCorrFactor = 0.75f;
+        
+        // calibration curve parameters
+        float p4 = -0.007253f;
+        float p3 = 0.24f;
+        float p2 = 0.5187f;
+        float p1 = -71.25f;
+        float p0 = -3.813f;
+        
+        // double helix 3d spetial
+        float MeanDistance = 10.1f;
+        float DistanceTh = 0.9f;
+        int RotateType = 0;
 
         // rendering
-        float SNR_thF = 5; // used in rendering
+        float SNR_th = 5; // used in rendering
         
         // spatial resolution
         int ImagePerGroup = 50;
+        int IsHollowTube = 0;
         float StructureSize2D = 40;
+        float RSCResolutionTh = 0;
         
         // statastic information display enable
-        int StatDispSelI=0;
-        int OnTimeEn=1;
-        int SpatialResolutionEn=1;
+        int StatDispSel = 0;
+        int OnTimeEn = 1;
+        int SpatialResolutionEn = 1;
 
     }
     
@@ -143,8 +148,8 @@ public class QC_STORM_Parameters {
 
         // read image from hard disk
 
-        int TotalFrame = 500;
-        ImagePlus tifImagePlus = tifOpener.openTiff("G:\\MMStack_Pos0_512x512x500.tif", CurImgId);
+        int TotalFrame = 1000;
+        ImagePlus tifImagePlus = tifOpener.openTiff("G:\\MMStack_512x512x1500.tif", CurImgId);
 //        tifImagePlus = tifOpener.openTiff("G:\\MMStack_Pos0_512X512X1.tif",1);
 
         short [] pImgData =(short[])tifImagePlus.getProcessor().getPixels();

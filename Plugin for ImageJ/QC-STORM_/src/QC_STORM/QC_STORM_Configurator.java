@@ -125,7 +125,13 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jButton_LoadResultPath = new javax.swing.JButton();
         jLabel29 = new javax.swing.JLabel();
         jTextField_ConsecFilterRadius = new javax.swing.JTextField();
-        jCheckBox_Stat_BackgroundFilterEn = new javax.swing.JCheckBox();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jTextField_Offset = new javax.swing.JTextField();
+        jTextField_Kadc = new javax.swing.JTextField();
+        jTextField_QE = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jTextField_MaxZDepth = new javax.swing.JTextField();
@@ -140,14 +146,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jTextField_p0 = new javax.swing.JTextField();
         jTextField_p1 = new javax.swing.JTextField();
-        jLabel22 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
-        jTextField_MeanDistance = new javax.swing.JTextField();
-        jTextField_DistanceTh = new javax.swing.JTextField();
-        jTextField_RotateType = new javax.swing.JTextField();
-        jLabel25 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
         jTextField_MinZDepth = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        jTextField_ZDepthCorrFactor = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jCheckBox_Stat_TotalPhoton = new javax.swing.JCheckBox();
         jCheckBox_Stat_LocPrec = new javax.swing.JCheckBox();
@@ -174,13 +175,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jCheckBox_Stat_LocDensityFDVary = new javax.swing.JCheckBox();
         jLabel28 = new javax.swing.JLabel();
         jTextField_ImagePerGroup = new javax.swing.JTextField();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jTextField_Offset = new javax.swing.JTextField();
-        jTextField_Kadc = new javax.swing.JTextField();
-        jTextField_QE = new javax.swing.JTextField();
+        jCheckBox_IsHollowStructure = new javax.swing.JCheckBox();
         jPanel4 = new javax.swing.JPanel();
         jTextField_LocDataPath = new javax.swing.JTextField();
         jButton_LoadLocData = new javax.swing.JButton();
@@ -254,7 +249,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
         jTextField_ResultPath.setText("D:\\");
 
-            jButton_LoadResultPath.setText("Change result save path");
+            jButton_LoadResultPath.setText("Change results save path");
             jButton_LoadResultPath.setActionCommand("");
             jButton_LoadResultPath.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -262,13 +257,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                 }
             });
 
-            jLabel29.setText("Consecutive fitting/filterimg radius (nm):");
+            jLabel29.setText("Consecutive fitting radius (nm):");
 
             jTextField_ConsecFilterRadius.setText("80");
-
-            jCheckBox_Stat_BackgroundFilterEn.setSelected(true);
-            jCheckBox_Stat_BackgroundFilterEn.setText("Background noise filter");
-            jCheckBox_Stat_BackgroundFilterEn.setToolTipText("Be careful for clustered structure like NPC and on time is much longer than exposure time, recommended in postprocessing");
 
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
             jPanel1.setLayout(jPanel1Layout);
@@ -277,36 +268,29 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(22, 22, 22)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jCheckBox_Stat_BackgroundFilterEn)
                         .addComponent(jCheckBox_Stat_ConsecutiveFitEn)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextField_ParaFile, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField_ResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(47, 47, 47)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jButton_LoadParaFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton_LoadResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField_ConsecFilterRadius, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(32, 32, 32)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox_LocType, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField_SNR_th, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jTextField_RawPixelSize, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextField_RenderPixelSize, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jComboBox_RegionSize, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addComponent(jLabel29))
-                    .addContainerGap(115, Short.MAX_VALUE))
+                                .addComponent(jLabel29)
+                                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextField_ResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextField_ParaFile, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jButton_LoadParaFile, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton_LoadResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextField_ConsecFilterRadius, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBox_LocType, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextField_SNR_th, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextField_RenderPixelSize, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextField_RawPixelSize, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBox_RegionSize, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addContainerGap(109, Short.MAX_VALUE))
             );
             jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -331,367 +315,24 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jComboBox_LocType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jCheckBox_Stat_BackgroundFilterEn)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+                    .addGap(18, 18, Short.MAX_VALUE)
                     .addComponent(jCheckBox_Stat_ConsecutiveFitEn)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTextField_ConsecFilterRadius, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(22, 22, 22)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton_LoadParaFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField_ParaFile, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(15, 15, 15)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton_LoadResultPath, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField_ResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(93, Short.MAX_VALUE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField_ResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton_LoadResultPath, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField_ParaFile, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton_LoadParaFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addContainerGap(119, Short.MAX_VALUE))
             );
 
-            jTabbedPane1.addTab("Imaging basics", jPanel1);
-
-            jLabel4.setText("Z depth range (nm):");
-
-            jTextField_MaxZDepth.setText("500");
-            jTextField_MaxZDepth.setToolTipText("Max Z depth");
-
-            jLabel10.setText("Z depth calibration curve by 4 order polynomial:");
-
-            jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jLabel5.setText("p4:");
-
-            jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jLabel6.setText("p3:");
-
-            jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jLabel7.setText("p2:");
-
-            jTextField_p2.setText("13.08");
-
-            jTextField_p3.setText("-4.2170");
-
-            jTextField_p4.setText("0");
-
-            jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jLabel8.setText("p1:");
-
-            jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jLabel9.setText("p0:");
-
-            jTextField_p0.setText("0");
-
-            jTextField_p1.setText("-278.79");
-
-            jLabel22.setText("Double-Helix 3D special：");
-
-            jLabel23.setText("Mean distance (pixel):");
-
-            jTextField_MeanDistance.setText("10.1");
-
-            jTextField_DistanceTh.setText("0.9");
-
-            jTextField_RotateType.setText("0");
-            jTextField_RotateType.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jTextField_RotateTypeActionPerformed(evt);
-                }
-            });
-
-            jLabel25.setText("Rotate type:");
-
-            jLabel24.setText("Distance threshold (pixel):");
-
-            jTextField_MinZDepth.setText("-500");
-            jTextField_MinZDepth.setToolTipText("Min Z depth");
-
-            javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-            jPanel2.setLayout(jPanel2Layout);
-            jPanel2Layout.setHorizontalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(38, 38, 38)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(47, 47, 47)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextField_MeanDistance, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextField_DistanceTh, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(47, 47, 47)
-                                    .addComponent(jTextField_RotateType, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(43, 43, 43)))
-                            .addGap(0, 0, Short.MAX_VALUE))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGap(194, 194, 194))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addGap(35, 35, 35)
-                                    .addComponent(jTextField_MinZDepth, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jTextField_MaxZDepth, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextField_p4, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextField_p3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextField_p2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jTextField_p1, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
-                                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGap(17, 17, 17)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jTextField_p0)
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)))
-                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            );
-            jPanel2Layout.setVerticalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(31, 31, 31)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel4)
-                        .addComponent(jTextField_MaxZDepth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField_MinZDepth, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(17, 17, 17)
-                    .addComponent(jLabel10)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel5)
-                        .addComponent(jLabel6)
-                        .addComponent(jLabel7)
-                        .addComponent(jLabel8)
-                        .addComponent(jLabel9))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTextField_p4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField_p3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField_p2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField_p1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField_p0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(26, 26, 26)
-                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(12, 12, 12)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel23)
-                        .addComponent(jTextField_MeanDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel24)
-                        .addComponent(jTextField_DistanceTh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel25)
-                        .addComponent(jTextField_RotateType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(0, 158, Short.MAX_VALUE))
-            );
-
-            jTabbedPane1.addTab("3D inf", jPanel2);
-
-            jCheckBox_Stat_TotalPhoton.setText("Total photon");
-
-            jCheckBox_Stat_LocPrec.setText("Localization precision");
-
-            jCheckBox_Stat_PSFWidth.setSelected(true);
-            jCheckBox_Stat_PSFWidth.setText("PSF width");
-
-            jCheckBox_Stat_SNR.setSelected(true);
-            jCheckBox_Stat_SNR.setText("SNR");
-
-            jCheckBox_Stat_TotalPhotonVary.setText("Total photon");
-
-            jCheckBox_Stat_LocPrecVary.setSelected(true);
-            jCheckBox_Stat_LocPrecVary.setText("Localization precision");
-
-            jCheckBox_Stat_OntimeVary.setText("Ontime");
-            jCheckBox_Stat_OntimeVary.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jCheckBox_Stat_OntimeVaryActionPerformed(evt);
-                }
-            });
-
-            jCheckBox_Stat_SNRVary.setSelected(true);
-            jCheckBox_Stat_SNRVary.setText("SNR");
-
-            jCheckBox_Stat_PSFWidthVary.setSelected(true);
-            jCheckBox_Stat_PSFWidthVary.setText("PSF width");
-
-            jCheckBox_Stat_LocDensityVary.setSelected(true);
-            jCheckBox_Stat_LocDensityVary.setText("Localization density 2D");
-
-            jCheckBox_Stat_BackgroundVary.setText("Background");
-
-            jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-            jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-            jLabel11.setText("Histogram:");
-
-            jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-            jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-            jLabel12.setText("Time variation curve:");
-
-            jLabel16.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-            jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-            jLabel16.setText("Convolved spatial resolution variation curve:");
-
-            jCheckBox_Stat_NyqResolutionVary.setText("Nyquist resolution");
-
-            jCheckBox_Stat_SpaResolutionVary.setSelected(true);
-            jCheckBox_Stat_SpaResolutionVary.setText("Spatial resolution");
-
-            jLabel26.setText("Structure size 2D (nm):");
-
-            jTextField_StructureSize2D.setText("40");
-
-            jLabel27.setText("Functions enable:");
-
-            jCheckBox_Stat_OntimeEn.setSelected(true);
-            jCheckBox_Stat_OntimeEn.setText("Ontime");
-            jCheckBox_Stat_OntimeEn.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jCheckBox_Stat_OntimeEnActionPerformed(evt);
-                }
-            });
-
-            jCheckBox_Stat_SpaResolutionEn.setSelected(true);
-            jCheckBox_Stat_SpaResolutionEn.setText("Spatial resolution");
-
-            jCheckBox_Stat_DimensionFDVary.setText("Dimension FD");
-
-            jCheckBox_Stat_LocDensityFDVary.setText("Localization density FD");
-
-            jLabel28.setText("Images per group:");
-
-            jTextField_ImagePerGroup.setText("50");
-
-            javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-            jPanel3.setLayout(jPanel3Layout);
-            jPanel3Layout.setHorizontalGroup(
-                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addGap(37, 37, 37)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel27)
-                            .addGap(18, 18, 18)
-                            .addComponent(jCheckBox_Stat_OntimeEn)
-                            .addGap(18, 18, 18)
-                            .addComponent(jCheckBox_Stat_SpaResolutionEn))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jCheckBox_Stat_BackgroundVary)
-                                .addComponent(jCheckBox_Stat_PSFWidthVary)
-                                .addComponent(jCheckBox_Stat_OntimeVary)
-                                .addComponent(jCheckBox_Stat_TotalPhotonVary))
-                            .addGap(47, 47, 47)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jCheckBox_Stat_LocPrecVary)
-                                .addComponent(jCheckBox_Stat_SNRVary)
-                                .addComponent(jCheckBox_Stat_LocDensityVary)))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jCheckBox_Stat_TotalPhoton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jCheckBox_Stat_SNR, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(44, 44, 44)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jCheckBox_Stat_PSFWidth)
-                                .addComponent(jCheckBox_Stat_LocPrec, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel26)
-                                    .addComponent(jCheckBox_Stat_SpaResolutionVary)
-                                    .addComponent(jCheckBox_Stat_DimensionFDVary)
-                                    .addComponent(jLabel28))
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jCheckBox_Stat_LocDensityFDVary)
-                                            .addComponent(jCheckBox_Stat_NyqResolutionVary)))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(61, 61, 61)
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jTextField_ImagePerGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTextField_StructureSize2D, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                    .addContainerGap(151, Short.MAX_VALUE))
-            );
-            jPanel3Layout.setVerticalGroup(
-                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jCheckBox_Stat_OntimeEn)
-                        .addComponent(jCheckBox_Stat_SpaResolutionEn))
-                    .addGap(6, 6, 6)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTextField_StructureSize2D, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField_ImagePerGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(12, 12, 12)
-                    .addComponent(jLabel11)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jCheckBox_Stat_TotalPhoton)
-                        .addComponent(jCheckBox_Stat_LocPrec))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jCheckBox_Stat_SNR)
-                        .addComponent(jCheckBox_Stat_PSFWidth))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jLabel12)
-                    .addGap(9, 9, 9)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jCheckBox_Stat_TotalPhotonVary)
-                        .addComponent(jCheckBox_Stat_LocPrecVary))
-                    .addGap(3, 3, 3)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jCheckBox_Stat_OntimeVary)
-                        .addComponent(jCheckBox_Stat_SNRVary))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jCheckBox_Stat_PSFWidthVary)
-                        .addComponent(jCheckBox_Stat_LocDensityVary))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jCheckBox_Stat_BackgroundVary)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jLabel16)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jCheckBox_Stat_SpaResolutionVary)
-                        .addComponent(jCheckBox_Stat_NyqResolutionVary))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jCheckBox_Stat_DimensionFDVary)
-                        .addComponent(jCheckBox_Stat_LocDensityFDVary))
-                    .addContainerGap(54, Short.MAX_VALUE))
-            );
-
-            jTabbedPane1.addTab("Statistical disp", jPanel3);
+            jTabbedPane1.addTab("Basic param", jPanel1);
 
             jLabel13.setText("QE:");
 
@@ -740,7 +381,326 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                     .addContainerGap(288, Short.MAX_VALUE))
             );
 
-            jTabbedPane1.addTab("Camera inf", jPanel5);
+            jTabbedPane1.addTab("Camera param", jPanel5);
+
+            jLabel4.setText("Z depth rendering range (nm):");
+
+            jTextField_MaxZDepth.setText("500");
+            jTextField_MaxZDepth.setToolTipText("Max Z depth");
+
+            jLabel10.setText("Z depth calibration curve by 4 order polynomial:");
+
+            jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel5.setText("p4:");
+
+            jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel6.setText("p3:");
+
+            jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel7.setText("p2:");
+
+            jTextField_p2.setText("13.08");
+
+            jTextField_p3.setText("-4.2170");
+
+            jTextField_p4.setText("0");
+
+            jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel8.setText("p1:");
+
+            jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            jLabel9.setText("p0:");
+
+            jTextField_p0.setText("0");
+
+            jTextField_p1.setText("-278.79");
+
+            jTextField_MinZDepth.setText("-500");
+            jTextField_MinZDepth.setToolTipText("Min Z depth");
+
+            jLabel18.setText("Z depth correction factor:");
+
+            jTextField_ZDepthCorrFactor.setText("0.75");
+            jTextField_ZDepthCorrFactor.setToolTipText("Min Z depth");
+
+            javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+            jPanel2.setLayout(jPanel2Layout);
+            jPanel2Layout.setHorizontalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(38, 38, 38)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGap(194, 194, 194))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField_p4, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField_p3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField_p2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextField_p1, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGap(17, 17, 17)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextField_p0)
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addGap(35, 35, 35)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jTextField_ZDepthCorrFactor, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(jTextField_MinZDepth, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jTextField_MaxZDepth, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel18)
+                            .addGap(0, 0, Short.MAX_VALUE))))
+            );
+            jPanel2Layout.setVerticalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(31, 31, 31)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTextField_MinZDepth, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                        .addComponent(jTextField_MaxZDepth, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTextField_ZDepthCorrFactor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel10)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel7)
+                        .addComponent(jLabel8)
+                        .addComponent(jLabel9))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jTextField_p4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField_p3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField_p2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField_p1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField_p0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(0, 260, Short.MAX_VALUE))
+            );
+
+            jTabbedPane1.addTab("3D param", jPanel2);
+
+            jCheckBox_Stat_TotalPhoton.setSelected(true);
+            jCheckBox_Stat_TotalPhoton.setText("Total photon");
+
+            jCheckBox_Stat_LocPrec.setText("Localization precision");
+
+            jCheckBox_Stat_PSFWidth.setText("PSF width");
+
+            jCheckBox_Stat_SNR.setSelected(true);
+            jCheckBox_Stat_SNR.setText("SNR");
+
+            jCheckBox_Stat_TotalPhotonVary.setSelected(true);
+            jCheckBox_Stat_TotalPhotonVary.setText("Total photon");
+
+            jCheckBox_Stat_LocPrecVary.setSelected(true);
+            jCheckBox_Stat_LocPrecVary.setText("Localization precision");
+
+            jCheckBox_Stat_OntimeVary.setText("Ontime");
+            jCheckBox_Stat_OntimeVary.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jCheckBox_Stat_OntimeVaryActionPerformed(evt);
+                }
+            });
+
+            jCheckBox_Stat_SNRVary.setSelected(true);
+            jCheckBox_Stat_SNRVary.setText("SNR");
+
+            jCheckBox_Stat_PSFWidthVary.setSelected(true);
+            jCheckBox_Stat_PSFWidthVary.setText("PSF width");
+
+            jCheckBox_Stat_LocDensityVary.setSelected(true);
+            jCheckBox_Stat_LocDensityVary.setText("Localization density 2D");
+
+            jCheckBox_Stat_BackgroundVary.setText("Background");
+
+            jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+            jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            jLabel11.setText("Histogram:");
+
+            jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+            jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            jLabel12.setText("Time-varying curve:");
+
+            jLabel16.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+            jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            jLabel16.setText("Spatial resolution time-varying curve:");
+
+            jCheckBox_Stat_NyqResolutionVary.setText("Nyquist resolution");
+
+            jCheckBox_Stat_SpaResolutionVary.setSelected(true);
+            jCheckBox_Stat_SpaResolutionVary.setText("Spatial resolution");
+
+            jLabel26.setText("Structure size 2D (nm):");
+
+            jTextField_StructureSize2D.setText("50");
+            jTextField_StructureSize2D.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jTextField_StructureSize2DActionPerformed(evt);
+                }
+            });
+
+            jLabel27.setText("Functions enable:");
+
+            jCheckBox_Stat_OntimeEn.setSelected(true);
+            jCheckBox_Stat_OntimeEn.setText("Ontime");
+            jCheckBox_Stat_OntimeEn.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jCheckBox_Stat_OntimeEnActionPerformed(evt);
+                }
+            });
+
+            jCheckBox_Stat_SpaResolutionEn.setSelected(true);
+            jCheckBox_Stat_SpaResolutionEn.setText("Spatial resolution");
+
+            jCheckBox_Stat_DimensionFDVary.setText("Dimension FD");
+
+            jCheckBox_Stat_LocDensityFDVary.setText("Localization density FD");
+
+            jLabel28.setText("Images per group:");
+
+            jTextField_ImagePerGroup.setText("50");
+
+            jCheckBox_IsHollowStructure.setText("Is hollow tube");
+            jCheckBox_IsHollowStructure.setToolTipText("not solid tube or structure width is significantly larger than localization precision");
+
+            javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+            jPanel3.setLayout(jPanel3Layout);
+            jPanel3Layout.setHorizontalGroup(
+                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(37, 37, 37)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel26)
+                                .addComponent(jLabel27))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jCheckBox_Stat_OntimeEn)
+                                .addComponent(jTextField_StructureSize2D, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextField_ImagePerGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jCheckBox_IsHollowStructure)
+                                .addComponent(jCheckBox_Stat_SpaResolutionEn))
+                            .addGap(120, 120, 120))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jCheckBox_Stat_NyqResolutionVary)
+                                .addComponent(jCheckBox_Stat_LocDensityFDVary)
+                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jCheckBox_Stat_TotalPhoton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jCheckBox_Stat_SNR, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(44, 44, 44)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jCheckBox_Stat_PSFWidth)
+                                        .addComponent(jCheckBox_Stat_LocPrec, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jCheckBox_Stat_BackgroundVary)
+                                        .addComponent(jCheckBox_Stat_PSFWidthVary)
+                                        .addComponent(jCheckBox_Stat_OntimeVary)
+                                        .addComponent(jCheckBox_Stat_TotalPhotonVary))
+                                    .addGap(47, 47, 47)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jCheckBox_Stat_LocPrecVary)
+                                        .addComponent(jCheckBox_Stat_SNRVary)
+                                        .addComponent(jCheckBox_Stat_LocDensityVary)))
+                                .addComponent(jLabel28)
+                                .addComponent(jCheckBox_Stat_DimensionFDVary)
+                                .addComponent(jCheckBox_Stat_SpaResolutionVary)
+                                .addComponent(jLabel16))
+                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            );
+            jPanel3Layout.setVerticalGroup(
+                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGap(13, 13, 13)
+                            .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(6, 6, 6))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jCheckBox_Stat_SpaResolutionEn)
+                                .addComponent(jCheckBox_Stat_OntimeEn))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField_StructureSize2D, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCheckBox_IsHollowStructure))
+                        .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(5, 5, 5)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField_ImagePerGroup, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addComponent(jLabel11)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jCheckBox_Stat_TotalPhoton)
+                        .addComponent(jCheckBox_Stat_LocPrec))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jCheckBox_Stat_SNR)
+                        .addComponent(jCheckBox_Stat_PSFWidth))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel12)
+                    .addGap(9, 9, 9)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jCheckBox_Stat_TotalPhotonVary)
+                        .addComponent(jCheckBox_Stat_LocPrecVary))
+                    .addGap(3, 3, 3)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jCheckBox_Stat_OntimeVary)
+                        .addComponent(jCheckBox_Stat_SNRVary))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jCheckBox_Stat_PSFWidthVary)
+                        .addComponent(jCheckBox_Stat_LocDensityVary))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jCheckBox_Stat_BackgroundVary)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel16)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jCheckBox_Stat_SpaResolutionVary)
+                        .addComponent(jCheckBox_Stat_NyqResolutionVary))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jCheckBox_Stat_DimensionFDVary)
+                        .addComponent(jCheckBox_Stat_LocDensityFDVary))
+                    .addContainerGap(45, Short.MAX_VALUE))
+            );
+
+            jTabbedPane1.addTab("Statistical disp", jPanel3);
 
             jButton_LoadLocData.setText("Load binary localization result file");
             jButton_LoadLocData.addActionListener(new java.awt.event.ActionListener() {
@@ -830,7 +790,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGap(18, 18, 18)
                     .addComponent(jButton_Start, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(22, 22, 22))
             );
@@ -897,13 +857,12 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
     private void jButton_LoadLocDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LoadLocDataActionPerformed
                 
-        OpenDialog dlgDialog=new OpenDialog("open localization result file");
+        OpenDialog dlgDialog = new OpenDialog("open localization result file");
 
         String filePath = dlgDialog.getPath();
         jTextField_LocDataPath.setText(filePath);
         
         RerendLocDataPath = filePath;
-        
 
     }//GEN-LAST:event_jButton_LoadLocDataActionPerformed
 
@@ -944,10 +903,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jComboBox_LocTypeActionPerformed
 
-    private void jTextField_RotateTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_RotateTypeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField_RotateTypeActionPerformed
-
     private void jComboBox_RegionSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_RegionSizeActionPerformed
         // TODO add your handling code here:
  //       GetLocalizationPara();
@@ -960,6 +915,19 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private void jCheckBox_Stat_OntimeEnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_Stat_OntimeEnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox_Stat_OntimeEnActionPerformed
+
+    private void jTextField_StructureSize2DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_StructureSize2DActionPerformed
+        // TODO add your handling code here:
+        float StructureWidth = Float.parseFloat(jTextField_StructureSize2D.getText());
+        if((StructureWidth>=100)||(StructureWidth<=0.01))
+        {
+            jCheckBox_IsHollowStructure.setSelected(true);
+        }
+        else
+        {
+            jCheckBox_IsHollowStructure.setSelected(false);
+        }
+    }//GEN-LAST:event_jTextField_StructureSize2DActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1002,8 +970,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JButton jButton_Rerend;
     private javax.swing.JButton jButton_Start;
     private javax.swing.JButton jButton_Start2;
+    private javax.swing.JCheckBox jCheckBox_IsHollowStructure;
     private javax.swing.JCheckBox jCheckBox_ShiftCorrection;
-    private javax.swing.JCheckBox jCheckBox_Stat_BackgroundFilterEn;
     private javax.swing.JCheckBox jCheckBox_Stat_BackgroundVary;
     private javax.swing.JCheckBox jCheckBox_Stat_ConsecutiveFitEn;
     private javax.swing.JCheckBox jCheckBox_Stat_DimensionFDVary;
@@ -1033,13 +1001,10 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
@@ -1059,13 +1024,11 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField_ConsecFilterRadius;
-    private javax.swing.JTextField jTextField_DistanceTh;
     private javax.swing.JTextField jTextField_DriftCorrGroupFrameNum;
     private javax.swing.JTextField jTextField_ImagePerGroup;
     private javax.swing.JTextField jTextField_Kadc;
     private javax.swing.JTextField jTextField_LocDataPath;
     private javax.swing.JTextField jTextField_MaxZDepth;
-    private javax.swing.JTextField jTextField_MeanDistance;
     private javax.swing.JTextField jTextField_MinZDepth;
     private javax.swing.JTextField jTextField_Offset;
     private javax.swing.JTextField jTextField_ParaFile;
@@ -1074,9 +1037,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField_RawPixelSize;
     private javax.swing.JTextField jTextField_RenderPixelSize;
     private javax.swing.JTextField jTextField_ResultPath;
-    private javax.swing.JTextField jTextField_RotateType;
     private javax.swing.JTextField jTextField_SNR_th;
     private javax.swing.JTextField jTextField_StructureSize2D;
+    private javax.swing.JTextField jTextField_ZDepthCorrFactor;
     private javax.swing.JTextField jTextField_p0;
     private javax.swing.JTextField jTextField_p1;
     private javax.swing.JTextField jTextField_p2;
@@ -1088,48 +1051,46 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     
     public QC_STORM_Parameters.LocalizationPara GetLocalizationPara()
     {
-        LocPara.KadcF   	= Float.parseFloat(jTextField_Kadc.getText());
-        LocPara.OffsetF 	= Float.parseFloat(jTextField_Offset.getText());
-        LocPara.QEF 		= Float.parseFloat(jTextField_QE.getText());
-        LocPara.RegionSizeI = Integer.parseInt((String)jComboBox_RegionSize.getSelectedItem());
+        LocPara.Kadc   	= Float.parseFloat(jTextField_Kadc.getText());
+        LocPara.Offset 	= Float.parseFloat(jTextField_Offset.getText());
+        LocPara.QE 		= Float.parseFloat(jTextField_QE.getText());
+        LocPara.RegionSize = Integer.parseInt((String)jComboBox_RegionSize.getSelectedItem());
 
     	LocPara.RawImgPixelSize = Float.parseFloat(jTextField_RawPixelSize.getText());
     	LocPara.RenderingPixelSize = Float.parseFloat(jTextField_RenderPixelSize.getText());
         LocPara.RenderingPixelZoom = LocPara.RawImgPixelSize/LocPara.RenderingPixelSize;
             
-        LocPara.LocTypeI=jComboBox_LocType.getSelectedIndex();
+        LocPara.LocType = jComboBox_LocType.getSelectedIndex();
         
-        LocPara.BackgroundNoiseFilterEn = jCheckBox_Stat_BackgroundFilterEn.isSelected()? 1 : 0;
+        LocPara.BackgroundNoiseFilterEn =  0;
         
-        LocPara.ConsecutiveFitEnI = jCheckBox_Stat_ConsecutiveFitEn.isSelected()? 1 : 0;
+        LocPara.ConsecutiveFitEn = jCheckBox_Stat_ConsecutiveFitEn.isSelected()? 1 : 0;
         LocPara.ConsecFilterRadius = Float.parseFloat(jTextField_ConsecFilterRadius.getText());
         
-        LocPara.MinZDepthF = Float.parseFloat(jTextField_MinZDepth.getText());
-    	LocPara.MaxZDepthF = Float.parseFloat(jTextField_MaxZDepth.getText());
+        LocPara.MinZDepth = Float.parseFloat(jTextField_MinZDepth.getText());
+    	LocPara.MaxZDepth = Float.parseFloat(jTextField_MaxZDepth.getText());
+        
+        LocPara.ZDepthCorrFactor = Float.parseFloat(jTextField_ZDepthCorrFactor.getText());
+        
+    	LocPara.p4 = Float.parseFloat(jTextField_p4.getText());
+    	LocPara.p3 = Float.parseFloat(jTextField_p3.getText());
+    	LocPara.p2 = Float.parseFloat(jTextField_p2.getText());
+    	LocPara.p1 = Float.parseFloat(jTextField_p1.getText());
+    	LocPara.p0 = Float.parseFloat(jTextField_p0.getText());
         
 
-        
-    	LocPara.p4F = Float.parseFloat(jTextField_p4.getText());
-    	LocPara.p3F = Float.parseFloat(jTextField_p3.getText());
-    	LocPara.p2F = Float.parseFloat(jTextField_p2.getText());
-    	LocPara.p1F = Float.parseFloat(jTextField_p1.getText());
-    	LocPara.p0F = Float.parseFloat(jTextField_p0.getText());
-        
         //
-        LocPara.MeanDistance = Float.parseFloat(jTextField_MeanDistance.getText());
-        LocPara.DistanceTh = Float.parseFloat(jTextField_DistanceTh.getText());
-        LocPara.RotateType = Integer.parseInt(jTextField_RotateType.getText());
-
-        //
-    	LocPara.SNR_thF = Float.parseFloat(jTextField_SNR_th.getText());
+    	LocPara.SNR_th = Float.parseFloat(jTextField_SNR_th.getText());
         
         // spatial resolution
+       
         LocPara.StructureSize2D = Float.parseFloat(jTextField_StructureSize2D.getText());
         LocPara.ImagePerGroup = Integer.parseInt(jTextField_ImagePerGroup.getText());
-
+        LocPara.IsHollowTube = jCheckBox_IsHollowStructure.isSelected()? 1 : 0;
+        LocPara.RSCResolutionTh = 0;
         
         // statastic information display enable
-        LocPara.StatDispSelI = GetStasticalInfDispEn();
+        LocPara.StatDispSel = GetStasticalInfDispEn();
         LocPara.OnTimeEn = jCheckBox_Stat_OntimeEn.isSelected() ? 1 : 0;
         LocPara.SpatialResolutionEn = jCheckBox_Stat_SpaResolutionEn.isSelected() ? 1 : 0;
         
@@ -1144,11 +1105,11 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     {
         GetLocalizationPara();
         
-        QC_STORM_.lm_SetLocPara(LocPara.KadcF,LocPara.OffsetF,LocPara.QEF,LocPara.RegionSizeI,LocPara.LocTypeI, LocPara.BackgroundNoiseFilterEn, LocPara.ConsecutiveFitEnI, LocPara.ConsecFilterRadius, LocPara.RawImgPixelSize,LocPara.RenderingPixelZoom,LocPara.SNR_thF);
-        QC_STORM_.lm_SetLocPara3D(LocPara.MinZDepthF, LocPara.MaxZDepthF,LocPara.p4F,LocPara.p3F,LocPara.p2F,LocPara.p1F,LocPara.p0F, LocPara.MeanDistance,LocPara.DistanceTh, LocPara.RotateType);
+        QC_STORM_.lm_SetLocPara(LocPara.Kadc,LocPara.Offset,LocPara.QE,LocPara.RegionSize,LocPara.LocType, LocPara.BackgroundNoiseFilterEn, LocPara.ConsecutiveFitEn, LocPara.ConsecFilterRadius, LocPara.RawImgPixelSize,LocPara.RenderingPixelZoom,LocPara.SNR_th);
+        QC_STORM_.lm_SetLocPara3D(LocPara.MinZDepth, LocPara.MaxZDepth, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0);
        
-        QC_STORM_. lm_SetStatInfSelection(LocPara.StatDispSelI, LocPara.OnTimeEn, LocPara.SpatialResolutionEn);            
-        QC_STORM_.lm_SetSpatialResolutionInf(LocPara.ImagePerGroup, LocPara.StructureSize2D);
+        QC_STORM_.lm_SetStatInfSelection(LocPara.StatDispSel, LocPara.OnTimeEn, LocPara.SpatialResolutionEn);            
+        QC_STORM_.lm_SetSpatialResolutionInf(LocPara.ImagePerGroup, LocPara.IsHollowTube, LocPara.StructureSize2D, 0);
                      
     }
     
@@ -1215,41 +1176,38 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 		pps.load(in);
 
 		// with default value
-       	jTextField_Kadc.setText(pps.getProperty("Kadc", Float.toString(LocPara.KadcF)));
-		jTextField_Offset.setText(pps.getProperty("Offset", Float.toString(LocPara.OffsetF)));
-		jTextField_QE.setText(pps.getProperty("QE", Float.toString(LocPara.QEF)));
+       	jTextField_Kadc.setText(pps.getProperty("Kadc", Float.toString(LocPara.Kadc)));
+		jTextField_Offset.setText(pps.getProperty("Offset", Float.toString(LocPara.Offset)));
+		jTextField_QE.setText(pps.getProperty("QE", Float.toString(LocPara.QE)));
 
-		jComboBox_RegionSize.setSelectedItem(pps.getProperty("RegionSize", Integer.toString(LocPara.RegionSizeI)));
+		jComboBox_RegionSize.setSelectedItem(pps.getProperty("RegionSize", Integer.toString(LocPara.RegionSize)));
 
 		jTextField_RawPixelSize.setText(pps.getProperty("RawPixelSize", Float.toString(LocPara.RawImgPixelSize)));
 		jTextField_RenderPixelSize.setText(pps.getProperty("RenderingPixelSize", Float.toString(LocPara.RenderingPixelSize)));
 
-        jComboBox_LocType.setSelectedIndex(Integer.parseInt(pps.getProperty("LocType", Integer.toString(LocPara.LocTypeI))));
+        jComboBox_LocType.setSelectedIndex(Integer.parseInt(pps.getProperty("LocType", Integer.toString(LocPara.LocType))));
         
-        jCheckBox_Stat_BackgroundFilterEn.setSelected(Boolean.parseBoolean(pps.getProperty("BackgroundNoiseFilterEnable", "true")));
         
         jCheckBox_Stat_ConsecutiveFitEn.setSelected(Boolean.parseBoolean(pps.getProperty("ConsecutiveFitEnable", "false")));
         jTextField_ConsecFilterRadius.setText(pps.getProperty("ConsecFilterRadius", Float.toString(80.0f)));
 
         
-        jTextField_MinZDepth.setText(pps.getProperty("MinZDepth", Float.toString(LocPara.MinZDepthF)));
-        jTextField_MaxZDepth.setText(pps.getProperty("MaxZDepth", Float.toString(LocPara.MaxZDepthF)));
+        jTextField_MinZDepth.setText(pps.getProperty("MinZDepth", Float.toString(LocPara.MinZDepth)));
+        jTextField_MaxZDepth.setText(pps.getProperty("MaxZDepth", Float.toString(LocPara.MaxZDepth)));
+        jTextField_ZDepthCorrFactor.setText(pps.getProperty("ZDepthCorrFactor", Float.toString(LocPara.ZDepthCorrFactor)));
 
-		jTextField_p4.setText(pps.getProperty("p4", Float.toString(LocPara.p4F)));
-		jTextField_p3.setText(pps.getProperty("p3", Float.toString(LocPara.p3F)));
-		jTextField_p2.setText(pps.getProperty("p2", Float.toString(LocPara.p2F)));
-		jTextField_p1.setText(pps.getProperty("p1", Float.toString(LocPara.p1F)));
-		jTextField_p0.setText(pps.getProperty("p0", Float.toString(LocPara.p0F)));
         
-        //
-        jTextField_MeanDistance.setText(pps.getProperty("MeanDistance", Float.toString(LocPara.MeanDistance)));
-        jTextField_DistanceTh.setText(pps.getProperty("DistanceTh", Float.toString(LocPara.DistanceTh)));
-        jTextField_RotateType.setText(pps.getProperty("RotateType", Integer.toString(LocPara.RotateType)));
+		jTextField_p4.setText(pps.getProperty("p4", Float.toString(LocPara.p4)));
+		jTextField_p3.setText(pps.getProperty("p3", Float.toString(LocPara.p3)));
+		jTextField_p2.setText(pps.getProperty("p2", Float.toString(LocPara.p2)));
+		jTextField_p1.setText(pps.getProperty("p1", Float.toString(LocPara.p1)));
+		jTextField_p0.setText(pps.getProperty("p0", Float.toString(LocPara.p0)));
+        
 
         //
-		jTextField_SNR_th.setText(pps.getProperty("SNR_thF", Float.toString(LocPara.SNR_thF)));
+		jTextField_SNR_th.setText(pps.getProperty("SNR_thF", Float.toString(LocPara.SNR_th)));
         
-        jTextField_StructureSize2D.setText(pps.getProperty("StructureSize2D", Float.toString(40)));
+        jTextField_StructureSize2D.setText(pps.getProperty("StructureSize2D", Float.toString(50.0f)));
         jTextField_ImagePerGroup.setText(pps.getProperty("ImagePerGroup", Integer.toString(50)));
         
         // statastic information display enable
@@ -1321,7 +1279,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
             pps.setProperty("BackgroundNoiseFilterEnable", "false");
         }
         
-        if(LocPara.ConsecutiveFitEnI!=0)
+        if(LocPara.ConsecutiveFitEn!=0)
         {
             pps.setProperty("ConsecutiveFitEnable", "true");
         }else
@@ -1333,17 +1291,15 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         
         pps.setProperty("MinZDepth", jTextField_MinZDepth.getText());
         pps.setProperty("MaxZDepth", jTextField_MaxZDepth.getText());
+        pps.setProperty("ZDepthCorrFactor", jTextField_ZDepthCorrFactor.getText());
+        
+        
         pps.setProperty("p4", jTextField_p4.getText());
         pps.setProperty("p3", jTextField_p3.getText());
         pps.setProperty("p2", jTextField_p2.getText());
         pps.setProperty("p1", jTextField_p1.getText());
         pps.setProperty("p0", jTextField_p0.getText());
-        //
-        
-        pps.setProperty("MeanDistance", jTextField_MeanDistance.getText());
-        pps.setProperty("DistanceTh", jTextField_DistanceTh.getText());
-        pps.setProperty("RotateType", jTextField_RotateType.getText());
-               
+     
         //
         pps.setProperty("SNR_thF", jTextField_SNR_th.getText());
         

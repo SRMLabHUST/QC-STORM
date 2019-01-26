@@ -164,7 +164,7 @@ public class QC_STORM_Processor  extends Processor{
         
         FileSaver ResultTifSaver = new FileSaver(CurSRImagePlus);
 
-        String SaveImgName = String.format("SRImage_%dD%d_%s_rend%.2fnm.tif", CurLocPara.LocTypeI+2,CurLocPara.RegionSizeI, CreateTimeIdxStr, CurLocPara.RenderingPixelSize);
+        String SaveImgName = String.format("SRImage_%dD%d_%s_rend%.2fnm.tif", CurLocPara.LocType+2,CurLocPara.RegionSize, CreateTimeIdxStr, CurLocPara.RenderingPixelSize);
         
         ResultTifSaver.saveAsTiff(ResultSavePathStr + SaveImgName);
                 
@@ -172,7 +172,7 @@ public class QC_STORM_Processor  extends Processor{
     
     public void GetSRImage()
     {
-        if(CurLocPara.LocTypeI==0)
+        if(CurLocPara.LocType==0)
         {
             CurSRImageProcessor2D = new FloatProcessor(SRImageWidthI, SRImageHighI);
 
