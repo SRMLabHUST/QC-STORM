@@ -20,9 +20,7 @@ Online feedback control (hardware dependent)
 
 Sequential Multi-FOV acquisition (hardware dependent)
 
-Online Background noise filtering
-
-Drift correction by cross-correlation (post-processing)
+Drift correction by cross-correlation
 
 Merging molecules emitting consecutively in adjacent frames (by localization precision weighted average)
 
