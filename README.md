@@ -3,7 +3,7 @@ QC-STORM is an online processing plugin (Micro-Manager & ImageJ) for quality-con
 
 # Key features
 
-Very efficient: online processing for sCMOS camera based localization imaging at full FOV and fastest frame rate (localization speed > 5x10^6 for 7x7 pixels ROI based on NVidia Titan xp graphics card)
+High efficient: online processing for sCMOS camera based localization microscopy at full FOV and fastest frame rate (localization speed > 5x10^6 for 7x7 pixels ROI based on NVidia Titan xp graphics card). Most processing parts of QC-STORM are GPU accelerated, and their performance increase almost linearly with GPU’s single floating performance (GFLOPS). The image transmission speed can also be influenced by the performance of CPU and its memory bandwidth.
 
 MLE Localization type: 2D, Astigmatism 3D
 
@@ -38,10 +38,11 @@ Merging molecules emitting consecutively in adjacent frames (by localization pre
 
 6, Copy .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into folder plugins or mmplugins for ImageJ and Micro-Manager respectively.
 
-# Recompile the source codes
-1, The Java GUI for ImageJ and Micro-Manager are develped by NetBeans IDE 7.3.1 with Java jdk1.6.0_45.
 
-2, The DLL wrapped image processing are developed by Visual Studio 2015 end accelerated by CUDA 9.0.
+# Recompile the source codes
+1, The Java GUI for ImageJ (v1.52g) and Micro-Manager (MMSetup_64bit_2.0.0-beta3 from nightly builds of Micro-Manager 2.0) are develped by NetBeans IDE 7.3.1 with Java jdk1.6.0_45.
+
+2, The C++ core image processing are developed by Visual Studio 2015, and accelerated by CUDA 9.0.
 
 
 
