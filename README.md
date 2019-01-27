@@ -14,7 +14,7 @@ Online super-resolution image rendering and statistical information analyzing (p
 
 Online Nyquist resolution and convolved spatial resolution calculation
 
-Online spatial resolution guided acquisition
+Online spatial resolution guided acquisition number
 
 Drift correction by cross-correlation
 
