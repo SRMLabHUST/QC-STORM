@@ -1,0 +1,3 @@
+download code from https://github.com/wjwwood/serial and build
+first compile the code to lib
+then use the header file and lib

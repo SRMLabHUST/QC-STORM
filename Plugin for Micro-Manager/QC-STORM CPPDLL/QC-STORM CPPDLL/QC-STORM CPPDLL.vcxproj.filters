@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="device support">
+      <UniqueIdentifier>{3c62bcd2-3ca7-4403-a7c9-1ff94948477c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Online Feedback">
+      <UniqueIdentifier>{a732d11d-4b29-4caa-8759-dc17fea72fe3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="device support\SerialPort">
+      <UniqueIdentifier>{db44a5c9-aa89-4897-983a-e3a0002fe014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImageJInterface">
+      <UniqueIdentifier>{fe81cd41-d1b7-4d96-b44c-5e601d306293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFile">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="SourceFile">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="bfgs_MLE_dll">
+      <UniqueIdentifier>{264532e2-fa9e-4991-9685-60c87538a4ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Online Localization">
+      <UniqueIdentifier>{ab4af434-210d-4bf0-acaf-771446212eee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Online Display">
+      <UniqueIdentifier>{916c4fc6-362f-4956-99fb-dad777834ddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CImageDisplay">
+      <UniqueIdentifier>{37d07450-0a33-4015-b51e-d629e7c83493}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>HeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>HeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="LocResource.h">
+      <Filter>Online Localization</Filter>
+    </ClInclude>
+    <ClInclude Include="StatInfDisplay.h">
+      <Filter>Online Display</Filter>
+    </ClInclude>
+    <ClInclude Include="OnlineFeedback.h">
+      <Filter>Online Feedback</Filter>
+    </ClInclude>
+    <ClInclude Include="OnlineRendDisp.h">
+      <Filter>Online Display</Filter>
+    </ClInclude>
+    <ClInclude Include="QC_STORM_CPPDLL.h">
+      <Filter>ImageJInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="Cross-platform Serial Port library\MySerial.h">
+      <Filter>device support\SerialPort</Filter>
+    </ClInclude>
+    <ClInclude Include="PIDController.h">
+      <Filter>Online Feedback</Filter>
+    </ClInclude>
+    <ClInclude Include="OnlineFeedback_rc.h">
+      <Filter>Online Feedback</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgs\SpatialResolutionCalc.h">
+      <Filter>bfgs_MLE_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="LocResource_ZDriftMeasure.h">
+      <Filter>Online Localization</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgs\bfgs_MLE_dll.h">
+      <Filter>bfgs_MLE_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgs\bfgs_MLE_para.h">
+      <Filter>bfgs_MLE_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="Cross-platform Serial Port library\serial\serial.h">
+      <Filter>device support\SerialPort</Filter>
+    </ClInclude>
+    <ClInclude Include="OnlineLocalizationLD.h">
+      <Filter>Online Localization</Filter>
+    </ClInclude>
+    <ClInclude Include="CImg\CImg.h">
+      <Filter>CImageDisplay</Filter>
+    </ClInclude>
+    <ClInclude Include="CImageDisplay\CImgCurveDisplay.h">
+      <Filter>CImageDisplay</Filter>
+    </ClInclude>
+    <ClInclude Include="CImageDisplay\CImgCurveDisplayParameters.h">
+      <Filter>CImageDisplay</Filter>
+    </ClInclude>
+    <ClInclude Include="SuperResolutionImageDisplay.h">
+      <Filter>Online Display</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>SourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>SourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="LocResource.cpp">
+      <Filter>Online Localization</Filter>
+    </ClCompile>
+    <ClCompile Include="StatInfDisplay.cpp">
+      <Filter>Online Display</Filter>
+    </ClCompile>
+    <ClCompile Include="OnlineRendDisp.cpp">
+      <Filter>Online Display</Filter>
+    </ClCompile>
+    <ClCompile Include="OnlineFeedback.cpp">
+      <Filter>Online Feedback</Filter>
+    </ClCompile>
+    <ClCompile Include="QC_STORM_CPPDLL.cpp">
+      <Filter>ImageJInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="OnlineFeedback_rc.cpp">
+      <Filter>Online Feedback</Filter>
+    </ClCompile>
+    <ClCompile Include="Cross-platform Serial Port library\MySerial.cpp">
+      <Filter>device support\SerialPort</Filter>
+    </ClCompile>
+    <ClCompile Include="LocResource_ZDriftMeasure.cpp">
+      <Filter>Online Localization</Filter>
+    </ClCompile>
+    <ClCompile Include="OnlineLocalizationLD.cpp">
+      <Filter>Online Localization</Filter>
+    </ClCompile>
+    <ClCompile Include="SuperResolutionImageDisplay.cpp">
+      <Filter>Online Display</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Cross-platform Serial Port library\serial.lib">
+      <Filter>device support\SerialPort</Filter>
+    </Library>
+  </ItemGroup>
+</Project>

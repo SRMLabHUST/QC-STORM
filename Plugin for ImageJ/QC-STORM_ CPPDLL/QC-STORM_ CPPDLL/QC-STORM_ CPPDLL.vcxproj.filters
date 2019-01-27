@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ImageJInterface">
+      <UniqueIdentifier>{8d87ad4e-ab48-48b9-8749-1389b2f395c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HeaderFile">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="SourceFile">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="bfgs_MLE_dll">
+      <UniqueIdentifier>{8570ba8b-7ae1-4c0c-808b-dd1e47583c31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PostProcesing">
+      <UniqueIdentifier>{87ae62c8-57c4-41a5-b662-0a322fde54a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Online Localization">
+      <UniqueIdentifier>{d28a3182-8ad0-414c-9081-19a4e019e0c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Online Display">
+      <UniqueIdentifier>{15adcb26-b809-4759-8511-62fed0ee8292}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CImageDisplay">
+      <UniqueIdentifier>{dff68ffb-004c-4690-b1b1-0b20c8391a1f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>HeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>HeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="LocResource.h">
+      <Filter>Online Localization</Filter>
+    </ClInclude>
+    <ClInclude Include="StatInfDisplay.h">
+      <Filter>Online Display</Filter>
+    </ClInclude>
+    <ClInclude Include="OnlineRendDisp.h">
+      <Filter>Online Display</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcess.h">
+      <Filter>PostProcesing</Filter>
+    </ClInclude>
+    <ClInclude Include="QC_STORM_CPPDLL.h">
+      <Filter>ImageJInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgs\SpatialResolutionCalc.h">
+      <Filter>bfgs_MLE_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgs\bfgs_MLE_dll.h">
+      <Filter>bfgs_MLE_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgs\bfgs_MLE_para.h">
+      <Filter>bfgs_MLE_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="CppFileWrapper.h">
+      <Filter>bfgs_MLE_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="OnlineLocalizationLD.h">
+      <Filter>Online Localization</Filter>
+    </ClInclude>
+    <ClInclude Include="CImg\CImg.h">
+      <Filter>CImageDisplay</Filter>
+    </ClInclude>
+    <ClInclude Include="CImageDisplay\CImgCurveDisplay.h">
+      <Filter>CImageDisplay</Filter>
+    </ClInclude>
+    <ClInclude Include="CImageDisplay\CImgCurveDisplayParameters.h">
+      <Filter>CImageDisplay</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>SourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>SourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="LocResource.cpp">
+      <Filter>Online Localization</Filter>
+    </ClCompile>
+    <ClCompile Include="StatInfDisplay.cpp">
+      <Filter>Online Display</Filter>
+    </ClCompile>
+    <ClCompile Include="OnlineRendDisp.cpp">
+      <Filter>Online Display</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcess.cpp">
+      <Filter>PostProcesing</Filter>
+    </ClCompile>
+    <ClCompile Include="QC_STORM_CPPDLL.cpp">
+      <Filter>ImageJInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="OnlineLocalizationLD.cpp">
+      <Filter>Online Localization</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
