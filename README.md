@@ -3,26 +3,26 @@ QC-STORM is an online processing plugin (Micro-Manager & ImageJ) for quality-con
 
 # Key features
 
-Very efficient: online processing for sCMOS camera based localization imaging at full FOV and fastest frame rate (localization speed > 5x10^6 for 7x7 pixels ROI based on NVidia Titan xp graphics card)
+Ultrahigh efficient MLE localization without sacrificing localization precition: online processing for sCMOS camera based localization microscopy at full FOV and fastest frame rate (localization speed > 5x10^6 for 7x7 pixels ROI based on NVidia Titan xp graphics card). 
+Most processing parts of QC-STORM are GPU accelerated, and their performance increase almost linearly with GPU’s single floating performance (GFLOPS). 
+The localization performance evaluation are available at previous work of Sage, Daniel, et al. "Super-resolution fight club: A broad assessment of 2D & 3D single-molecule localization microscopy software." bioRxiv (2018): 362517.
 
 MLE Localization type: 2D, Astigmatism 3D
 
-Online super-resolution image rendering and statistical information analyzing (photon number, background intensity, SNR, PSF width, localization density, localization precision (CRLB for 2D), on time)
+Online super-resolution image rendering and statistical information analyzing (photon number, background intensity, SNR, PSF width, localization density, localization precision (CRLB), on time)
 
 
 Online Nyquist resolution and convolved spatial resolution calculation
 
 Online spatial resolution controlled acquisition
 
+Drift correction by cross-correlation
+
+Merging molecules emitting in consecutive frames (localization precision weighted average)
+
 Online feedback control (hardware dependent)
 
 Sequential Multi-FOV acquisition (hardware dependent)
-
-Online Background noise filtering
-
-Drift correction by cross-correlation (post-processing)
-
-Merging molecules emitting consecutively in adjacent frames (by localization precision weighted average)
 
 
 # System requirements and installation
@@ -36,12 +36,13 @@ Merging molecules emitting consecutively in adjacent frames (by localization pre
 
 5, Download QC-STORM release version from https://github.com/SRMLabHUST/QC-STORM/releases.
 
-6, Copy .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into folder plugins or mmplugins for ImageJ and Micro-Manager respectively.
+6, Copy .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into "plugins" or "mmplugins" folder for ImageJ and Micro-Manager respectively.
+
 
 # Recompile the source codes
-1, The Java GUI for ImageJ and Micro-Manager are develped by NetBeans IDE 7.3.1 with Java jdk1.6.0_45.
+1, The Java GUI for ImageJ (v1.52g) and Micro-Manager (MMSetup_64bit_2.0.0-beta3 from nightly builds of Micro-Manager 2.0) are develped by NetBeans IDE 7.3.1 with Java jdk1.6.0_45.
 
-2, The DLL wrapped image processing are developed by Visual Studio 2015 end accelerated by CUDA 9.0.
+2, The C++ core image processing algorithms are developed by Visual Studio 2015, and accelerated by CUDA 9.0.
 
 
 
