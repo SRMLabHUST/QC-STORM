@@ -22,7 +22,7 @@ Sequential Multi-FOV acquisition (hardware dependent)
 
 Drift correction by cross-correlation
 
-Merging molecules emitting consecutively in adjacent frames (by localization precision weighted average)
+Merging molecules emitting consecutively in adjacent frames (localization precision weighted average)
 
 
 # System requirements and installation
