@@ -16,13 +16,13 @@ Online Nyquist resolution and convolved spatial resolution calculation
 
 Online spatial resolution controlled acquisition
 
+Drift correction by cross-correlation
+
+Merging molecules emitting in consecutive frames (localization precision weighted average)
+
 Online feedback control (hardware dependent)
 
 Sequential Multi-FOV acquisition (hardware dependent)
-
-Drift correction by cross-correlation
-
-Merging molecules emitting consecutively in adjacent frames (localization precision weighted average)
 
 
 # System requirements and installation
