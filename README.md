@@ -9,7 +9,7 @@ The localization performance evaluation are available at previous work of Sage, 
 
 MLE Localization type: 2D, Astigmatism 3D
 
-Online super-resolution image rendering and statistical information analyzing (photon number, background intensity, SNR, PSF width, localization density, localization precision (CRLB for 2D), on time)
+Online super-resolution image rendering and statistical information analyzing (photon number, background intensity, SNR, PSF width, localization density, localization precision (CRLB), on time)
 
 
 Online Nyquist resolution and convolved spatial resolution calculation
