@@ -34,7 +34,7 @@ void RendDispImage()
 	else
 	{
 		// astigmatism 3d image
-		RendData.GetSaveImgTop(LocPara_Global, 0.55f, RGBImage_EncodeMode_4Bytes, render_stream1);
+		RendData.GetSaveImgTop(LocPara_Global, 0.7f, RGBImage_EncodeMode_4Bytes, render_stream1);
 		WaitGPUStream(render_stream1);
 
 	}
