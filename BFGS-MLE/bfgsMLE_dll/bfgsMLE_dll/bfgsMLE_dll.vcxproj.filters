@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="cudaWrapper">
+      <UniqueIdentifier>{2abfcf2c-e3b8-454f-a30f-2d90bb608890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SubregionExtraction">
+      <UniqueIdentifier>{8bfad0ee-356a-49d0-a9b3-fe930ec4a664}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImageRender_3dStack">
+      <UniqueIdentifier>{6a6c9d3d-2b40-44cc-8de2-1006c37a185b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StatisticsInfo">
+      <UniqueIdentifier>{fabf2bd3-0e21-43ec-923d-559682c6955b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShiftCorrection_SRImage">
+      <UniqueIdentifier>{fc9c12e7-c7fd-491c-be58-652f84a2f93c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SourceFile">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Res">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="BFGS Curve fitting">
+      <UniqueIdentifier>{b0f4e18a-dad9-4597-94fe-9cfabc4b8a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bfgsMLE_Loc_top">
+      <UniqueIdentifier>{97e01362-310d-4cd8-893e-1f4169fbfe0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bfgsMLE_Loc_LD">
+      <UniqueIdentifier>{a98c0b89-cf1b-4bad-b8c4-618d94f8610f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ConsecutiveFit">
+      <UniqueIdentifier>{67c15bca-acf1-4952-bb2d-4d66e6c37ad7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FileReadWrite">
+      <UniqueIdentifier>{fa00528f-7d00-4e50-b4ce-aff693f48f2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImageRender">
+      <UniqueIdentifier>{9c3b6856-55e6-47bd-9538-a47b7c83e37a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Background noise filter">
+      <UniqueIdentifier>{623f0288-8c1e-4235-8df2-cd6cbc13e605}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ZeroLocalizationsRemove">
+      <UniqueIdentifier>{664c79de-e2cd-4377-beb5-888abee74902}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>SourceFile</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>SourceFile</Filter>
+    </ClInclude>
+    <ClInclude Include="cudaWrapper\cudaWrapper.h">
+      <Filter>cudaWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="ImgRender\ImageRender_3d.h">
+      <Filter>ImageRender</Filter>
+    </ClInclude>
+    <ClInclude Include="SubregionExtraction\SubregionExtraction_ld.h">
+      <Filter>SubregionExtraction</Filter>
+    </ClInclude>
+    <ClInclude Include="ImgRender\ImageRender_2d.h">
+      <Filter>ImageRender</Filter>
+    </ClInclude>
+    <ClInclude Include="ImgRender\ImageRender_top.h">
+      <Filter>ImageRender</Filter>
+    </ClInclude>
+    <ClInclude Include="StatisticsInfo\statisticsInfo.h">
+      <Filter>StatisticsInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageRender_3dStack\ImageRender_3dStack.h">
+      <Filter>ImageRender_3dStack</Filter>
+    </ClInclude>
+    <ClInclude Include="BFGS for curve fitting\BFGSOptimizer.h">
+      <Filter>BFGS Curve fitting</Filter>
+    </ClInclude>
+    <ClInclude Include="BFGS for curve fitting\CurveFitting.h">
+      <Filter>BFGS Curve fitting</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgs_base.h">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgs_CommonPara.h">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_AS3D_core.h">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_AS3D_top.h">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_core.h">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_DH3D_core.h">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_DH3D_top.h">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_GS2D_core.h">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_GS2D_top.h">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_top\bfgs_LocalizationFilter.h">
+      <Filter>bfgsMLE_Loc_top</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_top\bfgs_OntimeCalc.h">
+      <Filter>bfgsMLE_Loc_top</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_top\bfgs_top.h">
+      <Filter>bfgsMLE_Loc_top</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_top\DH3D_MoleculePair.h">
+      <Filter>bfgsMLE_Loc_top</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_top\ConsecutiveFit.h">
+      <Filter>ConsecutiveFit</Filter>
+    </ClInclude>
+    <ClInclude Include="ImgRender\ImageRender_base.h">
+      <Filter>ImageRender</Filter>
+    </ClInclude>
+    <ClInclude Include="ShiftCorrection_SRImage\SRShiftCorrection.h">
+      <Filter>ShiftCorrection_SRImage</Filter>
+    </ClInclude>
+    <ClInclude Include="FileReadWriteWrapper\CppFileWrapper.h">
+      <Filter>FileReadWrite</Filter>
+    </ClInclude>
+    <ClInclude Include="Background noise filter\BackgroundNoiseFilter.h">
+      <Filter>Background noise filter</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_top\LocPrecCalc_GaussianCRLB.h">
+      <Filter>bfgsMLE_Loc_top</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_top\ZeroLocalizationsRemove.h">
+      <Filter>ZeroLocalizationsRemove</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>SourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="BFGS for curve fitting\CurveFitting.cpp">
+      <Filter>BFGS Curve fitting</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="cudaWrapper\cudaWrapper.cu">
+      <Filter>cudaWrapper</Filter>
+    </CudaCompile>
+    <CudaCompile Include="ImgRender\ImageRender_3d.cu">
+      <Filter>ImageRender</Filter>
+    </CudaCompile>
+    <CudaCompile Include="SubregionExtraction\SubregionExtraction_ld.cu">
+      <Filter>SubregionExtraction</Filter>
+    </CudaCompile>
+    <CudaCompile Include="ImgRender\ImageRender_2d.cu">
+      <Filter>ImageRender</Filter>
+    </CudaCompile>
+    <CudaCompile Include="ImgRender\ImageRender_top.cu">
+      <Filter>ImageRender</Filter>
+    </CudaCompile>
+    <CudaCompile Include="StatisticsInfo\statisticsInfo.cu">
+      <Filter>StatisticsInfo</Filter>
+    </CudaCompile>
+    <CudaCompile Include="StatisticsInfo\statisticsInfo_top.cu">
+      <Filter>StatisticsInfo</Filter>
+    </CudaCompile>
+    <CudaCompile Include="SubregionExtraction\SubregionExtraction_ld_top.cu">
+      <Filter>SubregionExtraction</Filter>
+    </CudaCompile>
+    <CudaCompile Include="ImgRender\ImageRerender_rc.cu">
+      <Filter>ImageRender</Filter>
+    </CudaCompile>
+    <CudaCompile Include="ImageRender_3dStack\ImageRender_3dStack.cu">
+      <Filter>ImageRender_3dStack</Filter>
+    </CudaCompile>
+    <CudaCompile Include="StatisticsInfo\statisticsInfo_rc.cu">
+      <Filter>StatisticsInfo</Filter>
+    </CudaCompile>
+    <CudaCompile Include="StatisticsInfo\statisticsInfo_densityCalc.cu">
+      <Filter>StatisticsInfo</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_LD\bfgs_base.cu">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_LD\bfgsMLE_AS3D_top.cu">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_LD\bfgsMLE_DH3D_top.cu">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_LD\bfgsMLE_GS2D_top.cu">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_top\bfgs_LocalizationFilter.cu">
+      <Filter>bfgsMLE_Loc_top</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_top\bfgs_OntimeCalc.cu">
+      <Filter>bfgsMLE_Loc_top</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_top\bfgs_top.cu">
+      <Filter>bfgsMLE_Loc_top</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_top\DH3D_MoleculePair.cu">
+      <Filter>bfgsMLE_Loc_top</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_top\DH3D_MoleculePair_top.cu">
+      <Filter>bfgsMLE_Loc_top</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_top\ConsecutiveFit.cu">
+      <Filter>ConsecutiveFit</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_top\ConsecutiveFit_top.cu">
+      <Filter>ConsecutiveFit</Filter>
+    </CudaCompile>
+    <CudaCompile Include="ShiftCorrection_SRImage\SRShiftCorrection.cu">
+      <Filter>ShiftCorrection_SRImage</Filter>
+    </CudaCompile>
+    <CudaCompile Include="ShiftCorrection_SRImage\SRShiftCorrection_rc.cu">
+      <Filter>ShiftCorrection_SRImage</Filter>
+    </CudaCompile>
+    <CudaCompile Include="ShiftCorrection_SRImage\SRShiftCorrection_top.cu">
+      <Filter>ShiftCorrection_SRImage</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Background noise filter\BackgroundNoiseFilter.cu">
+      <Filter>Background noise filter</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Background noise filter\BackgroundNoiseFilter_top.cu">
+      <Filter>Background noise filter</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_top\LocPrecCalc_GaussianCRLB.cu">
+      <Filter>bfgsMLE_Loc_top</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_top\ZeroLocalizationsRemove.cu">
+      <Filter>ZeroLocalizationsRemove</Filter>
+    </CudaCompile>
+  </ItemGroup>
+</Project>
