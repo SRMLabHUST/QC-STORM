@@ -32,7 +32,7 @@ Sequential Multi-FOV acquisition (hardware dependent)
 
 3, ImageJ/Fiji, Micro-Manager 2.0 (beta 3).
 
-4, Download and install Microsoft Visual C++ 2015 Redistributable Update 3.
+4, Download and install Microsoft Visual C++ 2015 Redistributable Update 3 (x64).
 
 5, Download QC-STORM release version from https://github.com/SRMLabHUST/QC-STORM/releases.
 
