@@ -45,6 +45,7 @@ Sequential Multi-FOV acquisition (hardware dependent)
 
 2, The C++ core image processing algorithms are developed by Visual Studio 2015, and accelerated by NVidia CUDA 9.0.
 
+3, Download the codes, open the projects by corresponding software and recompile the codes.
 
 
 # Declaration
