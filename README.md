@@ -13,12 +13,11 @@ MLE Localization type: 2D, Astigmatism 3D
 
 Online super-resolution image rendering and statistical information analyzing (photon number, background intensity, SNR, PSF width, localization density, localization precision (CRLB), on time)
 
-
 Online Nyquist resolution and convolved spatial resolution calculation
 
 Online spatial resolution guided acquisition number
 
-Drift correction by cross-correlation
+Drift correction by cross-correlation (post-processing)
 
 Merging molecules emitting in consecutive frames (localization precision weighted average)
 
