@@ -48,7 +48,7 @@ void ConsecutiveFit_TypeDef::FitConsecutiveFluo(float * d_iLocArry, Localization
 	int BlockDim = ThreadsPerBlock;
 	int BlockNum = ((TotalFluoNum + ThreadsPerBlock - 1) / ThreadsPerBlock);
 	
-	gpuConsecutiveFitPair << <BlockNum, BlockDim, 0, cstream >> >(d_LastLocArry, LastFluoNum, d_CurLocArry, CurFluoNum, d_ForwardLinkID, d_BackwardLinkID, LocPara.ConsecFit_DistanceTh_nm, LocPara.PixelSize, LocPara.QE);
+	gpuFindConsecutiveMolecules << <BlockNum, BlockDim, 0, cstream >> >(d_LastLocArry, LastFluoNum, d_CurLocArry, CurFluoNum, d_ForwardLinkID, d_BackwardLinkID, LocPara.ConsecFit_DistanceTh_nm, LocPara.PixelSize, LocPara.QE);
 	
 
 	// only the bigining part of 2th part are fited with the first part, except the last time 
@@ -64,7 +64,8 @@ void ConsecutiveFit_TypeDef::FitConsecutiveFluo(float * d_iLocArry, Localization
 
 	BlockNum = ((ConsecFitFluoNum + ThreadsPerBlock - 1) / ThreadsPerBlock);
 
-	gpuConsecutiveFit << <BlockNum, BlockDim, 0, cstream >> >(d_LastLocArry, LastFluoNum, d_CurLocArry, CurFluoNum, d_ForwardLinkID, d_BackwardLinkID, ConsecFitFluoNum);
+	gpuConsecutiveFit << <BlockNum, BlockDim, 0, cstream >> >(d_LastLocArry, LastFluoNum, d_CurLocArry, CurFluoNum, d_ForwardLinkID, d_BackwardLinkID, ConsecFitFluoNum, LocPara.QE);
+
 	gpuRemoveConsecutiveFluo << <BlockNum, BlockDim, 0, cstream >> >(d_LastLocArry, LastFluoNum, d_CurLocArry, CurFluoNum, d_ForwardLinkID, d_BackwardLinkID, ConsecFitFluoNum);
 
 

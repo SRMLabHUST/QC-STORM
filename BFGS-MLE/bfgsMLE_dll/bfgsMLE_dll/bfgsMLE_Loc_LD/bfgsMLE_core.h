@@ -31,6 +31,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define WLE_ENABLE				1
 
 
+// enable for fair comparasion, disable for regular use
+#define WLE_TEST				0
+
 
 #define Math_PI					3.14159265358979f
 

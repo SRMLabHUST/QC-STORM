@@ -66,7 +66,9 @@ private:
 
 
 
-__global__ void gpuConsecutiveFitPair(float *d_LastLocArry, int LastFluoNum, float *d_CurLocArry, int CurFluoNum, int *d_ForwardLinkID, int *d_BackwardLinkID, float DistanceTh_nm, float PixelSize, float QE);
-__global__ void gpuConsecutiveFit(float *d_LastLocArry, int LastFluoNum, float *d_CurLocArry, int CurFluoNum, int *d_ForwardLinkID, int *d_BackwardLinkID, int ConsecFitFluoNum);
+__global__ void gpuFindConsecutiveMolecules(float *d_LastLocArry, int LastFluoNum, float *d_CurLocArry, int CurFluoNum, int *d_ForwardLinkID, int *d_BackwardLinkID, float DistanceTh_nm, float PixelSize, float QE);
+
+__global__ void gpuConsecutiveFit(float *d_LastLocArry, int LastFluoNum, float *d_CurLocArry, int CurFluoNum, int *d_ForwardLinkID, int *d_BackwardLinkID, int ConsecFitFluoNum, float QE);
+
 __global__ void gpuRemoveConsecutiveFluo(float *d_LastLocArry, int LastFluoNum, float *d_CurLocArry, int CurFluoNum, int *d_ForwardLinkID, int *d_BackwardLinkID, int ConsecFitFluoNum);
 

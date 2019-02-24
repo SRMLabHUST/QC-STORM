@@ -37,7 +37,7 @@ __device__ float * GetPartSelID(int *PartSel, int *PartID, int CurPos, int LastF
 	return oLocArry;
 }
 
-__global__ void gpuConsecutiveFitPair(float *d_LastLocArry, int LastFluoNum, float *d_CurLocArry, int CurFluoNum, int *d_ForwardLinkID, int *d_BackwardLinkID, float DistanceTh_nm, float PixelSize, float QE)
+__global__ void gpuFindConsecutiveMolecules(float *d_LastLocArry, int LastFluoNum, float *d_CurLocArry, int CurFluoNum, int *d_ForwardLinkID, int *d_BackwardLinkID, float DistanceTh_nm, float PixelSize, float QE)
 {
 	//    int tid = threadIdx.x;
 	int gid = threadIdx.x + blockDim.x*blockIdx.x;
@@ -131,7 +131,7 @@ __global__ void gpuConsecutiveFitPair(float *d_LastLocArry, int LastFluoNum, flo
 }
 
 
-__global__ void gpuConsecutiveFit(float *d_LastLocArry, int LastFluoNum, float *d_CurLocArry, int CurFluoNum, int *d_ForwardLinkID, int *d_BackwardLinkID, int ConsecFitFluoNum)
+__global__ void gpuConsecutiveFit(float *d_LastLocArry, int LastFluoNum, float *d_CurLocArry, int CurFluoNum, int *d_ForwardLinkID, int *d_BackwardLinkID, int ConsecFitFluoNum, float QE)
 {
 	//    int tid = threadIdx.x;
 	int gid = threadIdx.x + blockDim.x*blockIdx.x;
@@ -213,7 +213,7 @@ __global__ void gpuConsecutiveFit(float *d_LastLocArry, int LastFluoNum, float *
 
 
 			// update consecutive fit
-			SumSNR = SumPeakPhoton / sqrtf(SumPeakPhoton + SumBackground);
+			SumSNR = SumPeakPhoton*QE / sqrtf(SumPeakPhoton*QE + SumBackground*QE);
 
 			//
 			pLocArry = (float(*)[OutParaNumGS2D])GetPartSelID(&PartSel, &PartID, gid, LastFluoNum, d_LastLocArry, d_CurLocArry);

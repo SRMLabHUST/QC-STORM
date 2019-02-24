@@ -186,7 +186,11 @@ __global__ void bfgsMLELoc_Gauss2D(unsigned short *d_SubRegion, float *d_LocArry
 
 	//	printf("dat:%.2f %.2f %.2f %.2f %.2f %d\n", PeakPhoton, XPos, YPos, SimgaX, Background, CurFrame);
 
+#if(WLE_TEST)
+	if (1) //
+#else
 	if ((FittedXPos > XYLBound) && (FittedXPos < XYUBound) && (FittedYPos > XYLBound) && (FittedYPos < XYUBound)) //
+#endif //WLE_TEST
 	{
 		
 		pLocArry[gid][Pos_PPho] = PeakPhoton; // peak photon

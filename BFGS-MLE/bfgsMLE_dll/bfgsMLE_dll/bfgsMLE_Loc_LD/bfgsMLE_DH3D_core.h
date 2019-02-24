@@ -167,8 +167,11 @@ __global__ void bfgsMLELoc_DH3D(unsigned short *d_SubRegion, float *d_LocArry, f
 
 	int CurFrame = ImageRegion[tid][ROIDataLen + 3] * 65536 + ImageRegion[tid][ROIDataLen + 2];
 
-	// note the PeakPhoton and bg are electron
+#if(WLE_TEST)
+	if (1) //
+#else
 	if ((Ininf[FitDH3D_XPos][tid]>XYLBound) && (Ininf[FitDH3D_XPos][tid]<XYUBound) && (Ininf[FitDH3D_YPos][tid]>XYLBound) && (Ininf[FitDH3D_YPos][tid]<XYUBound)) //
+#endif //WLE_TEST
 	{
 		// for both online and offline localization
 
