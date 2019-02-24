@@ -4,19 +4,20 @@ QC-STORM is an online processing plugin (Micro-Manager & ImageJ) for quality-con
 # Key features
 
 Ultrahigh efficient MLE localization without sacrificing localization precition: online processing for sCMOS camera based localization microscopy at full FOV and fastest frame rate (localization speed > 5x10^6 for 7x7 pixels ROI based on NVidia Titan xp graphics card). 
-Most processing parts of QC-STORM are GPU accelerated, and their performance increase almost linearly with GPU’s single floating performance (GFLOPS). 
+
+Most processing parts of QC-STORM are GPU accelerated, and their performance increase almost linearly with GPU’s single floating performance (GFLOPS). Note the speed may be reduced by CPU memory bandwidth and low speed image reading from hard disk.
+
 The localization performance evaluation are available at previous work of Sage, Daniel, et al. "Super-resolution fight club: A broad assessment of 2D & 3D single-molecule localization microscopy software." bioRxiv (2018): 362517.
 
 MLE Localization type: 2D, Astigmatism 3D
 
 Online super-resolution image rendering and statistical information analyzing (photon number, background intensity, SNR, PSF width, localization density, localization precision (CRLB), on time)
 
-
 Online Nyquist resolution and convolved spatial resolution calculation
 
 Online spatial resolution guided acquisition number
 
-Drift correction by cross-correlation
+Drift correction by cross-correlation (post-processing)
 
 Merging molecules emitting in consecutive frames (localization precision weighted average)
 
@@ -32,18 +33,19 @@ Sequential Multi-FOV acquisition (hardware dependent)
 
 3, ImageJ/Fiji, Micro-Manager 2.0 (beta 3).
 
-4, Download and install Microsoft Visual C++ 2015 Redistributable Update 3.
+4, Download and install Microsoft Visual C++ 2015 Redistributable Update 3 (x64) (https://www.microsoft.com/en-us/download/details.aspx?id=53587).
 
 5, Download QC-STORM release version from https://github.com/SRMLabHUST/QC-STORM/releases.
 
-6, Copy .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into "plugins" or "mmplugins" folder for ImageJ and Micro-Manager respectively.
+6, Copy the downloaded .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into "plugins" or "mmplugins" folder for ImageJ and Micro-Manager respectively.
 
 
 # Recompile the source codes
 1, The Java GUI for ImageJ (v1.52g) and Micro-Manager (MMSetup_64bit_2.0.0-beta3 from nightly builds of Micro-Manager 2.0) are develped by NetBeans IDE 7.3.1 with Java jdk1.6.0_45.
 
-2, The C++ core image processing algorithms are developed by Visual Studio 2015, and accelerated by NVidia CUDA 9.0.
+2, The C++ core image processing algorithms are developed by Visual Studio 2015 Update 3, and accelerated by NVidia CUDA 9.0.
 
+3, Download the codes, open the projects by corresponding software and recompile the codes.
 
 
 # Declaration
