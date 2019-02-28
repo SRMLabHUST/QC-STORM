@@ -78,10 +78,13 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	// accumulate a group of molecular from multiple images to accelerate localization
 	int RecFluoNumTh = PointNumTh;
 
-	RecFluoNumTh = PointNumTh*(LocPara_Global.ImageWidth + LocPara_Global.ImageHigh) / 2 / 2048;
-	RecFluoNumTh = min(RecFluoNumTh, PointNumTh);
-	RecFluoNumTh = max(RecFluoNumTh, 4096);
-	RecFluoNumTh = RecFluoNumTh / 32 * 32;
+	if (LocPara_Global.SpatialResolutionCalcEn)
+	{
+		RecFluoNumTh = PointNumTh*(LocPara_Global.ImageWidth + LocPara_Global.ImageHigh) / 2 / 2048;
+		RecFluoNumTh = min(RecFluoNumTh, PointNumTh);
+		RecFluoNumTh = max(RecFluoNumTh, 4096);
+		RecFluoNumTh = RecFluoNumTh / 32 * 32;
+	}
 
 
 
