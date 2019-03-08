@@ -156,11 +156,11 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			int ImageMemorySource = ImageSource_ERR;
 
 			//get image from queue
-			if (RecImg.ImageSource == ImageSource_GPU)
+			if (RecImg.ImageSource == ImageSource_CPU_Pinned)
 			{
 				// GPU type image memory
 				ImageMemoryBuf = RecImg.pImgData;
-				ImageMemorySource = ImageSource_GPU;
+				ImageMemorySource = ImageSource_CPU_Pinned;
 			}
 			else if (RecImg.ImageSource == ImageSource_CPU_Normal)
 			{
@@ -197,10 +197,10 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 		}
 
 		// accumulate enough molecule for fast localization
-		if ((LDROIExtractData.GetRegionNum() >= RecFluoNumTh) || IsBreak)
+		if ((LDROIExtractData.GetAccumulatedROINum() >= RecFluoNumTh) || IsBreak)
 		{
-			FluoNum = LDROIExtractData.GetRegionNum();
-			LDROIExtractData.ResetRegionNum();
+			FluoNum = LDROIExtractData.GetAccumulatedROINum();
+			LDROIExtractData.ResetROINum();
 
 			TotalFluoNum += FluoNum;
 
@@ -208,7 +208,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			time1 = clock();
 
 			// localization
-			LDLocData.BFGS_MLELocalization(LDROIExtractData.h_RegionMem, LocPara_Global, FluoNum, loc_stream1);
+			LDLocData.BFGS_MLELocalization(LDROIExtractData.h_ROIMem, LocPara_Global, FluoNum, loc_stream1);
 
 			LocTime += (clock() - time1);
 			

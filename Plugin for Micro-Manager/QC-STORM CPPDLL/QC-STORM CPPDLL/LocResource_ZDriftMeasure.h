@@ -45,12 +45,12 @@ public:
 		// subregion extraction for current image
 		LDROIExtractData_.ExtractMolecules(LDROIExtractData_.h_RawImg, ImageSource_CPU_Pinned, LocPara_Global, 1, BatchedImgNum, loc_stream1_);
 
-		int FluoNum = LDROIExtractData_.GetRegionNum();
-		LDROIExtractData_.ResetRegionNum();
+		int FluoNum = LDROIExtractData_.GetAccumulatedROINum();
+		LDROIExtractData_.ResetROINum();
 
 
 		// localization
-		LDLocData_.BFGS_MLELocalization(LDROIExtractData_.h_RegionMem, LocPara_Global, FluoNum, loc_stream1_);
+		LDLocData_.BFGS_MLELocalization(LDROIExtractData_.h_ROIMem, LocPara_Global, FluoNum, loc_stream1_);
 
 		// get statistic information
 		FluoStatData_.GetStatisticalInf(LDLocData_.h_LocArry, LocPara_Global, LDLocData_.oValidFluoNum, loc_stream1_);

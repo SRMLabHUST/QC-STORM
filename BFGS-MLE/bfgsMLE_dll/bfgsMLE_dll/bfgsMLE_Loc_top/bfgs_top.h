@@ -30,8 +30,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 
-
-
 // both 2d and 3d localization data structure
 class LDLocData_TypeDef
 {
@@ -60,9 +58,6 @@ public:
 	// valid number after localization, still include filtered molecule number
 	int oValidFluoNum;
 
-	// double-helix 3d localization, just pair molecules after 2d localization
-
-	DH3DPairData_TypeDef DH3DPairData;
 	
 private:
 	// for loc filter

@@ -255,15 +255,17 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1FeedImageData
 
 	cudaError_t err = cudaErrorMemoryAllocation;
 
-	while (err != cudaSuccess)
+	for (int cnt = 0; cnt<5; cnt++)
 	{
-		// try allocate GPU memory
-		err = cudaMalloc((void **)&CurImgInf.pImgData, BatchedImgSize * sizeof(short));
+		// try allocate CPU memory
+		err = cudaMallocHost((void **)&CurImgInf.pImgData, BatchedImgSize * sizeof(short));
 
-		if (err != cudaSuccess)
+		if (err == cudaSuccess)
 		{
-//			printf("allocate error\n");
-
+			break;
+		}
+		else
+		{
 			Sleep(2);
 		}
 	}
@@ -272,7 +274,7 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1FeedImageData
 	if (err == cudaSuccess)
 	{
 		//	printf("cuda suc:%s\n", str);
-		CurImgInf.ImageSource = ImageSource_GPU;
+		CurImgInf.ImageSource = ImageSource_CPU_Pinned;
 
 		cudaMemcpy(CurImgInf.pImgData, elems, BatchedImgSize * sizeof(short), cudaMemcpyHostToDevice);
 	}
@@ -290,12 +292,13 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1FeedImageData
 		{
 			CurImgInf.ImageSource = ImageSource_ERR;
 			printf("allocate raw image mem error\n");
-
 		}
 	}
 
 	//
 	ImgDataQueue.push(CurImgInf);
+
+
 
 
 

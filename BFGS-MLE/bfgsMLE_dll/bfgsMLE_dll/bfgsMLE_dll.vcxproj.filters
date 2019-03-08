@@ -48,6 +48,9 @@
     <Filter Include="ZeroLocalizationsRemove">
       <UniqueIdentifier>{664c79de-e2cd-4377-beb5-888abee74902}</UniqueIdentifier>
     </Filter>
+    <Filter Include="WLEParaEstimation">
+      <UniqueIdentifier>{6b28a72e-c432-4db2-9a6b-48b7c88b0311}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -61,9 +64,6 @@
     </ClInclude>
     <ClInclude Include="ImgRender\ImageRender_3d.h">
       <Filter>ImageRender</Filter>
-    </ClInclude>
-    <ClInclude Include="SubregionExtraction\SubregionExtraction_ld.h">
-      <Filter>SubregionExtraction</Filter>
     </ClInclude>
     <ClInclude Include="ImgRender\ImageRender_2d.h">
       <Filter>ImageRender</Filter>
@@ -98,12 +98,6 @@
     <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_core.h">
       <Filter>bfgsMLE_Loc_LD</Filter>
     </ClInclude>
-    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_DH3D_core.h">
-      <Filter>bfgsMLE_Loc_LD</Filter>
-    </ClInclude>
-    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_DH3D_top.h">
-      <Filter>bfgsMLE_Loc_LD</Filter>
-    </ClInclude>
     <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_GS2D_core.h">
       <Filter>bfgsMLE_Loc_LD</Filter>
     </ClInclude>
@@ -117,9 +111,6 @@
       <Filter>bfgsMLE_Loc_top</Filter>
     </ClInclude>
     <ClInclude Include="bfgsMLE_Loc_top\bfgs_top.h">
-      <Filter>bfgsMLE_Loc_top</Filter>
-    </ClInclude>
-    <ClInclude Include="bfgsMLE_Loc_top\DH3D_MoleculePair.h">
       <Filter>bfgsMLE_Loc_top</Filter>
     </ClInclude>
     <ClInclude Include="bfgsMLE_Loc_top\ConsecutiveFit.h">
@@ -143,6 +134,18 @@
     <ClInclude Include="bfgsMLE_Loc_top\ZeroLocalizationsRemove.h">
       <Filter>ZeroLocalizationsRemove</Filter>
     </ClInclude>
+    <ClInclude Include="SubregionExtraction\LDROIExtraction.h">
+      <Filter>SubregionExtraction</Filter>
+    </ClInclude>
+    <ClInclude Include="WLEParaEstimation\SplineInterpolation.h">
+      <Filter>WLEParaEstimation</Filter>
+    </ClInclude>
+    <ClInclude Include="WLEParaEstimation\WLEParaEstimation.h">
+      <Filter>WLEParaEstimation</Filter>
+    </ClInclude>
+    <ClInclude Include="WLEParaEstimation\WLEParaEstimation_core.h">
+      <Filter>WLEParaEstimation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -151,6 +154,12 @@
     <ClCompile Include="BFGS for curve fitting\CurveFitting.cpp">
       <Filter>BFGS Curve fitting</Filter>
     </ClCompile>
+    <ClCompile Include="SubregionExtraction\LDROIExtraction.cpp">
+      <Filter>SubregionExtraction</Filter>
+    </ClCompile>
+    <ClCompile Include="WLEParaEstimation\WLEParaEstimation.cpp">
+      <Filter>WLEParaEstimation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="cudaWrapper\cudaWrapper.cu">
@@ -158,9 +167,6 @@
     </CudaCompile>
     <CudaCompile Include="ImgRender\ImageRender_3d.cu">
       <Filter>ImageRender</Filter>
-    </CudaCompile>
-    <CudaCompile Include="SubregionExtraction\SubregionExtraction_ld.cu">
-      <Filter>SubregionExtraction</Filter>
     </CudaCompile>
     <CudaCompile Include="ImgRender\ImageRender_2d.cu">
       <Filter>ImageRender</Filter>
@@ -173,9 +179,6 @@
     </CudaCompile>
     <CudaCompile Include="StatisticsInfo\statisticsInfo_top.cu">
       <Filter>StatisticsInfo</Filter>
-    </CudaCompile>
-    <CudaCompile Include="SubregionExtraction\SubregionExtraction_ld_top.cu">
-      <Filter>SubregionExtraction</Filter>
     </CudaCompile>
     <CudaCompile Include="ImgRender\ImageRerender_rc.cu">
       <Filter>ImageRender</Filter>
@@ -195,9 +198,6 @@
     <CudaCompile Include="bfgsMLE_Loc_LD\bfgsMLE_AS3D_top.cu">
       <Filter>bfgsMLE_Loc_LD</Filter>
     </CudaCompile>
-    <CudaCompile Include="bfgsMLE_Loc_LD\bfgsMLE_DH3D_top.cu">
-      <Filter>bfgsMLE_Loc_LD</Filter>
-    </CudaCompile>
     <CudaCompile Include="bfgsMLE_Loc_LD\bfgsMLE_GS2D_top.cu">
       <Filter>bfgsMLE_Loc_LD</Filter>
     </CudaCompile>
@@ -208,12 +208,6 @@
       <Filter>bfgsMLE_Loc_top</Filter>
     </CudaCompile>
     <CudaCompile Include="bfgsMLE_Loc_top\bfgs_top.cu">
-      <Filter>bfgsMLE_Loc_top</Filter>
-    </CudaCompile>
-    <CudaCompile Include="bfgsMLE_Loc_top\DH3D_MoleculePair.cu">
-      <Filter>bfgsMLE_Loc_top</Filter>
-    </CudaCompile>
-    <CudaCompile Include="bfgsMLE_Loc_top\DH3D_MoleculePair_top.cu">
       <Filter>bfgsMLE_Loc_top</Filter>
     </CudaCompile>
     <CudaCompile Include="bfgsMLE_Loc_top\ConsecutiveFit.cu">
@@ -242,6 +236,18 @@
     </CudaCompile>
     <CudaCompile Include="bfgsMLE_Loc_top\ZeroLocalizationsRemove.cu">
       <Filter>ZeroLocalizationsRemove</Filter>
+    </CudaCompile>
+    <CudaCompile Include="SubregionExtraction\LDROIExtraction_ImageFiltering.cu">
+      <Filter>SubregionExtraction</Filter>
+    </CudaCompile>
+    <CudaCompile Include="SubregionExtraction\LDROIExtraction_ROIExtraction.cu">
+      <Filter>SubregionExtraction</Filter>
+    </CudaCompile>
+    <CudaCompile Include="SubregionExtraction\LDROIExtraction_ROIMerge.cu">
+      <Filter>SubregionExtraction</Filter>
+    </CudaCompile>
+    <CudaCompile Include="WLEParaEstimation\WLEParaEstimation_core.cu">
+      <Filter>WLEParaEstimation</Filter>
     </CudaCompile>
   </ItemGroup>
 </Project>

@@ -75,7 +75,7 @@
     <LibraryPath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0\include;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_top;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_LD;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_HD;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\cudaWrapper;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ImgRender;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\SubregionExtraction;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ImageRender_3dStack;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\TinyTIFF;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\StatisticsInfo;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ShiftCorrection_SRImage;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\BFGS for curve fitting;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\FileReadWriteWrapper;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\Background noise filter;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0\include;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_top;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_LD;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_HD;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\cudaWrapper;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ImgRender;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\SubregionExtraction;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ImageRender_3dStack;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\TinyTIFF;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\StatisticsInfo;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ShiftCorrection_SRImage;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\BFGS for curve fitting;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\FileReadWriteWrapper;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\Background noise filter;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\WLEParaEstimation;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -159,8 +159,6 @@
     <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_AS3D_core.h" />
     <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_AS3D_top.h" />
     <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_core.h" />
-    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_DH3D_core.h" />
-    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_DH3D_top.h" />
     <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_GS2D_core.h" />
     <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_GS2D_top.h" />
     <ClInclude Include="bfgsMLE_Loc_LD\bfgs_base.h" />
@@ -169,7 +167,6 @@
     <ClInclude Include="bfgsMLE_Loc_top\bfgs_OntimeCalc.h" />
     <ClInclude Include="bfgsMLE_Loc_top\bfgs_top.h" />
     <ClInclude Include="bfgsMLE_Loc_top\ConsecutiveFit.h" />
-    <ClInclude Include="bfgsMLE_Loc_top\DH3D_MoleculePair.h" />
     <ClInclude Include="bfgsMLE_Loc_top\LocPrecCalc_GaussianCRLB.h" />
     <ClInclude Include="bfgsMLE_Loc_top\ZeroLocalizationsRemove.h" />
     <ClInclude Include="cudaWrapper\cudaWrapper.h" />
@@ -182,8 +179,11 @@
     <ClInclude Include="ShiftCorrection_SRImage\SRShiftCorrection.h" />
     <ClInclude Include="StatisticsInfo\statisticsInfo.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="SubregionExtraction\SubregionExtraction_ld.h" />
+    <ClInclude Include="SubregionExtraction\LDROIExtraction.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="WLEParaEstimation\SplineInterpolation.h" />
+    <ClInclude Include="WLEParaEstimation\WLEParaEstimation.h" />
+    <ClInclude Include="WLEParaEstimation\WLEParaEstimation_core.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BFGS for curve fitting\CurveFitting.cpp" />
@@ -193,12 +193,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SubregionExtraction\LDROIExtraction.cpp" />
+    <ClCompile Include="WLEParaEstimation\WLEParaEstimation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Background noise filter\BackgroundNoiseFilter.cu" />
     <CudaCompile Include="Background noise filter\BackgroundNoiseFilter_top.cu" />
     <CudaCompile Include="bfgsMLE_Loc_LD\bfgsMLE_AS3D_top.cu" />
-    <CudaCompile Include="bfgsMLE_Loc_LD\bfgsMLE_DH3D_top.cu" />
     <CudaCompile Include="bfgsMLE_Loc_LD\bfgsMLE_GS2D_top.cu" />
     <CudaCompile Include="bfgsMLE_Loc_LD\bfgs_base.cu" />
     <CudaCompile Include="bfgsMLE_Loc_top\bfgs_LocalizationFilter.cu" />
@@ -206,8 +207,6 @@
     <CudaCompile Include="bfgsMLE_Loc_top\bfgs_top.cu" />
     <CudaCompile Include="bfgsMLE_Loc_top\ConsecutiveFit.cu" />
     <CudaCompile Include="bfgsMLE_Loc_top\ConsecutiveFit_top.cu" />
-    <CudaCompile Include="bfgsMLE_Loc_top\DH3D_MoleculePair.cu" />
-    <CudaCompile Include="bfgsMLE_Loc_top\DH3D_MoleculePair_top.cu" />
     <CudaCompile Include="bfgsMLE_Loc_top\LocPrecCalc_GaussianCRLB.cu" />
     <CudaCompile Include="bfgsMLE_Loc_top\ZeroLocalizationsRemove.cu" />
     <CudaCompile Include="cudaWrapper\cudaWrapper.cu" />
@@ -223,8 +222,10 @@
     <CudaCompile Include="StatisticsInfo\statisticsInfo.cu" />
     <CudaCompile Include="StatisticsInfo\statisticsInfo_rc.cu" />
     <CudaCompile Include="StatisticsInfo\statisticsInfo_top.cu" />
-    <CudaCompile Include="SubregionExtraction\SubregionExtraction_ld.cu" />
-    <CudaCompile Include="SubregionExtraction\SubregionExtraction_ld_top.cu" />
+    <CudaCompile Include="SubregionExtraction\LDROIExtraction_ImageFiltering.cu" />
+    <CudaCompile Include="SubregionExtraction\LDROIExtraction_ROIExtraction.cu" />
+    <CudaCompile Include="SubregionExtraction\LDROIExtraction_ROIMerge.cu" />
+    <CudaCompile Include="WLEParaEstimation\WLEParaEstimation_core.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

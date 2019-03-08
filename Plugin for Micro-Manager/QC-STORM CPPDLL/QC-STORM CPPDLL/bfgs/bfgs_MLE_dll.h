@@ -45,6 +45,7 @@ using namespace std;
 #endif
 
 
+
 // basic parameters for localization for both 2d and 3d
 class LocalizationPara
 {
@@ -122,39 +123,23 @@ public:
 
 
 
-// double-helix 3d pair data define
-class DH3DPairData_TypeDef
+
+// estimage WLE para, contained in the ROI extraction
+class WLEParameterEstimation_TypeDef
 {
 public:
-	float * h_PairedLocArry;
-	float * d_PairedLocArry;
+	unsigned short * d_ROIMem;
 
-	float * h_PairedPosArry;
-	float * d_PairedPosArry;
-
-	int *h_ValidFluoNum;
-	int *d_ValidFluoNum;
-
-	int oValidFluoNum;
-
-	int *h_DistanceDistrib;
-	int *d_DistanceDistrib;
-
-
-	float MeanDistance;
-	float DistanceHistWidth;
-
+	float *h_WLEPara;
+	float *d_WLEPara;
 
 public:
-	void PairMolecules(float *d_LocArry, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
-	void Init();
+	void Init(LocalizationPara & LocPara);
 	void Deinit();
 
-
+	void WLEParameterEstimate(unsigned short * h_ROIMem, int ROISize, int FluoNum, cudaStream_t cstream);
 };
-
-
 
 
 
@@ -164,38 +149,82 @@ public:
 class LDROIExtractData_TypeDef
 {
 public:
+	// raw image
 	unsigned short *h_RawImg;
 	unsigned short *d_RawImg;
 
-	unsigned short *d_GaussImg;
-	unsigned short *d_AnnuImg;
-	unsigned short *d_StdImg;
+	// extracted molecular ROI data
+	unsigned short * h_ROIMem;
+	unsigned short * d_ROIMem;
 
-	// extracted molecular ROI
-	unsigned short * h_RegionMem;
-	unsigned short * d_RegionMem;
+	WLEParameterEstimation_TypeDef *WLEParameterEstimator;
+
+private:
+	// region number for batched frames
+	int *h_ROINumPerImage;
+	int *d_ROINumPerImage;
+
+	// region position array
+	int *d_ROIPosArray;
+
+	int TotalROINumber;
+
+private:
+	unsigned short *d_RawImg_Smoothed;
+	unsigned short *d_BackgroundImage;
+	unsigned short *d_LineFilterImage_t;
+	
+	// image threshold calculate
+	float *h_MeanDataX;
+	float *h_MeanDataX2;
+	float *d_MeanDataX;
+	float *d_MeanDataX2;
+
+	// threshold  = 10*sqrt(ImageVariance)
+	float ImageVariance;
+
+	// image filter
+	float *h_LineFilterH_Bkg;
+	float *d_LineFilterH_Bkg;
+
+	float *h_LineFilterH_Signal;
+	float *d_LineFilterH_Signal;
 
 
-	int *h_RegionNum; // region number array for batched frames
-//	int *h_RegionPosMem;
+	// consecutive fitting, to merge ROI by assign each consecutive ROI the average
+	int *d_ForwardLinkID;
+	int *d_BackwardLinkID;
+	int *d_ConsecutiveNum;
 
-	int h_TotalRegionCount;
-
-	int *d_RegionNum; // region number array for batched frames
-	int *d_RegionPosMem;
 
 public:
 	void Init(LocalizationPara & LocPara);
 	void Deinit();
 
-	// enable extract several images, the image memory must be continuously stored in the pImgData, will be very high efficient for small images, limited by MaxBatchedImageSize
-	void ExtractMolecules(unsigned short *pImgData, int ImageSource, LocalizationPara & LocPara, int StartFrame, int BatchFrameNum, cudaStream_t cstream);
+	// BatchedImageNum is better an even number
+	void ExtractMolecules(unsigned short *pImgData, int ImageSource, LocalizationPara & LocPara, int StartFrame_CurBatch, int BatchedImageNum, cudaStream_t cstream);
 
-	int GetRegionNum();
-	void ResetRegionNum();
+	int GetAccumulatedROINum();
+	void ResetROINum();
 
+
+	// alternative, used before MLE localization
+	void ROIMergeForConsecutiveFitting(int ROISize, int FluoNum, cudaStream_t cstream);
+
+
+public:
+	static int GetMaxBatchedNumForCurrentImageSize(int ImageWidth, int ImageHigh);
+
+private:
+
+	void FilterInit();
+
+	void ImageVarianceCalc(unsigned short *d_iRawImg, int ImageWidth, int ImageHigh, cudaStream_t cstream);
+
+	void ImageFiltering(int ImageWidth, int ImageHigh, int BatchedImageNum, cudaStream_t cstream);
+
+	void ROIExtraction(int ROISize, int ImageWidth, int ImageHigh, int BatchedImageNum, int StartFrame, cudaStream_t cstream);
 };
-
 
 
 
@@ -228,9 +257,6 @@ public:
 	// valid number after localization, still include filtered molecule number
 	int oValidFluoNum;
 
-	// double-helix 3d localization, just pair molecules after 2d localization
-
-	DH3DPairData_TypeDef DH3DPairData;
 	
 private:
 	// for loc filter
@@ -268,6 +294,9 @@ private:
 	void FilterBadFit(LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
 };
+
+
+
 
 
 
@@ -435,8 +464,6 @@ public:
 	static void GetMaxImgSizeFromLocArry(float *h_LocArry, float *d_LocArry, int *MaxImgWidth, int *MaxImgHigh, int FluoNum, cudaStream_t cstream);
 
 };
-
-
 
 
 

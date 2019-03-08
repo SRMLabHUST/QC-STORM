@@ -19,9 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 // subregion extraction
-#define Size32MB					(32 * 1024 * 1024)
 
-#define MaxBatchedImageSize			Size32MB
+#define MaxBatchedImageSize			(2048*2048*2*4)
 
 
 
@@ -105,6 +104,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define ImageSource_GPU					0
 #define ImageSource_CPU_Pinned			1
 #define ImageSource_CPU_Normal			2
+#define ImageSource_GPU_NoCopy			3
 #define ImageSource_ERR					1000
 
 

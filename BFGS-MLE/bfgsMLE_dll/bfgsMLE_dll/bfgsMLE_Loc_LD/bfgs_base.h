@@ -98,36 +98,3 @@ public:
 };
 
 
-
-// double-helix 3d pair data define
-class DH3DPairData_TypeDef
-{
-public:
-	float * h_PairedLocArry;
-	float * d_PairedLocArry;
-
-	float * h_PairedPosArry;
-	float * d_PairedPosArry;
-
-	int *h_ValidFluoNum;
-	int *d_ValidFluoNum;
-
-	int oValidFluoNum;
-
-	int *h_DistanceDistrib;
-	int *d_DistanceDistrib;
-
-
-	float MeanDistance;
-	float DistanceHistWidth;
-
-
-public:
-	void PairMolecules(float *d_LocArry, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
-
-	void Init();
-	void Deinit();
-
-
-};
-

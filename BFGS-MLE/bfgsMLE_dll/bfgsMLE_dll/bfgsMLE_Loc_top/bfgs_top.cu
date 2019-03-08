@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "bfgsMLE_AS3D_top.h"
 
-#include "bfgsMLE_DH3D_top.h"
 
 
 #include "bfgs_LocalizationFilter.h"
@@ -67,25 +66,10 @@ void LDLocData_TypeDef::BFGS_MLELocalization(unsigned short * h_SubRegion, Local
 	FilterBadFit(LocPara, FluoNum, cstream);
 
 
-	// double helix localziation or commom 2d as3d
-	if (LocPara.LocType == LocType_DH3D)
-	{
-		DH3DPairData.PairMolecules(d_LocArry, LocPara, oValidFluoNum, cstream);
+	// 2d and AS3d
+	cudaMemcpyAsync(h_LocArry, d_LocArry, oValidFluoNum*OutParaNumGS2D * sizeof(float), cudaMemcpyDeviceToHost, cstream);
+	cudaStreamSynchronize(cstream);
 
-		oValidFluoNum = DH3DPairData.oValidFluoNum;
-
-		// get paired localization results
-		cudaMemcpyAsync(h_LocArry, DH3DPairData.d_PairedLocArry, oValidFluoNum*OutParaNumGS2D*sizeof(float), cudaMemcpyDeviceToHost, cstream);
-		cudaStreamSynchronize(cstream);
-
-	}
-	else
-	{
-		// 2d and AS3d
-		cudaMemcpyAsync(h_LocArry, d_LocArry, oValidFluoNum*OutParaNumGS2D*sizeof(float), cudaMemcpyDeviceToHost, cstream);
-		cudaStreamSynchronize(cstream);
-
-	}
 
 	// then call filterbadfit and OntimeCalc
 
@@ -126,12 +110,6 @@ void LDLocData_TypeDef::Init(LocalizationPara & LocPara)
 
 	h_OntimeRatio = new float[MaxOnTimeConsecutiveNum];
 
-	// double-helix 3d localization, just pair molecules after 2d localization
-
-	if (LocPara.LocType == LocType_DH3D)
-	{
-		DH3DPairData.Init();
-	}
 
 	// for loc filter
 	err = cudaMallocHost((void **)&h_SNRSumUp, sizeof(float));
@@ -168,12 +146,6 @@ void LDLocData_TypeDef::Deinit( LocalizationPara & LocPara)
 
 	delete[](h_OntimeRatio);
 
-	// double-helix 3d localization, just pair molecules after 2d localization
-	if (LocPara.LocType == LocType_DH3D)
-	{
-		DH3DPairData.Deinit();
-
-	}
 
 	// for loc filter
 	cudaFreeHost(h_SNRSumUp);
