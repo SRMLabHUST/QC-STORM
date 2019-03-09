@@ -50,7 +50,7 @@ public:
 
 
 		// localization
-		LDLocData_.BFGS_MLELocalization(LDROIExtractData_.h_ROIMem, LocPara_Global, FluoNum, loc_stream1_);
+		LDLocData_.BFGS_MLELocalization(LDROIExtractData_.h_ROIMem, LDROIExtractData.Get_h_WLEPara(), LocPara_Global, FluoNum, loc_stream1_);
 
 		// get statistic information
 		FluoStatData_.GetStatisticalInf(LDLocData_.h_LocArry, LocPara_Global, LDLocData_.oValidFluoNum, loc_stream1_);

@@ -97,6 +97,9 @@ public:
 	int GetAccumulatedROINum();
 	void ResetROINum();
 
+	float * Get_h_WLEPara();
+	float * Get_d_WLEPara();
+
 
 	// alternative, used before MLE localization
 	void ROIMergeForConsecutiveFitting(int ROISize, int FluoNum, cudaStream_t cstream);

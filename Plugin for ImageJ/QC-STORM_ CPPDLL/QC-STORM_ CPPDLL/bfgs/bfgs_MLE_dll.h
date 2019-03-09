@@ -123,7 +123,6 @@ public:
 
 
 
-
 // estimage WLE para, contained in the ROI extraction
 class WLEParameterEstimation_TypeDef
 {
@@ -140,7 +139,6 @@ public:
 
 	void WLEParameterEstimate(unsigned short * h_ROIMem, int ROISize, int FluoNum, cudaStream_t cstream);
 };
-
 
 
 
@@ -207,6 +205,9 @@ public:
 	int GetAccumulatedROINum();
 	void ResetROINum();
 
+	float * Get_h_WLEPara();
+	float * Get_d_WLEPara();
+
 
 	// alternative, used before MLE localization
 	void ROIMergeForConsecutiveFitting(int ROISize, int FluoNum, cudaStream_t cstream);
@@ -229,15 +230,20 @@ private:
 
 
 
+
+
+
 // both 2d and 3d localization data structure
 class LDLocData_TypeDef
 {
 public:
 	unsigned short * h_SubRegion;
-	float * h_LocArry;
-
 	unsigned short * d_SubRegion;
+
+	float * h_LocArry;
 	float * d_LocArry;
+
+	float *d_WLEPara;
 
 
 	// Consecutive finding from adjecent frames
@@ -271,7 +277,7 @@ public:
 	void Init(LocalizationPara & LocPara); // create CPU&GPU memory
 	void Deinit(LocalizationPara & LocPara); // release CPU&GPU memory
 
-	void BFGS_MLELocalization(unsigned short * h_SubRegion, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
+	void BFGS_MLELocalization(unsigned short * h_SubRegion, float *h_WLEPara, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
 	
 	void OntimeCalc(LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
@@ -294,9 +300,6 @@ private:
 	void FilterBadFit(LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
 };
-
-
-
 
 
 

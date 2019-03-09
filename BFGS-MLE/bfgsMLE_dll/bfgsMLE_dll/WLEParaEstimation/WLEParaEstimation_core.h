@@ -16,6 +16,8 @@
 #define WLE_Para_SigmaD				4
 #define WLE_Para_FluoType			5
 
+
+
 #define MoleculeType_MLEFit			0
 #define MoleculeType_WLEFit			1
 #define MoleculeType_MultiFit		2
@@ -144,11 +146,11 @@ __global__ void gpu_CalculatePSFWidth(unsigned short * d_ROIMem, float *d_WLEPar
 		SigmaWidthCalc_TwoSides(&SigmaL, &SigmaR, yn_MeanX, InterpolatedDatalen, MaxPos_X);
 		SigmaWidthCalc_TwoSides(&SigmaU, &SigmaD, yn_MeanY, InterpolatedDatalen, MaxPos_Y);
 
-
-		pWLEPara[gid][WLE_Para_SigmaL] = SigmaL;
-		pWLEPara[gid][WLE_Para_SigmaR] = SigmaR;
-		pWLEPara[gid][WLE_Para_SigmaU] = SigmaU;
-		pWLEPara[gid][WLE_Para_SigmaD] = SigmaD;
+		// use small ROI size, thus PSF width is estimated smaller
+		pWLEPara[gid][WLE_Para_SigmaL] = SigmaL*1.25f;
+		pWLEPara[gid][WLE_Para_SigmaR] = SigmaR*1.25f;
+		pWLEPara[gid][WLE_Para_SigmaU] = SigmaU*1.25f;
+		pWLEPara[gid][WLE_Para_SigmaD] = SigmaD*1.25f;
 
 	}
 }

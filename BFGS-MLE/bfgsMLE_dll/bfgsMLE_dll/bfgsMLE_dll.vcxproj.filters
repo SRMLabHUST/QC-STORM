@@ -92,16 +92,10 @@
     <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_AS3D_core.h">
       <Filter>bfgsMLE_Loc_LD</Filter>
     </ClInclude>
-    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_AS3D_top.h">
-      <Filter>bfgsMLE_Loc_LD</Filter>
-    </ClInclude>
     <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_core.h">
       <Filter>bfgsMLE_Loc_LD</Filter>
     </ClInclude>
     <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_GS2D_core.h">
-      <Filter>bfgsMLE_Loc_LD</Filter>
-    </ClInclude>
-    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_GS2D_top.h">
       <Filter>bfgsMLE_Loc_LD</Filter>
     </ClInclude>
     <ClInclude Include="bfgsMLE_Loc_top\bfgs_LocalizationFilter.h">

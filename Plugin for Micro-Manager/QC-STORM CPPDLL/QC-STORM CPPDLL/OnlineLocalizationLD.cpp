@@ -205,10 +205,22 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			TotalFluoNum += FluoNum;
 
 
+
+			if (LocPara_Global.ConsecFitEn)
+			{
+				// merge roi of consecutive molecules, assign each consecutive by average but not remove,
+				// the consecutive molecules will be removed by ConsecutiveFitData.FitConsecutiveFluo
+				time1 = clock();
+				LDROIExtractData.ROIMergeForConsecutiveFitting(LocPara_Global.ROISize, FluoNum, loc_stream1);
+				ExtractTime += (clock() - time1);
+			}
+
+
+
 			time1 = clock();
 
 			// localization
-			LDLocData.BFGS_MLELocalization(LDROIExtractData.h_ROIMem, LocPara_Global, FluoNum, loc_stream1);
+			LDLocData.BFGS_MLELocalization(LDROIExtractData.h_ROIMem, LDROIExtractData.Get_h_WLEPara(), LocPara_Global, FluoNum, loc_stream1);
 
 			LocTime += (clock() - time1);
 			

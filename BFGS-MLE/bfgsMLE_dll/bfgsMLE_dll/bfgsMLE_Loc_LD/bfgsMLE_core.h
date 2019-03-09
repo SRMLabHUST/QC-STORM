@@ -35,6 +35,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define WLE_TEST				0
 
 
+// WLE_ParaArray for MLE fitting			
+#define WLE_ParaArrayLen		2
+
+#define WLE_Fit_SigmaX			0
+#define WLE_Fit_SigmaY			1
+
+
+
 #define Math_PI					3.14159265358979f
 
 // for 2d loc
@@ -66,25 +74,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define FitAS3D_SigX				3
 #define FitAS3D_SigY				4
 #define FitAS3D_Bakg				5
-
-
-// fitting parameters for double helix 3d
-#define FitParaNum_DH3D			7
-
-#define IterateNum_DH3D			11  // total iteration number, fixed iteration number
-#define IterateNum_bs_DH3D		11 // bisection iteration to find best walk length
-
-
-#define DHSystemPSF				2.0f
-#define DHParaSigma				(1.0f/(2.0f*DHSystemPSF*DHSystemPSF))
-
-#define FitDH3D_Peak				0
-#define FitDH3D_XPos				1
-#define FitDH3D_YPos				2
-#define FitDH3D_SigX				3
-#define FitDH3D_SigY				4
-#define FitDH3D_Bakg				5
-#define FitDH3D_Angl				6
 
 
 //
@@ -242,181 +231,3 @@ __device__ void MatMulVector(float D0[], float grad[][ThreadsPerBlock], float d0
 
 }
 
-/////////////////////////////////////////////////////////////////////
-// for weighted MLE
-
-#define PSFInt_Num				10
-#define PSFInt_Gap				(1.0f/PSFInt_Num)
-
-
-
-template <int RegionLen>
-__device__ void RemoveMeanDatBkg(float *MeanDat)
-{
-	float MinDat = MeanDat[0];
-
-#pragma unroll
-	for (int cnt = 0; cnt < RegionLen; cnt++)
-	{
-		MinDat = min(MinDat, MeanDat[cnt]);
-	}
-
-#pragma unroll
-	for (int cnt = 0; cnt < RegionLen; cnt++)
-	{
-		MeanDat[cnt] = MeanDat[cnt] - MinDat;
-	}
-}
-
-template <int RegionLen>
-__device__ float GetMeanDatCenterPos_Rough(float *MeanDat)
-{
-	float wsum = 0;
-	float sum = 0;
-
-	int ROICenter = RegionLen / 2;
-	int DatSelL = ROICenter - 2;
-	int DatSelR = ROICenter + 2;
-
-	DatSelL = max(DatSelL, 0);
-	DatSelR = min(DatSelR, RegionLen - 1);
-
-#pragma unroll
-	for (int cnt = DatSelL; cnt <= DatSelR; cnt++)
-	{
-		wsum += (cnt + 0.5f)*MeanDat[cnt];
-		sum += MeanDat[cnt];
-	}
-
-	sum = max(sum, 1.0f);
-
-	return wsum / sum;
-
-}
-
-template <int RegionLen>
-__device__ float GetMeanDatCenterPos(float *MeanDat)
-{
-	float wsum = 0;
-	float sum = 0;
-
-#pragma unroll
-	for (int cnt = 0; cnt < RegionLen; cnt++)
-	{
-		wsum += (cnt + 0.5f)*MeanDat[cnt];
-		sum += MeanDat[cnt];
-	}
-
-	sum = max(sum, 1.0f);
-
-	return wsum / sum;
-
-}
-
-template <int RegionLen>
-__device__ void PSFInterpolation(float *MeanDat, float *PSFIntData, int IntArrayLen)
-{
-
-	int y0 = 0;
-	int y1 = 0;
-	float d0 = 0;
-	float d1 = 0;
-	for (int cnt = 0; cnt < IntArrayLen; cnt++)
-	{
-		y0 = cnt / PSFInt_Num;
-		y1 = y0+1;
-		y1 = min(y1, RegionLen - 1);
-
-		d0 = (cnt % 10)*PSFInt_Gap;
-		d1 = 1.0f - d0;
-
-		PSFIntData[cnt] = MeanDat[y0] * d1 + MeanDat[y1] * d0;
-	}
-
-}
-
-
-
-template <int RegionLen>
-__device__ float GetPSFSigmaEstimation(float *MeanDat, float MaxPos)
-{
-	// for proper storage
-	enum {
-		IntArrayLen = (RegionLen - 1)*PSFInt_Num + 2,
-	};
-
-	float PSFIntData[IntArrayLen];
-
-	int IntArrayLen1 = IntArrayLen - 1;
-
-	PSFInterpolation<RegionLen>(MeanDat, PSFIntData, IntArrayLen1);
-
-	// MaxPos is center position by default
-
-	float SigmaL;
-	float SigmaR;
-
-	float WDat = 0;
-	float SDat = 0;
-
-	float CurPos = 0;
-	float CurSel = 0;
-
-	// left side
-	WDat = 0;
-	SDat = 0;
-
-
-	for (int cnt = 0; cnt < IntArrayLen1; cnt++)
-	{
-		CurPos = 0.5f + cnt*PSFInt_Gap;
-		CurSel = CurPos < (MaxPos - PSFInt_Gap);
-
-		WDat = WDat + PSFIntData[cnt] * (MaxPos - CurPos) * CurSel;
-		SDat = SDat + PSFIntData[cnt] * CurSel;
-	}
-	SDat = max(SDat, 1.0f);
-
-	SigmaL = 1.414f*WDat / SDat;
-
-	// right side
-	WDat = 0;
-	SDat = 0;
-	for (int cnt = 0; cnt < IntArrayLen1; cnt++)
-	{
-		CurPos = 0.5f + cnt*PSFInt_Gap;
-		CurSel = CurPos > (MaxPos + PSFInt_Gap);
-
-		WDat = WDat + PSFIntData[cnt] * (CurPos - MaxPos)* CurSel;
-		SDat = SDat + PSFIntData[cnt] * CurSel;
-	}
-	SDat = max(SDat, 1.0f);
-
-	SigmaR = 1.414f* WDat / SDat;
-
-	float SigmaDiff = abs(SigmaL - SigmaR) / min(SigmaL, SigmaR);
-
-
-//	printf("esti:%.4f %.4f %.4f %.4f\n", MaxPos, SigmaL, SigmaR, SigmaDiff/ min(SigmaL, SigmaR));
-
-	// get the minimul one to avoid signal contamination
-	SigmaL = min(SigmaL, SigmaR);
-
-
-#define PSFWidth_Torlation		0.20f
-
-	float Ratio = SigmaDiff - PSFWidth_Torlation;
-	Ratio = max(Ratio, 0.0f);
-
-	// not that necessary to apply WLE
-	if (SigmaDiff > PSFWidth_Torlation)
-	{
-		SigmaL = SigmaL / (1.414f + Ratio / 2.0f); // 
-	}
-
-	//
-	if (SigmaL <= 0)SigmaL = RegionLen / 2.0f / 2.355f;
-	if (SigmaL <= 1.0f)SigmaL = 1.0f;
-
-	return SigmaL;
-}

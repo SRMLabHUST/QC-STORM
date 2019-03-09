@@ -16,31 +16,32 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #pragma once
 
 #include "bfgsMLE_core.h"
+#include "WLEParaEstimation_core.h"
 
 
-template <int RegionLen, int SharedImageWidth1, int FitParaNum, int IterateNum, int IterateNum_bs>
-__device__ void MLELocalization_GS2D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float d0[][ThreadsPerBlock], float D0[], float SigmaX_Est, int tid);
+template <int ROISize, int SharedImageWidth1, int FitParaNum, int IterateNum, int IterateNum_bs>
+__device__ void MLELocalization_GS2D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float d0[][ThreadsPerBlock], float D0[], float* WLE_ParaArray, int tid);
 
 
-template <int RegionLen, int SharedImageWidth1, int FitParaNum>
-__device__ void poissonfGradient_GS2D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float SigmaX_Est, int tid);
+template <int ROISize, int SharedImageWidth1, int FitParaNum>
+__device__ void poissonfGradient_GS2D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float* WLE_ParaArray, int tid);
 
 
-template <int RegionLen, int SharedImageWidth1, int FitParaNum>
-__device__ float MLEFit_TargetF_GS2D(float subimg[][SharedImageWidth1], float Ininf[], float SigmaX_Est, int tid);
+template <int ROISize, int SharedImageWidth1, int FitParaNum>
+__device__ float MLEFit_TargetF_GS2D(float subimg[][SharedImageWidth1], float Ininf[], float* WLE_ParaArray, int tid);
 
 
-template <int RegionLen, int SharedImageWidth1, int FitParaNum>
-__device__ void PreEstimation_GS2D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float *SigmaX_Est, int tid);
+template <int ROISize, int SharedImageWidth1, int FitParaNum>
+__device__ void PreEstimation_GS2D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float WLE_SigmaX, int tid);
 
 
 // algorithm core codes
-template <int RegionLen, int FitParaNum>
-__global__ void bfgsMLELoc_Gauss2D(unsigned short *d_SubRegion, float *d_LocArry, float Offset, float kadc, float QE, int FluoNum)
+template <int ROISize, int FitParaNum>
+__global__ void bfgsMLELoc_Gauss2D(float *d_LocArry, unsigned short *d_SubRegion, float *d_WLEPara, float Offset, float kadc, float QE, int FluoNum)
 {
 	enum {
-		ROIDataLen = (RegionLen*RegionLen),
-		ROIWholeLen = (RegionLen*(RegionLen + 1)),
+		ROIDataLen = (ROISize*ROISize),
+		ROIWholeLen = (ROISize*(ROISize + 1)),
 
 		LoadNum = (ROIDataLen / ThreadsPerBlock),
 		LoadResidual = (ROIDataLen%ThreadsPerBlock),
@@ -48,16 +49,14 @@ __global__ void bfgsMLELoc_Gauss2D(unsigned short *d_SubRegion, float *d_LocArry
 		// avoid bank conflict, if no conflict, +1 can be avoid
 		SharedImageWidth1 = (ROIWholeLen + 1),
 
-		HalfRegionLen = (int)(RegionLen / 2),
+		HalfRegionLen = (int)(ROISize / 2),
 	};
 
-// better
-// #define XYPosVaryBound		1.0f
-// test WLE
+
 #define XYPosVaryBound		1.5f
 
-	float XYLBound = RegionLen / 2.0f - XYPosVaryBound; // 1.0f
-	float XYUBound = RegionLen / 2.0f + XYPosVaryBound;
+	float XYLBound = ROISize / 2.0f - XYPosVaryBound; // 1.0f
+	float XYUBound = ROISize / 2.0f + XYPosVaryBound;
 
 
 	//
@@ -87,6 +86,12 @@ __global__ void bfgsMLELoc_Gauss2D(unsigned short *d_SubRegion, float *d_LocArry
 
 	float(*pD0)[FitParaNum] = (float(*)[FitParaNum])&D0[tid][0];
 
+	// WLE parameter array
+	float(*pWLEPara)[WLE_ParaNumber] = (float(*)[WLE_ParaNumber])d_WLEPara;
+
+	float WLE_ParaArray[WLE_ParaArrayLen];
+
+
 
 	// load image region from global memory, to achieve Aligned and Coalesced Access
 	int loadcnt = 0;
@@ -110,7 +115,7 @@ __global__ void bfgsMLELoc_Gauss2D(unsigned short *d_SubRegion, float *d_LocArry
 			ImageRegion[cnt][LoadNum*ThreadsPerBlock + tid] = fmaxf((d_SubRegion[gMemPos + LoadNum*ThreadsPerBlock + tid] - Offset)*kadc, 1.0f);
 		}
 	}
-	if (tid < RegionLen)
+	if (tid < ROISize)
 	{
 #pragma unroll
 		for (cnt = 0; cnt < ThreadsPerBlock; cnt++)
@@ -138,89 +143,131 @@ __global__ void bfgsMLELoc_Gauss2D(unsigned short *d_SubRegion, float *d_LocArry
 	__syncthreads();
 
 
-	// estimated PSF width for mask of WLE, weighted MLE
-	float SigmaX_Est;
-	
-	PreEstimation_GS2D<RegionLen, SharedImageWidth1, FitParaNum>(ImageRegion, Ininf, &SigmaX_Est, tid);
+	if (gid < FluoNum)
+	{
 
-	poissonfGradient_GS2D<RegionLen, SharedImageWidth1, FitParaNum>(ImageRegion, Ininf, grad, SigmaX_Est, tid);
+		// estimated PSF width for mask of WLE, weighted MLE
+		int MoleculeType = 0;
+
+		float WLE_SigmaX = 0;
+
+
+#if(WLE_ENABLE == 1)
+		float SigmaL = pWLEPara[gid][WLE_Para_SigmaL];
+		float SigmaR = pWLEPara[gid][WLE_Para_SigmaR];
+		float SigmaU = pWLEPara[gid][WLE_Para_SigmaU];
+		float SigmaD = pWLEPara[gid][WLE_Para_SigmaD];
+
+		MoleculeType = pWLEPara[gid][WLE_Para_FluoType];
+
+
+		SigmaL = min(SigmaL, SigmaR);
+		SigmaU = min(SigmaU, SigmaD);
+
+		WLE_SigmaX = min(SigmaL, SigmaU);
+
+		
+#endif // WLE_ENABLE
+
+
+		// pre-estimation
+		PreEstimation_GS2D<ROISize, SharedImageWidth1, FitParaNum>(ImageRegion, Ininf, WLE_SigmaX, tid);
+
+
+		if (MoleculeType == MoleculeType_MLEFit)
+		{
+			WLE_SigmaX = WLE_SigmaX*1.2f;
+
+			WLE_SigmaX = max(WLE_SigmaX, WLE_SigmaX / 2.0f / 2.35f);
+		}
+		else
+		{
+			WLE_SigmaX = WLE_SigmaX /1.2f;
+		}
+
+		WLE_ParaArray[WLE_Fit_SigmaX] = WLE_SigmaX;
+		WLE_ParaArray[WLE_Fit_SigmaY] = WLE_SigmaX; // not necessary for 2d
+
+
+		poissonfGradient_GS2D<ROISize, SharedImageWidth1, FitParaNum>(ImageRegion, Ininf, grad, WLE_ParaArray, tid);
 
 #pragma unroll
-	for (rcnt = 0; rcnt < FitParaNum; rcnt++)
-	{
-		d0[rcnt][tid] = -grad[rcnt][tid];
-	}
+		for (rcnt = 0; rcnt < FitParaNum; rcnt++)
+		{
+			d0[rcnt][tid] = -grad[rcnt][tid];
+		}
 
 
-	MLELocalization_GS2D<RegionLen, SharedImageWidth1, FitParaNum_2D, IterateNum_2D, IterateNum_bs_2D>(ImageRegion, Ininf, grad, d0, &D0[tid][0], SigmaX_Est, tid);
+		MLELocalization_GS2D<ROISize, SharedImageWidth1, FitParaNum_2D, IterateNum_2D, IterateNum_bs_2D>(ImageRegion, Ininf, grad, d0, &D0[tid][0], WLE_ParaArray, tid);
+
+		// remove scaling factor
+		float PeakPhoton = Ininf[Fit2D_Peak][tid] * AScalFactor; // PeakPhoton
+		float Background = Ininf[Fit2D_Bakg][tid] * BScalFactor; // bkg
+
+		float FittedXPos = Ininf[Fit2D_XPos][tid];
+		float FittedYPos = Ininf[Fit2D_YPos][tid];
+
+		float SimgaX = Ininf[Fit2D_Sigm][tid] * SScalFactor;
+
+		SimgaX = sqrtf(0.5f / SimgaX); // pixel
+
+									   // remove nan
+		FittedXPos = isnan(FittedXPos) ? -1 : FittedXPos;
+		FittedYPos = isnan(FittedYPos) ? -1 : FittedYPos;
+		SimgaX = isnan(SimgaX) ? -1 : SimgaX;
+
+		float CurSNR = PeakPhoton / sqrtf(PeakPhoton + Background); // e-
+
+																	// convert e- to photon
+		PeakPhoton = PeakPhoton / QE;
+		Background = Background / QE;
+
+		float TotalPhoton = PeakPhoton * 2 * 3.141593f*SimgaX*SimgaX;
 
 
-	float PeakPhoton = Ininf[Fit2D_Peak][tid] * AScalFactor; // PeakPhoton
-	float Background = Ininf[Fit2D_Bakg][tid] * BScalFactor; // bkg
+		float XPos = FittedXPos - HalfRegionLen + ImageRegion[tid][ROIDataLen + 0]; // X
+		float YPos = FittedYPos - HalfRegionLen + ImageRegion[tid][ROIDataLen + 1]; // Y
 
-	float FittedXPos = Ininf[Fit2D_XPos][tid];
-	float FittedYPos = Ininf[Fit2D_YPos][tid];
+		int CurFrame = ImageRegion[tid][ROIDataLen + 3] * 65536 + ImageRegion[tid][ROIDataLen + 2];
 
-	float SimgaX = Ininf[Fit2D_Sigm][tid] * SScalFactor;
-
-	SimgaX = sqrtf(0.5f / SimgaX); // pixel
-
-	// remove nan
-	FittedXPos = isnan(FittedXPos) ? -1 : FittedXPos;
-	FittedYPos = isnan(FittedYPos) ? -1 : FittedYPos;
-	SimgaX = isnan(SimgaX) ? -1 : SimgaX;
-
-	float CurSNR = PeakPhoton / sqrtf(PeakPhoton + Background); // e-
-
-	// convert e- to photon
-	PeakPhoton = PeakPhoton / QE;
-	Background = Background / QE;
-
-	float TotalPhoton = PeakPhoton * 2 * 3.141593f*SimgaX*SimgaX;
-
-
-	float XPos = FittedXPos - HalfRegionLen + ImageRegion[tid][ROIDataLen + 0]; // X
-	float YPos = FittedYPos - HalfRegionLen + ImageRegion[tid][ROIDataLen + 1]; // Y
-
-	int CurFrame = ImageRegion[tid][ROIDataLen + 3] * 65536 + ImageRegion[tid][ROIDataLen + 2];
-
-	//	printf("dat:%.2f %.2f %.2f %.2f %.2f %d\n", PeakPhoton, XPos, YPos, SimgaX, Background, CurFrame);
+		//	printf("dat:%.2f %.2f %.2f %.2f %.2f %d\n", PeakPhoton, XPos, YPos, SimgaX, Background, CurFrame);
 
 #if(WLE_TEST)
-	if (1) //
+		if (1) //
 #else
-	if ((FittedXPos > XYLBound) && (FittedXPos < XYUBound) && (FittedYPos > XYLBound) && (FittedYPos < XYUBound)) //
+		if ((MoleculeType <= 1) && (FittedXPos > XYLBound) && (FittedXPos < XYUBound) && (FittedYPos > XYLBound) && (FittedYPos < XYUBound)) //
 #endif //WLE_TEST
-	{
-		
-		pLocArry[gid][Pos_PPho] = PeakPhoton; // peak photon
-		pLocArry[gid][Pos_XPos] = XPos; // may have 0.5 or 1 pixel offset compared with other software
-		pLocArry[gid][Pos_YPos] = YPos; // may have 0.5 or 1 pixel offset compared with other software
-		pLocArry[gid][Pos_ZPos] = 0.0f; // 
-		pLocArry[gid][Pos_SigX] = SimgaX; // sigma x
-		pLocArry[gid][Pos_SigY] = SimgaX; // sigma y
-		pLocArry[gid][Pos_TPho] = TotalPhoton;   // total photon
-		pLocArry[gid][Pos_Bakg] = Background; // background
-		pLocArry[gid][Pos_PSNR] = CurSNR;        // peal snr
-		pLocArry[gid][Pos_Frme] = CurFrame; // frame
-
-	}
-	else
-	{
-
-		// invalid point
-#pragma unroll
-		for (rcnt = 0; rcnt < OutParaNumGS2D; rcnt++)
 		{
-			pLocArry[gid][rcnt] = 0;
 
+			pLocArry[gid][Pos_PPho] = PeakPhoton; // peak photon
+			pLocArry[gid][Pos_XPos] = XPos; // may have 0.5 or 1 pixel offset compared with other software
+			pLocArry[gid][Pos_YPos] = YPos; // may have 0.5 or 1 pixel offset compared with other software
+			pLocArry[gid][Pos_ZPos] = 0.0f; // 
+			pLocArry[gid][Pos_SigX] = SimgaX; // sigma x
+			pLocArry[gid][Pos_SigY] = SimgaX; // sigma y
+			pLocArry[gid][Pos_TPho] = TotalPhoton;   // total photon
+			pLocArry[gid][Pos_Bakg] = Background; // background
+			pLocArry[gid][Pos_PSNR] = CurSNR;        // peal snr
+			pLocArry[gid][Pos_Frme] = CurFrame; // frame
+
+		}
+		else
+		{
+
+			// invalid point
+#pragma unroll
+			for (rcnt = 0; rcnt < OutParaNumGS2D; rcnt++)
+			{
+				pLocArry[gid][rcnt] = 0;
+
+			}
 		}
 	}
 }
 
 
-template <int RegionLen, int SharedImageWidth1, int FitParaNum, int IterateNum, int IterateNum_bs>
-__device__ void MLELocalization_GS2D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float d0[][ThreadsPerBlock], float D0[], float SigmaX_Est, int tid)
+template <int ROISize, int SharedImageWidth1, int FitParaNum, int IterateNum, int IterateNum_bs>
+__device__ void MLELocalization_GS2D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float d0[][ThreadsPerBlock], float D0[], float* WLE_ParaArray, int tid)
 {
 	// adjust d0
 	float td0[FitParaNum];
@@ -276,8 +323,8 @@ __device__ void MLELocalization_GS2D(float subimg[][SharedImageWidth1], float In
 		VectorAddMul1<FitParaNum>(&xd[0], Ininf, d0, 0.0001f, tid);
 		VectorAddMul1<FitParaNum>(&xd[FitParaNum], Ininf, d0, 1.0f, tid);
 
-		ddat[0] = MLEFit_TargetF_GS2D<RegionLen, SharedImageWidth1, FitParaNum>(subimg, &xd[0], SigmaX_Est, tid);
-		ddat[1] = MLEFit_TargetF_GS2D<RegionLen, SharedImageWidth1, FitParaNum>(subimg, &xd[FitParaNum], SigmaX_Est, tid);
+		ddat[0] = MLEFit_TargetF_GS2D<ROISize, SharedImageWidth1, FitParaNum>(subimg, &xd[0], WLE_ParaArray, tid);
+		ddat[1] = MLEFit_TargetF_GS2D<ROISize, SharedImageWidth1, FitParaNum>(subimg, &xd[FitParaNum], WLE_ParaArray, tid);
 		// 
 		for (cnt = 0; cnt < IterateNum_bs; cnt++)
 		{
@@ -290,7 +337,7 @@ __device__ void MLELocalization_GS2D(float subimg[][SharedImageWidth1], float In
 			if (cnt < IterateNum_bs - 1)
 			{
 				VectorAddMul1<FitParaNum>(&xd[xdsel*FitParaNum], Ininf, d0, dpos[xdsel], tid);// xd=ininf+d0*scale
-				ddat[xdsel] = MLEFit_TargetF_GS2D<RegionLen, SharedImageWidth1, FitParaNum>(subimg, &xd[xdsel*FitParaNum], SigmaX_Est, tid);
+				ddat[xdsel] = MLEFit_TargetF_GS2D<ROISize, SharedImageWidth1, FitParaNum>(subimg, &xd[xdsel*FitParaNum], WLE_ParaArray, tid);
 			}
 
 		}
@@ -318,7 +365,7 @@ __device__ void MLELocalization_GS2D(float subimg[][SharedImageWidth1], float In
 				tgrad[rcnt] = grad[rcnt][tid];
 			}
 
-			poissonfGradient_GS2D<RegionLen, SharedImageWidth1, FitParaNum>(subimg, Ininf, grad, SigmaX_Est, tid);
+			poissonfGradient_GS2D<ROISize, SharedImageWidth1, FitParaNum>(subimg, Ininf, grad, WLE_ParaArray, tid);
 
 #pragma unroll
 			for (rcnt = 0; rcnt < FitParaNum; rcnt++)
@@ -333,8 +380,8 @@ __device__ void MLELocalization_GS2D(float subimg[][SharedImageWidth1], float In
 }
 
 
-template <int RegionLen, int SharedImageWidth1, int FitParaNum>
-__device__ void poissonfGradient_GS2D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float SigmaX_Est, int tid)
+template <int ROISize, int SharedImageWidth1, int FitParaNum>
+__device__ void poissonfGradient_GS2D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float* WLE_ParaArray, int tid)
 {
 	float tIninf[FitParaNum];
 	float tgradn;
@@ -350,10 +397,10 @@ __device__ void poissonfGradient_GS2D(float subimg[][SharedImageWidth1], float I
 	for (cnt = 0; cnt<FitParaNum; cnt++)
 	{
 		tIninf[cnt] = tIninf[cnt] - 0.002f;
-		tgradn = MLEFit_TargetF_GS2D<RegionLen, SharedImageWidth1, FitParaNum>(subimg, tIninf, SigmaX_Est, tid);
+		tgradn = MLEFit_TargetF_GS2D<ROISize, SharedImageWidth1, FitParaNum>(subimg, tIninf, WLE_ParaArray, tid);
 
 		tIninf[cnt] = tIninf[cnt] + 0.004f;
-		tgradp = MLEFit_TargetF_GS2D<RegionLen, SharedImageWidth1, FitParaNum>(subimg, tIninf, SigmaX_Est, tid);
+		tgradp = MLEFit_TargetF_GS2D<ROISize, SharedImageWidth1, FitParaNum>(subimg, tIninf, WLE_ParaArray, tid);
 
 		grad[cnt][tid] = (tgradp - tgradn)*250.0f; // /0.004f;
 		tIninf[cnt] = tIninf[cnt] - 0.002f;
@@ -362,119 +409,9 @@ __device__ void poissonfGradient_GS2D(float subimg[][SharedImageWidth1], float I
 
 
 
-template <int RegionLen, int SharedImageWidth1, int FitParaNum>
-__device__ void PreEstimation_GS2D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float *SigmaX_Est, int tid)
-{
-	float(*pSubImg)[RegionLen] = (float(*)[RegionLen])&subimg[tid][0];
 
-	int CenterPos = (int)(RegionLen / 2);
-
-	// get bkg
-	float Bkg = 0;
-	float Mean1 = 0;
-	float Mean2 = 0;
-	float Mean3 = 0;
-	float Mean4 = 0;
-
-#pragma unroll
-	for (int cnt = 0; cnt < RegionLen; cnt++)
-	{
-		Mean1 += pSubImg[cnt][0];
-		Mean2 += pSubImg[cnt][RegionLen - 1];
-		Mean3 += pSubImg[0][cnt];
-		Mean4 += pSubImg[RegionLen - 1][cnt];
-	}
-	Mean1 = min(Mean1, Mean2);
-	Mean3 = min(Mean3, Mean4);
-
-	Bkg = (Mean1 + Mean3) / 2 / RegionLen;
-
-	float Amp = pSubImg[CenterPos][CenterPos] - Bkg;
-
-
-#if(WLE_ENABLE == 1)
-
-	// get mean col and row
-	float MeanX[RegionLen];
-	float MeanY[RegionLen];
-
-#pragma unroll
-	for (int cnt = 0; cnt < RegionLen; cnt++)
-	{
-		MeanX[cnt] = 0;
-		MeanY[cnt] = 0;
-	}
-
-	// average 
-#pragma unroll
-	for (int row = 1; row < RegionLen-1; row++)
-	{
-#pragma unroll
-		for (int col = 0; col < RegionLen; col++)
-		{
-			MeanX[col] = MeanX[col] + pSubImg[row][col];
-		}
-	}
-#pragma unroll
-	for (int row = 0; row < RegionLen; row++)
-	{
-#pragma unroll
-		for (int col = 1; col < RegionLen-1; col++)
-		{
-			MeanY[row] = MeanY[row] + pSubImg[row][col];
-		}
-	}
-
-
-#pragma unroll
-	for (int cnt = 0; cnt < RegionLen; cnt++)
-	{
-		MeanX[cnt] = MeanX[cnt] / (RegionLen - 2);
-		MeanY[cnt] = MeanY[cnt] / (RegionLen - 2);
-	}
-
-	// remove background for precise estimation
-	RemoveMeanDatBkg<RegionLen>(MeanX);
-	RemoveMeanDatBkg<RegionLen>(MeanY);
-
-	// estimate center posotion
-	float XPos_rough = GetMeanDatCenterPos_Rough<RegionLen>(MeanX);
-	float YPos_rough = GetMeanDatCenterPos_Rough<RegionLen>(MeanY);
-
-	// estimate sigma width
-	float SigmaX = GetPSFSigmaEstimation<RegionLen>(MeanX, XPos_rough);
-	float SigmaY = GetPSFSigmaEstimation<RegionLen>(MeanY, YPos_rough);
-
-
-	SigmaX = min(SigmaX, SigmaY);
-
-#else
-
-	float SigmaX = RegionLen / 2.0f / 2.35f;
-
-#endif // WLE_ENABLE
-
-
-	*SigmaX_Est = SigmaX;
-
-
-	//
-	float ParaSigma1 = (1.0f / (2.0f*SigmaX*SigmaX));
-
-	// scaling
-	Ininf[Fit2D_Peak][tid] = Amp*rAScalFactor; // /256.0f;	// Amplitude
-
-	Ininf[Fit2D_XPos][tid] = (float)CenterPos + 0.5f; // sumDatx / sumdat - 0.5f;	// x
-	Ininf[Fit2D_YPos][tid] = (float)CenterPos + 0.5f; // sumDaty / sumdat - 0.5f;	// y
-	Ininf[Fit2D_Sigm][tid] = ParaSigma1 * rSScalFactor;	// sigma
-
-	Ininf[Fit2D_Bakg][tid] = Bkg*rBScalFactor; // /128.0f;	// bg
-
-}
-
-
-template <int RegionLen, int SharedImageWidth1, int FitParaNum>
-__device__ float MLEFit_TargetF_GS2D(float subimg[][SharedImageWidth1], float Ininf[], float SigmaX_Est, int tid)
+template <int ROISize, int SharedImageWidth1, int FitParaNum>
+__device__ float MLEFit_TargetF_GS2D(float subimg[][SharedImageWidth1], float Ininf[], float* WLE_ParaArray, int tid)
 {
 	int row, col;
 
@@ -484,15 +421,18 @@ __device__ float MLEFit_TargetF_GS2D(float subimg[][SharedImageWidth1], float In
 	float pixval;
 	float tdat;
 
-	float(*pSubImg)[RegionLen] = (float(*)[RegionLen])&subimg[tid][0];
+	float(*pSubImg)[ROISize] = (float(*)[ROISize])&subimg[tid][0];
 
 	// weighted MLE
 	float WLE_Weight = 0;
-	float WLE_Sigma1 = 1.0f / (2.0f * SigmaX_Est * SigmaX_Est);
 
-	float ROICenter = RegionLen / 2.0f;
+	float WLE_SigmaX1 = WLE_ParaArray[WLE_Fit_SigmaX];
 
-	
+	WLE_SigmaX1 = 1.0f / (2.0f * WLE_SigmaX1 * WLE_SigmaX1);
+
+	float ROICenter = ROISize / 2.0f; // use pre-estimated center pos don't help improve the localization precision
+
+
 
 #pragma unroll
 	for (row = 0; row < FitParaNum; row++)
@@ -508,12 +448,12 @@ __device__ float MLEFit_TargetF_GS2D(float subimg[][SharedImageWidth1], float In
 #define Bakg_Scale   Ininf[4] * BScalFactor
 
 
-	for (row = 0; row<RegionLen; row++)
+	for (row = 0; row<ROISize; row++)
 	{
-		for (col = 0; col<RegionLen; col++)
+		for (col = 0; col<ROISize; col++)
 		{
 			// pf goal function
-			pixval = pSubImg[row][col]; //subimg[tid][row*RegionLen + col]; // coloffset+
+			pixval = pSubImg[row][col]; //subimg[tid][row*ROISize + col]; // coloffset+
 
 			rowpos = row + 0.5f; // pixel center position
 			colpos = col + 0.5f;
@@ -528,7 +468,7 @@ __device__ float MLEFit_TargetF_GS2D(float subimg[][SharedImageWidth1], float In
 
 #if(WLE_ENABLE == 1)
 			// weighted MLE, improve localization precision
-			WLE_Weight = __expf(-((colpos - ROICenter)*(colpos - ROICenter) + (rowpos - ROICenter)*(rowpos - ROICenter))*WLE_Sigma1);
+			WLE_Weight = __expf(-((colpos - ROICenter)*(colpos - ROICenter) + (rowpos - ROICenter)*(rowpos - ROICenter))*WLE_SigmaX1);
 
 			TotalLoss = TotalLoss + WLE_Weight*tdat;
 #else
@@ -542,3 +482,59 @@ __device__ float MLEFit_TargetF_GS2D(float subimg[][SharedImageWidth1], float In
 	return TotalLoss;
 }
 
+
+template <int ROISize, int SharedImageWidth1, int FitParaNum>
+__device__ void PreEstimation_GS2D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float WLE_SigmaX, int tid)
+{
+	float(*pSubImg)[ROISize] = (float(*)[ROISize])&subimg[tid][0];
+
+	int CenterPos = (int)(ROISize / 2);
+
+	// get bkg
+	float Bkg = 0;
+	float Mean1 = 0;
+	float Mean2 = 0;
+	float Mean3 = 0;
+	float Mean4 = 0;
+
+#pragma unroll
+	for (int cnt = 0; cnt < ROISize; cnt++)
+	{
+		Mean1 += pSubImg[cnt][0];
+		Mean2 += pSubImg[cnt][ROISize - 1];
+		Mean3 += pSubImg[0][cnt];
+		Mean4 += pSubImg[ROISize - 1][cnt];
+	}
+	Mean1 = min(Mean1, Mean2);
+	Mean3 = min(Mean3, Mean4);
+
+	Bkg = (Mean1 + Mean3) / 2 / ROISize;
+
+	float Amp = pSubImg[CenterPos][CenterPos] - Bkg;
+
+
+	// estimate sigma width
+
+#if(WLE_ENABLE == 1)
+
+	float SigmaX = WLE_SigmaX;
+
+#else
+	float SigmaX = ROISize / 2.0f / 2.35f;
+
+#endif //WLE_ENABLE
+
+
+	//
+	float ParaSigma1 = (1.0f / (2.0f*SigmaX*SigmaX));
+
+	// scaling
+	Ininf[Fit2D_Peak][tid] = Amp*rAScalFactor; // /256.0f;	// Amplitude
+
+	Ininf[Fit2D_XPos][tid] = (float)CenterPos + 0.5f; // sumDatx / sumdat - 0.5f;	// x
+	Ininf[Fit2D_YPos][tid] = (float)CenterPos + 0.5f; // sumDaty / sumdat - 0.5f;	// y
+	Ininf[Fit2D_Sigm][tid] = ParaSigma1 * rSScalFactor;	// sigma
+
+	Ininf[Fit2D_Bakg][tid] = Bkg*rBScalFactor; // /128.0f;	// bg
+
+}

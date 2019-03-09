@@ -13,12 +13,22 @@ You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "bfgsMLE_AS3D_top.h"
+
+#include "cuda_runtime.h"
+#include "device_launch_parameters.h"
+
+#include <stdio.h>
 
 
 
+#include "bfgsMLE_AS3D_core.h"
 
-void LDLoc_BFGS_MLELocalizationAS3D(unsigned short * d_SubRegion, float * d_LocArry, LocalizationPara& LocPara, int FluoNum, cudaStream_t cstream)
+
+#include "bfgs_top.h"
+
+
+
+void LDLoc_BFGS_MLELocalizationAS3D( float * d_LocArry, unsigned short * d_SubRegion, float *d_WLEPara, LocalizationPara& LocPara, int FluoNum, cudaStream_t cstream)
 {
 	cudaError_t err;
 	// MaxFluoNum must be the integer multiples of 32
@@ -34,25 +44,25 @@ void LDLoc_BFGS_MLELocalizationAS3D(unsigned short * d_SubRegion, float * d_LocA
 	{
 
 	case 5:
-		bfgsMLELoc_AS3D<5, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_SubRegion, d_LocArry, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
+		bfgsMLELoc_AS3D<5, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
 		break;
 	case 7:
-		bfgsMLELoc_AS3D<7, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_SubRegion, d_LocArry, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
+		bfgsMLELoc_AS3D<7, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
 		break;
 	case 9:
-		bfgsMLELoc_AS3D<8, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_SubRegion, d_LocArry, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
+		bfgsMLELoc_AS3D<8, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
 		break;
 	case 11:
-		bfgsMLELoc_AS3D<11, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_SubRegion, d_LocArry, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
+		bfgsMLELoc_AS3D<11, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
 		break;
 	case 13:
-		bfgsMLELoc_AS3D<13, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_SubRegion, d_LocArry, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
+		bfgsMLELoc_AS3D<13, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
 		break;
 	case 15:
-		bfgsMLELoc_AS3D<15, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_SubRegion, d_LocArry, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
+		bfgsMLELoc_AS3D<15, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
 		break;
 	case 17:
-		bfgsMLELoc_AS3D<17, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_SubRegion, d_LocArry, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
+		bfgsMLELoc_AS3D<17, FitParaNum_AS3D> << <BlockNum, BlockDim, 0, cstream >> >(d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0, FluoNum);
 		break;
 
 

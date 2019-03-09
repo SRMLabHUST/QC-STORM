@@ -15,18 +15,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "bfgs_top.h"
 
-#include "bfgsMLE_GS2D_top.h"
-
-#include "bfgsMLE_AS3D_top.h"
-
+#include "bfgsMLE_core.h"
 
 
 #include "bfgs_LocalizationFilter.h"
 #include "bfgs_OntimeCalc.h"
 
+#include "LDROIExtraction.h"
 
 
-void LDLocData_TypeDef::BFGS_MLELocalization(unsigned short * h_SubRegion, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream)
+void LDLocData_TypeDef::BFGS_MLELocalization(unsigned short * h_SubRegion, float *h_WLEPara, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream)
 {
 	// note there are zeros points in the localization results, there are filtered failed results,
 	// they should not be classified into false positive or negative in algorithm evaluation
@@ -41,19 +39,22 @@ void LDLocData_TypeDef::BFGS_MLELocalization(unsigned short * h_SubRegion, Local
 	oValidFluoNum = FluoNum;
 
 	err = cudaMemcpyAsync(d_SubRegion, h_SubRegion, FluoNum*RegionDataSize*sizeof(short), cudaMemcpyHostToDevice, cstream);
-//	HandleErr(err, "loc memcpy region");
 
+	if (WLE_ENABLE)
+	{
+		cudaMemcpyAsync(d_WLEPara, h_WLEPara, FluoNum * WLE_ParaNumber * sizeof(float), cudaMemcpyHostToDevice, cstream);
+	}
 
-	if (LocType_IsGS2D(LocPara.LocType))
+	if (LocPara.LocType == LocType_GS2D)
 	{
 		// for 2d round Gaussian localization
-		LDLoc_BFGS_MLELocalizationGS2D(d_SubRegion, d_LocArry, LocPara, FluoNum, cstream);
+		LDLoc_BFGS_MLELocalizationGS2D(d_LocArry, d_SubRegion, d_WLEPara, LocPara, FluoNum, cstream);
 
 	}
-	else if (LocType_IsAS3D(LocPara.LocType))
+	else if (LocPara.LocType == LocType_AS3D)
 	{
 		// for 3d astigmatism elliptical Gaussian localization
-		LDLoc_BFGS_MLELocalizationAS3D(d_SubRegion, d_LocArry, LocPara, FluoNum, cstream);
+		LDLoc_BFGS_MLELocalizationAS3D(d_LocArry, d_SubRegion, d_WLEPara, LocPara, FluoNum, cstream);
 
 	}
 
@@ -95,6 +96,9 @@ void LDLocData_TypeDef::Init(LocalizationPara & LocPara)
 	cudaMalloc((void **)&d_LocArry, MaxPointNum*OutParaNumAS3D*sizeof(float));
 
 
+	err = cudaMalloc((void **)&d_WLEPara, MaxPointNum * WLE_ParaNumber * sizeof(float));
+
+
 	// Consecutive fitting from adjecent frames
 
 	cudaMalloc((void **)&d_ForwardLinkID, MaxPointNum*sizeof(int));
@@ -132,6 +136,7 @@ void LDLocData_TypeDef::Deinit( LocalizationPara & LocPara)
 	err = cudaFreeHost(h_LocArry);
 	err = cudaFree(d_LocArry);
 
+	err = cudaFree(d_WLEPara);
 	// Consecutive fitting from adjecent frames
 
 	cudaFree(d_ForwardLinkID);

@@ -19,9 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "device_launch_parameters.h"
 
 
-
-
-
 #include "bfgs_CommonPara.h"
 #include "bfgs_base.h"
 
@@ -35,10 +32,12 @@ class LDLocData_TypeDef
 {
 public:
 	unsigned short * h_SubRegion;
-	float * h_LocArry;
-
 	unsigned short * d_SubRegion;
+
+	float * h_LocArry;
 	float * d_LocArry;
+
+	float *d_WLEPara;
 
 
 	// Consecutive finding from adjecent frames
@@ -72,7 +71,7 @@ public:
 	void Init(LocalizationPara & LocPara); // create CPU&GPU memory
 	void Deinit(LocalizationPara & LocPara); // release CPU&GPU memory
 
-	void BFGS_MLELocalization(unsigned short * h_SubRegion, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
+	void BFGS_MLELocalization(unsigned short * h_SubRegion, float *h_WLEPara, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
 	
 	void OntimeCalc(LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
@@ -98,3 +97,7 @@ private:
 
 
 
+// bfgs 2D and as3D loc function
+void LDLoc_BFGS_MLELocalizationGS2D(float * d_LocArry, unsigned short * d_SubRegion, float *d_WLEPara, LocalizationPara& LocPara, int FluoNum, cudaStream_t cstream);
+
+void LDLoc_BFGS_MLELocalizationAS3D(float * d_LocArry, unsigned short * d_SubRegion, float *d_WLEPara, LocalizationPara& LocPara, int FluoNum, cudaStream_t cstream);

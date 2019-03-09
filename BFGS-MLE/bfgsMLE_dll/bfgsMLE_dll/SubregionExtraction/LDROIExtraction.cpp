@@ -2,6 +2,10 @@
 
 #include "LDROIExtraction.h"
 
+
+#include "bfgsMLE_core.h"
+
+
 #define Max(a,b)    (((a) > (b)) ? (a) : (b))
 #define Min(a,b)    (((a) < (b)) ? (a) : (b))
 
@@ -135,6 +139,7 @@ void LDROIExtractData_TypeDef::ROIExtraction(int ROISize, int ImageWidth, int Im
 	cudaMemcpyAsync(&h_ROIMem[ROIAddrOffset], d_ROIMem, RegionNum_CurBatch * ROIDataLen * sizeof(short), cudaMemcpyDeviceToHost, cstream);
 	cudaStreamSynchronize(cstream); // wait task of this stream finish
 
+#if(WLE_ENABLE == 1)
 
 	// estimate WLE parameter
 	int WLEParaAddrOffset = TotalROINumber*WLE_ParaNumber;
@@ -143,6 +148,8 @@ void LDROIExtractData_TypeDef::ROIExtraction(int ROISize, int ImageWidth, int Im
 
 	cudaMemcpyAsync(&WLEParameterEstimator->h_WLEPara[WLEParaAddrOffset], WLEParameterEstimator->d_WLEPara, RegionNum_CurBatch * WLE_ParaNumber * sizeof(float), cudaMemcpyDeviceToHost, cstream);
 	cudaStreamSynchronize(cstream); // wait task of this stream finish
+
+#endif // WLE_ENABLE
 
 
 	TotalROINumber += RegionNum_CurBatch;
@@ -237,6 +244,17 @@ int LDROIExtractData_TypeDef::GetAccumulatedROINum()
 void LDROIExtractData_TypeDef::ResetROINum()
 {
 	TotalROINumber = 0;
+
+}
+
+float * LDROIExtractData_TypeDef::Get_h_WLEPara()
+{
+	return WLEParameterEstimator->h_WLEPara;
+}
+
+float * LDROIExtractData_TypeDef::Get_d_WLEPara()
+{
+	return WLEParameterEstimator->d_WLEPara;
 
 }
 
