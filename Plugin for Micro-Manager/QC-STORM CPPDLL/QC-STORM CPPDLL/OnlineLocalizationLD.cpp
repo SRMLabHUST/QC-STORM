@@ -206,15 +206,17 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 
 
+			/*
+			// seems don't reliable
 			if (LocPara_Global.ConsecFitEn)
 			{
-				// merge roi of consecutive molecules, assign each consecutive by average but not remove,
-				// the consecutive molecules will be removed by ConsecutiveFitData.FitConsecutiveFluo
-				time1 = clock();
-				LDROIExtractData.ROIMergeForConsecutiveFitting(LocPara_Global.ROISize, FluoNum, loc_stream1);
-				ExtractTime += (clock() - time1);
+			// merge roi of consecutive molecules, assign each consecutive by average but not remove,
+			// the consecutive molecules will be removed by ConsecutiveFitData.FitConsecutiveFluo
+			time1 = clock();
+			//				LDROIExtractData.ROIMergeForConsecutiveFitting(LocPara_Global.ROISize, FluoNum, loc_stream1);
+			ExtractTime += (clock() - time1);
 			}
-
+			*/
 
 
 			time1 = clock();

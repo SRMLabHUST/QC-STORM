@@ -215,13 +215,11 @@ __global__ void gpu_MoleculeTypeClasify(int ROISize,float *d_WLEPara, int FluoNu
 
 		int IsContamination = (diff1 >= MaxTolerablePSFWidthDiff) || (diff2 >= MaxTolerablePSFWidthDiff);
 
-		float MaxDiff = max(diff1, diff2);
 
 
 		SigmaL = max(SigmaL, SigmaR);
 		SigmaU = max(SigmaU, SigmaD);
 
-		float MaxSigma = max(SigmaL, SigmaU);
 
 		int MoleculeType = MoleculeType_MLEFit; // single molecule, 1: multi
 
@@ -231,7 +229,7 @@ __global__ void gpu_MoleculeTypeClasify(int ROISize,float *d_WLEPara, int FluoNu
 			MoleculeType = MoleculeType_MLEFit; // well isolated molecule
 
 		}
-		else if ((NearestNeighborDistance <= MultiEmitterFit_Distance_Th) || (MaxSigma > MaxSigmaTh) || (MaxDiff > 0.40f))
+		else if ((NearestNeighborDistance <= MultiEmitterFit_Distance_Th))
 		{
 			MoleculeType = MoleculeType_MultiFit;
 		}

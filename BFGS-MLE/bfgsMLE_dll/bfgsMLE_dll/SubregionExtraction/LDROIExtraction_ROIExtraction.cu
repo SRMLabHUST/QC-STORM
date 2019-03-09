@@ -33,11 +33,15 @@ __global__ void gpuROIFindingLD(unsigned short *d_RawImg_Smoothed, int *d_ROIPos
 	// standard deviation
 	ImageVariance = sqrtf(ImageVariance);
 
-	float ImageTh = 9.5f * ImageVariance;
+	float ImageTh = 10.0f * ImageVariance;
+	float ImageTh1 = 7.0f * ImageVariance;
 
 
 	int CurXPos = gid % ImageWidth;
 	int CurYPos = gid / ImageWidth;
+
+	int RealXPos = CurXPos;
+	int RealYPos = CurYPos%ImageHigh;
 
 
 	const int BatchedImageNum = BatchedImageHigh / ImageHigh;
@@ -53,7 +57,7 @@ __global__ void gpuROIFindingLD(unsigned short *d_RawImg_Smoothed, int *d_ROIPos
 	int ROISize_Half = ((int)(ROISize / 2));
 
 
-	if ((CurXPos > ROISize_Half) && (CurYPos > ROISize_Half) && (CurXPos < ImageWidth - ROISize_Half) && (CurYPos < BatchedImageHigh - ROISize_Half))
+	if ((RealXPos > ROISize_Half) && (RealYPos > ROISize_Half) && (RealXPos < ImageWidth - ROISize_Half) && (RealYPos < ImageHigh - ROISize_Half))
 	{
 
 		int CenterPixelVal = d_RawImg_Smoothed[CurYPos * ImageWidth + CurXPos];
@@ -91,16 +95,16 @@ __global__ void gpuROIFindingLD(unsigned short *d_RawImg_Smoothed, int *d_ROIPos
 			JudgeBit[7] = CenterPixelVal >  pImageRegion[2][2];
 
 			// subregion judgement
-			JudgeBit1[0] = pImageRegion[0][0] >  ImageTh;
-			JudgeBit1[1] = pImageRegion[0][1] >  ImageTh;
-			JudgeBit1[2] = pImageRegion[0][2] >  ImageTh;
+			JudgeBit1[0] = pImageRegion[0][0] >  ImageTh1;
+			JudgeBit1[1] = pImageRegion[0][1] >  ImageTh1;
+			JudgeBit1[2] = pImageRegion[0][2] >  ImageTh1;
 
-			JudgeBit1[3] = pImageRegion[1][0] >  ImageTh;
-			JudgeBit1[4] = pImageRegion[1][2] >  ImageTh;
+			JudgeBit1[3] = pImageRegion[1][0] >  ImageTh1;
+			JudgeBit1[4] = pImageRegion[1][2] >  ImageTh1;
 
-			JudgeBit1[5] = pImageRegion[2][0] >  ImageTh;
-			JudgeBit1[6] = pImageRegion[2][1] >  ImageTh;
-			JudgeBit1[7] = pImageRegion[2][2] >  ImageTh;
+			JudgeBit1[5] = pImageRegion[2][0] >  ImageTh1;
+			JudgeBit1[6] = pImageRegion[2][1] >  ImageTh1;
+			JudgeBit1[7] = pImageRegion[2][2] >  ImageTh1;
 
 
 			int SumJudge = 0;
@@ -113,7 +117,7 @@ __global__ void gpuROIFindingLD(unsigned short *d_RawImg_Smoothed, int *d_ROIPos
 				SumJudge1 += JudgeBit1[jcnt];
 			}
 
-			if ((SumJudge == JudgeBitNum) && (SumJudge1 >= 3))
+			if ((SumJudge == JudgeBitNum) && (SumJudge1 > 4))
 			{
 				int CurImageId = CurYPos / ImageHigh;
 

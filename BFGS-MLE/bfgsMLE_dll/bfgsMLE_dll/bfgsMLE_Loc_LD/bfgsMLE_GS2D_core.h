@@ -176,13 +176,16 @@ __global__ void bfgsMLELoc_Gauss2D(float *d_LocArry, unsigned short *d_SubRegion
 
 		if (MoleculeType == MoleculeType_MLEFit)
 		{
+			// larger Width for uncontaminated molecules
 			WLE_SigmaX = WLE_SigmaX*1.2f;
 
-			WLE_SigmaX = max(WLE_SigmaX, WLE_SigmaX / 2.0f / 2.35f);
+			WLE_SigmaX = max(WLE_SigmaX, ROISize / 1.5f / 2.35f);
 		}
 		else
 		{
-			WLE_SigmaX = WLE_SigmaX /1.2f;
+			// smaller Width for contaminated molecules
+			WLE_SigmaX = WLE_SigmaX / 1.2f;
+			WLE_SigmaX = min(WLE_SigmaX, ROISize / 2.0f / 2.35f / 1.2f);
 		}
 
 		WLE_ParaArray[WLE_Fit_SigmaX] = WLE_SigmaX;

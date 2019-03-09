@@ -152,5 +152,9 @@ __global__ void gpu_CalculatePSFWidth(unsigned short * d_ROIMem, float *d_WLEPar
 		pWLEPara[gid][WLE_Para_SigmaU] = SigmaU*1.25f;
 		pWLEPara[gid][WLE_Para_SigmaD] = SigmaD*1.25f;
 
+		// the high discrepency comes from low SNR fluo or high density
+//		float diff1 = abs(SigmaL - SigmaR) / min(SigmaL, SigmaR);
+//		float diff2 = abs(SigmaU - SigmaD) / min(SigmaU, SigmaD);
+
 	}
 }
