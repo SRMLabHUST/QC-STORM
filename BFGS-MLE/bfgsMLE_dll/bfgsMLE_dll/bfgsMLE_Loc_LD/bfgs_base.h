@@ -35,6 +35,9 @@ public:
 	// localization and rendering
 	int ROISize;
 	int LocType;
+
+	int MultiEmitterFitEn;
+
 	int BadFitFilterWithAutoThEn; // filter fit result with automatic snr threshold: th = mean(SNR>4)/2
 
 	int BackgroundNoiseFilterEn;

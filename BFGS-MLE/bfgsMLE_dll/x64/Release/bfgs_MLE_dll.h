@@ -46,6 +46,7 @@ using namespace std;
 
 
 
+
 // basic parameters for localization for both 2d and 3d
 class LocalizationPara
 {
@@ -59,6 +60,9 @@ public:
 	// localization and rendering
 	int ROISize;
 	int LocType;
+
+	int MultiEmitterFitEn;
+
 	int BadFitFilterWithAutoThEn; // filter fit result with automatic snr threshold: th = mean(SNR>4)/2
 
 	int BackgroundNoiseFilterEn;
@@ -123,6 +127,9 @@ public:
 
 
 
+
+
+
 // estimage WLE para, contained in the ROI extraction
 class WLEParameterEstimation_TypeDef
 {
@@ -139,6 +146,8 @@ public:
 
 	void WLEParameterEstimate(unsigned short * h_ROIMem, int ROISize, int FluoNum, cudaStream_t cstream);
 };
+
+
 
 
 
@@ -209,10 +218,6 @@ public:
 	float * Get_d_WLEPara();
 
 
-	// alternative, used before MLE localization
-	void ROIMergeForConsecutiveFitting(int ROISize, int FluoNum, cudaStream_t cstream);
-
-
 public:
 	static int GetMaxBatchedNumForCurrentImageSize(int ImageWidth, int ImageHigh);
 
@@ -226,7 +231,6 @@ private:
 
 	void ROIExtraction(int ROISize, int ImageWidth, int ImageHigh, int BatchedImageNum, int StartFrame, cudaStream_t cstream);
 };
-
 
 
 
@@ -300,8 +304,6 @@ private:
 	void FilterBadFit(LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
 };
-
-
 
 
 

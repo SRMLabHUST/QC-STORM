@@ -4,10 +4,10 @@
 
 void WLEParameterEstimation_TypeDef::WLEParameterEstimate(unsigned short * h_ROIMem, int ROISize, int FluoNum, cudaStream_t cstream)
 {
-	const int ROIDataLen = ROISize*(ROISize + 1);
+	const int ROIWholeSize = ROISize*(ROISize + 1);
 
 	// copy from CPU
-	cudaMemcpyAsync(d_ROIMem, h_ROIMem, FluoNum * ROIDataLen * sizeof(unsigned short), cudaMemcpyHostToDevice, cstream);
+	cudaMemcpyAsync(d_ROIMem, h_ROIMem, FluoNum * ROIWholeSize * sizeof(unsigned short), cudaMemcpyHostToDevice, cstream);
 
 
 	CalculatePSFWidth(d_ROIMem, d_WLEPara, FluoNum, ROISize, cstream);
@@ -28,9 +28,9 @@ void WLEParameterEstimation_TypeDef::WLEParameterEstimate(unsigned short * h_ROI
 void WLEParameterEstimation_TypeDef::Init(LocalizationPara & LocPara)
 {
 	cudaError_t err;
-	const int ROIDataLen = LocPara.ROISize*(LocPara.ROISize + 1);
+	const int ROIWholeSize = LocPara.ROISize*(LocPara.ROISize + 1);
 
-	err = cudaMalloc((void **)&d_ROIMem, MaxPointNum * ROIDataLen * sizeof(unsigned short));
+	err = cudaMalloc((void **)&d_ROIMem, MaxPointNum * ROIWholeSize * sizeof(unsigned short));
 
 	HandleErr(err, "cudaMalloc d_ROIMem");
 

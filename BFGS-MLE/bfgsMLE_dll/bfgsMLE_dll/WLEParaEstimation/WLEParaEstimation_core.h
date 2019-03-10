@@ -6,27 +6,8 @@
 #include <stdio.h>
 
 
-#define WLE_ParaNumber				6
+#include "WLEParaEstimation_Parameters.h"
 
-
-#define WLE_Para_NearDistance		0
-#define WLE_Para_SigmaL				1
-#define WLE_Para_SigmaR				2
-#define WLE_Para_SigmaU				3
-#define WLE_Para_SigmaD				4
-#define WLE_Para_FluoType			5
-
-
-
-#define MoleculeType_MLEFit			0
-#define MoleculeType_WLEFit			1
-#define MoleculeType_MultiFit		2
-
-
-#define InterpolationRatio			10
-#define InterpolationGap			(1.0f/InterpolationRatio)
-
-#define MaxTolerablePSFWidthDiff	0.20f
 
 
 #include "SplineInterpolation.h"
@@ -59,9 +40,9 @@ __global__ void gpu_CalculatePSFWidth(unsigned short * d_ROIMem, float *d_WLEPar
 	int gid = threadIdx.x + blockDim.x*blockIdx.x;
 	int tid = threadIdx.x;
 
-	const int ROIDataLen = ROISize*(ROISize + 1);
+	const int ROIWholeSize = ROISize*(ROISize + 1);
 
-	const int CurROIAddr = ROIDataLen*gid;
+	const int CurROIAddr = ROIWholeSize*gid;
 
 	unsigned short(*pROI)[ROISize] = (unsigned short(*)[ROISize])&d_ROIMem[CurROIAddr];
 

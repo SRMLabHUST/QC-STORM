@@ -152,13 +152,13 @@ __global__ void gpuSubregionExtractionLD(unsigned short *d_RawImg, unsigned shor
 
 	if (gid < RegionNum_CurImage)
 	{
-		int ROIDataLen = ROISize*(ROISize + 1);
+		int ROIWholeSize = ROISize*(ROISize + 1);
 		int ROISize_Half = ROISize / 2;
 
 
 		int HaflRegionSize = ROISize / 2;
 
-		int RegionAddrOffset = gid*ROIDataLen;
+		int RegionAddrOffset = gid*ROIWholeSize;
 
 		int XPos = d_ROIPosArray[gid * 2 + 0];
 		int YPos = d_ROIPosArray[gid * 2 + 1];

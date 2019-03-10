@@ -141,9 +141,9 @@ __global__ void gpu_CalculateNearestNeighborDistance(unsigned short * d_ROIMem, 
 
 	float(*pWLEPara)[WLE_ParaNumber] = (float(*)[WLE_ParaNumber])d_WLEPara;
 
-	const int ROIDataLen = ROISize*(ROISize + 1);
+	const int ROIWholeSize = ROISize*(ROISize + 1);
 
-	const int AddrOffset = ROIDataLen*gid + ROISize*ROISize;
+	const int AddrOffset = ROIWholeSize*gid + ROISize*ROISize;
 
 	if (gid < FluoNum)
 	{
@@ -160,7 +160,7 @@ __global__ void gpu_CalculateNearestNeighborDistance(unsigned short * d_ROIMem, 
 
 		for (int cnt = 0; (cnt < FluoNum) && (NextF <= CurF); cnt++)
 		{
-			int NextAddrOffset = ROIDataLen*cnt + ROISize*ROISize;
+			int NextAddrOffset = ROIWholeSize*cnt + ROISize*ROISize;
 
 			NextX = d_ROIMem[NextAddrOffset + 0];
 			NextY = d_ROIMem[NextAddrOffset + 1];
@@ -197,7 +197,6 @@ __global__ void gpu_MoleculeTypeClasify(int ROISize,float *d_WLEPara, int FluoNu
 	float(*pWLEPara)[WLE_ParaNumber] = (float(*)[WLE_ParaNumber])d_WLEPara;
 
 
-
 	float MultiEmitterFit_Distance_Th = (ROISize - 1) / 2.0f;
 	float MaxSigmaTh = 7 / 1.9f / 2.35f;
 
@@ -214,7 +213,6 @@ __global__ void gpu_MoleculeTypeClasify(int ROISize,float *d_WLEPara, int FluoNu
 		float diff2 = abs(SigmaU - SigmaD) / min(SigmaU, SigmaD);
 
 		int IsContamination = (diff1 >= MaxTolerablePSFWidthDiff) || (diff2 >= MaxTolerablePSFWidthDiff);
-
 
 
 		SigmaL = max(SigmaL, SigmaR);

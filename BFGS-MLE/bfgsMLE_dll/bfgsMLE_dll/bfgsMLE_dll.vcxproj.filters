@@ -140,6 +140,9 @@
     <ClInclude Include="WLEParaEstimation\WLEParaEstimation_core.h">
       <Filter>WLEParaEstimation</Filter>
     </ClInclude>
+    <ClInclude Include="WLEParaEstimation\WLEParaEstimation_Parameters.h">
+      <Filter>WLEParaEstimation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -235,9 +238,6 @@
       <Filter>SubregionExtraction</Filter>
     </CudaCompile>
     <CudaCompile Include="SubregionExtraction\LDROIExtraction_ROIExtraction.cu">
-      <Filter>SubregionExtraction</Filter>
-    </CudaCompile>
-    <CudaCompile Include="SubregionExtraction\LDROIExtraction_ROIMerge.cu">
       <Filter>SubregionExtraction</Filter>
     </CudaCompile>
     <CudaCompile Include="WLEParaEstimation\WLEParaEstimation_core.cu">

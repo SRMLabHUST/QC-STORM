@@ -182,6 +182,7 @@
     <ClInclude Include="WLEParaEstimation\SplineInterpolation.h" />
     <ClInclude Include="WLEParaEstimation\WLEParaEstimation.h" />
     <ClInclude Include="WLEParaEstimation\WLEParaEstimation_core.h" />
+    <ClInclude Include="WLEParaEstimation\WLEParaEstimation_Parameters.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BFGS for curve fitting\CurveFitting.cpp" />
@@ -222,7 +223,6 @@
     <CudaCompile Include="StatisticsInfo\statisticsInfo_top.cu" />
     <CudaCompile Include="SubregionExtraction\LDROIExtraction_ImageFiltering.cu" />
     <CudaCompile Include="SubregionExtraction\LDROIExtraction_ROIExtraction.cu" />
-    <CudaCompile Include="SubregionExtraction\LDROIExtraction_ROIMerge.cu" />
     <CudaCompile Include="WLEParaEstimation\WLEParaEstimation_core.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

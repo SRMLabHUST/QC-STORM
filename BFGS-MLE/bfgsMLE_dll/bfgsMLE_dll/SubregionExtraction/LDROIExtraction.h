@@ -101,10 +101,6 @@ public:
 	float * Get_d_WLEPara();
 
 
-	// alternative, used before MLE localization
-	void ROIMergeForConsecutiveFitting(int ROISize, int FluoNum, cudaStream_t cstream);
-
-
 public:
 	static int GetMaxBatchedNumForCurrentImageSize(int ImageWidth, int ImageHigh);
 
@@ -147,7 +143,5 @@ void ROIFindingLD(unsigned short *d_RawImg_Smoothed, int *d_ROIPosArray, int *d_
 
 void SubregionExtractionLD(unsigned short *d_RawImg, unsigned short *d_ROIMem, int *d_ROIPosArray, int ROISize, int RegionNum_CurImage, int ImageWidth, int BatchedImageHigh, int ImageHigh, int StartFrame, cudaStream_t cstream);
 
-
-void MergeConsecutiveROI(unsigned short * d_ROIMem, float *d_WLEPara, int ROISize, int *d_ForwardLinkID, int *d_BackwardLinkID, int *d_ConsecutiveNum, int FluoNum, cudaStream_t cstream);
 
 

@@ -82,14 +82,14 @@ void LDLocData_TypeDef::Init(LocalizationPara & LocPara)
 
 	cudaError_t err;
 
-	int ROIWholeLen = LocPara.ROISize*(LocPara.ROISize + 1);
+	int ROIWholeSize = LocPara.ROISize*(LocPara.ROISize + 1);
 
 
 	// host and gpu
-	err = cudaMallocHost((void **)&h_SubRegion, MaxPointNum*ROIWholeLen*sizeof(short));
+	err = cudaMallocHost((void **)&h_SubRegion, MaxPointNum*ROIWholeSize*sizeof(short));
 	HandleErr(err, "cudaMallocHost LDLoc h_SubRegion");
 
-	err = cudaMalloc((void **)&d_SubRegion, MaxPointNum*ROIWholeLen*sizeof(short));
+	err = cudaMalloc((void **)&d_SubRegion, MaxPointNum*ROIWholeSize*sizeof(short));
 	HandleErr(err, "cudaMalloc LDLoc d_SubRegion");
 
 	cudaMallocHost((void **)&h_LocArry, MaxPointNum*OutParaNumAS3D*sizeof(float));

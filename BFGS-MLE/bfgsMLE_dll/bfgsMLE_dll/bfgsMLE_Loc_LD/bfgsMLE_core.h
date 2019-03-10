@@ -35,45 +35,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define WLE_TEST				0
 
 
-// WLE_ParaArray for MLE fitting			
-#define WLE_ParaArrayLen		2
-
-#define WLE_Fit_SigmaX			0
-#define WLE_Fit_SigmaY			1
-
 
 
 #define Math_PI					3.14159265358979f
 
-// for 2d loc
 
-
-#define FitParaNum_2D			5
-
-#define IterateNum_2D			8  // total iteration number, fixed iteration number
-#define IterateNum_bs_2D		11 // bisection iteration to find best walk length
-
-// fitting parameters gaussian 2d
-#define Fit2D_Peak				0
-#define Fit2D_XPos				1
-#define Fit2D_YPos				2
-#define Fit2D_Sigm				3
-#define Fit2D_Bakg				4
-
-// fitting parameters for astigmatism 3d
-#define FitParaNum_AS3D			6
-
-#define IterateNum_AS3D			11  // total iteration number, fixed iteration number
-#define IterateNum_bs_AS3D		11 // bisection iteration to find best walk length
-
-
-
-#define FitAS3D_Peak				0
-#define FitAS3D_XPos				1
-#define FitAS3D_YPos				2
-#define FitAS3D_SigX				3
-#define FitAS3D_SigY				4
-#define FitAS3D_Bakg				5
 
 
 //
@@ -231,3 +197,30 @@ __device__ void MatMulVector(float D0[], float grad[][ThreadsPerBlock], float d0
 
 }
 
+template <int ROISize>
+__device__ void WLEWeightsCalc(float* WLE_Weight, float WLE_SigmaX, float WLE_SigmaY)
+{
+	float(*pWLE_Weight)[ROISize] = (float(*)[ROISize])WLE_Weight;
+
+	// use pre-estimated center pos don't help improve the localization precision
+	float ROICenter = ROISize / 2.0f;
+
+
+	float WLE_SigmaX1 = 1.0f / (2.0f * WLE_SigmaX * WLE_SigmaX);
+	float WLE_SigmaY1 = 1.0f / (2.0f * WLE_SigmaY * WLE_SigmaY);
+
+
+	float rowpos, colpos;
+
+	for (int row = 0; row < ROISize; row++)
+	{
+		for (int col = 0; col < ROISize; col++)
+		{
+			rowpos = row + 0.5f; // pixel center position
+			colpos = col + 0.5f;
+
+			pWLE_Weight[row][col] = __expf(-((colpos - ROICenter)*(colpos - ROICenter)*WLE_SigmaX1 + (rowpos - ROICenter)*(rowpos - ROICenter)*WLE_SigmaY1));
+
+		}
+	}
+}

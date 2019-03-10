@@ -26,6 +26,9 @@ LocalizationPara::LocalizationPara()
 
 	ROISize = 7;
 	LocType = LocType_GS2D;
+
+	MultiEmitterFitEn = 0;
+
 	BadFitFilterWithAutoThEn = 1;
 
 	BackgroundNoiseFilterEn = 1;
