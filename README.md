@@ -3,7 +3,9 @@ QC-STORM is an online processing plugin (Micro-Manager & ImageJ) for quality-con
 
 # Key features
 
-Ultrahigh efficient MLE localization without sacrificing localization precition: online processing for sCMOS camera based localization microscopy at full FOV and fastest frame rate (localization speed > 5x10^6 for 7x7 pixels ROI based on NVidia Titan xp graphics card). 
+Ultrahigh efficient MLE localization: online processing for sCMOS camera based localization microscopy at full FOV and fastest frame rate  without sacrificing localization precition (localization speed > 5x10^6 for 7x7 pixels ROI based on NVidia Titan xp graphics card). 
+
+Ultrahigh efficient multi-emitter MLE localization.
 
 Most processing parts of QC-STORM are GPU accelerated, and their performance increase almost linearly with GPU’s single floating performance (GFLOPS). Note the speed may be reduced by CPU memory bandwidth and low speed image reading from hard disk.
 
