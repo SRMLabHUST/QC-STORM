@@ -69,7 +69,7 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetImagePara
 * Signature: (FFFIIIFFF)V
 */
 JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetLocPara
-(JNIEnv *env, jclass obj, jfloat KAdc, jfloat Offset, jfloat QE, jint ROISizeI, jint LocTypeI, jint BkgNoiseFilterEn, jint ConsecutiveFitEnI, jfloat ConsecFilterRadiusF, jfloat RawPixelSizeF, jfloat RenderPixelZoomF, jfloat SNR_th)
+(JNIEnv *env, jclass obj, jfloat KAdc, jfloat Offset, jfloat QE, jint ROISizeI, jint LocTypeI, jint MultiEmitterFitEn, jint ConsecutiveFitEnI, jfloat ConsecFilterRadiusF, jfloat RawPixelSizeF, jfloat RenderPixelZoomF, jfloat SNR_th)
 {
 	// for both 2d and 3d
 	LocPara_Global.KAdc = KAdc;
@@ -79,8 +79,9 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetLocPara
 	LocPara_Global.ROISize = ROISizeI;
 	LocPara_Global.LocType = LocTypeI;
 
-	LocPara_Global.BackgroundNoiseFilterEn = BkgNoiseFilterEn;
-	
+	LocPara_Global.MultiEmitterFitEn = MultiEmitterFitEn;
+
+
 	LocPara_Global.BadFitFilterWithAutoThEn = 1; // 
 
 	LocPara_Global.ConsecFit_DistanceTh_nm = ConsecFilterRadiusF;

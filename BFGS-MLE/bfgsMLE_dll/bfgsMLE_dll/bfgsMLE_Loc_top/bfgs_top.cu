@@ -24,7 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "LDROIExtraction.h"
 
 
-void LDLocData_TypeDef::BFGS_MLELocalization(unsigned short * h_SubRegion, float *h_WLEPara, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream)
+void LDLocData_TypeDef::BFGS_MLELocalization(unsigned short * h_ImageROI, float *h_WLEPara, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream)
 {
 	// note there are zeros points in the localization results, there are filtered failed results,
 	// they should not be classified into false positive or negative in algorithm evaluation
@@ -34,29 +34,60 @@ void LDLocData_TypeDef::BFGS_MLELocalization(unsigned short * h_SubRegion, float
 	int LocType = LocPara.LocType;
 	int ROISize = LocPara.ROISize;
 
-	int RegionDataSize = (ROISize*(ROISize + 1));
+	int ROIWholeSize = (ROISize*(ROISize + 1));
 
 	oValidFluoNum = FluoNum;
 
-	err = cudaMemcpyAsync(d_SubRegion, h_SubRegion, FluoNum*RegionDataSize*sizeof(short), cudaMemcpyHostToDevice, cstream);
+	err = cudaMemcpyAsync(d_ImageROI, h_ImageROI, FluoNum * ROIWholeSize *sizeof(short), cudaMemcpyHostToDevice, cstream);
 
 	if (WLE_ENABLE)
 	{
 		cudaMemcpyAsync(d_WLEPara, h_WLEPara, FluoNum * WLE_ParaNumber * sizeof(float), cudaMemcpyHostToDevice, cstream);
 	}
 
+	// for multi emitter fitting
+	cudaMemsetAsync(d_MultiFitFluoNum, 0, sizeof(int), cstream);
+
+
+	// Low density fitting
 	if (LocPara.LocType == LocType_GS2D)
 	{
 		// for 2d round Gaussian localization
-		LDLoc_BFGS_MLELocalizationGS2D(d_LocArry, d_SubRegion, d_WLEPara, LocPara, FluoNum, cstream);
-
+		LDLoc_BFGS_MLELocalizationGS2D(d_LocArry, d_ImageROI, d_WLEPara, d_MultiFitFluoNum, d_MultiFitFluoPos, LocPara, FluoNum, cstream);
+	
 	}
 	else if (LocPara.LocType == LocType_AS3D)
 	{
 		// for 3d astigmatism elliptical Gaussian localization
-		LDLoc_BFGS_MLELocalizationAS3D(d_LocArry, d_SubRegion, d_WLEPara, LocPara, FluoNum, cstream);
-
+		LDLoc_BFGS_MLELocalizationAS3D(d_LocArry, d_ImageROI, d_WLEPara, d_MultiFitFluoNum, d_MultiFitFluoPos, LocPara, FluoNum, cstream);
+	
 	}
+
+	// high density fitting
+	if (LocPara.MultiEmitterFitEn)
+	{
+		cudaMemcpyAsync(h_MultiFitFluoNum, d_MultiFitFluoNum, sizeof(int), cudaMemcpyDeviceToHost, cstream);
+		cudaStreamSynchronize(cstream);
+
+		int MultiFitFluoNum = *h_MultiFitFluoNum;
+
+		MultiFitRatio = (float)MultiFitFluoNum / FluoNum;
+
+		if (LocPara.LocType == LocType_GS2D)
+		{
+			HDLoc_BFGS_MLELocalization_2D_2Emitter(d_LocArry, d_ImageROI, d_WLEPara, MultiFitFluoNum, d_MultiFitFluoPos, LocPara, cstream);
+		
+		}
+		else if (LocPara.LocType == LocType_AS3D)
+		{
+			HDLoc_BFGS_MLELocalization_AS3D_2Emitter(d_LocArry, d_ImageROI, d_WLEPara, MultiFitFluoNum, d_MultiFitFluoPos, LocPara, cstream);
+		
+		}
+
+		cudaStreamSynchronize(cstream);
+	}
+
+
 
 
 	// localization precision calculated by CRLB
@@ -72,8 +103,6 @@ void LDLocData_TypeDef::BFGS_MLELocalization(unsigned short * h_SubRegion, float
 	cudaStreamSynchronize(cstream);
 
 
-	// then call filterbadfit and OntimeCalc
-
 }
 
 
@@ -86,11 +115,11 @@ void LDLocData_TypeDef::Init(LocalizationPara & LocPara)
 
 
 	// host and gpu
-	err = cudaMallocHost((void **)&h_SubRegion, MaxPointNum*ROIWholeSize*sizeof(short));
-	HandleErr(err, "cudaMallocHost LDLoc h_SubRegion");
+	err = cudaMallocHost((void **)&h_ImageROI, MaxPointNum*ROIWholeSize*sizeof(short));
+	HandleErr(err, "cudaMallocHost LDLoc h_ImageROI");
 
-	err = cudaMalloc((void **)&d_SubRegion, MaxPointNum*ROIWholeSize*sizeof(short));
-	HandleErr(err, "cudaMalloc LDLoc d_SubRegion");
+	err = cudaMalloc((void **)&d_ImageROI, MaxPointNum*ROIWholeSize*sizeof(short));
+	HandleErr(err, "cudaMalloc LDLoc d_ImageROI");
 
 	cudaMallocHost((void **)&h_LocArry, MaxPointNum*OutParaNumAS3D*sizeof(float));
 	cudaMalloc((void **)&d_LocArry, MaxPointNum*OutParaNumAS3D*sizeof(float));
@@ -122,16 +151,25 @@ void LDLocData_TypeDef::Init(LocalizationPara & LocPara)
 	cudaMalloc((void **)&d_SNRSumUp, sizeof(float));
 	cudaMalloc((void **)&d_ValidNum, sizeof(int));
 
+
+	// multi emitter fitting
+	cudaMallocHost((void **)&h_MultiFitFluoNum, sizeof(int));
+	cudaMalloc((void **)&d_MultiFitFluoNum, sizeof(int));
+
+	cudaMalloc((void **)&d_MultiFitFluoPos, MaxPointNum * sizeof(int));
+
+	MultiFitRatio = 0;
+
 }
 
 void LDLocData_TypeDef::Deinit( LocalizationPara & LocPara)
 {
 	cudaError_t err;
 
-	err = cudaFreeHost(h_SubRegion);
-	HandleErr(err, "cudaFreeHost LDLoc h_SubRegion");
-	err = cudaFree(d_SubRegion);
-	HandleErr(err, "cudaFree LDLoc d_SubRegion");
+	err = cudaFreeHost(h_ImageROI);
+	HandleErr(err, "cudaFreeHost LDLoc h_ImageROI");
+	err = cudaFree(d_ImageROI);
+	HandleErr(err, "cudaFree LDLoc d_ImageROI");
 
 	err = cudaFreeHost(h_LocArry);
 	err = cudaFree(d_LocArry);
@@ -158,6 +196,15 @@ void LDLocData_TypeDef::Deinit( LocalizationPara & LocPara)
 
 	cudaFree(d_SNRSumUp);
 	cudaFree(d_ValidNum);
+
+
+
+	// multi emitter fitting
+	cudaFreeHost(h_MultiFitFluoNum);
+
+	cudaFree(d_MultiFitFluoNum);
+	cudaFree(d_MultiFitFluoPos);
+
 
 }
 
@@ -199,25 +246,25 @@ int LDLocData_TypeDef::GetLastFrame(float * h_LocArry, int FluoNum)
 
 	return curFrame;
 }
-int LDLocData_TypeDef::GetFirstFrameFromROI(unsigned short * h_SubRegion, int ROISize, int FluoNum)
+int LDLocData_TypeDef::GetFirstFrameFromROI(unsigned short * h_ImageROI, int ROISize, int FluoNum)
 {
 
 	int WholeROISize = ROISize*(ROISize + 1);
 	int ROIPixelSize = ROISize*ROISize;
 
 	int FrameAddrBias = ROIPixelSize + 2;
-	int curFrame = h_SubRegion[FrameAddrBias];
+	int curFrame = h_ImageROI[FrameAddrBias];
 
 	return curFrame;
 }
 
-int LDLocData_TypeDef::GetLastFrameFromROI(unsigned short * h_SubRegion, int ROISize, int FluoNum)
+int LDLocData_TypeDef::GetLastFrameFromROI(unsigned short * h_ImageROI, int ROISize, int FluoNum)
 {
 	int WholeROISize = ROISize*(ROISize + 1);
 	int ROIPixelSize = ROISize*ROISize;
 
 	int FrameAddrBias = WholeROISize*(FluoNum - 2) + ROIPixelSize + 2;
-	int curFrame = h_SubRegion[FrameAddrBias];
+	int curFrame = h_ImageROI[FrameAddrBias];
 
 	return curFrame;
 }

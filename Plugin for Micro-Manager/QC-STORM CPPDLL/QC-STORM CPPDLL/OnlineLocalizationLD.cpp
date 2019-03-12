@@ -222,7 +222,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			time1 = clock();
 
 			// localization
-			LDLocData.BFGS_MLELocalization(LDROIExtractData.h_ROIMem, LDROIExtractData.Get_h_WLEPara(), LocPara_Global, FluoNum, loc_stream1);
+			LDLocData.BFGS_MLELocalization(LDROIExtractData.h_ImageROI, LDROIExtractData.Get_h_WLEPara(), LocPara_Global, FluoNum, loc_stream1);
 
 			LocTime += (clock() - time1);
 			

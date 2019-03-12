@@ -1,7 +1,7 @@
 #include "WLEParaEstimation.h"
 
 
-__global__ void gpu_CalculateNearestNeighborDistance(unsigned short * d_ROIMem, int ROISize, float *d_WLEPara, int FluoNum);
+__global__ void gpu_CalculateNearestNeighborDistance(unsigned short * d_ImageROI, int ROISize, float *d_WLEPara, int FluoNum);
 
 __global__ void gpu_MoleculeTypeClasify(int ROISize, float *d_WLEPara, int FluoNum);
 
@@ -33,7 +33,7 @@ __host__ __device__ int FindPositionID_search(float *x_i, float xn, int InputDat
 }
 
 
-void CalculatePSFWidth(unsigned short * d_ROIMem, float *d_WLEPara, int FluoNum, int ROISize, cudaStream_t cstream)
+void CalculatePSFWidth(unsigned short * d_ImageROI, float *d_WLEPara, int FluoNum, int ROISize, cudaStream_t cstream)
 {
 
 	int BlockDim = ThreadsPerBlock;
@@ -42,35 +42,35 @@ void CalculatePSFWidth(unsigned short * d_ROIMem, float *d_WLEPara, int FluoNum,
 	switch (ROISize)
 	{
 	case 5:
-		gpu_CalculatePSFWidth<5> << < BlockNum, BlockDim, 0, cstream >> >(d_ROIMem, d_WLEPara, FluoNum);
+		gpu_CalculatePSFWidth<5> << < BlockNum, BlockDim, 0, cstream >> >(d_ImageROI, d_WLEPara, FluoNum);
 
 		break;
 	case 7:
-		gpu_CalculatePSFWidth<7> << < BlockNum, BlockDim, 0, cstream >> >(d_ROIMem, d_WLEPara, FluoNum);
+		gpu_CalculatePSFWidth<7> << < BlockNum, BlockDim, 0, cstream >> >(d_ImageROI, d_WLEPara, FluoNum);
 
 		break;
 	case 9:
-		gpu_CalculatePSFWidth<9> << < BlockNum, BlockDim, 0, cstream >> >(d_ROIMem, d_WLEPara, FluoNum);
+		gpu_CalculatePSFWidth<9> << < BlockNum, BlockDim, 0, cstream >> >(d_ImageROI, d_WLEPara, FluoNum);
 
 		break;
 	case 11:
-		gpu_CalculatePSFWidth<11> << < BlockNum, BlockDim, 0, cstream >> >(d_ROIMem, d_WLEPara, FluoNum);
+		gpu_CalculatePSFWidth<11> << < BlockNum, BlockDim, 0, cstream >> >(d_ImageROI, d_WLEPara, FluoNum);
 
 		break;
 	case 13:
-		gpu_CalculatePSFWidth<13> << < BlockNum, BlockDim, 0, cstream >> >(d_ROIMem, d_WLEPara, FluoNum);
+		gpu_CalculatePSFWidth<13> << < BlockNum, BlockDim, 0, cstream >> >(d_ImageROI, d_WLEPara, FluoNum);
 
 		break;
 	case 15:
-		gpu_CalculatePSFWidth<15> << < BlockNum, BlockDim, 0, cstream >> >(d_ROIMem, d_WLEPara, FluoNum);
+		gpu_CalculatePSFWidth<15> << < BlockNum, BlockDim, 0, cstream >> >(d_ImageROI, d_WLEPara, FluoNum);
 
 		break;
 	case 17:
-		gpu_CalculatePSFWidth<17> << < BlockNum, BlockDim, 0, cstream >> >(d_ROIMem, d_WLEPara, FluoNum);
+		gpu_CalculatePSFWidth<17> << < BlockNum, BlockDim, 0, cstream >> >(d_ImageROI, d_WLEPara, FluoNum);
 
 		break;
 	case 19:
-		gpu_CalculatePSFWidth<19> << < BlockNum, BlockDim, 0, cstream >> >(d_ROIMem, d_WLEPara, FluoNum);
+		gpu_CalculatePSFWidth<19> << < BlockNum, BlockDim, 0, cstream >> >(d_ImageROI, d_WLEPara, FluoNum);
 
 		break;
 	}
@@ -124,18 +124,18 @@ __device__ int FindMaxPos(float *iData, int DataLen, int LSel, int RSel)
 	return MaxIdx;
 }
 
-void CalculateNearestNeighborDistance(unsigned short * d_ROIMem, int ROISize, float *d_WLEPara, int FluoNum, cudaStream_t cstream)
+void CalculateNearestNeighborDistance(unsigned short * d_ImageROI, int ROISize, float *d_WLEPara, int FluoNum, cudaStream_t cstream)
 {
 
 	int BlockDim = ThreadsPerBlock;
 	int BlockNum = (FluoNum + ThreadsPerBlock - 1) / ThreadsPerBlock;
 	
-	gpu_CalculateNearestNeighborDistance << < BlockNum, BlockDim, 0, cstream >> > (d_ROIMem, ROISize, d_WLEPara, FluoNum);
+	gpu_CalculateNearestNeighborDistance << < BlockNum, BlockDim, 0, cstream >> > (d_ImageROI, ROISize, d_WLEPara, FluoNum);
 
 }
 
 
-__global__ void gpu_CalculateNearestNeighborDistance(unsigned short * d_ROIMem, int ROISize, float *d_WLEPara, int FluoNum)
+__global__ void gpu_CalculateNearestNeighborDistance(unsigned short * d_ImageROI, int ROISize, float *d_WLEPara, int FluoNum)
 {
 	int gid = threadIdx.x + blockDim.x*blockIdx.x;
 
@@ -147,9 +147,9 @@ __global__ void gpu_CalculateNearestNeighborDistance(unsigned short * d_ROIMem, 
 
 	if (gid < FluoNum)
 	{
-		int CurX = d_ROIMem[AddrOffset + 0];
-		int CurY = d_ROIMem[AddrOffset + 1];
-		int CurF = d_ROIMem[AddrOffset + 2] + d_ROIMem[AddrOffset + 3] * 65536;
+		int CurX = d_ImageROI[AddrOffset + 0];
+		int CurY = d_ImageROI[AddrOffset + 1];
+		int CurF = d_ImageROI[AddrOffset + 2] + d_ImageROI[AddrOffset + 3] * 65536;
 
 		int NextX = 0;
 		int NextY = 0;
@@ -162,9 +162,9 @@ __global__ void gpu_CalculateNearestNeighborDistance(unsigned short * d_ROIMem, 
 		{
 			int NextAddrOffset = ROIWholeSize*cnt + ROISize*ROISize;
 
-			NextX = d_ROIMem[NextAddrOffset + 0];
-			NextY = d_ROIMem[NextAddrOffset + 1];
-			NextF = d_ROIMem[NextAddrOffset + 2] + d_ROIMem[NextAddrOffset + 3] * 65536;
+			NextX = d_ImageROI[NextAddrOffset + 0];
+			NextY = d_ImageROI[NextAddrOffset + 1];
+			NextF = d_ImageROI[NextAddrOffset + 2] + d_ImageROI[NextAddrOffset + 3] * 65536;
 
 			int DistanceBias = (NextF != CurF)*100000000.0f + (cnt == gid)*100000000.0f;
 

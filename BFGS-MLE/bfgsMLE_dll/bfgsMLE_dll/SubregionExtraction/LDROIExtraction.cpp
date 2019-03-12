@@ -122,7 +122,7 @@ void LDROIExtractData_TypeDef::ROIExtraction(int ROISize, int ImageWidth, int Im
 		RegionNum_CurImage = h_ROINumPerImage[cnt];
 
 
-		unsigned short* d_ROIMem_CurImage = &d_ROIMem[RegionNum_CurBatch*ROIWholeSize];
+		unsigned short* d_ROIMem_CurImage = &d_ImageROI[RegionNum_CurBatch*ROIWholeSize];
 
 		int *d_ROIPosArray_CurImage = &d_ROIPosArray[cnt*MaxFluoNumPerImage*RegionPosInfNum];
 
@@ -136,7 +136,7 @@ void LDROIExtractData_TypeDef::ROIExtraction(int ROISize, int ImageWidth, int Im
 
 	int ROIAddrOffset = TotalROINumber*ROIWholeSize;
 
-	cudaMemcpyAsync(&h_ROIMem[ROIAddrOffset], d_ROIMem, RegionNum_CurBatch * ROIWholeSize * sizeof(short), cudaMemcpyDeviceToHost, cstream);
+	cudaMemcpyAsync(&h_ImageROI[ROIAddrOffset], d_ImageROI, RegionNum_CurBatch * ROIWholeSize * sizeof(short), cudaMemcpyDeviceToHost, cstream);
 	cudaStreamSynchronize(cstream); // wait task of this stream finish
 
 #if(WLE_ENABLE == 1)
@@ -144,7 +144,7 @@ void LDROIExtractData_TypeDef::ROIExtraction(int ROISize, int ImageWidth, int Im
 	// estimate WLE parameter
 	int WLEParaAddrOffset = TotalROINumber*WLE_ParaNumber;
 
-	WLEParameterEstimator->WLEParameterEstimate(&h_ROIMem[ROIAddrOffset], ROISize, RegionNum_CurBatch, cstream);
+	WLEParameterEstimator->WLEParameterEstimate(&h_ImageROI[ROIAddrOffset], ROISize, RegionNum_CurBatch, cstream);
 
 	cudaMemcpyAsync(&WLEParameterEstimator->h_WLEPara[WLEParaAddrOffset], WLEParameterEstimator->d_WLEPara, RegionNum_CurBatch * WLE_ParaNumber * sizeof(float), cudaMemcpyDeviceToHost, cstream);
 	cudaStreamSynchronize(cstream); // wait task of this stream finish
@@ -301,8 +301,8 @@ void LDROIExtractData_TypeDef::Init(LocalizationPara & LocPara)
 	// extracted molecular ROI data
 	const int ROIWholeSize = LocPara.ROISize*(LocPara.ROISize + 1);
 
-	err = cudaMallocHost((void **)&h_ROIMem, MaxPointNum * ROIWholeSize * sizeof(unsigned short));
-	err = cudaMalloc((void **)&d_ROIMem, MaxPointNum * ROIWholeSize * sizeof(unsigned short));
+	err = cudaMallocHost((void **)&h_ImageROI, MaxPointNum * ROIWholeSize * sizeof(unsigned short));
+	err = cudaMalloc((void **)&d_ImageROI, MaxPointNum * ROIWholeSize * sizeof(unsigned short));
 	
 	err = cudaMallocHost((void **)&h_ROINumPerImage, MaxBatchImgNum * sizeof(int));
 	err = cudaMalloc((void **)&d_ROINumPerImage, MaxBatchImgNum * sizeof(int));
@@ -368,8 +368,8 @@ void LDROIExtractData_TypeDef::Deinit()
 
 
 	// extracted molecular ROI data
-	err = cudaFreeHost(h_ROIMem);
-	err = cudaFree(d_ROIMem);
+	err = cudaFreeHost(h_ImageROI);
+	err = cudaFree(d_ImageROI);
 
 	err = cudaFreeHost(h_ROINumPerImage);
 	err = cudaFree(d_ROINumPerImage);
@@ -390,14 +390,14 @@ void LDROIExtractData_TypeDef::ROIMergeForConsecutiveFitting(int ROISize, int Fl
 {
 const int ROIWholeSize = ROISize*(ROISize + 1);
 
-cudaMemcpyAsync(d_ROIMem, h_ROIMem, FluoNum * ROIWholeSize * sizeof(short), cudaMemcpyHostToDevice, cstream);
+cudaMemcpyAsync(d_ImageROI, h_ImageROI, FluoNum * ROIWholeSize * sizeof(short), cudaMemcpyHostToDevice, cstream);
 cudaMemcpyAsync(WLEParameterEstimator->d_WLEPara, WLEParameterEstimator->h_WLEPara, FluoNum * WLE_ParaNumber * sizeof(float), cudaMemcpyHostToDevice, cstream);
 
 
-MergeConsecutiveROI(d_ROIMem, WLEParameterEstimator->d_WLEPara, ROISize, d_ForwardLinkID, d_BackwardLinkID, d_ConsecutiveNum, FluoNum, cstream);
+MergeConsecutiveROI(d_ImageROI, WLEParameterEstimator->d_WLEPara, ROISize, d_ForwardLinkID, d_BackwardLinkID, d_ConsecutiveNum, FluoNum, cstream);
 
 
-cudaMemcpyAsync(h_ROIMem, d_ROIMem, FluoNum * ROIWholeSize * sizeof(short), cudaMemcpyDeviceToHost, cstream);
+cudaMemcpyAsync(h_ImageROI, d_ImageROI, FluoNum * ROIWholeSize * sizeof(short), cudaMemcpyDeviceToHost, cstream);
 cudaMemcpyAsync(WLEParameterEstimator->h_WLEPara, WLEParameterEstimator->d_WLEPara, FluoNum * WLE_ParaNumber * sizeof(float), cudaMemcpyDeviceToHost, cstream);
 
 

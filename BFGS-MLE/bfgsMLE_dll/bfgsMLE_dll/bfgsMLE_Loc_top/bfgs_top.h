@@ -25,14 +25,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "cudaWrapper.h"
 
 
+#include "bfgsMLE_Single_Emitter_Fit.h"
+#include "bfgsMLE_Multi_Emitter_Fit.h"
+
 
 
 // both 2d and 3d localization data structure
 class LDLocData_TypeDef
 {
 public:
-	unsigned short * h_SubRegion;
-	unsigned short * d_SubRegion;
+	unsigned short * h_ImageROI;
+	unsigned short * d_ImageROI;
 
 	float * h_LocArry;
 	float * d_LocArry;
@@ -40,25 +43,36 @@ public:
 	float *d_WLEPara;
 
 
-	// Consecutive finding from adjecent frames
-	// same with consecutive fitting method
-	int *d_ForwardLinkID;
-	int *d_BackwardLinkID;
-	int *d_ConsecutiveNum;
-
-	int *h_OntimeDistrib; 
-	int *d_OntimeDistrib; 
-
-	int *h_ValidFluoNum; // for ontime distribution 
-	int *d_ValidFluoNum; // for ontime distribution 
-
+	// on time calculation
 	float *h_OntimeRatio; // for display and time vatiation
+
 
 	// valid number after localization, still include filtered molecule number
 	int oValidFluoNum;
 
+public:
+
+	// multi emitter fitting
+	int * h_MultiFitFluoNum;
+	int * d_MultiFitFluoNum;
+	int * d_MultiFitFluoPos; // position id
+
+	float MultiFitRatio;
 	
 private:
+	// on time calculation, to find Consecutive molecules in adjecent frames
+	int *d_ForwardLinkID;
+	int *d_BackwardLinkID;
+	int *d_ConsecutiveNum;
+
+
+	int *h_OntimeDistrib;
+	int *d_OntimeDistrib;
+
+	int *h_ValidFluoNum; // for ontime distribution 
+	int *d_ValidFluoNum; // for ontime distribution 
+
+
 	// for loc filter
 	float *h_SNRSumUp;
 	int *h_ValidNum;
@@ -71,7 +85,7 @@ public:
 	void Init(LocalizationPara & LocPara); // create CPU&GPU memory
 	void Deinit(LocalizationPara & LocPara); // release CPU&GPU memory
 
-	void BFGS_MLELocalization(unsigned short * h_SubRegion, float *h_WLEPara, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
+	void BFGS_MLELocalization(unsigned short * h_ImageROI, float *h_WLEPara, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
 	
 	void OntimeCalc(LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
@@ -83,8 +97,8 @@ public:
 	static int GetFirstFrame(float * h_LocArry, int FluoNum);
 	static int GetLastFrame(float * h_LocArry, int FluoNum);
 
-	static int GetFirstFrameFromROI(unsigned short * h_SubRegion, int ROISize, int FluoNum);
-	static int GetLastFrameFromROI(unsigned short * h_SubRegion, int ROISize, int FluoNum);
+	static int GetFirstFrameFromROI(unsigned short * h_ImageROI, int ROISize, int FluoNum);
+	static int GetLastFrameFromROI(unsigned short * h_ImageROI, int ROISize, int FluoNum);
 
 
 	// two optional localization precision method, only suitable for 2d localization with symmetric Gaussian PSF
@@ -96,8 +110,3 @@ private:
 };
 
 
-
-// bfgs 2D and as3D loc function
-void LDLoc_BFGS_MLELocalizationGS2D(float * d_LocArry, unsigned short * d_SubRegion, float *d_WLEPara, LocalizationPara& LocPara, int FluoNum, cudaStream_t cstream);
-
-void LDLoc_BFGS_MLELocalizationAS3D(float * d_LocArry, unsigned short * d_SubRegion, float *d_WLEPara, LocalizationPara& LocPara, int FluoNum, cudaStream_t cstream);

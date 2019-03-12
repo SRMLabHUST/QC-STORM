@@ -30,7 +30,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 
-void LDLoc_BFGS_MLELocalizationGS2D(float * d_LocArry, unsigned short * d_SubRegion, float *d_WLEPara, LocalizationPara& LocPara, int FluoNum, cudaStream_t cstream)
+void LDLoc_BFGS_MLELocalizationGS2D(float * d_LocArry, unsigned short * d_ImageROI, float *d_WLEPara, int * d_MultiFitFluoNum, int * d_MultiFitFluoPos, LocalizationPara& LocPara, int FluoNum, cudaStream_t cstream)
 {
 	cudaError_t err;
 	// MaxFluoNum must be the integer multiples of 32
@@ -45,25 +45,25 @@ void LDLoc_BFGS_MLELocalizationGS2D(float * d_LocArry, unsigned short * d_SubReg
 	switch (ROISize)
 	{	
 	case 5:
-		bfgsMLELoc_Gauss2D<5, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
+		bfgsMLELoc_Gauss2D<5, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_ImageROI, d_WLEPara, d_MultiFitFluoNum, d_MultiFitFluoPos, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
 		break;
 	case 7:
-		bfgsMLELoc_Gauss2D<7, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
+		bfgsMLELoc_Gauss2D<7, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_ImageROI, d_WLEPara, d_MultiFitFluoNum, d_MultiFitFluoPos, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
 		break;
 	case 9:
-		bfgsMLELoc_Gauss2D<9, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
+		bfgsMLELoc_Gauss2D<9, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_ImageROI, d_WLEPara, d_MultiFitFluoNum, d_MultiFitFluoPos, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
 		break;
 	case 11:
-		bfgsMLELoc_Gauss2D<11, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
+		bfgsMLELoc_Gauss2D<11, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_ImageROI, d_WLEPara, d_MultiFitFluoNum, d_MultiFitFluoPos, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
 		break;
 	case 13:
-		bfgsMLELoc_Gauss2D<13, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
+		bfgsMLELoc_Gauss2D<13, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_ImageROI, d_WLEPara, d_MultiFitFluoNum, d_MultiFitFluoPos, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
 		break;
 	case 15:
-		bfgsMLELoc_Gauss2D<15, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
+		bfgsMLELoc_Gauss2D<15, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_ImageROI, d_WLEPara, d_MultiFitFluoNum, d_MultiFitFluoPos, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
 		break;
 	case 17:
-		bfgsMLELoc_Gauss2D<17, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_SubRegion, d_WLEPara, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
+		bfgsMLELoc_Gauss2D<17, FitParaNum_2D> << <BlockNum, BlockDim, 0, cstream >> > (d_LocArry, d_ImageROI, d_WLEPara, d_MultiFitFluoNum, d_MultiFitFluoPos, LocPara.Offset, LocPara.KAdc, LocPara.QE, FluoNum);
 		break;
 
 	default:

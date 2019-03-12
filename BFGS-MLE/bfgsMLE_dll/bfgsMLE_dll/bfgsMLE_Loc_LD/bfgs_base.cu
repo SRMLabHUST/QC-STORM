@@ -31,7 +31,6 @@ LocalizationPara::LocalizationPara()
 
 	BadFitFilterWithAutoThEn = 1;
 
-	BackgroundNoiseFilterEn = 1;
 
 	ConsecFit_DistanceTh_nm = 80.0f;
 	ConsecFitEn = 0;
@@ -54,7 +53,7 @@ LocalizationPara::LocalizationPara()
 	MinZDepth = -500;
 	MaxZDepth = 500;
 
-	ZDepthCorrFactor = 0.75f;
+	ZDepthCorrFactor = 1.0f;
 
 	p4 = 0;
 	p3 = 0;

@@ -44,8 +44,8 @@ public:
 	unsigned short *d_RawImg;
 
 	// extracted molecular ROI data
-	unsigned short * h_ROIMem;
-	unsigned short * d_ROIMem;
+	unsigned short * h_ImageROI;
+	unsigned short * d_ImageROI;
 
 	WLEParameterEstimation_TypeDef *WLEParameterEstimator;
 
@@ -141,7 +141,7 @@ void ImageVarianceCalcOnSelectRegion(unsigned short *d_RawImg, float *d_MeanData
 void ROIFindingLD(unsigned short *d_RawImg_Smoothed, int *d_ROIPosArray, int *d_ROINumPerImage, float ImageVariance, int ROISize, int ImageWidth, int BatchedImageHigh, int ImageHigh, cudaStream_t cstream);
 
 
-void SubregionExtractionLD(unsigned short *d_RawImg, unsigned short *d_ROIMem, int *d_ROIPosArray, int ROISize, int RegionNum_CurImage, int ImageWidth, int BatchedImageHigh, int ImageHigh, int StartFrame, cudaStream_t cstream);
+void SubregionExtractionLD(unsigned short *d_RawImg, unsigned short *d_ImageROI, int *d_ROIPosArray, int ROISize, int RegionNum_CurImage, int ImageWidth, int BatchedImageHigh, int ImageHigh, int StartFrame, cudaStream_t cstream);
 
 
 

@@ -26,7 +26,7 @@ __host__ __device__ int FindPositionID_0(float *x_i, float xn, int InputDataLen,
 
 
 template <int ROISize>
-__global__ void gpu_CalculatePSFWidth(unsigned short * d_ROIMem, float *d_WLEPara, int FluoNum)
+__global__ void gpu_CalculatePSFWidth(unsigned short * d_ImageROI, float *d_WLEPara, int FluoNum)
 {
 	// margin, valid data, margin
 	enum {
@@ -44,7 +44,7 @@ __global__ void gpu_CalculatePSFWidth(unsigned short * d_ROIMem, float *d_WLEPar
 
 	const int CurROIAddr = ROIWholeSize*gid;
 
-	unsigned short(*pROI)[ROISize] = (unsigned short(*)[ROISize])&d_ROIMem[CurROIAddr];
+	unsigned short(*pROI)[ROISize] = (unsigned short(*)[ROISize])&d_ImageROI[CurROIAddr];
 
 
 	float(*pWLEPara)[WLE_ParaNumber] = (float(*)[WLE_ParaNumber])d_WLEPara;

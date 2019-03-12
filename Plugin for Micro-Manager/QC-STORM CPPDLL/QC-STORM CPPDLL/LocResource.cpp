@@ -59,7 +59,6 @@ LDROIExtractData_TypeDef LDROIExtractData;
 
 LDLocData_TypeDef LDLocData;
 
-BackgroundNoiseFilter_TypeDef BackgroundNoiseFilter;
 
 ConsecutiveFit_TypeDef ConsecutiveFitData;
 

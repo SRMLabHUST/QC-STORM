@@ -20,13 +20,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "WLEParaEstimation_Parameters.h"
 
 
-// fitting parameters for astigmatism 3d  single emitter
-#define FitParaNum_AS3D			6
+// MLE fitting iteration number 
 
 #define IterateNum_AS3D			11  // total iteration number, fixed iteration number
 #define IterateNum_AS3D_bs		11 // bisection iteration to find best walk length
 
-// fitting parameters
+
+// number of fitting parameter
+#define FitParaNum_AS3D			6
+
+// fitting parameters ID
 #define FitAS3D_Peak				0
 #define FitAS3D_XPos				1
 #define FitAS3D_YPos				2
@@ -35,41 +38,37 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define FitAS3D_Bakg				5
 
 
-template <int ROISize, int SharedImageWidth1, int FitParaNum, int IterateNum, int IterateNum_bs>
-__device__ void MLELocalization_AS3D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float d0[][ThreadsPerBlock], float D0[], float* WLE_Weight, int tid);
+template <int ROISize, int ROIPixelNum, int FitParaNum, int IterateNum, int IterateNum_bs>
+__device__ void MLELocalization_AS3D(float ImageROI[][ROIPixelNum], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float d0[][ThreadsPerBlock], float D0[], float* WLE_Weight, int tid);
 
-template <int ROISize, int SharedImageWidth1, int FitParaNum>
-__device__ void poissonfGradient_AS3D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float* WLE_Weight, int tid);
-
-
-template <int ROISize, int SharedImageWidth1, int FitParaNum>
-__device__ float MLEFit_TargetF_AS3D(float subimg[][SharedImageWidth1], float Ininf[], float* WLE_Weight, int tid);
+template <int ROISize, int ROIPixelNum, int FitParaNum>
+__device__ void poissonfGradient_AS3D(float ImageROI[][ROIPixelNum], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float* WLE_Weight, int tid);
 
 
+template <int ROISize, int ROIPixelNum, int FitParaNum>
+__device__ float MLEFit_TargetF_AS3D(float ImageROI[][ROIPixelNum], float Ininf[], float* WLE_Weight, int tid);
 
-template <int ROISize, int SharedImageWidth1, int FitParaNum>
-__device__ void PreEstimation_AS3D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float WLE_SigmaX, float WLE_SigmaY, int tid);
+
+
+template <int ROISize, int ROIPixelNum, int FitParaNum>
+__device__ void PreEstimation_AS3D(float ImageROI[][ROIPixelNum], float Ininf[][ThreadsPerBlock], float WLE_SigmaX, float WLE_SigmaY, int tid);
 
 
 // algorithm core codes
 template <int ROISize, int FitParaNum>
-__global__ void bfgsMLELoc_AS3D(float *d_LocArry, unsigned short *d_SubRegion, float *d_WLEPara, float Offset, float kadc, float QE, float ZDepthCorrFactor, float p4, float p3, float p2, float p1, float p0, int FluoNum)
+__global__ void bfgsMLELoc_AS3D(float *d_LocArry, unsigned short *d_ImageROI, float *d_WLEPara, int * d_MultiFitFluoNum, int * d_MultiFitFluoPos, float Offset, float kadc, float QE, float ZDepthCorrFactor, float p4, float p3, float p2, float p1, float p0, int FluoNum)
 {
 	enum {
 		ROIPixelNum = (ROISize*ROISize),
 		ROIWholeSize = (ROISize*(ROISize + 1)),
 
-		// avoid bank conflict, if no conflict, +1 can be avoid
-		SharedImageWidth1 = (ROIWholeSize + 1),
+		ROISize_Half = (int)(ROISize / 2),
 
-		HalfRegionLen = (int)(ROISize / 2),
-
-		LoadLoopNum = ((ROIWholeSize + ThreadsPerBlock - 1) / ThreadsPerBlock)
-
+		LoadLoopNum = ((ROIPixelNum + ThreadsPerBlock - 1) / ThreadsPerBlock)
 	};
 
 
-#define XYPosVaryBound			1.5f
+#define XYPosVaryBound			2.5f
 
 	float XYLBound = ROISize / 2.0f - XYPosVaryBound; // 1.5f
 	float XYUBound = ROISize / 2.0f + XYPosVaryBound; // 1.5f
@@ -77,9 +76,10 @@ __global__ void bfgsMLELoc_AS3D(float *d_LocArry, unsigned short *d_SubRegion, f
 	float SigmaLBound = 0.8f;
 	float SigmaUBound = ROISize / 2.0f; // 2.35f
 
+	float Simga_Max_Th = ROISize / 1.9f / 2.35f;
 
 	//
-	__shared__ float ImageRegion[ThreadsPerBlock][SharedImageWidth1];
+	__shared__ float ImageROI[ThreadsPerBlock][ROIPixelNum];
 	__shared__ float D0[ThreadsPerBlock][FitParaNum*FitParaNum];	// inv of matrix hessian 
 
 	// avoid bank conflict
@@ -93,6 +93,12 @@ __global__ void bfgsMLELoc_AS3D(float *d_LocArry, unsigned short *d_SubRegion, f
 
 	int tid = threadIdx.x;
 
+	int CurFluoID = min(gid, FluoNum);
+
+
+	int XOffset = d_ImageROI[CurFluoID*ROIWholeSize + ROIPixelNum + 0];
+	int YOffset = d_ImageROI[CurFluoID*ROIWholeSize + ROIPixelNum + 1];
+	int CurFrame = d_ImageROI[CurFluoID*ROIWholeSize + ROIPixelNum + 2] + 65536 * d_ImageROI[CurFluoID*ROIWholeSize + ROIPixelNum + 3];
 
 	//	if (gid >= FluoNum)return; // conflict with the __syncthreads below
 	// it's not necessary since d_LocArry size is larger than total fluo number
@@ -116,6 +122,9 @@ __global__ void bfgsMLELoc_AS3D(float *d_LocArry, unsigned short *d_SubRegion, f
 	for (int fcnt = 0; fcnt < ThreadsPerBlock; fcnt++)
 	{
 		int CurFluoId = gid_0 + fcnt;
+
+		CurFluoId = min(CurFluoId, FluoNum);
+
 		int AddrOffset = CurFluoId*ROIWholeSize;
 
 #pragma unroll
@@ -125,14 +134,11 @@ __global__ void bfgsMLELoc_AS3D(float *d_LocArry, unsigned short *d_SubRegion, f
 
 			if (CurLoadId < ROIPixelNum)
 			{
-				ImageRegion[fcnt][CurLoadId] = fmaxf((d_SubRegion[AddrOffset + CurLoadId] - Offset)*kadc, 1.0f);
-			}
-			else
-			{
-				ImageRegion[fcnt][CurLoadId] = d_SubRegion[AddrOffset + CurLoadId];
+				ImageROI[fcnt][CurLoadId] = fmaxf((d_ImageROI[AddrOffset + CurLoadId] - Offset)*kadc, 1.0f);
 			}
 		}
 	}
+
 
 
 	int rcnt, ccnt;
@@ -182,7 +188,7 @@ __global__ void bfgsMLELoc_AS3D(float *d_LocArry, unsigned short *d_SubRegion, f
 
 
 		// pre-estimation
-		PreEstimation_AS3D<ROISize, SharedImageWidth1, FitParaNum>(ImageRegion, Ininf, WLE_SigmaX, WLE_SigmaY, tid);
+		PreEstimation_AS3D<ROISize, ROIPixelNum, FitParaNum>(ImageROI, Ininf, WLE_SigmaX, WLE_SigmaY, tid);
 
 
 		if (MoleculeType == MoleculeType_MLEFit)
@@ -209,17 +215,8 @@ __global__ void bfgsMLELoc_AS3D(float *d_LocArry, unsigned short *d_SubRegion, f
 		WLEWeightsCalc<ROISize>(WLE_Weight, WLE_SigmaX, WLE_SigmaY);
 
 
-		poissonfGradient_AS3D<ROISize, SharedImageWidth1, FitParaNum>(ImageRegion, Ininf, grad, WLE_Weight, tid);
 
-#pragma unroll
-		for (rcnt = 0; rcnt < FitParaNum; rcnt++)
-		{
-			d0[rcnt][tid] = -grad[rcnt][tid];
-
-		}
-
-
-		MLELocalization_AS3D<ROISize, SharedImageWidth1, FitParaNum, IterateNum_AS3D, IterateNum_AS3D_bs>(ImageRegion, Ininf, grad, d0, &D0[tid][0], WLE_Weight, tid);
+		MLELocalization_AS3D<ROISize, ROIPixelNum, FitParaNum, IterateNum_AS3D, IterateNum_AS3D_bs>(ImageROI, Ininf, grad, d0, &D0[tid][0], WLE_Weight, tid);
 
 		// remove scaling factor
 		float PeakPhoton = Ininf[FitAS3D_Peak][tid] * AScalFactor;
@@ -252,20 +249,18 @@ __global__ void bfgsMLELoc_AS3D(float *d_LocArry, unsigned short *d_SubRegion, f
 
 		float SigmaDif = SimgaX*SimgaX - SimgaY*SimgaY; //
 
-
-
 		float CurZPos = p4*powf(SigmaDif, 4) + p3*powf(SigmaDif, 3) + p2*powf(SigmaDif, 2) + p1*SigmaDif + p0; // nm
+		CurZPos = CurZPos*ZDepthCorrFactor;
 
+		float XPos = FittedXPos - ROISize_Half + XOffset; // X
+		float YPos = FittedYPos - ROISize_Half + YOffset; // Y
 
-		float XPos = FittedXPos - HalfRegionLen + ImageRegion[tid][ROIPixelNum + 0]; // X
-		float YPos = FittedYPos - HalfRegionLen + ImageRegion[tid][ROIPixelNum + 1]; // Y
-
-		int CurFrame = ImageRegion[tid][ROIPixelNum + 3] * 65536 + ImageRegion[tid][ROIPixelNum + 2];
+		float MeanSigma = (SimgaX + SimgaY) / 2;
 
 #if(WLE_TEST)
 		if (1) //
 #else
-		if ((MoleculeType <= 1) && (FittedXPos > XYLBound) && (FittedXPos < XYUBound) && (FittedYPos > XYLBound) && (FittedYPos < XYUBound) && (SimgaX > SigmaLBound) && (SimgaX < SigmaUBound) && (SimgaY > SigmaLBound) && (SimgaY < SigmaUBound) && (abs(CurZPos) < 1000.0f))
+		if ((FittedXPos > XYLBound) && (FittedXPos < XYUBound) && (FittedYPos > XYLBound) && (FittedYPos < XYUBound) && (SimgaX > SigmaLBound) && (SimgaX < SigmaUBound) && (SimgaY > SigmaLBound) && (SimgaY < SigmaUBound))
 #endif //WLE_TEST
 		{
 			// for both online and offline localization
@@ -273,7 +268,7 @@ __global__ void bfgsMLELoc_AS3D(float *d_LocArry, unsigned short *d_SubRegion, f
 			pLocArry[gid][Pos_PPho] = PeakPhoton; // peak photon
 			pLocArry[gid][Pos_XPos] = XPos; // the unit is pixel
 			pLocArry[gid][Pos_YPos] = YPos; // the unit is pixel
-			pLocArry[gid][Pos_ZPos] = CurZPos*ZDepthCorrFactor; // z depth, the unit is nm
+			pLocArry[gid][Pos_ZPos] = CurZPos; // z depth, the unit is nm
 			pLocArry[gid][Pos_SigX] = SimgaX; // sigma x, the unit is pixel
 			pLocArry[gid][Pos_SigY] = SimgaY; // sigma y, the unit is pixel
 			pLocArry[gid][Pos_TPho] = TotalPhoton;   // total photon
@@ -281,10 +276,25 @@ __global__ void bfgsMLELoc_AS3D(float *d_LocArry, unsigned short *d_SubRegion, f
 			pLocArry[gid][Pos_PSNR] = CurSNR;        // peal snr
 			pLocArry[gid][Pos_Frme] = CurFrame; // frame
 
+
+			// mark position for multi emitter fitting
+			if ((CurSNR >= 5) && ((MoleculeType > 1) || (MeanSigma >= Simga_Max_Th)))
+			{
+				int CurMultiFitNum = atomicAdd(d_MultiFitFluoNum, 1);
+				d_MultiFitFluoPos[CurMultiFitNum] = gid;
+			}
+
 		}
 		else
 		{
-			// invalid point
+			// mark position for multi emitter fitting
+			if (CurSNR >= 5)
+			{
+				int CurMultiFitNum = atomicAdd(d_MultiFitFluoNum, 1);
+				d_MultiFitFluoPos[CurMultiFitNum] = gid;
+			}
+
+			// remove invalid point
 #pragma unroll
 			for (rcnt = 0; rcnt < OutParaNumGS2D; rcnt++)
 			{
@@ -292,13 +302,12 @@ __global__ void bfgsMLELoc_AS3D(float *d_LocArry, unsigned short *d_SubRegion, f
 
 			}
 		}
+
 	}
-
-
 }
 
-template <int ROISize, int SharedImageWidth1, int FitParaNum, int IterateNum, int IterateNum_bs>
-__device__ void MLELocalization_AS3D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float d0[][ThreadsPerBlock], float D0[], float* WLE_Weight, int tid)
+template <int ROISize, int ROIPixelNum, int FitParaNum, int IterateNum, int IterateNum_bs>
+__device__ void MLELocalization_AS3D(float ImageROI[][ROIPixelNum], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float d0[][ThreadsPerBlock], float D0[], float* WLE_Weight, int tid)
 {
 	// adjust d0
 	float td0[FitParaNum];
@@ -308,29 +317,31 @@ __device__ void MLELocalization_AS3D(float subimg[][SharedImageWidth1], float In
 	float yk[FitParaNum];
 	float tgrad[FitParaNum];
 
-	int cnt = 0;
-	int rcnt;
-
-	int itcnt = 0; // iteration number
-
-	// find work length, divide 2 method
-
-
-	float scale;
 
 	float xd[FitParaNum * 2];
 
 	float ddat[2];
 	float dpos[2];
 
-	int xdsel = 0;
 
-	for (itcnt = 0; itcnt<IterateNum; itcnt++)
+	// initialize
+	poissonfGradient_AS3D<ROISize, ROIPixelNum, FitParaNum>(ImageROI, Ininf, grad, WLE_Weight, tid);
+
+#pragma unroll
+	for (int rcnt = 0; rcnt < FitParaNum; rcnt++)
+	{
+		d0[rcnt][tid] = -grad[rcnt][tid];
+
+	}
+
+
+	// fitting iteration
+	for (int itcnt = 0; itcnt<IterateNum; itcnt++)
 	{
 		td0_total = 0;
 		// adjust d0
 #pragma unroll
-		for (rcnt = 0; rcnt < FitParaNum; rcnt++)
+		for (int rcnt = 0; rcnt < FitParaNum; rcnt++)
 		{
 			td0[rcnt] = abs(d0[rcnt][tid]);
 			td0_total += td0[rcnt];
@@ -340,7 +351,7 @@ __device__ void MLELocalization_AS3D(float subimg[][SharedImageWidth1], float In
 
 
 #pragma unroll
-		for (rcnt = 0; rcnt < FitParaNum; rcnt++)
+		for (int rcnt = 0; rcnt < FitParaNum; rcnt++)
 		{
 			d0[rcnt][tid] = d0[rcnt][tid] * td0_total;
 
@@ -353,13 +364,14 @@ __device__ void MLELocalization_AS3D(float subimg[][SharedImageWidth1], float In
 		VectorAddMul1<FitParaNum>(&xd[0], Ininf, d0, 0.0001f, tid);
 		VectorAddMul1<FitParaNum>(&xd[FitParaNum], Ininf, d0, 1.0f, tid);
 
-		ddat[0] = MLEFit_TargetF_AS3D<ROISize, SharedImageWidth1, FitParaNum>(subimg, &xd[0], WLE_Weight, tid);
-		ddat[1] = MLEFit_TargetF_AS3D<ROISize, SharedImageWidth1, FitParaNum>(subimg, &xd[FitParaNum], WLE_Weight, tid);
-		// 
-		for (cnt = 0; cnt < IterateNum_bs; cnt++)
+		ddat[0] = MLEFit_TargetF_AS3D<ROISize, ROIPixelNum, FitParaNum>(ImageROI, &xd[0], WLE_Weight, tid);
+		ddat[1] = MLEFit_TargetF_AS3D<ROISize, ROIPixelNum, FitParaNum>(ImageROI, &xd[FitParaNum], WLE_Weight, tid);
+		
+		// bisection method to find optimal walk length
+		for (int cnt = 0; cnt < IterateNum_bs; cnt++)
 		{
 			// which part shrink
-			xdsel = (ddat[0] < ddat[1]);
+			int xdsel = (ddat[0] < ddat[1]);
 
 
 			dpos[xdsel] = (dpos[0] + dpos[1])*0.5f; //  /2.0f which one shift
@@ -367,16 +379,16 @@ __device__ void MLELocalization_AS3D(float subimg[][SharedImageWidth1], float In
 			if (cnt < IterateNum_bs - 1)
 			{
 				VectorAddMul1<FitParaNum>(&xd[xdsel*FitParaNum], Ininf, d0, dpos[xdsel], tid);// xd=ininf+d0*scale
-				ddat[xdsel] = MLEFit_TargetF_AS3D<ROISize, SharedImageWidth1, FitParaNum>(subimg, &xd[xdsel*FitParaNum], WLE_Weight, tid);
+				ddat[xdsel] = MLEFit_TargetF_AS3D<ROISize, ROIPixelNum, FitParaNum>(ImageROI, &xd[xdsel*FitParaNum], WLE_Weight, tid);
 			}
 
 		}
-		scale = (dpos[0] + dpos[1])*0.5f; //  /2.0f calculated direction
+		float scale = (dpos[0] + dpos[1])*0.5f; //  /2.0f calculated direction
 
 		// sk 		= d0*base;
 		// inInf 	= inInf+d0*base;
 #pragma unroll
-		for (rcnt = 0; rcnt < FitParaNum; rcnt++)
+		for (int rcnt = 0; rcnt < FitParaNum; rcnt++)
 		{
 			sk[rcnt] = d0[rcnt][tid] * scale;
 			Ininf[rcnt][tid] = Ininf[rcnt][tid] + sk[rcnt];
@@ -390,15 +402,15 @@ __device__ void MLELocalization_AS3D(float subimg[][SharedImageWidth1], float In
 		{
 			// tgrad = grad;
 #pragma unroll
-			for (rcnt = 0; rcnt < FitParaNum; rcnt++)
+			for (int rcnt = 0; rcnt < FitParaNum; rcnt++)
 			{
 				tgrad[rcnt] = grad[rcnt][tid];
 			}
 
-			poissonfGradient_AS3D<ROISize, SharedImageWidth1, FitParaNum>(subimg, Ininf, grad, WLE_Weight, tid);
+			poissonfGradient_AS3D<ROISize, ROIPixelNum, FitParaNum>(ImageROI, Ininf, grad, WLE_Weight, tid);
 
 #pragma unroll
-			for (rcnt = 0; rcnt < FitParaNum; rcnt++)
+			for (int rcnt = 0; rcnt < FitParaNum; rcnt++)
 			{
 				yk[rcnt] = grad[rcnt][tid] - tgrad[rcnt];
 			}
@@ -410,8 +422,8 @@ __device__ void MLELocalization_AS3D(float subimg[][SharedImageWidth1], float In
 }
 
 
-template <int ROISize, int SharedImageWidth1, int FitParaNum>
-__device__ void poissonfGradient_AS3D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float* WLE_Weight, int tid)
+template <int ROISize, int ROIPixelNum, int FitParaNum>
+__device__ void poissonfGradient_AS3D(float ImageROI[][ROIPixelNum], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float* WLE_Weight, int tid)
 {
 	float tIninf[FitParaNum];
 	float tgradn;
@@ -427,10 +439,10 @@ __device__ void poissonfGradient_AS3D(float subimg[][SharedImageWidth1], float I
 	for (cnt = 0; cnt<FitParaNum; cnt++)
 	{
 		tIninf[cnt] = tIninf[cnt] - 0.002f;
-		tgradn = MLEFit_TargetF_AS3D<ROISize, SharedImageWidth1, FitParaNum>(subimg, tIninf, WLE_Weight, tid);
+		tgradn = MLEFit_TargetF_AS3D<ROISize, ROIPixelNum, FitParaNum>(ImageROI, tIninf, WLE_Weight, tid);
 
 		tIninf[cnt] = tIninf[cnt] + 0.004f;
-		tgradp = MLEFit_TargetF_AS3D<ROISize, SharedImageWidth1, FitParaNum>(subimg, tIninf, WLE_Weight, tid);
+		tgradp = MLEFit_TargetF_AS3D<ROISize, ROIPixelNum, FitParaNum>(ImageROI, tIninf, WLE_Weight, tid);
 
 		grad[cnt][tid] = (tgradp - tgradn)*250.0f; // /0.004f;
 		tIninf[cnt] = tIninf[cnt] - 0.002f;
@@ -439,8 +451,8 @@ __device__ void poissonfGradient_AS3D(float subimg[][SharedImageWidth1], float I
 
 
 
-template <int ROISize, int SharedImageWidth1, int FitParaNum>
-__device__ float MLEFit_TargetF_AS3D(float subimg[][SharedImageWidth1], float Ininf[], float* WLE_Weight, int tid)
+template <int ROISize, int ROIPixelNum, int FitParaNum>
+__device__ float MLEFit_TargetF_AS3D(float ImageROI[][ROIPixelNum], float Ininf[], float* WLE_Weight, int tid)
 {
 	int row, col;
 
@@ -450,7 +462,7 @@ __device__ float MLEFit_TargetF_AS3D(float subimg[][SharedImageWidth1], float In
 	float pixval;
 	float tdat;
 
-	float(*pSubImg)[ROISize] = (float(*)[ROISize])&subimg[tid][0];
+	float(*pSubImg)[ROISize] = (float(*)[ROISize])&ImageROI[tid][0];
 
 	float(*pWLE_Weight)[ROISize] = (float(*)[ROISize])WLE_Weight;
 
@@ -475,7 +487,7 @@ __device__ float MLEFit_TargetF_AS3D(float subimg[][SharedImageWidth1], float In
 		for (col = 0; col<ROISize; col++)
 		{
 			// pf goal function
-			pixval = pSubImg[row][col]; //subimg[tid][row*ROISize + col]; // coloffset+
+			pixval = pSubImg[row][col]; //ImageROI[tid][row*ROISize + col]; // coloffset+
 
 			rowpos = row + 0.5f; // pixel center position
 			colpos = col + 0.5f;
@@ -502,10 +514,10 @@ __device__ float MLEFit_TargetF_AS3D(float subimg[][SharedImageWidth1], float In
 }
 
 
-template <int ROISize, int SharedImageWidth1, int FitParaNum>
-__device__ void PreEstimation_AS3D(float subimg[][SharedImageWidth1], float Ininf[][ThreadsPerBlock], float WLE_SigmaX, float WLE_SigmaY, int tid)
+template <int ROISize, int ROIPixelNum, int FitParaNum>
+__device__ void PreEstimation_AS3D(float ImageROI[][ROIPixelNum], float Ininf[][ThreadsPerBlock], float WLE_SigmaX, float WLE_SigmaY, int tid)
 {
-	float(*pSubImg)[ROISize] = (float(*)[ROISize])&subimg[tid][0];
+	float(*pSubImg)[ROISize] = (float(*)[ROISize])&ImageROI[tid][0];
 
 	int CenterPos = (int)(ROISize / 2);
 
@@ -541,8 +553,8 @@ __device__ void PreEstimation_AS3D(float subimg[][SharedImageWidth1], float Inin
 	float SigmaY = WLE_SigmaY;
 
 #else
-	float SigmaX = ROISize / 2.0f / 2.35f;
-	float SigmaY = ROISize / 2.0f / 2.35f;
+	float SigmaX = ROISize / 2.2f / 2.35f;
+	float SigmaY = ROISize / 2.2f / 2.35f;
 
 #endif //WLE_ENABLE
 

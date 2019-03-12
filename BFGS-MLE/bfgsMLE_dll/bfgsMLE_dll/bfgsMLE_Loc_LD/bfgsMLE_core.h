@@ -28,7 +28,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 // enable weighted MLE
-#define WLE_ENABLE				1
+#define WLE_ENABLE								1
+
+#define WLE_ENABLE_MultiEmitterFit				1
 
 
 // enable for fair comparasion, disable for regular use

@@ -7,7 +7,7 @@
 
 __global__ void gpuROIFindingLD(unsigned short *d_RawImg_Smoothed, int *d_ROIPosArray, int *d_ROINumPerImage, float ImageVariance, int ROISize, int ImageWidth, int BatchedImageHigh, int ImageHigh);
 
-__global__ void gpuSubregionExtractionLD(unsigned short *d_RawImg, unsigned short *d_ROIMem, int *d_ROIPosArray, int ROISize, int RegionNum_CurImage, int ImageWidth, int BatchedImageHigh, int ImageHigh, int StartFrame);
+__global__ void gpuSubregionExtractionLD(unsigned short *d_RawImg, unsigned short *d_ImageROI, int *d_ROIPosArray, int ROISize, int RegionNum_CurImage, int ImageWidth, int BatchedImageHigh, int ImageHigh, int StartFrame);
 
 
 
@@ -48,9 +48,9 @@ __global__ void gpuROIFindingLD(unsigned short *d_RawImg_Smoothed, int *d_ROIPos
 	const int MaxFluoNumPerImage = GetMaxFluoNumPerImage(BatchedImageNum);
 
 
-	int ImageRegion[JudgeROISize*JudgeROISize];
+	int ImageROI[JudgeROISize*JudgeROISize];
 
-	int(*pImageRegion)[JudgeROISize] = (int(*)[JudgeROISize])ImageRegion;
+	int(*pImageRegion)[JudgeROISize] = (int(*)[JudgeROISize])ImageROI;
 
 	//
 	int AddrOffset = 0;
@@ -134,19 +134,19 @@ __global__ void gpuROIFindingLD(unsigned short *d_RawImg_Smoothed, int *d_ROIPos
 
 }
 
-void SubregionExtractionLD(unsigned short *d_RawImg, unsigned short *d_ROIMem, int *d_ROIPosArray, int ROISize, int RegionNum_CurImage, int ImageWidth, int BatchedImageHigh, int ImageHigh, int StartFrame, cudaStream_t cstream)
+void SubregionExtractionLD(unsigned short *d_RawImg, unsigned short *d_ImageROI, int *d_ROIPosArray, int ROISize, int RegionNum_CurImage, int ImageWidth, int BatchedImageHigh, int ImageHigh, int StartFrame, cudaStream_t cstream)
 {
 	int BlockDim = ThreadsPerBlock;
 	int BlockNum = (RegionNum_CurImage + ThreadsPerBlock - 1) / ThreadsPerBlock;
 
 
 	// region extraction with point position
-	gpuSubregionExtractionLD << < BlockNum, BlockDim, 0, cstream >> > (d_RawImg, d_ROIMem, d_ROIPosArray, ROISize, RegionNum_CurImage, ImageWidth, BatchedImageHigh, ImageHigh, StartFrame);
+	gpuSubregionExtractionLD << < BlockNum, BlockDim, 0, cstream >> > (d_RawImg, d_ImageROI, d_ROIPosArray, ROISize, RegionNum_CurImage, ImageWidth, BatchedImageHigh, ImageHigh, StartFrame);
 
 
 }
 
-__global__ void gpuSubregionExtractionLD(unsigned short *d_RawImg, unsigned short *d_ROIMem, int *d_ROIPosArray, int ROISize, int RegionNum_CurImage, int ImageWidth, int BatchedImageHigh, int ImageHigh, int StartFrame)
+__global__ void gpuSubregionExtractionLD(unsigned short *d_RawImg, unsigned short *d_ImageROI, int *d_ROIPosArray, int ROISize, int RegionNum_CurImage, int ImageWidth, int BatchedImageHigh, int ImageHigh, int StartFrame)
 {
 	int gid = threadIdx.x + blockDim.x*blockIdx.x;
 
@@ -172,7 +172,7 @@ __global__ void gpuSubregionExtractionLD(unsigned short *d_RawImg, unsigned shor
 					int XPos_GMem = XPos - ROISize_Half + xcnt;
 					int YPos_GMem = YPos - ROISize_Half + ycnt;
 
-					d_ROIMem[RegionAddrOffset + ycnt*ROISize + xcnt] = d_RawImg[YPos_GMem*ImageWidth + XPos_GMem];
+					d_ImageROI[RegionAddrOffset + ycnt*ROISize + xcnt] = d_RawImg[YPos_GMem*ImageWidth + XPos_GMem];
 				}
 			}
 
@@ -183,11 +183,11 @@ __global__ void gpuSubregionExtractionLD(unsigned short *d_RawImg, unsigned shor
 			int AddrOffset = ROISize*ROISize;
 			int CurFrame = StartFrame + (YPos / ImageHigh);
 
-			d_ROIMem[RegionAddrOffset + AddrOffset + 0] = XPos;
-			d_ROIMem[RegionAddrOffset + AddrOffset + 1] = (YPos % ImageHigh);
-			d_ROIMem[RegionAddrOffset + AddrOffset + 2] = CurFrame % 65536; //
-			d_ROIMem[RegionAddrOffset + AddrOffset + 3] = CurFrame / 65536;
-			d_ROIMem[RegionAddrOffset + AddrOffset + 4] = 0;
+			d_ImageROI[RegionAddrOffset + AddrOffset + 0] = XPos;
+			d_ImageROI[RegionAddrOffset + AddrOffset + 1] = (YPos % ImageHigh);
+			d_ImageROI[RegionAddrOffset + AddrOffset + 2] = CurFrame % 65536; //
+			d_ImageROI[RegionAddrOffset + AddrOffset + 3] = CurFrame / 65536;
+			d_ImageROI[RegionAddrOffset + AddrOffset + 4] = 0;
 
 		}
 	}

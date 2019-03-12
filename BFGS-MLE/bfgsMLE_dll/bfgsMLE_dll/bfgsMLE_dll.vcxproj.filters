@@ -4,9 +4,6 @@
     <Filter Include="cudaWrapper">
       <UniqueIdentifier>{2abfcf2c-e3b8-454f-a30f-2d90bb608890}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SubregionExtraction">
-      <UniqueIdentifier>{8bfad0ee-356a-49d0-a9b3-fe930ec4a664}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ImageRender_3dStack">
       <UniqueIdentifier>{6a6c9d3d-2b40-44cc-8de2-1006c37a185b}</UniqueIdentifier>
     </Filter>
@@ -42,14 +39,17 @@
     <Filter Include="ImageRender">
       <UniqueIdentifier>{9c3b6856-55e6-47bd-9538-a47b7c83e37a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Background noise filter">
-      <UniqueIdentifier>{623f0288-8c1e-4235-8df2-cd6cbc13e605}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ZeroLocalizationsRemove">
       <UniqueIdentifier>{664c79de-e2cd-4377-beb5-888abee74902}</UniqueIdentifier>
     </Filter>
     <Filter Include="WLEParaEstimation">
       <UniqueIdentifier>{6b28a72e-c432-4db2-9a6b-48b7c88b0311}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ROIExtraction">
+      <UniqueIdentifier>{8bfad0ee-356a-49d0-a9b3-fe930ec4a664}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bfgsMLE_Loc_HD">
+      <UniqueIdentifier>{4e15881f-6dd7-4b4c-9194-fe0b71cc747c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -119,9 +119,6 @@
     <ClInclude Include="FileReadWriteWrapper\CppFileWrapper.h">
       <Filter>FileReadWrite</Filter>
     </ClInclude>
-    <ClInclude Include="Background noise filter\BackgroundNoiseFilter.h">
-      <Filter>Background noise filter</Filter>
-    </ClInclude>
     <ClInclude Include="bfgsMLE_Loc_top\LocPrecCalc_GaussianCRLB.h">
       <Filter>bfgsMLE_Loc_top</Filter>
     </ClInclude>
@@ -129,7 +126,7 @@
       <Filter>ZeroLocalizationsRemove</Filter>
     </ClInclude>
     <ClInclude Include="SubregionExtraction\LDROIExtraction.h">
-      <Filter>SubregionExtraction</Filter>
+      <Filter>ROIExtraction</Filter>
     </ClInclude>
     <ClInclude Include="WLEParaEstimation\SplineInterpolation.h">
       <Filter>WLEParaEstimation</Filter>
@@ -143,6 +140,21 @@
     <ClInclude Include="WLEParaEstimation\WLEParaEstimation_Parameters.h">
       <Filter>WLEParaEstimation</Filter>
     </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_HD\bfgsMLE_AS3D_2Emitter_core.h">
+      <Filter>bfgsMLE_Loc_HD</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_HD\bfgsMLE_GS2D_3Emitter_core.h">
+      <Filter>bfgsMLE_Loc_HD</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_HD\bfgsMLE_Multi_Emitter_Fit.h">
+      <Filter>bfgsMLE_Loc_HD</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_Single_Emitter_Fit.h">
+      <Filter>bfgsMLE_Loc_LD</Filter>
+    </ClInclude>
+    <ClInclude Include="bfgsMLE_Loc_HD\bfgsMLE_GS2D_2Emitter_core.h">
+      <Filter>bfgsMLE_Loc_HD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -152,7 +164,7 @@
       <Filter>BFGS Curve fitting</Filter>
     </ClCompile>
     <ClCompile Include="SubregionExtraction\LDROIExtraction.cpp">
-      <Filter>SubregionExtraction</Filter>
+      <Filter>ROIExtraction</Filter>
     </ClCompile>
     <ClCompile Include="WLEParaEstimation\WLEParaEstimation.cpp">
       <Filter>WLEParaEstimation</Filter>
@@ -222,12 +234,6 @@
     <CudaCompile Include="ShiftCorrection_SRImage\SRShiftCorrection_top.cu">
       <Filter>ShiftCorrection_SRImage</Filter>
     </CudaCompile>
-    <CudaCompile Include="Background noise filter\BackgroundNoiseFilter.cu">
-      <Filter>Background noise filter</Filter>
-    </CudaCompile>
-    <CudaCompile Include="Background noise filter\BackgroundNoiseFilter_top.cu">
-      <Filter>Background noise filter</Filter>
-    </CudaCompile>
     <CudaCompile Include="bfgsMLE_Loc_top\LocPrecCalc_GaussianCRLB.cu">
       <Filter>bfgsMLE_Loc_top</Filter>
     </CudaCompile>
@@ -235,13 +241,22 @@
       <Filter>ZeroLocalizationsRemove</Filter>
     </CudaCompile>
     <CudaCompile Include="SubregionExtraction\LDROIExtraction_ImageFiltering.cu">
-      <Filter>SubregionExtraction</Filter>
+      <Filter>ROIExtraction</Filter>
     </CudaCompile>
     <CudaCompile Include="SubregionExtraction\LDROIExtraction_ROIExtraction.cu">
-      <Filter>SubregionExtraction</Filter>
+      <Filter>ROIExtraction</Filter>
     </CudaCompile>
     <CudaCompile Include="WLEParaEstimation\WLEParaEstimation_core.cu">
       <Filter>WLEParaEstimation</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_HD\bfgsMLE_AS3D_2Emitter_top.cu">
+      <Filter>bfgsMLE_Loc_HD</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_HD\bfgsMLE_GS2D_3Emitter_top.cu">
+      <Filter>bfgsMLE_Loc_HD</Filter>
+    </CudaCompile>
+    <CudaCompile Include="bfgsMLE_Loc_HD\bfgsMLE_GS2D_2Emitter_top.cu">
+      <Filter>bfgsMLE_Loc_HD</Filter>
     </CudaCompile>
   </ItemGroup>
 </Project>

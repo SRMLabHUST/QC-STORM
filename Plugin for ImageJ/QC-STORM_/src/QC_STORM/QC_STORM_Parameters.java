@@ -41,7 +41,7 @@ public class QC_STORM_Parameters {
         
         int LocType=0;
         
-        int BackgroundNoiseFilterEn = 1;
+        int MultiEmitterFitEn = 0;
         
         int ConsecutiveFitEn = 0;
         float ConsecFilterRadius = 80;

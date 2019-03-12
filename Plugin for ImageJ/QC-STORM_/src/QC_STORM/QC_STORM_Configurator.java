@@ -125,6 +125,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jButton_LoadResultPath = new javax.swing.JButton();
         jLabel29 = new javax.swing.JLabel();
         jTextField_ConsecFilterRadius = new javax.swing.JTextField();
+        jCheckBox_Stat_MultiFitEn = new javax.swing.JCheckBox();
         jPanel5 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -261,6 +262,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
             jTextField_ConsecFilterRadius.setText("80");
 
+            jCheckBox_Stat_MultiFitEn.setText("Multi-Emitter fitting");
+
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
             jPanel1.setLayout(jPanel1Layout);
             jPanel1Layout.setHorizontalGroup(
@@ -268,6 +271,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(22, 22, 22)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jCheckBox_Stat_MultiFitEn)
                         .addComponent(jCheckBox_Stat_ConsecutiveFitEn)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,7 +319,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jComboBox_LocType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 22, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                    .addComponent(jCheckBox_Stat_MultiFitEn)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(jCheckBox_Stat_ConsecutiveFitEn)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -329,7 +335,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField_ParaFile, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton_LoadParaFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addContainerGap(123, Short.MAX_VALUE))
+                    .addContainerGap(109, Short.MAX_VALUE))
             );
 
             jTabbedPane1.addTab("Basic param", jPanel1);
@@ -378,7 +384,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jTextField_Offset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel15))
-                    .addContainerGap(296, Short.MAX_VALUE))
+                    .addContainerGap(308, Short.MAX_VALUE))
             );
 
             jTabbedPane1.addTab("Camera param", jPanel5);
@@ -475,12 +481,12 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                     .addGap(31, 31, 31)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField_MinZDepth, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                        .addComponent(jTextField_MinZDepth, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                         .addComponent(jTextField_MaxZDepth, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField_ZDepthCorrFactor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+                        .addComponent(jTextField_ZDepthCorrFactor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(jLabel10)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -497,7 +503,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                         .addComponent(jTextField_p2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTextField_p1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTextField_p0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(0, 262, Short.MAX_VALUE))
+                    .addGap(0, 266, Short.MAX_VALUE))
             );
 
             jTabbedPane1.addTab("3D param", jPanel2);
@@ -706,7 +712,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jCheckBox_Stat_DimensionFDVary, javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jCheckBox_Stat_LocDensityFDVary, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addContainerGap(51, Short.MAX_VALUE))
+                    .addContainerGap(63, Short.MAX_VALUE))
             );
 
             jTabbedPane1.addTab("Statistical disp", jPanel3);
@@ -768,7 +774,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                         .addComponent(jTextField_DriftCorrGroupFrameNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
                     .addComponent(jButton_Rerend, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(246, Short.MAX_VALUE))
+                    .addContainerGap(258, Short.MAX_VALUE))
             );
 
             jTabbedPane1.addTab("Post processing", jPanel4);
@@ -787,21 +793,21 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(26, 26, 26)
-                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(117, 117, 117)
+                            .addComponent(jButton_Start, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(113, 113, 113)
-                            .addComponent(jButton_Start, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(26, 26, 26)
+                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGap(20, 20, 20))
             );
             layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addContainerGap(18, Short.MAX_VALUE)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jButton_Start, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(22, 22, 22))
+                    .addGap(14, 14, 14))
             );
 
             pack();
@@ -992,6 +998,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox_Stat_LocDensityVary;
     private javax.swing.JCheckBox jCheckBox_Stat_LocPrec;
     private javax.swing.JCheckBox jCheckBox_Stat_LocPrecVary;
+    private javax.swing.JCheckBox jCheckBox_Stat_MultiFitEn;
     private javax.swing.JCheckBox jCheckBox_Stat_NyqResolutionVary;
     private javax.swing.JCheckBox jCheckBox_Stat_OntimeEn;
     private javax.swing.JCheckBox jCheckBox_Stat_OntimeVary;
@@ -1075,8 +1082,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
             
         LocPara.LocType = jComboBox_LocType.getSelectedIndex();
         
-        LocPara.BackgroundNoiseFilterEn =  0;
         
+        LocPara.MultiEmitterFitEn = jCheckBox_Stat_MultiFitEn.isSelected()? 1 : 0;
+                
         LocPara.ConsecutiveFitEn = jCheckBox_Stat_ConsecutiveFitEn.isSelected()? 1 : 0;
         LocPara.ConsecFilterRadius = Float.parseFloat(jTextField_ConsecFilterRadius.getText());
         
@@ -1118,7 +1126,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     {
         GetLocalizationPara();
         
-        QC_STORM_.lm_SetLocPara(LocPara.Kadc,LocPara.Offset,LocPara.QE,LocPara.RegionSize,LocPara.LocType, LocPara.BackgroundNoiseFilterEn, LocPara.ConsecutiveFitEn, LocPara.ConsecFilterRadius, LocPara.RawImgPixelSize,LocPara.RenderingPixelZoom,LocPara.SNR_th);
+        QC_STORM_.lm_SetLocPara(LocPara.Kadc,LocPara.Offset,LocPara.QE,LocPara.RegionSize,LocPara.LocType, LocPara.MultiEmitterFitEn, LocPara.ConsecutiveFitEn, LocPara.ConsecFilterRadius, LocPara.RawImgPixelSize,LocPara.RenderingPixelZoom,LocPara.SNR_th);
         QC_STORM_.lm_SetLocPara3D(LocPara.MinZDepth, LocPara.MaxZDepth, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0);
        
         QC_STORM_.lm_SetStatInfSelection(LocPara.StatDispSel, LocPara.OnTimeEn, LocPara.SpatialResolutionEn);            
@@ -1200,6 +1208,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
         jComboBox_LocType.setSelectedIndex(Integer.parseInt(pps.getProperty("LocType", Integer.toString(LocPara.LocType))));
         
+        jCheckBox_Stat_MultiFitEn.setSelected(Boolean.parseBoolean(pps.getProperty("MultiEmitterFitEn", "false")));
         
         jCheckBox_Stat_ConsecutiveFitEn.setSelected(Boolean.parseBoolean(pps.getProperty("ConsecutiveFitEnable", "false")));
         jTextField_ConsecFilterRadius.setText(pps.getProperty("ConsecFilterRadius", Float.toString(80.0f)));
@@ -1284,13 +1293,15 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         
         pps.setProperty("LocType", Integer.toString(jComboBox_LocType.getSelectedIndex()));
 
-        if(LocPara.BackgroundNoiseFilterEn!=0)
+        if(LocPara.MultiEmitterFitEn!=0)
         {
-            pps.setProperty("BackgroundNoiseFilterEnable", "true");
-        }else
-        {
-            pps.setProperty("BackgroundNoiseFilterEnable", "false");
+            pps.setProperty("MultiEmitterFitEn", "true");
         }
+        else
+        {
+            pps.setProperty("MultiEmitterFitEn", "false");
+        }
+        
         
         if(LocPara.ConsecutiveFitEn!=0)
         {

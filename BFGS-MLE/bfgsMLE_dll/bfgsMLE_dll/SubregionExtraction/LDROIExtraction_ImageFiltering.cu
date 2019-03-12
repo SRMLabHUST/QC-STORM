@@ -57,7 +57,7 @@ __global__ void gpuBackgroundIntensityCalc(unsigned short *d_RawImg, unsigned sh
 	};
 
 	// side pixels, valid pixels, side pixels
-	__shared__ unsigned short ImageRegion[SharedMemHigh][SharedMemWidth];
+	__shared__ unsigned short ImageROI[SharedMemHigh][SharedMemWidth];
 
 
 	int gid = threadIdx.x + blockDim.x*blockIdx.x;
@@ -90,7 +90,7 @@ __global__ void gpuBackgroundIntensityCalc(unsigned short *d_RawImg, unsigned sh
 
 		int Addr_GMem = YPos_GMem*ImageWidth + XPos_GMem;
 
-		ImageRegion[cnt][tid] = d_RawImg[Addr_GMem];
+		ImageROI[cnt][tid] = d_RawImg[Addr_GMem];
 	}
 
 	// load global memory to shared memory, second part
@@ -113,7 +113,7 @@ __global__ void gpuBackgroundIntensityCalc(unsigned short *d_RawImg, unsigned sh
 
 			int Addr_GMem = YPos_GMem*ImageWidth + XPos_GMem;
 
-			ImageRegion[cnt][tid + ThreadsPerBlock] = d_RawImg[Addr_GMem];
+			ImageROI[cnt][tid + ThreadsPerBlock] = d_RawImg[Addr_GMem];
 		}
 	}
 
@@ -136,10 +136,10 @@ __global__ void gpuBackgroundIntensityCalc(unsigned short *d_RawImg, unsigned sh
 #pragma unroll
 		for (int i = 0; i < BkgCmpArrayLen; i++)
 		{
-			PixelNumL1[i] = ImageRegion[YCenterPos_SMem - BkgFilterSize_Half][XCenterPos_SMem - BkgFilterSize_Half + i];
-			PixelNumL3[i] = ImageRegion[YCenterPos_SMem + BkgFilterSize_Half][XCenterPos_SMem - BkgFilterSize_Half + i + 1];
-			PixelNumL2[i] = ImageRegion[YCenterPos_SMem - BkgFilterSize_Half + i][XCenterPos_SMem + BkgFilterSize_Half];
-			PixelNumL4[i] = ImageRegion[YCenterPos_SMem - BkgFilterSize_Half + i + 1][XCenterPos_SMem - BkgFilterSize_Half];
+			PixelNumL1[i] = ImageROI[YCenterPos_SMem - BkgFilterSize_Half][XCenterPos_SMem - BkgFilterSize_Half + i];
+			PixelNumL3[i] = ImageROI[YCenterPos_SMem + BkgFilterSize_Half][XCenterPos_SMem - BkgFilterSize_Half + i + 1];
+			PixelNumL2[i] = ImageROI[YCenterPos_SMem - BkgFilterSize_Half + i][XCenterPos_SMem + BkgFilterSize_Half];
+			PixelNumL4[i] = ImageROI[YCenterPos_SMem - BkgFilterSize_Half + i + 1][XCenterPos_SMem - BkgFilterSize_Half];
 		}
 
 #pragma unroll
@@ -198,7 +198,7 @@ __global__ void gpuImageConv_Seperable_H(unsigned short *d_iImage, unsigned shor
 	};
 
 	// side pixels, valid pixels, side pixels
-	__shared__ unsigned short ImageRegion[SharedMemWidth];
+	__shared__ unsigned short ImageROI[SharedMemWidth];
 
 
 	int gid = threadIdx.x + blockDim.x*blockIdx.x;
@@ -224,7 +224,7 @@ __global__ void gpuImageConv_Seperable_H(unsigned short *d_iImage, unsigned shor
 	YPos_GMem = min(YPos_GMem, ImageHigh - 1);
 
 
-	ImageRegion[tid] = d_iImage[YPos_GMem*ImageWidth + XPos_GMem];
+	ImageROI[tid] = d_iImage[YPos_GMem*ImageWidth + XPos_GMem];
 
 
 	// read global memory to shared memory, second part
@@ -242,7 +242,7 @@ __global__ void gpuImageConv_Seperable_H(unsigned short *d_iImage, unsigned shor
 		YPos_GMem = min(YPos_GMem, ImageHigh - 1);
 
 
-		ImageRegion[tid + ThreadsPerBlock] = d_iImage[YPos_GMem*ImageWidth + XPos_GMem];
+		ImageROI[tid + ThreadsPerBlock] = d_iImage[YPos_GMem*ImageWidth + XPos_GMem];
 	}
 
 	__syncthreads();
@@ -254,7 +254,7 @@ __global__ void gpuImageConv_Seperable_H(unsigned short *d_iImage, unsigned shor
 #pragma unroll
 	for (int cnt = 0; cnt < LineFilterSize; cnt++)
 	{
-		FilteredData += ImageRegion[tid + cnt] * d_LineFilter[cnt];
+		FilteredData += ImageROI[tid + cnt] * d_LineFilter[cnt];
 	}
 
 	if ((CurXPos < ImageWidth) && (CurYPos < ImageHigh))
@@ -292,7 +292,7 @@ __global__ void gpuImageConv_Seperable_V(unsigned short *d_iImage, unsigned shor
 	};
 
 	// side pixels, valid pixels, side pixels
-	__shared__ unsigned short ImageRegion[SharedMemHigh];
+	__shared__ unsigned short ImageROI[SharedMemHigh];
 
 
 	int gid = threadIdx.x + blockDim.x*blockIdx.x;
@@ -317,7 +317,7 @@ __global__ void gpuImageConv_Seperable_V(unsigned short *d_iImage, unsigned shor
 
 	int Addr_GMem = YPos_GMem*ImageWidth + XPos_GMem;
 
-	ImageRegion[tid] = d_iImage[Addr_GMem];
+	ImageROI[tid] = d_iImage[Addr_GMem];
 
 	// read global memory to shared memory, second part
 	if (tid < SharedMemHigh - ThreadsPerBlock)
@@ -335,7 +335,7 @@ __global__ void gpuImageConv_Seperable_V(unsigned short *d_iImage, unsigned shor
 
 		Addr_GMem = YPos_GMem*ImageWidth + XPos_GMem;
 
-		ImageRegion[tid + ThreadsPerBlock] = d_iImage[Addr_GMem];
+		ImageROI[tid + ThreadsPerBlock] = d_iImage[Addr_GMem];
 	}
 
 	__syncthreads();
@@ -347,7 +347,7 @@ __global__ void gpuImageConv_Seperable_V(unsigned short *d_iImage, unsigned shor
 #pragma unroll
 	for (int cnt = 0; cnt < LineFilterSize; cnt++)
 	{
-		FilteredData += ImageRegion[tid + cnt] * d_LineFilter[cnt];
+		FilteredData += ImageROI[tid + cnt] * d_LineFilter[cnt];
 	}
 
 	if ((CurXPos < ImageWidth) && (CurYPos < ImageHigh))

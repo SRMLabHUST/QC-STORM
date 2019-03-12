@@ -40,7 +40,6 @@ public:
 
 	int BadFitFilterWithAutoThEn; // filter fit result with automatic snr threshold: th = mean(SNR>4)/2
 
-	int BackgroundNoiseFilterEn;
 
 	// consecutive molecules filter or fit
 	float ConsecFit_DistanceTh_nm; // pixel

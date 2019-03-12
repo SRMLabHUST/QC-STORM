@@ -42,7 +42,7 @@ public class QC_STORM_Plug implements ProcessorPlugin, SciJavaPlugin{
     public native static int lm_GetProcessorID();
     public native static void lm_SetSavePath(char PathCs[]);
     // for both 2d and 3d
-    public native static void lm_SetLocPara(float KAdc, float Offset, float QE, int ROISizeI, int LocTypeI, int BkgNoiseFilterEn, int ConsecutiveFitEnI, float ConsecFilterRadiusF, float RawPixelSizeF, float RenderPixelZoomF, float SNR_th);
+    public native static void lm_SetLocPara(float KAdc, float Offset, float QE, int ROISizeI, int LocTypeI, int MultiEmitterFitEn, int ConsecutiveFitEnI, float ConsecFilterRadiusF, float RawPixelSizeF, float RenderPixelZoomF, float SNR_th);
     public native static void lm_SetLocPara3D(float MinZDepthF, float MaxZDepthF, float ZDepthCorrFactor, float p4, float p3, float p2, float p1, float p0);
     
     public native static void lm_SetImagePara(int ImageWidth, int ImageHigh, int SRImageWidth, int SRImageHigh);

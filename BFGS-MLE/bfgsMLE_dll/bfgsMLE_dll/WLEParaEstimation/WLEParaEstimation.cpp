@@ -2,17 +2,17 @@
 #include "WLEParaEstimation.h"
 
 
-void WLEParameterEstimation_TypeDef::WLEParameterEstimate(unsigned short * h_ROIMem, int ROISize, int FluoNum, cudaStream_t cstream)
+void WLEParameterEstimation_TypeDef::WLEParameterEstimate(unsigned short * h_ImageROI, int ROISize, int FluoNum, cudaStream_t cstream)
 {
 	const int ROIWholeSize = ROISize*(ROISize + 1);
 
 	// copy from CPU
-	cudaMemcpyAsync(d_ROIMem, h_ROIMem, FluoNum * ROIWholeSize * sizeof(unsigned short), cudaMemcpyHostToDevice, cstream);
+	cudaMemcpyAsync(d_ImageROI, h_ImageROI, FluoNum * ROIWholeSize * sizeof(unsigned short), cudaMemcpyHostToDevice, cstream);
 
 
-	CalculatePSFWidth(d_ROIMem, d_WLEPara, FluoNum, ROISize, cstream);
+	CalculatePSFWidth(d_ImageROI, d_WLEPara, FluoNum, ROISize, cstream);
 
-	CalculateNearestNeighborDistance(d_ROIMem, ROISize, d_WLEPara, FluoNum, cstream);
+	CalculateNearestNeighborDistance(d_ImageROI, ROISize, d_WLEPara, FluoNum, cstream);
 
 	MoleculeTypeClasify(ROISize, d_WLEPara, FluoNum, cstream);
 
@@ -30,9 +30,9 @@ void WLEParameterEstimation_TypeDef::Init(LocalizationPara & LocPara)
 	cudaError_t err;
 	const int ROIWholeSize = LocPara.ROISize*(LocPara.ROISize + 1);
 
-	err = cudaMalloc((void **)&d_ROIMem, MaxPointNum * ROIWholeSize * sizeof(unsigned short));
+	err = cudaMalloc((void **)&d_ImageROI, MaxPointNum * ROIWholeSize * sizeof(unsigned short));
 
-	HandleErr(err, "cudaMalloc d_ROIMem");
+	HandleErr(err, "cudaMalloc d_ImageROI");
 
 	err = cudaMallocHost((void **)&h_WLEPara, MaxPointNum * WLE_ParaNumber * sizeof(float));
 	err = cudaMalloc((void **)&d_WLEPara, MaxPointNum * WLE_ParaNumber * sizeof(float));
@@ -45,7 +45,7 @@ void WLEParameterEstimation_TypeDef::Init(LocalizationPara & LocPara)
 void WLEParameterEstimation_TypeDef::Deinit()
 {
 	cudaError_t err;
-	err = cudaFree(d_ROIMem);
+	err = cudaFree(d_ImageROI);
 
 	err = cudaFreeHost(h_WLEPara);
 	err = cudaFree(d_WLEPara);

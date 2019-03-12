@@ -116,6 +116,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	bool IsBreak = 0;
 
 
+
 	// reset rendered image
 	RendData.ResetFillImgTop(LocPara_Global);
 	FluoStatData.ResetAllDat(loc_stream1);
@@ -204,10 +205,11 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 			
 			// localization
-			LDLocData.BFGS_MLELocalization(LDROIExtractData.h_ROIMem, LDROIExtractData.Get_h_WLEPara(), LocPara_Global, FluoNum, loc_stream1);
+			LDLocData.BFGS_MLELocalization(LDROIExtractData.h_ImageROI, LDROIExtractData.Get_h_WLEPara(), LocPara_Global, FluoNum, loc_stream1);
 
 			LocTime += (clock() - time1);
 
+//			printf("MultiFitRatio:%f\n", LDLocData.MultiFitRatio);
 
 			// write localization data into file
 			WriteLocArry = LDLocData.h_LocArry;

@@ -65,7 +65,6 @@ public:
 
 	int BadFitFilterWithAutoThEn; // filter fit result with automatic snr threshold: th = mean(SNR>4)/2
 
-	int BackgroundNoiseFilterEn;
 
 	// consecutive molecules filter or fit
 	float ConsecFit_DistanceTh_nm; // pixel
@@ -130,11 +129,14 @@ public:
 
 
 
+
+
+
 // estimage WLE para, contained in the ROI extraction
 class WLEParameterEstimation_TypeDef
 {
 public:
-	unsigned short * d_ROIMem;
+	unsigned short * d_ImageROI;
 
 	float *h_WLEPara;
 	float *d_WLEPara;
@@ -144,9 +146,8 @@ public:
 	void Init(LocalizationPara & LocPara);
 	void Deinit();
 
-	void WLEParameterEstimate(unsigned short * h_ROIMem, int ROISize, int FluoNum, cudaStream_t cstream);
+	void WLEParameterEstimate(unsigned short * h_ImageROI, int ROISize, int FluoNum, cudaStream_t cstream);
 };
-
 
 
 
@@ -161,8 +162,8 @@ public:
 	unsigned short *d_RawImg;
 
 	// extracted molecular ROI data
-	unsigned short * h_ROIMem;
-	unsigned short * d_ROIMem;
+	unsigned short * h_ImageROI;
+	unsigned short * d_ImageROI;
 
 	WLEParameterEstimation_TypeDef *WLEParameterEstimator;
 
@@ -237,12 +238,13 @@ private:
 
 
 
+
 // both 2d and 3d localization data structure
 class LDLocData_TypeDef
 {
 public:
-	unsigned short * h_SubRegion;
-	unsigned short * d_SubRegion;
+	unsigned short * h_ImageROI;
+	unsigned short * d_ImageROI;
 
 	float * h_LocArry;
 	float * d_LocArry;
@@ -250,25 +252,36 @@ public:
 	float *d_WLEPara;
 
 
-	// Consecutive finding from adjecent frames
-	// same with consecutive fitting method
-	int *d_ForwardLinkID;
-	int *d_BackwardLinkID;
-	int *d_ConsecutiveNum;
-
-	int *h_OntimeDistrib; 
-	int *d_OntimeDistrib; 
-
-	int *h_ValidFluoNum; // for ontime distribution 
-	int *d_ValidFluoNum; // for ontime distribution 
-
+	// on time calculation
 	float *h_OntimeRatio; // for display and time vatiation
+
 
 	// valid number after localization, still include filtered molecule number
 	int oValidFluoNum;
 
+public:
+
+	// multi emitter fitting
+	int * h_MultiFitFluoNum;
+	int * d_MultiFitFluoNum;
+	int * d_MultiFitFluoPos; // position id
+
+	float MultiFitRatio;
 	
 private:
+	// on time calculation, to find Consecutive molecules in adjecent frames
+	int *d_ForwardLinkID;
+	int *d_BackwardLinkID;
+	int *d_ConsecutiveNum;
+
+
+	int *h_OntimeDistrib;
+	int *d_OntimeDistrib;
+
+	int *h_ValidFluoNum; // for ontime distribution 
+	int *d_ValidFluoNum; // for ontime distribution 
+
+
 	// for loc filter
 	float *h_SNRSumUp;
 	int *h_ValidNum;
@@ -281,7 +294,7 @@ public:
 	void Init(LocalizationPara & LocPara); // create CPU&GPU memory
 	void Deinit(LocalizationPara & LocPara); // release CPU&GPU memory
 
-	void BFGS_MLELocalization(unsigned short * h_SubRegion, float *h_WLEPara, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
+	void BFGS_MLELocalization(unsigned short * h_ImageROI, float *h_WLEPara, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
 	
 	void OntimeCalc(LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
@@ -293,8 +306,8 @@ public:
 	static int GetFirstFrame(float * h_LocArry, int FluoNum);
 	static int GetLastFrame(float * h_LocArry, int FluoNum);
 
-	static int GetFirstFrameFromROI(unsigned short * h_SubRegion, int ROISize, int FluoNum);
-	static int GetLastFrameFromROI(unsigned short * h_SubRegion, int ROISize, int FluoNum);
+	static int GetFirstFrameFromROI(unsigned short * h_ImageROI, int ROISize, int FluoNum);
+	static int GetLastFrameFromROI(unsigned short * h_ImageROI, int ROISize, int FluoNum);
 
 
 	// two optional localization precision method, only suitable for 2d localization with symmetric Gaussian PSF
@@ -307,47 +320,6 @@ private:
 
 
 
-
-
-// filter background noised by automatic threshold
-class BackgroundNoiseFilter_TypeDef
-{
-public:
-	float * h_LocArry;
-	float * d_LocArry;
-
-private:
-	// find distance threshold
-	float *d_MinDistance;
-
-	float *h_ValidNum;
-	float *h_TotalValue;
-
-	float *d_ValidNum;
-	float *d_TotalValue;
-
-	// filter noise based on neighbor numbe in threshold
-	int* d_NeighborNum_Th1;
-	int* d_NeighborNum_Th2;
-	int* d_NeighborNum_Th3;
-
-	int* d_IsNoise;
-
-public:
-	void Init(int TotalFluoNum); // create CPU&GPU memory
-	void DeInit(); // release CPU&GPU memory
-
-	// if the data source is cpu, data is copied out, otherwise, it's not
-	void FilterBackgroundNoise(float * h_iLocArry, int FluoNum, int DataSource, cudaStream_t cstream);
-
-private:
-	void BackgroundNoiseRemove(int FluoNum, cudaStream_t cstream);
-	void GetMinNearestNeighborDistance(int FluoNum, int SelFluoNum, cudaStream_t cstream);
-
-	float GetMeanMinNearestNeighborDistance(int FluoNum, cudaStream_t cstream);
-	void NeighborNumCalc(int FluoNum, cudaStream_t cstream);
-
-};
 
 
 
@@ -386,7 +358,6 @@ private:
 
 
 };
-
 
 
 // remove invalid localizations with zero value
@@ -469,8 +440,6 @@ public:
 	static void GetMaxImgSizeFromLocArry(float *h_LocArry, float *d_LocArry, int *MaxImgWidth, int *MaxImgHigh, int FluoNum, cudaStream_t cstream);
 
 };
-
-
 
 
 // stastical information class for both 2d and 3d
@@ -593,7 +562,6 @@ private:
 
 
 };
-
 
 
 
