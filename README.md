@@ -58,4 +58,4 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU LESSER GENERAL
 
 You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-For more questions, pleast contact Prof. Zhenli-Huang at "leo@mail.hust.edu.cn" or code author Luchang Li at "luchangli1993@163.com".
+For more questions, pleast contact Prof. Zhenli-Huang at "leo@mail.hust.edu.cn" or author Luchang Li at "luchangli1993@163.com".
