@@ -61,10 +61,6 @@ LocalizationPara::LocalizationPara()
 	p1 = 1;
 	p0 = 0;
 
-	// double-helix 3d loc para
-	MeanDistance = 10.1;
-	DistanceTh = 1.0;
-	RotateType = 0;
 
 	// spatial resolution
 	ImagesPerGroup = 50;

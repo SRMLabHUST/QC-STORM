@@ -74,10 +74,17 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 		RecFluoNumTh = RecFluoNumTh / 32 * 32;
 	}
 
+	CString MultiFitStr;
+	if (LocPara_Global.MultiEmitterFitEn) MultiFitStr = L"_M";
+	else MultiFitStr = L"_S";
+
+	CString ConsecFitStr;
+	if (LocPara_Global.ConsecFitEn) ConsecFitStr.Format(L"_Consec%.0fnm", LocPara_Global.ConsecFit_DistanceTh_nm);
+	else ConsecFitStr = L"";
 
 
 	CString LocFileName;
-	LocFileName.Format(_T("loc_result%dD%d_%s.txt"), LocPara_Global.LocType + 2, LocPara_Global.ROISize, CreateTimeIdxStr);
+	LocFileName.Format(_T("loc_result%dD%d_%s%s%s.txt"), LocPara_Global.LocType + 2, LocPara_Global.ROISize, CreateTimeIdxStr, MultiFitStr, ConsecFitStr);
 	LocFileName = ResultSavePath + LocFileName;
 
 

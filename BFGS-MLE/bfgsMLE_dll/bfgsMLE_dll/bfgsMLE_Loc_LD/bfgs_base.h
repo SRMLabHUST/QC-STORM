@@ -76,11 +76,6 @@ public:
 	float p0;
 
 
-	// double-helix 3d loc para
-	float MeanDistance;
-	float DistanceTh;
-	int RotateType;
-
 	// spatial resolution calculation
 	int ImagesPerGroup;
 	int IsHollowTube; // tube width is significantly larger than localization precision

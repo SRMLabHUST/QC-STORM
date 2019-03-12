@@ -56,8 +56,17 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	CString LocFileName=ImageName;
 	LocFileName.TrimRight(_T(".tif"));
 
+	CString MultiFitStr;
+	if (LocPara_Global.MultiEmitterFitEn) MultiFitStr = L"_M";
+	else MultiFitStr = L"_S";
+
+	CString ConsecFitStr;
+	if (LocPara_Global.ConsecFitEn) ConsecFitStr.Format(L"_Consec%.0fnm", LocPara_Global.ConsecFit_DistanceTh_nm);
+	else ConsecFitStr = L"";
+
+
 	CString PostFix;
-	PostFix.Format(_T("_result%dD%d.txt"), LocPara_Global.LocType + 2, LocPara_Global.ROISize);
+	PostFix.Format(_T("_result%dD%d%s%s.txt"), LocPara_Global.LocType + 2, LocPara_Global.ROISize, MultiFitStr, ConsecFitStr);
 
 	LocFileName = LocFileName + PostFix;
 

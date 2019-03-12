@@ -189,6 +189,23 @@ __global__ void bfgsMLELoc_AS3D_2E(float *d_LocArry, unsigned short *d_ImageROI,
 
 		float NearNeighborDistance = pWLEPara[CurFluoID][WLE_Para_NearDistance];
 
+#if(WLE_ENABLE == 1)
+		float SigmaL = pWLEPara[CurFluoID][WLE_Para_SigmaL];
+		float SigmaR = pWLEPara[CurFluoID][WLE_Para_SigmaR];
+		float SigmaU = pWLEPara[CurFluoID][WLE_Para_SigmaU];
+		float SigmaD = pWLEPara[CurFluoID][WLE_Para_SigmaD];
+
+
+		SigmaL = min(SigmaL, SigmaR);
+		SigmaU = min(SigmaU, SigmaD);
+
+		WLE_SigmaX = SigmaL * 1.2f;
+		WLE_SigmaY = SigmaU * 1.2f;
+
+#endif // WLE_ENABLE
+
+
+
 		// pre-estimation
 		PreEstimation_AS3D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, Ininf, tid);
 
@@ -550,20 +567,34 @@ __device__ void PreEstimation_AS3D_2E(float ImageROI[][ROIPixelNum], float Ininf
 	float SigmaX1 = rSScalFactor*(0.5f / (SigmaX*SigmaX));
 	float SigmaY1 = rSScalFactor*(0.5f / (SigmaY*SigmaY));
 
+	//////////////// estimate two emitter fitting parameter
 
-	// select one regions in four with max intensity
-	float SumData[4];
+	// intensity of 9 region and find the ones with max intensity
+	float SumData[9];
 
-	for (int cnt = 0; cnt < 4; cnt++)
+	int SumROILen = ROISize / 3 + 1;
+	int SumROILen_Half = SumROILen / 2;
+
+	int StartPos[3];
+	StartPos[0] = 0;
+	StartPos[1] = ROISize_Half - SumROILen_Half;
+	StartPos[2] = ROISize - SumROILen;
+
+	float RegionPos[3];
+	RegionPos[0] = ROICenter - SumROILen / 2.0f;
+	RegionPos[1] = ROICenter;
+	RegionPos[2] = ROICenter + SumROILen / 2.0f;
+
+	for (int cnt = 0; cnt < 9; cnt++)
 	{
 		float SumDat_t = 0;
 
-		int XBias = (cnt % 2)*ROISize_Half;
-		int YBias = (cnt / 2)*ROISize_Half;
+		int XBias = StartPos[cnt % 3];
+		int YBias = StartPos[cnt / 3];
 
-		for (int r = 0; r <= ROISize_Half; r++)
+		for (int r = 0; r < SumROILen; r++)
 		{
-			for (int c = 0; c <= ROISize_Half; c++)
+			for (int c = 0; c < SumROILen; c++)
 			{
 				SumDat_t += pSubImg[r + YBias][c + XBias];
 			}
@@ -571,30 +602,19 @@ __device__ void PreEstimation_AS3D_2E(float ImageROI[][ROIPixelNum], float Ininf
 		SumData[cnt] = SumDat_t;
 	}
 
-	float MaxDat1 = max(SumData[0], SumData[1]);
-	float MaxDat2 = max(SumData[2], SumData[3]);
+	// estimate the first
+	SumData[9 / 2] = 0;
 
-	MaxDat1 = max(MaxDat1, MaxDat2);
-
-	int MaxPos = 0;
-	for (int cnt = 0; cnt < 4; cnt++)
+	int MaxPos0 = 0;
+	for (int cnt = 0; cnt < 9; cnt++)
 	{
-		if (SumData[cnt] == MaxDat1)
+		if (SumData[cnt] > SumData[MaxPos0])
 		{
-			MaxPos = cnt;
+			MaxPos0 = cnt;
 		}
 	}
-
-	// position estimate of two molecules, the first is given by center, and the other is given by derection with max intensity
-
-	float PosSel[2];
-
-	PosSel[0] = ROICenter - ROISize / 4.6f;
-	PosSel[1] = ROICenter + ROISize / 4.6f;
-
-
-	float XPos1_Ini = PosSel[MaxPos % 2];
-	float YPos1_Ini = PosSel[MaxPos / 2];
+	float XPos1_Ini = RegionPos[MaxPos0 % 3];
+	float YPos1_Ini = RegionPos[MaxPos0 / 3];
 
 
 	// emitter 1 2, share the same  background

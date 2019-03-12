@@ -46,7 +46,6 @@ using namespace std;
 
 
 
-
 // basic parameters for localization for both 2d and 3d
 class LocalizationPara
 {
@@ -100,11 +99,6 @@ public:
 	float p1;
 	float p0;
 
-
-	// double-helix 3d loc para
-	float MeanDistance;
-	float DistanceTh;
-	int RotateType;
 
 	// spatial resolution calculation
 	int ImagesPerGroup;

@@ -182,10 +182,20 @@ public class QC_STORM_ implements PlugInFilter{
         SRImageWidthI = (SRImageWidthI+3)/4*4;
         SRImageHighI = (SRImageHighI+3)/4*4;
         
+        
+        String MultiFitStr;
+		if(MyConfigurator.LocPara.MultiEmitterFitEn>0) MultiFitStr = "_M";
+		else MultiFitStr = "_S";
+
+		String ConsecFitStr;
+		if(MyConfigurator.LocPara.ConsecutiveFitEn>0) ConsecFitStr = String.format("_Consec%.0fnm", MyConfigurator.LocPara.ConsecFilterRadius);
+		else ConsecFitStr = "";
+        
+        
         SRImgName = RawImgName;
         SRImgName = SRImgName.replace(".tif", "");
 
-        SRImgName=String.format("%s_SR%dD%d_rend%.2fnm.tif", SRImgName, MyConfigurator.LocPara.LocType+2, MyConfigurator.LocPara.RegionSize, MyConfigurator.LocPara.RenderingPixelSize);
+        SRImgName=String.format("%s_result%dD%d%s%s_rend%.2fnm.tif", SRImgName, MyConfigurator.LocPara.LocType+2, MyConfigurator.LocPara.RegionSize,MultiFitStr,ConsecFitStr, MyConfigurator.LocPara.RenderingPixelSize);
 
 
         CurSRImagePlus.setTitle(SRImgName);

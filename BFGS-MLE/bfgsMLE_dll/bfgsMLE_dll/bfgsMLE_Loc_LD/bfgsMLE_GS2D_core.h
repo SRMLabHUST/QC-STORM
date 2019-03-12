@@ -193,7 +193,7 @@ __global__ void bfgsMLELoc_Gauss2D(float *d_LocArry, unsigned short *d_ImageROI,
 		if (MoleculeType == MoleculeType_MLEFit)
 		{
 			// larger Width for uncontaminated molecules
-			WLE_SigmaX = WLE_SigmaX*1.2f;
+			WLE_SigmaX = WLE_SigmaX * 1.2f;
 
 			WLE_SigmaX = max(WLE_SigmaX, ROISize / 1.5f / 2.35f);
 		}
