@@ -89,7 +89,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 	if (LocPara_Global.SpatialResolutionCalcEn)
 	{
-		RecFluoNumTh = PointNumTh*(LocPara_Global.ImageWidth + LocPara_Global.ImageHigh) / 2 / 2048;
+		RecFluoNumTh = PointNumTh*(LocPara_Global.ImageWidth * LocPara_Global.ImageHigh) / 2048 / 2048;
 		RecFluoNumTh = min(RecFluoNumTh, PointNumTh);
 		RecFluoNumTh = max(RecFluoNumTh, 4096);
 		RecFluoNumTh = RecFluoNumTh / 32 * 32;
@@ -206,7 +206,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			TotalFluoNum += FluoNum;
 
 //			printf("find molecules: %d\n", FluoNum);
-
 
 
 			time1 = clock();

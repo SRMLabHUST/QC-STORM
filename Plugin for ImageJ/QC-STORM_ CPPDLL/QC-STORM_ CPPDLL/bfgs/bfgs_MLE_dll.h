@@ -226,6 +226,8 @@ private:
 
 
 
+
+
 // both 2d and 3d localization data structure
 class LDLocData_TypeDef
 {
@@ -298,6 +300,7 @@ private:
 	void FilterBadFit(LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
 };
+
 
 
 

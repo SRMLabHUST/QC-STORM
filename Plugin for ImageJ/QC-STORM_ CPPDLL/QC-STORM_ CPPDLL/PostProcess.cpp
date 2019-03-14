@@ -144,7 +144,7 @@ UINT th_RerendImage(LPVOID params)
 	if (LocPara_Global.SpatialResolutionCalcEn)
 	{
 		// avoid long processing time,which result in error
-		RecFluoNumTh = PointNumTh*(LocPara_Global.ImageWidth + LocPara_Global.ImageHigh) / 2 / 2048;
+		RecFluoNumTh = PointNumTh*(LocPara_Global.ImageWidth * LocPara_Global.ImageHigh) / 2048 / 2048;
 		RecFluoNumTh = min(RecFluoNumTh, PointNumTh);
 		RecFluoNumTh = max(RecFluoNumTh, 4096);
 		RecFluoNumTh = RecFluoNumTh / 32 * 32;
@@ -226,8 +226,6 @@ UINT th_RerendImage(LPVOID params)
 	OnlineRendAlive = false; // stop rend image
 
 	LocFile.Close();
-
-
 
 
 	printf("rend finish\n");
