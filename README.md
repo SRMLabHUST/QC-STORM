@@ -33,11 +33,11 @@ Sequential Multi-FOV acquisition (hardware dependent)
 # System requirements and installation
 1, Windows 7 sp1 or newer, x64.
 
-2, NVidia CUDA enabled GPU with compute capability no less than 3.5.
+2, NVidia CUDA enabled GPU with compute capability no less than 3.5. You may need to update your GPU driver and make sure your GPU is detected by the operation system.
 
 3, ImageJ/Fiji, Micro-Manager 2.0 (beta 3).
 
-4, Download and install Microsoft Visual C++ 2015 Redistributable Update 3 (x64) (https://www.microsoft.com/en-us/download/details.aspx?id=53587).
+4, Download and install Microsoft Visual C++ 2015 Redistributable Update 3 (x64) (https://www.microsoft.com/en-us/download/details.aspx?id=53587). You may need to uninstall Visual C++ 2017 Redistributable first.
 
 5, Download QC-STORM release version from https://github.com/SRMLabHUST/QC-STORM/releases.
 
