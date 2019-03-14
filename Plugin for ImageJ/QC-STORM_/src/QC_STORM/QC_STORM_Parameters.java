@@ -75,7 +75,6 @@ public class QC_STORM_Parameters {
         // statastic information display enable
         int StatDispSel = 0;
         
-        int OnTimeEn = 1;
         int SpatialResolutionEn = 1;
 
     }

@@ -234,41 +234,35 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			LocTime += (clock() - time1);
 			
 
-			// write localization data into file
-			WriteLocArry = LDLocData.h_LocArry;
-			WriteLocNum = LDLocData.oValidFluoNum;
-
-
-
-			time1 = clock();
-
-			// consecutive fit
-			if (LocPara_Global.ConsecFitEn)
-			{
-				ConsecutiveFitData.FitConsecutiveFluo(LDLocData.d_LocArry, LocPara_Global, LDLocData.oValidFluoNum, loc_stream1, IsBreak);
-
-				if (!IsBreak)
-				{
-					// get avalible data
-					ConsecutiveFitData.GetAvailableData(loc_stream1);
-				}
-				else
-				{
-					// use at the last time
-					ConsecutiveFitData.GetResidualData(loc_stream1);
-				}
-
-				WriteLocArry = ConsecutiveFitData.h_OutLocArry;
-				WriteLocNum = ConsecutiveFitData.OutFluoNum;
-			}
-
 			// remove invalid molecules
-			ZeroLocRemovel.RemoveZeroLocalizations(WriteLocArry, WriteLocNum, loc_stream1);
+			ZeroLocRemovel.RemoveZeroLocalizations(LDLocData.h_LocArry, LDLocData.oValidFluoNum, LocPara_Global.MultiEmitterFitEn, LDLocData.FirstFrame, LDLocData.EndFrame, loc_stream1);
 
+			// write localization data into file
 			WriteLocArry = ZeroLocRemovel.h_LocArry;
 			WriteLocNum = ZeroLocRemovel.ValidFluoNum;
 
-			LocTime += (clock() - time1);
+
+			time1 = clock();
+			// consecutive fit
+			if (LocPara_Global.ConsecFitEn)
+			{
+
+				ConsecutiveFitData.ConsecutiveFit_WeightedAvg(WriteLocArry, WriteLocNum, IsBreak, LocPara_Global, loc_stream1); // d_iLocArry come from localization data 
+
+																																// frame is not disordered
+				ZeroLocRemovel.RemoveZeroLocalizations(ConsecutiveFitData.h_OutLocArry, ConsecutiveFitData.OutFluoNum, 0, 0, 0, loc_stream1);
+
+				// write localization data into file
+				WriteLocArry = ZeroLocRemovel.h_LocArry;
+				WriteLocNum = ZeroLocRemovel.ValidFluoNum;
+
+
+				// ontime stastics
+				FluoStatData.UpdateOntimeRatio(ConsecutiveFitData.h_OntimeRatio);
+
+			}
+
+			StatTime += (clock() - time1);
 
 
 			// write localization data into file
@@ -281,18 +275,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			RendTime += (clock() - time1);
 
 
-			time1 = clock();
-
-			if (LocPara_Global.OnTimeCalcEn)
-			{
-				// ontime stastics, should be call after LDLocData.BFGS_MLELocalization()
-				LDLocData.OntimeCalc(LocPara_Global, FluoNum, loc_stream1);
-				FluoStatData.UpdateOntimeRatio(LDLocData.h_OntimeRatio);
-			}
-
-			OnTimeCalcTime += (clock() - time1);
-
-			time1 = clock();
 
 			// get statistic information
 			FluoStatData.GetStatisticalInf(WriteLocArry, LocPara_Global, WriteLocNum, loc_stream1);

@@ -52,7 +52,7 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetLocPara3D
 * Signature: (I)V
 */
 JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetStatInfSelection
-(JNIEnv *, jclass, jint, jint, jint);
+(JNIEnv *, jclass, jint, jint);
 
 /*
 * Class:     QC_STORM_

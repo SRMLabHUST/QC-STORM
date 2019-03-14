@@ -125,11 +125,10 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetLocPara3D
 * Signature: (I)V
 */
 JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetStatInfSelection
-(JNIEnv *env, jclass obj, jint DispSel, jint OnTimeEn, jint SpatialResolutionEn)
+(JNIEnv *env, jclass obj, jint DispSel, jint SpatialResolutionEn)
 {
 	StatDispSel = DispSel;
 
-	LocPara_Global.OnTimeCalcEn = OnTimeEn;
 	LocPara_Global.SpatialResolutionCalcEn = SpatialResolutionEn;
 
 }

@@ -744,20 +744,15 @@
                                           <Component id="jTextField_ImagePerGroup" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
                                           <Component id="jTextField_BufferedImgNum" alignment="0" min="-2" pref="145" max="-2" attributes="0"/>
                                           <Group type="102" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="jTextField_StructureSize2D" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
-                                                  <Component id="jCheckBox_Stat_OntimeEn" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              </Group>
+                                              <Component id="jTextField_StructureSize2D" min="-2" pref="64" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="jCheckBox_IsHollowStructure" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="jCheckBox_Stat_SpaResolutionEn" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              </Group>
+                                              <Component id="jCheckBox_IsHollowStructure" min="-2" max="-2" attributes="0"/>
                                           </Group>
+                                          <Component id="jCheckBox_Stat_SpaResolutionEn" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="85" max="32767" attributes="0"/>
+                              <EmptySpace pref="109" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -772,12 +767,16 @@
                           <Component id="jTextField_BufferedImgNum" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel38" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
-                          <Component id="jCheckBox_Stat_OntimeEn" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jCheckBox_Stat_SpaResolutionEn" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel38" min="-2" pref="21" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jCheckBox_Stat_SpaResolutionEn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel37" alignment="1" min="-2" pref="21" max="-2" attributes="0"/>
                           <Component id="jTextField_StructureSize2D" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -831,7 +830,7 @@
                           <Component id="jCheckBox_Stat_DimensionFDVary" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jCheckBox_Stat_LocDensityFDVary" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="80" max="32767" attributes="0"/>
+                      <EmptySpace pref="77" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1002,15 +1001,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Functions enable:"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_OntimeEn">
-              <Properties>
-                <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Ontime"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox_Stat_OntimeEnActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_SpaResolutionEn">
               <Properties>

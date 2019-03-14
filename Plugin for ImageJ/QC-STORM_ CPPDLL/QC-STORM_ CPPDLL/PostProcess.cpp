@@ -175,14 +175,7 @@ UINT th_RerendImage(LPVOID params)
 		// super resolution image rendering
 		RendData.FluoRenderTop(WriteLocArry, LocPara_Global, 0, 0, WriteLocNum, loc_stream1);
 
-		if (LocPara_Global.OnTimeCalcEn)
-		{
-			LDLocData.CopyDataToGPU(WriteLocArry, WriteLocNum, loc_stream1);
 
-			// ontime stastics, should be call after LDLocData.BFGS_MLELocalization()
-			LDLocData.OntimeCalc(LocPara_Global, WriteLocNum, loc_stream1);
-			FluoStatData.UpdateOntimeRatio(LDLocData.h_OntimeRatio);
-		}
 
 		// get statistic information
 		FluoStatData.GetStatisticalInf(WriteLocArry, LocPara_Global, WriteLocNum, loc_stream1);

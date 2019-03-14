@@ -85,7 +85,7 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetAcquisitionPar
 * Signature: (I)V
 */
 JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetStatInfSelection
-(JNIEnv *, jclass, jint, jint, jint);
+(JNIEnv *, jclass, jint, jint);
 
 /*
 * Class:     hust_whno_SMLM_QC_STORM_Plug

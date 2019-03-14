@@ -45,7 +45,6 @@ using namespace std;
 
 
 
-
 // filter molecules in consecutive frames by a radius threshold, only keep the molecule in the first frame
 class NyqConsecutiveFilter_TypeDef
 {
@@ -254,6 +253,7 @@ private:
 
 
 
+
 // use only center part of image, for multi-ROI stitching
 class MarginDataFilter_TypeDef
 {
@@ -270,5 +270,4 @@ public:
 	void DeInit();
 
 };
-
 

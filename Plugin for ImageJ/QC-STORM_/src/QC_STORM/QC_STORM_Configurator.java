@@ -170,7 +170,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jLabel26 = new javax.swing.JLabel();
         jTextField_StructureSize2D = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
-        jCheckBox_Stat_OntimeEn = new javax.swing.JCheckBox();
         jCheckBox_Stat_SpaResolutionEn = new javax.swing.JCheckBox();
         jCheckBox_Stat_DimensionFDVary = new javax.swing.JCheckBox();
         jCheckBox_Stat_LocDensityFDVary = new javax.swing.JCheckBox();
@@ -575,14 +574,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
             jLabel27.setText("Functions enable:");
 
-            jCheckBox_Stat_OntimeEn.setSelected(true);
-            jCheckBox_Stat_OntimeEn.setText("Ontime");
-            jCheckBox_Stat_OntimeEn.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jCheckBox_Stat_OntimeEnActionPerformed(evt);
-                }
-            });
-
             jCheckBox_Stat_SpaResolutionEn.setSelected(true);
             jCheckBox_Stat_SpaResolutionEn.setText("Spatial resolution");
 
@@ -610,14 +601,14 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                                 .addComponent(jLabel27))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jCheckBox_Stat_OntimeEn)
-                                .addComponent(jTextField_StructureSize2D, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField_ImagePerGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jCheckBox_IsHollowStructure)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jTextField_StructureSize2D, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField_ImagePerGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jCheckBox_IsHollowStructure))
                                 .addComponent(jCheckBox_Stat_SpaResolutionEn))
-                            .addGap(120, 120, 120))
+                            .addGap(144, 144, 144))
                         .addGroup(jPanel3Layout.createSequentialGroup()
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel3Layout.createSequentialGroup()
@@ -656,17 +647,11 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
             jPanel3Layout.setVerticalGroup(
                 jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGap(13, 13, 13)
-                            .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(6, 6, 6))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jCheckBox_Stat_SpaResolutionEn)
-                                .addComponent(jCheckBox_Stat_OntimeEn))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                    .addGap(12, 12, 12)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jCheckBox_Stat_SpaResolutionEn))
+                    .addGap(5, 5, 5)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField_StructureSize2D, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -724,7 +709,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                 }
             });
 
-            jCheckBox_ShiftCorrection.setText("Shift correction by cross correlation");
+            jCheckBox_ShiftCorrection.setText("Drift correction by cross correlation");
 
             jButton_Rerend.setText("Rerendering");
             jButton_Rerend.addActionListener(new java.awt.event.ActionListener() {
@@ -927,10 +912,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox_Stat_OntimeVaryActionPerformed
 
-    private void jCheckBox_Stat_OntimeEnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_Stat_OntimeEnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox_Stat_OntimeEnActionPerformed
-
     private void jTextField_StructureSize2DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_StructureSize2DActionPerformed
         // TODO add your handling code here:
         float StructureWidth = Float.parseFloat(jTextField_StructureSize2D.getText());
@@ -1000,7 +981,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox_Stat_LocPrecVary;
     private javax.swing.JCheckBox jCheckBox_Stat_MultiFitEn;
     private javax.swing.JCheckBox jCheckBox_Stat_NyqResolutionVary;
-    private javax.swing.JCheckBox jCheckBox_Stat_OntimeEn;
     private javax.swing.JCheckBox jCheckBox_Stat_OntimeVary;
     private javax.swing.JCheckBox jCheckBox_Stat_PSFWidth;
     private javax.swing.JCheckBox jCheckBox_Stat_PSFWidthVary;
@@ -1112,7 +1092,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         
         // statastic information display enable
         LocPara.StatDispSel = GetStasticalInfDispEn();
-        LocPara.OnTimeEn = jCheckBox_Stat_OntimeEn.isSelected() ? 1 : 0;
         LocPara.SpatialResolutionEn = jCheckBox_Stat_SpaResolutionEn.isSelected() ? 1 : 0;
         
         
@@ -1129,7 +1108,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         QC_STORM_.lm_SetLocPara(LocPara.Kadc,LocPara.Offset,LocPara.QE,LocPara.RegionSize,LocPara.LocType, LocPara.MultiEmitterFitEn, LocPara.ConsecutiveFitEn, LocPara.ConsecFilterRadius, LocPara.RawImgPixelSize,LocPara.RenderingPixelZoom,LocPara.SNR_th);
         QC_STORM_.lm_SetLocPara3D(LocPara.MinZDepth, LocPara.MaxZDepth, LocPara.ZDepthCorrFactor, LocPara.p4, LocPara.p3, LocPara.p2, LocPara.p1, LocPara.p0);
        
-        QC_STORM_.lm_SetStatInfSelection(LocPara.StatDispSel, LocPara.OnTimeEn, LocPara.SpatialResolutionEn);            
+        QC_STORM_.lm_SetStatInfSelection(LocPara.StatDispSel, LocPara.SpatialResolutionEn);            
         QC_STORM_.lm_SetSpatialResolutionInf(LocPara.ImagePerGroup, LocPara.IsHollowTube, LocPara.StructureSize2D, 0);
                      
     }
@@ -1254,7 +1233,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jCheckBox_Stat_LocDensityFDVary.setSelected(Boolean.parseBoolean(pps.getProperty("LocDensityFDVary", Boolean.toString(false))));
         
                 
-        jCheckBox_Stat_OntimeEn.setSelected(Boolean.parseBoolean(pps.getProperty("OnTimeCalcEnable", Boolean.toString(true))));
         jCheckBox_Stat_SpaResolutionEn.setSelected(Boolean.parseBoolean(pps.getProperty("SpaResolutionCalcEnable", Boolean.toString(true))));
 
     
@@ -1351,7 +1329,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         pps.setProperty("LocDensityFDVary", Boolean.toString(jCheckBox_Stat_LocDensityFDVary.isSelected()));        
 
         
-        pps.setProperty("OnTimeCalcEnable", Boolean.toString(jCheckBox_Stat_OntimeEn.isSelected()));
         pps.setProperty("SpaResolutionCalcEnable", Boolean.toString(jCheckBox_Stat_SpaResolutionEn.isSelected()));        
         
         

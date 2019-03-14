@@ -80,7 +80,7 @@ public class QC_STORM_ implements PlugInFilter{
     public native static void lm_SetLocPara(float KAdc, float Offset, float QE, int ROISize, int LocType, int MultiEmitterFitEn, int ConsecutiveFitEn, float ConsecFilterRadius, float RawPixelSize, float RenderPixelZoom, float SNR_th);
     public native static void lm_SetLocPara3D(float MinZDepth, float MaxZDepth, float ZDepthCorrFactor, float p4, float p3, float p2, float p1, float p0);
     
-    public native static void lm_SetStatInfSelection(int DispSel, int OnTimeEn, int SpatialResolutionEn);
+    public native static void lm_SetStatInfSelection(int DispSel, int SpatialResolutionEn);
 
     public native static void lm_StartLocThread();
     public native static void lm_StopLocThread();

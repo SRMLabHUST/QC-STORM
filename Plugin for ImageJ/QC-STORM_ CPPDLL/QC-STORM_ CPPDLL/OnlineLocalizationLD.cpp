@@ -105,7 +105,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	unsigned int LocTime = 0;
 	unsigned int RendTime = 0;
 	unsigned int StatTime = 0;
-	unsigned int OnTimeCalcTime = 0;
 	unsigned int ResolutionTime = 0;
 
 	unsigned int TotalFluoNum = 0;
@@ -220,42 +219,37 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 //			printf("MultiFitRatio:%f\n", LDLocData.MultiFitRatio);
 
+	
+			// remove invalid molecules
+			ZeroLocRemovel.RemoveZeroLocalizations(LDLocData.h_LocArry, LDLocData.oValidFluoNum, LocPara_Global.MultiEmitterFitEn, LDLocData.FirstFrame, LDLocData.EndFrame, loc_stream1);
+
 			// write localization data into file
-			WriteLocArry = LDLocData.h_LocArry;
-			WriteLocNum = LDLocData.oValidFluoNum;
+			WriteLocArry = ZeroLocRemovel.h_LocArry;
+			WriteLocNum = ZeroLocRemovel.ValidFluoNum;
 
-
-
+			
 			time1 = clock();
 			// consecutive fit
 			if (LocPara_Global.ConsecFitEn)
 			{
-				ConsecutiveFitData.FitConsecutiveFluo(LDLocData.d_LocArry, LocPara_Global, LDLocData.oValidFluoNum, loc_stream1, IsBreak);
 
-				if (!IsBreak)
-				{
-					// get avalible data
-					ConsecutiveFitData.GetAvailableData(loc_stream1);
-				}
-				else
-				{
-					// get avalible data at the last time
-					ConsecutiveFitData.GetResidualData(loc_stream1);
-				}
+				ConsecutiveFitData.ConsecutiveFit_WeightedAvg(WriteLocArry, WriteLocNum, IsBreak, LocPara_Global, loc_stream1); // d_iLocArry come from localization data 
+
+				// frame is not disordered
+				ZeroLocRemovel.RemoveZeroLocalizations(ConsecutiveFitData.h_OutLocArry, ConsecutiveFitData.OutFluoNum, 0, 0, 0, loc_stream1);
 
 				// write localization data into file
-				WriteLocArry = ConsecutiveFitData.h_OutLocArry;
-				WriteLocNum = ConsecutiveFitData.OutFluoNum;
+				WriteLocArry = ZeroLocRemovel.h_LocArry;
+				WriteLocNum = ZeroLocRemovel.ValidFluoNum;
+
+
+				// ontime stastics
+				FluoStatData.UpdateOntimeRatio(ConsecutiveFitData.h_OntimeRatio);
+
 			}
 
-			// remove invalid molecules
-			ZeroLocRemovel.RemoveZeroLocalizations(WriteLocArry, WriteLocNum, loc_stream1);
-
-			WriteLocArry = ZeroLocRemovel.h_LocArry;
-			WriteLocNum = ZeroLocRemovel.ValidFluoNum;
-
-			LocTime += (clock() - time1);
-
+			StatTime += (clock() - time1);
+		
 
 			// write localization data into file
 			LocFile.Write(WriteLocArry, WriteLocNum * OutParaNumGS2D * sizeof(float));
@@ -269,17 +263,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			RendTime += (clock() - time1);
 
 
-			time1 = clock();
-
-			if (LocPara_Global.OnTimeCalcEn)
-			{
-				// ontime stastics, should be call after LDLocData.BFGS_MLELocalization()
-				LDLocData.OntimeCalc(LocPara_Global, FluoNum, loc_stream1);
-				FluoStatData.UpdateOntimeRatio(LDLocData.h_OntimeRatio);
-			}
-			OnTimeCalcTime += (clock() - time1);
-
-			time1 = clock();
 
 			// get statistic information
 			FluoStatData.GetStatisticalInf(WriteLocArry, LocPara_Global, WriteLocNum, loc_stream1);
@@ -362,7 +345,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	printf("Molecular Extraction time: %d ms\n", ExtractTime);
 	printf("Localization time : %d ms\n", LocTime);
 	printf("Rendering time : %d ms\n", RendTime);
-	printf("Stastics calc time : %d ms\n", StatTime + OnTimeCalcTime);
+	printf("Stastics calc time : %d ms\n", StatTime);
 
 	printf("Resolution calc time : %d ms\n", ResolutionTime);
 

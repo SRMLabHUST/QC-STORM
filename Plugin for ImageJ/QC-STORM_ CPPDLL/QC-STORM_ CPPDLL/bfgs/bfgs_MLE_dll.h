@@ -46,6 +46,7 @@ using namespace std;
 
 
 
+
 // basic parameters for localization for both 2d and 3d
 class LocalizationPara
 {
@@ -107,7 +108,6 @@ public:
 	float RSCResolutionTh; // expected resolution threshold
 
 	// calculation control
-	int OnTimeCalcEn;
 	int SpatialResolutionCalcEn;
 
 
@@ -117,7 +117,6 @@ public:
 
 	void UpdateSRImageSize(); // SRImageWidth = ((int)(ImageWidth*PixelZoom) + 3) / 4 * 4; same for ImageHigh
 };
-
 
 
 
@@ -193,11 +192,6 @@ private:
 	float *d_LineFilterH_Signal;
 
 
-	// consecutive fitting, to merge ROI by assign each consecutive ROI the average
-	int *d_ForwardLinkID;
-	int *d_BackwardLinkID;
-	int *d_ConsecutiveNum;
-
 
 public:
 	void Init(LocalizationPara & LocPara);
@@ -232,7 +226,6 @@ private:
 
 
 
-
 // both 2d and 3d localization data structure
 class LDLocData_TypeDef
 {
@@ -243,40 +236,38 @@ public:
 	float * h_LocArry;
 	float * d_LocArry;
 
-	float *d_WLEPara;
+	float *d_WLEPara; // copy data from roi extraction
 
 
-	// on time calculation
-	float *h_OntimeRatio; // for display and time vatiation
-
-
-	// valid number after localization, still include filtered molecule number
+	// valid number after localization
 	int oValidFluoNum;
+
+	int FirstFrame;
+	int EndFrame;
 
 public:
 
-	// multi emitter fitting
-	int * h_MultiFitFluoNum;
-	int * d_MultiFitFluoNum;
-	int * d_MultiFitFluoPos; // position id
+	// multi emitter fitting, two emitter fitting
+	int * h_MultiFitFluoNum_2E;
+	int * d_MultiFitFluoNum_2E;
+	int * d_MultiFitFluoPos_2E; // position id of molecules need to be fitted
 
-	float MultiFitRatio;
-	
+	// multi emitter fitting, three emitter fitting
+	// only for 2D imaging
+	int * h_MultiFitFluoNum_3E;
+	int * d_MultiFitFluoNum_3E;
+	int * d_MultiFitFluoPos_3E; // position id of molecules need to be fitted
+
+	float MultiFitRatio_2E;
+	float MultiFitRatio_3E;
+
+	int *h_MultiFit_AddedFluoNum;
+	int *d_MultiFit_AddedFluoNum;
+
+
 private:
-	// on time calculation, to find Consecutive molecules in adjecent frames
-	int *d_ForwardLinkID;
-	int *d_BackwardLinkID;
-	int *d_ConsecutiveNum;
 
-
-	int *h_OntimeDistrib;
-	int *d_OntimeDistrib;
-
-	int *h_ValidFluoNum; // for ontime distribution 
-	int *d_ValidFluoNum; // for ontime distribution 
-
-
-	// for loc filter
+	// localization filter
 	float *h_SNRSumUp;
 	int *h_ValidNum;
 
@@ -290,10 +281,6 @@ public:
 
 	void BFGS_MLELocalization(unsigned short * h_ImageROI, float *h_WLEPara, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
-	
-	void OntimeCalc(LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
-
-	void CopyDataToGPU(float * h_LocArry, int FluoNum, cudaStream_t cstream);
 
 public:
 
@@ -318,40 +305,47 @@ private:
 
 
 
-// consecutive fit to group molecules scattered in consecutive frames into one
+// consecutive fit to merge molecules in consecutive frames
 class ConsecutiveFit_TypeDef
 {
 public:
 
 	int OutFluoNum;
 	float * h_OutLocArry;
+	
+	// on time calculate
 
-
-public:
-	void Init(); // create CPU&GPU memory
-	void Deinit(); // release CPU&GPU memory
-
-	void FitConsecutiveFluo(float * d_iLocArry, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream, int IsLastProc); // d_iLocArry come from localization data 
-
-	void GetAvailableData(cudaStream_t cstream); // get last data
-	void GetResidualData(cudaStream_t cstream); // get last data+cur data,unsed at the last processing
-
-
-	void ResetData();
-
+	float *h_OntimeRatio;
 private:
 
-	int CurInputID;
-	int BufFluoNum[2];
+	int FluoNum_LastGroup;
 
-	float * d_BufLocArry[2];
+	float * d_LocArry_LastGroup;
+	float * d_LocArry_ConsecFit;
 
-	//
+
+	// consecutive molecule find
 	int *d_ForwardLinkID;
 	int *d_BackwardLinkID;
 
 
+	// on time calculate
+	int *h_OntimeDistrib;
+	int *d_OntimeDistrib;
+
+	int *h_ValidFluoNum; // for ontime distribution 
+	int *d_ValidFluoNum; // for ontime distribution 
+
+public:
+	void Init(); 
+	void Deinit();
+
+	void ConsecutiveFit_WeightedAvg(float * h_iLocArry, int FluoNum_CurGrop, int IsEndProc, LocalizationPara & LocPara, cudaStream_t cstream); // d_iLocArry come from localization data 
+
 };
+
+
+
 
 
 // remove invalid localizations with zero value
@@ -362,7 +356,8 @@ public:
 	float *h_LocArry;
 
 public:
-	void RemoveZeroLocalizations(float *ih_LocArry,int iFluoNum, cudaStream_t cstream);
+	// sort frame is necessary for multi emitter fitting that extra localizations are added on existing LocArry
+	void RemoveZeroLocalizations(float *ih_LocArry,int iFluoNum, int SortFrameEn, int FirstFrame, int EndFrame, cudaStream_t cstream);
 
 	void Init();
 
@@ -370,6 +365,9 @@ public:
 
 
 private:
+	void RemoveZero_SortFrame(float *ih_LocArry, int iFluoNum, int SortFrameEn, int FirstFrame, int EndFrame, cudaStream_t cstream);
+
+	void RemoveZeroWithoutSortFrame(float *ih_LocArry, int iFluoNum, cudaStream_t cstream);
 	void FindCopyID(float *ih_LocArry, int iFluoNum);
 
 private:
@@ -380,7 +378,13 @@ private:
 	int *h_FluoID_Valid;
 	int *d_FluoID_Valid;
 
+	int *h_FluoNum_Valid;
+	int *d_FluoNum_Valid;
+
 };
+
+
+
 
 
 
@@ -402,9 +406,10 @@ public:
 	int *h_HistMaxDat;
 	int *d_HistMaxDat;
 
+
 	char *h_DispRendImg; // croped and down-sampled super-resolution image for display
 	char *d_DispRendImg; // croped and down-sampled super-resolution image for display
-
+	
 	char *h_SaveRendImg; // whole super-resolution image for save
 	char *d_SaveRendImg; // whole super-resolution image for save
 
@@ -434,6 +439,8 @@ public:
 	static void GetMaxImgSizeFromLocArry(float *h_LocArry, float *d_LocArry, int *MaxImgWidth, int *MaxImgHigh, int FluoNum, cudaStream_t cstream);
 
 };
+
+
 
 
 // stastical information class for both 2d and 3d
@@ -559,8 +566,9 @@ private:
 
 
 
-// super-resoluction image cross-correlation drift correction
 
+
+// drift correction by super-resoluction image cross-correlation 
 class SRDriftCorrData_TypeDef
 {
 
@@ -620,7 +628,6 @@ private:
 	float *d_SumLine; // temporal use for correlation
 
 
-
 private:
 
 	// low level
@@ -653,6 +660,7 @@ private:
 };
 
 
+
 class ImageRender3DStackData_TypeDef
 {
 public:
@@ -672,12 +680,9 @@ public:
 
 	// put all molecules data once for each z depth
 	// FixedlocPrec_z is double of FixedlocPrec_x
-	void GetSaveImgTop(float *ih_LocArry, LocalizationPara & LocPara, float RenderZDepth, int RendMode, float FixedlocPrec_x, int TotalFluoNum, cudaStream_t cstream);
-
-
+	void GetSaveImgTop(float *ih_LocArry, LocalizationPara & LocPara, float RenderZDepth, int RGBImageEncodeMode, float FixedlocPrec_x, int TotalFluoNum, cudaStream_t cstream);
 
 };
-
 
 
 

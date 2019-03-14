@@ -204,11 +204,10 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetAcquisitionPar
 * Signature: (I)V
 */
 JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetStatInfSelection
-(JNIEnv *env, jclass obj, jint DispSel, jint OnTimeEn, jint SpatialResolutionEn)
+(JNIEnv *env, jclass obj, jint DispSel, jint SpatialResolutionEn)
 {
 	StatInfDispSel = DispSel;
 	
-	LocPara_Global.OnTimeCalcEn = OnTimeEn;
 	LocPara_Global.SpatialResolutionCalcEn = SpatialResolutionEn;
 
 	RenderingState.MakeAProcess();

@@ -160,7 +160,6 @@ void DispStatInfOnFigure_All()
 	DispStatInfOnFigure_Single(StatInfDisplay.InfDisp_Curve_Background->GetAxisImage(), XPos_TimeVary, YPos_TimeVary);
 	DispStatInfOnFigure_Single(StatInfDisplay.InfDisp_Curve_PSFWidth->GetAxisImage(), XPos_TimeVary, YPos_TimeVary);
 	DispStatInfOnFigure_Single(StatInfDisplay.InfDisp_Curve_LocDensity2D->GetAxisImage(), XPos_TimeVary, YPos_TimeVary);
-	DispStatInfOnFigure_Single(StatInfDisplay.InfDisp_Curve_Ontime->GetAxisImage(), XPos_TimeVary, YPos_TimeVary);
 
 
 	DispOntimeInf();

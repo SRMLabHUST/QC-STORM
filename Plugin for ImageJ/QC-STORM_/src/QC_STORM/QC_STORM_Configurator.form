@@ -603,16 +603,17 @@
                               </Group>
                               <EmptySpace pref="10" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jCheckBox_Stat_OntimeEn" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField_StructureSize2D" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
-                                  <Component id="jTextField_ImagePerGroup" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jTextField_StructureSize2D" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
+                                          <Component id="jTextField_ImagePerGroup" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jCheckBox_IsHollowStructure" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jCheckBox_Stat_SpaResolutionEn" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jCheckBox_IsHollowStructure" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jCheckBox_Stat_SpaResolutionEn" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="144" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -666,21 +667,12 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-                              <Component id="jLabel27" min="-2" pref="21" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jCheckBox_Stat_SpaResolutionEn" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jCheckBox_Stat_OntimeEn" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          </Group>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel27" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                          <Component id="jCheckBox_Stat_SpaResolutionEn" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" alignment="1" groupAlignment="3" attributes="0">
                               <Component id="jTextField_StructureSize2D" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -866,15 +858,6 @@
                 <Property name="text" type="java.lang.String" value="Functions enable:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_OntimeEn">
-              <Properties>
-                <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Ontime"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox_Stat_OntimeEnActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_SpaResolutionEn">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
@@ -980,7 +963,7 @@
             </Component>
             <Component class="javax.swing.JCheckBox" name="jCheckBox_ShiftCorrection">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Shift correction by cross correlation"/>
+                <Property name="text" type="java.lang.String" value="Drift correction by cross correlation"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="jButton_Rerend">

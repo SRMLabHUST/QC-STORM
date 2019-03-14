@@ -48,7 +48,7 @@ public class QC_STORM_Plug implements ProcessorPlugin, SciJavaPlugin{
     public native static void lm_SetImagePara(int ImageWidth, int ImageHigh, int SRImageWidth, int SRImageHigh);
     public native static void lm_SetAcquisitionPara(char CreateTimeIdx[]);
     
-    public native static void lm_SetStatInfSelection(int DispSel, int OnTimeEn, int SpatialResolutionEn);
+    public native static void lm_SetStatInfSelection(int DispSel, int SpatialResolutionEn);
     
     // send image to be processed by GPU
     public native static void lm_FeedImageData(short ImgDataS[], int FrameNumI);
