@@ -47,7 +47,7 @@ Sequential Multi-FOV acquisition (hardware dependent)
 # Recompile the source codes
 1, The Java GUI for ImageJ (v1.52g) and Micro-Manager (MMSetup_64bit_2.0.0-beta3 from nightly builds of Micro-Manager 2.0) are develped by NetBeans IDE 7.3.1 with Java jdk1.6.0_45.
 
-2, The C++ core image processing algorithms are developed by Visual Studio 2015 Update 3, and accelerated by NVidia CUDA 9.0.
+2, The C++ core image processing algorithms are developed by Visual Studio 2015 Update 3, and accelerated by NVidia CUDA 10.0.
 
 3, Download the codes, open the projects by corresponding software and recompile the codes.
 
