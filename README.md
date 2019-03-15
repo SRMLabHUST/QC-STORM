@@ -17,10 +17,6 @@ Online super-resolution image rendering and statistical information analyzing (p
 
 Online localization precision (CRLB) calculation
 
-Online Nyquist resolution and convolved spatial resolution calculation
-
-Online spatial resolution guided acquisition number
-
 Drift correction by cross-correlation (post-processing)
 
 Merging molecules emitting in consecutive frames (localization precision weighted average)
