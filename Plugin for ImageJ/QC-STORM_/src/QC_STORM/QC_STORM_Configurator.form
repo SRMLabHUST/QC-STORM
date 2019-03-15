@@ -50,19 +50,24 @@
                       <Component id="jButton_Start" min="-2" pref="249" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                      <Component id="jTabbedPane1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTabbedPane1" min="-2" pref="506" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <EmptySpace pref="24" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace pref="18" max="32767" attributes="0"/>
-              <Component id="jTabbedPane1" min="-2" pref="469" max="-2" attributes="0"/>
+              <EmptySpace pref="16" max="32767" attributes="0"/>
+              <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jTabbedPane1" min="-2" pref="446" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jButton_Start" min="-2" pref="62" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
@@ -71,6 +76,14 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
+    <Component class="javax.swing.JButton" name="jButton_Start">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Start localization"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_StartActionPerformed"/>
+      </Events>
+    </Component>
     <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
@@ -78,8 +91,8 @@
         <Container class="javax.swing.JPanel" name="jPanel1">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Basic param">
-                <Property name="tabTitle" type="java.lang.String" value="Basic param"/>
+              <JTabbedPaneConstraints tabName="Imaging">
+                <Property name="tabTitle" type="java.lang.String" value="Imaging"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -118,7 +131,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="109" max="32767" attributes="0"/>
+                      <EmptySpace pref="90" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -150,7 +163,7 @@
                           <Component id="jComboBox_LocType" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel21" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="23" max="32767" attributes="0"/>
+                      <EmptySpace pref="12" max="32767" attributes="0"/>
                       <Component id="jCheckBox_Stat_MultiFitEn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jCheckBox_Stat_ConsecutiveFitEn" min="-2" max="-2" attributes="0"/>
@@ -169,7 +182,7 @@
                           <Component id="jTextField_ParaFile" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                           <Component id="jButton_LoadParaFile" alignment="3" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="109" max="32767" attributes="0"/>
+                      <EmptySpace pref="97" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -301,8 +314,8 @@
         <Container class="javax.swing.JPanel" name="jPanel5">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Camera param">
-                <Property name="tabTitle" type="java.lang.String" value="Camera param"/>
+              <JTabbedPaneConstraints tabName="Camera">
+                <Property name="tabTitle" type="java.lang.String" value="Camera"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -313,14 +326,14 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel14" alignment="0" pref="83" max="32767" attributes="0"/>
+                          <Component id="jLabel14" alignment="0" pref="81" max="32767" attributes="0"/>
                           <Component id="jLabel13" alignment="0" max="32767" attributes="0"/>
                           <Component id="jLabel15" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jTextField_Kadc" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jTextField_QE" alignment="0" pref="82" max="32767" attributes="0"/>
+                          <Component id="jTextField_QE" alignment="0" pref="65" max="32767" attributes="0"/>
                           <Component id="jTextField_Offset" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="265" max="-2" attributes="0"/>
@@ -345,7 +358,7 @@
                           <Component id="jTextField_Offset" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel15" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="308" max="32767" attributes="0"/>
+                      <EmptySpace pref="285" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -386,8 +399,8 @@
         <Container class="javax.swing.JPanel" name="jPanel2">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="3D param">
-                <Property name="tabTitle" type="java.lang.String" value="3D param"/>
+              <JTabbedPaneConstraints tabName="3D">
+                <Property name="tabTitle" type="java.lang.String" value="3D"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -459,13 +472,13 @@
                       <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel4" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jTextField_MinZDepth" alignment="1" pref="32" max="32767" attributes="0"/>
+                          <Component id="jTextField_MinZDepth" alignment="1" pref="25" max="32767" attributes="0"/>
                           <Component id="jTextField_MaxZDepth" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel18" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jTextField_ZDepthCorrFactor" alignment="1" pref="32" max="32767" attributes="0"/>
+                          <Component id="jTextField_ZDepthCorrFactor" alignment="1" pref="25" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
@@ -485,7 +498,7 @@
                           <Component id="jTextField_p1" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextField_p0" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="266" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="257" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -581,11 +594,154 @@
             </Component>
           </SubComponents>
         </Container>
+        <Container class="javax.swing.JPanel" name="jPanel_ROMP">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="ROMP">
+                <Property name="tabTitle" type="java.lang.String" value="ROMP"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jCheckBox_Stat_SpaResolutionEn" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jCheckBox_Stat_SpaResolutionVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_DimensionFDVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel28" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel26" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jTextField_StructureSize2D" min="-2" pref="64" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jCheckBox_IsHollowStructure" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jTextField_ImagePerGroup" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_NyqResolutionVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_LocDensityFDVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="82" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                      <Component id="jCheckBox_Stat_SpaResolutionEn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel26" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                          <Component id="jTextField_StructureSize2D" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jCheckBox_IsHollowStructure" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel28" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                          <Component id="jTextField_ImagePerGroup" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                      <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jCheckBox_Stat_SpaResolutionVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jCheckBox_Stat_NyqResolutionVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jCheckBox_Stat_DimensionFDVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jCheckBox_Stat_LocDensityFDVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="225" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_SpaResolutionEn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Spatial resolution calculation"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel26">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Structure size 2D (nm):"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jTextField_StructureSize2D">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="50"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField_StructureSize2DActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="jCheckBox_IsHollowStructure">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Is hollow tube"/>
+                <Property name="toolTipText" type="java.lang.String" value="not solid tube or structure width is significantly larger than localization precision"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel28">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Images per group:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jTextField_ImagePerGroup">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="50"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel16">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Times New Roman" size="12" style="1"/>
+                </Property>
+                <Property name="horizontalAlignment" type="int" value="2"/>
+                <Property name="text" type="java.lang.String" value="Spatial resolution time-varying curve:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_SpaResolutionVary">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Spatial resolution"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_NyqResolutionVary">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Nyquist resolution"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox_Stat_NyqResolutionVaryActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_DimensionFDVary">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Dimension FD"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_LocDensityFDVary">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Localization density FD"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
         <Container class="javax.swing.JPanel" name="jPanel3">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Statistical disp">
-                <Property name="tabTitle" type="java.lang.String" value="Statistical disp"/>
+              <JTabbedPaneConstraints tabName="Statistics">
+                <Property name="tabTitle" type="java.lang.String" value="Statistics"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -597,95 +753,41 @@
                       <EmptySpace min="37" pref="37" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel26" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel27" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jCheckBox_Stat_TotalPhoton" max="32767" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_SNR" min="-2" pref="97" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="10" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jTextField_StructureSize2D" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
-                                          <Component id="jTextField_ImagePerGroup" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jCheckBox_IsHollowStructure" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="jCheckBox_Stat_SpaResolutionEn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_PSFWidth" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_LocPrec" min="-2" pref="172" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="144" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
+                          <Component id="jLabel11" alignment="0" min="-2" pref="214" max="-2" attributes="0"/>
+                          <Component id="jLabel12" alignment="0" min="-2" pref="220" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jCheckBox_Stat_SpaResolutionVary" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jCheckBox_Stat_DimensionFDVary" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jCheckBox_Stat_LocDensityFDVary" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jCheckBox_Stat_NyqResolutionVary" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel28" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jCheckBox_Stat_BackgroundVary" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jCheckBox_Stat_PSFWidthVary" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jCheckBox_Stat_OntimeVary" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jCheckBox_Stat_TotalPhotonVary" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jCheckBox_Stat_LocPrecVary" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jCheckBox_Stat_SNRVary" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jCheckBox_Stat_LocDensityVary" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="jCheckBox_Stat_TotalPhoton" max="32767" attributes="0"/>
-                                          <Component id="jCheckBox_Stat_SNR" min="-2" pref="97" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jCheckBox_Stat_PSFWidth" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jCheckBox_Stat_LocPrec" min="-2" pref="172" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Component id="jLabel11" alignment="0" min="-2" pref="214" max="-2" attributes="0"/>
-                                  <Component id="jLabel12" alignment="0" min="-2" pref="220" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_BackgroundVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_PSFWidthVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_OntimeVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_TotalPhotonVary" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jCheckBox_Stat_LocDensityVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_LocPrecVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_SNRVary" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
+                      <EmptySpace pref="151" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel27" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
-                          <Component id="jCheckBox_Stat_SpaResolutionEn" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                              <Component id="jTextField_StructureSize2D" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jCheckBox_IsHollowStructure" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="jLabel26" alignment="1" min="-2" pref="21" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel28" alignment="1" min="-2" pref="21" max="-2" attributes="0"/>
-                          <Component id="jTextField_ImagePerGroup" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -709,26 +811,14 @@
                           <Component id="jCheckBox_Stat_OntimeVary" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jCheckBox_Stat_SNRVary" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jCheckBox_Stat_PSFWidthVary" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jCheckBox_Stat_LocDensityVary" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jCheckBox_Stat_BackgroundVary" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jCheckBox_Stat_SpaResolutionVary" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jCheckBox_Stat_NyqResolutionVary" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jCheckBox_Stat_DimensionFDVary" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jCheckBox_Stat_LocDensityFDVary" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace pref="63" max="32767" attributes="0"/>
+                      <EmptySpace pref="206" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -817,86 +907,13 @@
                 <Property name="text" type="java.lang.String" value="Time-varying curve:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel16">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Times New Roman" size="12" style="1"/>
-                </Property>
-                <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="Spatial resolution time-varying curve:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_NyqResolutionVary">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Nyquist resolution"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox_Stat_NyqResolutionVaryActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_SpaResolutionVary">
-              <Properties>
-                <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Spatial resolution"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel26">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Structure size 2D (nm):"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="jTextField_StructureSize2D">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="50"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField_StructureSize2DActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel27">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Functions enable:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_SpaResolutionEn">
-              <Properties>
-                <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Spatial resolution"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_DimensionFDVary">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Dimension FD"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_LocDensityFDVary">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Localization density FD"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel28">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Images per group:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="jTextField_ImagePerGroup">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="50"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox_IsHollowStructure">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Is hollow tube"/>
-                <Property name="toolTipText" type="java.lang.String" value="not solid tube or structure width is significantly larger than localization precision"/>
-              </Properties>
-            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel4">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Post processing">
-                <Property name="tabTitle" type="java.lang.String" value="Post processing"/>
+              <JTabbedPaneConstraints tabName="PostProc">
+                <Property name="tabTitle" type="java.lang.String" value="PostProc"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -910,19 +927,19 @@
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="26" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jTextField_DriftCorrGroupFrameNum" min="-2" pref="64" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="jCheckBox_ShiftCorrection" min="-2" pref="267" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jTextField_LocDataPath" min="-2" pref="199" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                               <Component id="jButton_LoadLocData" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jCheckBox_ShiftCorrection" min="-2" pref="267" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   </Group>
@@ -945,7 +962,7 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jButton_Rerend" min="-2" pref="46" max="-2" attributes="0"/>
-                      <EmptySpace pref="258" max="32767" attributes="0"/>
+                      <EmptySpace pref="235" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -981,20 +998,17 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField_DriftCorrGroupFrameNum">
               <Properties>
-                <Property name="text" type="java.lang.String" value="800"/>
+                <Property name="text" type="java.lang.String" value="1000"/>
               </Properties>
             </Component>
           </SubComponents>
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="jButton_Start">
+    <Component class="javax.swing.JLabel" name="jLabel19">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Start localization"/>
+        <Property name="text" type="java.lang.String" value="Parameters:"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_StartActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>
