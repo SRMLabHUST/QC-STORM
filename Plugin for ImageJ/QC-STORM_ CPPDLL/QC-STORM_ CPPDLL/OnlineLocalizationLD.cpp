@@ -346,7 +346,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	printf("Rendering time : %d ms\n", RendTime);
 	printf("Stastics calc time : %d ms\n", StatTime);
 
-	printf("Resolution calc time : %d ms\n", ResolutionTime);
+	if (LocPara_Global.SpatialResolutionCalcEn)printf("Resolution calc time : %d ms\n", ResolutionTime);
 
 	printf("TotalFluoNum : %d\n", TotalFluoNum);
 	printf("Localization speed : %.0f/s\n", LocSpeed);
