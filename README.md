@@ -39,7 +39,7 @@ Sequential Multi-FOV acquisition (hardware dependent)
 
 6, Copy the downloaded .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into "plugins" or "mmplugins" folder for ImageJ and Micro-Manager respectively.
 
-7, If the plugin cannot run, please make sure: 1, the compute capability of the gpu is no less than 3.5; 2, your GPU is detected by the operation system; 3, please update the GPU driver to the newest (Compatible Driver Versions >= 411.31) https://www.geforce.com/drivers.
+7, If the plugin cannot run, please make sure: 1, the compute capability of the gpu is no less than 3.5; 2, your GPU is detected by the operation system; 3, please update the GPU driver to the newest (Compatible Driver Versions >= 411.31) at https://www.geforce.com/drivers.
 
 
 # Recompile the source codes
