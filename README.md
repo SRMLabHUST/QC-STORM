@@ -29,7 +29,7 @@ Sequential Multi-FOV acquisition (hardware dependent)
 # System requirements and installation
 1, Windows 7 sp1 or newer, x64.
 
-2, NVidia CUDA enabled GPU with compute capability no less than 3.5. You may need to update your GPU driver and make sure your GPU is detected by the operation system.
+2, NVidia CUDA enabled GPU with compute capability no less than 3.5.
 
 3, ImageJ/Fiji, Micro-Manager 2.0 (beta 3).
 
@@ -38,6 +38,8 @@ Sequential Multi-FOV acquisition (hardware dependent)
 5, Download QC-STORM release version from https://github.com/SRMLabHUST/QC-STORM/releases.
 
 6, Copy the downloaded .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into "plugins" or "mmplugins" folder for ImageJ and Micro-Manager respectively.
+
+7, If the plugin cannot run, please make sure: 1, the compute capability of the gpu is no less than 3.5; 2, your GPU is detected by the operation system; 3, please update the GPU driver to the newest.
 
 
 # Recompile the source codes
