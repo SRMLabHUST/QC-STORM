@@ -14,7 +14,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 
-//package QC_STORM;
+// package QC_STORM;
 
 
 import ij.ImagePlus;
@@ -129,7 +129,8 @@ public class QC_STORM_ implements PlugInFilter{
             
 
             // batch processing
-            BatchedImgNum=(2048*2048 / ImageWidthI / ImageHighI );
+            BatchedImgNum = (2048 * 2048 / ImageWidthI / ImageHighI);
+            BatchedImgNum = BatchedImgNum*2/3;
             BatchedImgNum = BatchedImgNum/2*2;
             
             if(BatchedImgNum<1)BatchedImgNum=1;

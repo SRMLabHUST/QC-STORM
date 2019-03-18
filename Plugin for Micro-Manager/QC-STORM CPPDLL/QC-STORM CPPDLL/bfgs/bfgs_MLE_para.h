@@ -24,19 +24,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 
+
 // localziation type, for 2d or 3d selection
 #define LocType_GS2D				0	// Gaussian symitrical 2d localization
 #define LocType_AS3D				1	// astigmatism 3d
-#define LocType_DH3D				2	// double-helix 3d
 
 
 // use gaussian 2d or 3d localization
-#define LocType_IsGS2D(x)				((x == LocType_GS2D)||(x == LocType_DH3D))
-#define LocType_IsAS3D(x)				((x == LocType_AS3D))
+#define LocType_IsGS2D(x)				(x == LocType_GS2D)
+#define LocType_IsAS3D(x)				(x == LocType_AS3D)
 
 // use red hot 2d or color encoded depth 3d
-#define RendType_Is2D(x)				((x == LocType_GS2D))
-#define RendType_Is3D(x)				((x == LocType_AS3D)||(x == LocType_DH3D))
+#define RendType_Is2D(x)				(x == LocType_GS2D)
+#define RendType_Is3D(x)				(x == LocType_AS3D)
+
 
 
 
@@ -113,7 +114,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // all localization
 
 #define PointNumTh				20480
-#define MaxPointNum				(20480*4)
+#define MaxPointNum				(20480*5)
 
 
 // memory type
@@ -146,22 +147,4 @@ RenderingMode 2 : 1 as weight for each molecule, rendered by fixed localization 
 
 
 
-
-
-// Nyquist resolution and spatial resolution
-
-
-// max fluo mum for a group with 50 frame 2048*2048 images
-#define MAX_FLUO_NUM_PER_GROUP					300000
-
-// max images in a group
-#define MAX_FRAME_NUM_PER_GROUP					2000
-
-
-// calculate only min neighboring distance of some molecules, calculation of all molecules is not necessary and time consuming
-#define NEIGHBOR_DISTANCE_CALC_DATA_SELECT_NUMBER			25000
-
-
-
-#define NYQUIST_RESOLUTION_OVERSAMPLING			4
 

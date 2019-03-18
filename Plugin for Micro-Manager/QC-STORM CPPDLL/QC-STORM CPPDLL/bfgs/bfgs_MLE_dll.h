@@ -47,6 +47,7 @@ using namespace std;
 
 
 
+
 // basic parameters for localization for both 2d and 3d
 class LocalizationPara
 {
@@ -62,8 +63,6 @@ public:
 	int LocType;
 
 	int MultiEmitterFitEn;
-
-	int BadFitFilterWithAutoThEn; // filter fit result with automatic snr threshold: th = mean(SNR>4)/2
 
 
 	// consecutive molecules filter or fit
@@ -119,9 +118,25 @@ public:
 };
 
 
+struct CoreFittingPara
+{
 
+	// camera parameter
+	float Offset; // DN
+	float KAdc; // e-/DN
+	float QE; // e-/pn
+	float ReadNoise_e;// e-
 
+	// 3D imaging
+	float ZDepthCorrFactor;
 
+	float p4;
+	float p3;
+	float p2;
+	float p1;
+	float p0;
+
+};
 
 
 
@@ -139,10 +154,8 @@ public:
 	void Init(LocalizationPara & LocPara);
 	void Deinit();
 
-	void WLEParameterEstimate(unsigned short * h_ImageROI, int ROISize, int FluoNum, cudaStream_t cstream);
+	void WLEParameterEstimate(unsigned short * h_ImageROI, int LocType, int ROISize, int FluoNum, cudaStream_t cstream);
 };
-
-
 
 
 
@@ -158,22 +171,32 @@ public:
 	unsigned short * h_ImageROI;
 	unsigned short * d_ImageROI;
 
+	int FirstFrame;
+	int EndFrame;
+
 	WLEParameterEstimation_TypeDef *WLEParameterEstimator;
 
 private:
 	// region number for batched frames
-	int *h_ROINumPerImage;
-	int *d_ROINumPerImage;
+	int *h_ValidROINum;
+	int *d_ValidROINum;
 
 	// region position array
-	int *d_ROIPosArray;
+	int *h_PossibleROINum;
+	int *d_PossibleROINum;
+	
+	int *d_ROIMarkInfArray_P; // possible molecule
+	int *d_ROIMarkInfArray_V; // valid molecule
 
 	int TotalROINumber;
 
 private:
+	// raw imaging filtering
 	unsigned short *d_RawImg_Smoothed;
 	unsigned short *d_BackgroundImage;
+
 	unsigned short *d_LineFilterImage_t;
+	unsigned short *d_LineFilterImage_t1;
 	
 	// image threshold calculate
 	float *h_MeanDataX;
@@ -184,13 +207,12 @@ private:
 	// threshold  = 10*sqrt(ImageVariance)
 	float ImageVariance;
 
-	// image filter
+	// image filter kernel
 	float *h_LineFilterH_Bkg;
 	float *d_LineFilterH_Bkg;
 
 	float *h_LineFilterH_Signal;
 	float *d_LineFilterH_Signal;
-
 
 
 public:
@@ -212,16 +234,14 @@ public:
 
 private:
 
-	void FilterInit();
+	void FilterInit(int ROISize, int LocType);
 
 	void ImageVarianceCalc(unsigned short *d_iRawImg, int ImageWidth, int ImageHigh, cudaStream_t cstream);
 
-	void ImageFiltering(int ImageWidth, int ImageHigh, int BatchedImageNum, cudaStream_t cstream);
+	void ImageFiltering(int LocType, int ImageWidth, int ImageHigh, int BatchedImageNum, cudaStream_t cstream);
 
-	void ROIExtraction(int ROISize, int ImageWidth, int ImageHigh, int BatchedImageNum, int StartFrame, cudaStream_t cstream);
+	void ROIExtraction(int ROISize, int LocType, int ImageWidth, int ImageHigh, int BatchedImageNum, int StartFrame, cudaStream_t cstream);
 };
-
-
 
 
 
@@ -235,19 +255,24 @@ public:
 	unsigned short * h_ImageROI;
 	unsigned short * d_ImageROI;
 
+	float *d_WLEPara; // copy data from roi extraction
+
 	float * h_LocArry;
 	float * d_LocArry;
 
-	float *d_WLEPara; // copy data from roi extraction
 
+	CoreFittingPara *h_FitPara;
+	CoreFittingPara *d_FitPara;
 
 	// valid number after localization
 	int oValidFluoNum;
 
-	int FirstFrame;
-	int EndFrame;
-
 public:
+
+	// single molecule fitting
+	int * h_SingleFitFluoNum;
+	int * d_SingleFitFluoNum;
+	int * d_SingleFitFluoPos; // position id of molecules need to be fitted
 
 	// multi emitter fitting, two emitter fitting
 	int * h_MultiFitFluoNum_2E;
@@ -255,7 +280,6 @@ public:
 	int * d_MultiFitFluoPos_2E; // position id of molecules need to be fitted
 
 	// multi emitter fitting, three emitter fitting
-	// only for 2D imaging
 	int * h_MultiFitFluoNum_3E;
 	int * d_MultiFitFluoNum_3E;
 	int * d_MultiFitFluoPos_3E; // position id of molecules need to be fitted
@@ -285,25 +309,21 @@ public:
 
 
 public:
-
+	// note the frame must be sorted by ZeroLocalizationsRemove
 	static int GetFirstFrame(float * h_LocArry, int FluoNum);
 	static int GetLastFrame(float * h_LocArry, int FluoNum);
-
-	static int GetFirstFrameFromROI(unsigned short * h_ImageROI, int ROISize, int FluoNum);
-	static int GetLastFrameFromROI(unsigned short * h_ImageROI, int ROISize, int FluoNum);
 
 
 	// two optional localization precision method, only suitable for 2d localization with symmetric Gaussian PSF
 	static void LocPrecCalc_GaussianCRLB(float* d_LocArry, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
 private:
-	void FilterBadFit(LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
+
+	void CopyFittingPara(LocalizationPara & LocPara, cudaStream_t cstream);
+
+	void MoleculePreFitClasify(float *d_WLEPara, int * d_SingleFitFluoNum, int * d_SingleFitFluoPos, int * d_MultiFitFluoNum_2E, int * d_MultiFitFluoPos_2E, int FluoNum, cudaStream_t cstream);
 
 };
-
-
-
-
 
 
 
@@ -351,6 +371,7 @@ public:
 
 
 
+
 // remove invalid localizations with zero value
 class ZeroLocalizationsRemovel_TypeDef {
 public:
@@ -368,7 +389,7 @@ public:
 
 
 private:
-	void RemoveZero_SortFrame(float *ih_LocArry, int iFluoNum, int SortFrameEn, int FirstFrame, int EndFrame, cudaStream_t cstream);
+	void RemoveZero_SortFrame(float *ih_LocArry, int iFluoNum, int FirstFrame, int EndFrame, cudaStream_t cstream);
 
 	void RemoveZeroWithoutSortFrame(float *ih_LocArry, int iFluoNum, cudaStream_t cstream);
 	void FindCopyID(float *ih_LocArry, int iFluoNum);
@@ -385,9 +406,6 @@ private:
 	int *d_FluoNum_Valid;
 
 };
-
-
-
 
 
 
@@ -450,6 +468,8 @@ public:
 class FluoStatisticData_TypeDef
 {
 public:
+	int FirstFrame;
+	int EndFrame;
 
 	// Distribution of current data
 	int *h_Hist_TotalPhoton; 
@@ -689,7 +709,6 @@ public:
 
 
 
-
 // wrapper for cuda function
 BFGS_MLE_API char AllocHostMemory(void **ptr, long size);
 BFGS_MLE_API char FreeHostMemory(void * ptr);
@@ -702,10 +721,9 @@ BFGS_MLE_API char CreatStreamWithPriority(cudaStream_t *pstream, int prio);
 
 BFGS_MLE_API char FreeStream(cudaStream_t cstream);
 
-void HandleErr(cudaError_t err, const char * str);
-int  CudaDeviceNum();
-char CudaSetDevice(int id);
-
+BFGS_MLE_API void HandleErr(cudaError_t err, const char * str );
+BFGS_MLE_API int CudaDeviceNum();
+BFGS_MLE_API char CudaSetDevice(int id);
 
 
 

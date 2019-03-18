@@ -308,7 +308,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
             jTextField_ConsecFilterRadius.setText("80");
 
-            jCheckBox_Stat_MultiFitEn.setText("Multi-Emitter fitting");
+            jCheckBox_Stat_MultiFitEn.setText("Multi-emitter fitting");
             jCheckBox_Stat_MultiFitEn.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jCheckBox_Stat_MultiFitEnActionPerformed(evt);
@@ -2177,7 +2177,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
         jComboBox_LocType.setSelectedIndex(Integer.parseInt(pps.getProperty("LocType", Integer.toString(LocPara.LocType))));
         
-        jCheckBox_Stat_MultiFitEn.setSelected(Boolean.parseBoolean(pps.getProperty("MultiEmitterFitEn", "false")));
+        jCheckBox_Stat_MultiFitEn.setSelected(Boolean.parseBoolean(pps.getProperty("MultiEmitterFitEn", "true")));
 
         jCheckBox_Stat_ConsecutiveFit.setSelected(Boolean.parseBoolean(pps.getProperty("ConsecutiveFitEnable", "false")));
         jTextField_ConsecFilterRadius.setText(pps.getProperty("ConsecFilterRadius", Float.toString(80.0f)));

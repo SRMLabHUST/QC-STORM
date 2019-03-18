@@ -331,7 +331,7 @@
             </Component>
             <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_MultiFitEn">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Multi-Emitter fitting"/>
+                <Property name="text" type="java.lang.String" value="Multi-emitter fitting"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox_Stat_MultiFitEnActionPerformed"/>

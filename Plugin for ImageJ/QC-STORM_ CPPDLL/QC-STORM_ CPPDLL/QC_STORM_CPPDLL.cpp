@@ -82,7 +82,6 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetLocPara
 	LocPara_Global.MultiEmitterFitEn = MultiEmitterFitEn;
 
 
-	LocPara_Global.BadFitFilterWithAutoThEn = 1; // 
 
 	LocPara_Global.ConsecFit_DistanceTh_nm = ConsecFilterRadiusF;
 	LocPara_Global.ConsecFitEn = ConsecutiveFitEnI;

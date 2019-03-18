@@ -272,7 +272,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
             jTextField_ConsecFilterRadius.setText("80");
 
-            jCheckBox_Stat_MultiFitEn.setText("Multi-Emitter fitting");
+            jCheckBox_Stat_MultiFitEn.setText("Multi-emitter fitting");
 
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
             jPanel1.setLayout(jPanel1Layout);
@@ -1199,7 +1199,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
         jComboBox_LocType.setSelectedIndex(Integer.parseInt(pps.getProperty("LocType", Integer.toString(LocPara.LocType))));
         
-        jCheckBox_Stat_MultiFitEn.setSelected(Boolean.parseBoolean(pps.getProperty("MultiEmitterFitEn", "false")));
+        jCheckBox_Stat_MultiFitEn.setSelected(Boolean.parseBoolean(pps.getProperty("MultiEmitterFitEn", "true")));
         
         jCheckBox_Stat_ConsecutiveFitEn.setSelected(Boolean.parseBoolean(pps.getProperty("ConsecutiveFitEnable", "false")));
         jTextField_ConsecFilterRadius.setText(pps.getProperty("ConsecFilterRadius", Float.toString(80.0f)));

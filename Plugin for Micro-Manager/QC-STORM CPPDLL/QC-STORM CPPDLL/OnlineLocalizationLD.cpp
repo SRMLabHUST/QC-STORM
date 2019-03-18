@@ -206,24 +206,14 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 		// accumulate enough molecule for fast localization
 		if ((LDROIExtractData.GetAccumulatedROINum() >= RecFluoNumTh) || IsBreak)
 		{
+			int FirstFrame = LDROIExtractData.FirstFrame;
+			int EndFrame = LDROIExtractData.EndFrame;
+
 			FluoNum = LDROIExtractData.GetAccumulatedROINum();
 			LDROIExtractData.ResetROINum();
 
 			TotalFluoNum += FluoNum;
 
-
-
-			/*
-			// seems don't reliable
-			if (LocPara_Global.ConsecFitEn)
-			{
-			// merge roi of consecutive molecules, assign each consecutive by average but not remove,
-			// the consecutive molecules will be removed by ConsecutiveFitData.FitConsecutiveFluo
-			time1 = clock();
-			//				LDROIExtractData.ROIMergeForConsecutiveFitting(LocPara_Global.ROISize, FluoNum, loc_stream1);
-			ExtractTime += (clock() - time1);
-			}
-			*/
 
 
 			time1 = clock();
@@ -235,7 +225,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			
 
 			// remove invalid molecules
-			ZeroLocRemovel.RemoveZeroLocalizations(LDLocData.h_LocArry, LDLocData.oValidFluoNum, LocPara_Global.MultiEmitterFitEn, LDLocData.FirstFrame, LDLocData.EndFrame, loc_stream1);
+			ZeroLocRemovel.RemoveZeroLocalizations(LDLocData.h_LocArry, LDLocData.oValidFluoNum, 1, FirstFrame, EndFrame, loc_stream1);
 
 			// write localization data into file
 			WriteLocArry = ZeroLocRemovel.h_LocArry;
@@ -350,7 +340,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	WholeProc_EndTime = clock();
 
 
-	printf("out loc th\n");
+	printf("out localization thread\n");
 
 
 

@@ -14,7 +14,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 
-// package QC_STORM;
+//package QC_STORM;
 
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;

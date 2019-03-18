@@ -31,6 +31,7 @@ using namespace std;
 #pragma comment(lib,"SpatialResolutionCalc.lib")
 
 
+// Nyquist resolution and spatial resolution
 
 // max fluo mum for a group with 50 frame 2048*2048 images
 #define MAX_FLUO_NUM_PER_GROUP								(10240*3*50)
@@ -41,6 +42,10 @@ using namespace std;
 
 // calculate only min neighboring distance of some molecules, calculation of all molecules is not necessary and time consuming
 #define NEIGHBOR_DISTANCE_CALC_DATA_SELECT_NUMBER			22000
+
+
+
+#define NYQUIST_RESOLUTION_OVERSAMPLING			4
 
 
 
