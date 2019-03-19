@@ -199,20 +199,17 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			{
 				cudaFree(RecImg.pImgData);
 			}
-
-
 		}
 
 		// accumulate enough molecule for fast localization
 		if ((LDROIExtractData.GetAccumulatedROINum() >= RecFluoNumTh) || IsBreak)
 		{
+			// get first and last frame of a batch
 			int FirstFrame = LDROIExtractData.FirstFrame;
 			int EndFrame = LDROIExtractData.EndFrame;
 
 			FluoNum = LDROIExtractData.GetAccumulatedROINum();
 			LDROIExtractData.ResetROINum();
-
-			TotalFluoNum += FluoNum;
 
 
 
@@ -224,7 +221,10 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			LocTime += (clock() - time1);
 			
 
-			// remove invalid molecules
+			TotalFluoNum += LDLocData.oValidFluoNum;
+
+
+			// remove invalid molecules and sort frame, frame is disordered by LDROIExtractData and LDLocData
 			ZeroLocRemovel.RemoveZeroLocalizations(LDLocData.h_LocArry, LDLocData.oValidFluoNum, 1, FirstFrame, EndFrame, loc_stream1);
 
 			// write localization data into file
@@ -239,7 +239,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 				ConsecutiveFitData.ConsecutiveFit_WeightedAvg(WriteLocArry, WriteLocNum, IsBreak, LocPara_Global, loc_stream1); // d_iLocArry come from localization data 
 
-																																// frame is not disordered
+				// frame is not disordered by ConsecutiveFitData
 				ZeroLocRemovel.RemoveZeroLocalizations(ConsecutiveFitData.h_OutLocArry, ConsecutiveFitData.OutFluoNum, 0, 0, 0, loc_stream1);
 
 				// write localization data into file

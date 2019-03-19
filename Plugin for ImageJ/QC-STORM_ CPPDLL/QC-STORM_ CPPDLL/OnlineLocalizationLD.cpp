@@ -142,6 +142,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 	WholeProc_StartTime = clock();
 
+
 	while (1)
 	{
 		IsBreak = !(OnlineLocAlive && (CurFrame < LocPara_Global.TotalFrameNum));
@@ -200,6 +201,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 		// accumulate enough molecule for fast localization
 		if ((LDROIExtractData.GetAccumulatedROINum() >= RecFluoNumTh) || IsBreak)
 		{
+			// get first and last frame of a batch
 			int FirstFrame = LDROIExtractData.FirstFrame;
 			int EndFrame = LDROIExtractData.EndFrame;
 
@@ -207,7 +209,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			FluoNum = LDROIExtractData.GetAccumulatedROINum();
 			LDROIExtractData.ResetROINum();
 
-			TotalFluoNum += FluoNum;
 
 
 			time1 = clock();
@@ -217,9 +218,11 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 			LocTime += (clock() - time1);
 
-//			printf("fluo num:%d\n", LDLocData.oValidFluoNum);
 
-			// remove invalid molecules
+			TotalFluoNum += LDLocData.oValidFluoNum;
+
+
+			// remove invalid molecules and sort frame, frame is disordered by LDROIExtractData and LDLocData
 			ZeroLocRemovel.RemoveZeroLocalizations(LDLocData.h_LocArry, LDLocData.oValidFluoNum, 1, FirstFrame, EndFrame, loc_stream1);
 
 			// write localization data into file
@@ -234,7 +237,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 				ConsecutiveFitData.ConsecutiveFit_WeightedAvg(WriteLocArry, WriteLocNum, IsBreak, LocPara_Global, loc_stream1); // d_iLocArry come from localization data 
 
-				// frame is not disordered
+				// frame is not disordered by ConsecutiveFitData
 				ZeroLocRemovel.RemoveZeroLocalizations(ConsecutiveFitData.h_OutLocArry, ConsecutiveFitData.OutFluoNum, 0, 0, 0, loc_stream1);
 
 				// write localization data into file

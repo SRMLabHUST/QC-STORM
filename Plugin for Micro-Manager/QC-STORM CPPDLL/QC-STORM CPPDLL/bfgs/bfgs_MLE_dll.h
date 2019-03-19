@@ -47,7 +47,6 @@ using namespace std;
 
 
 
-
 // basic parameters for localization for both 2d and 3d
 class LocalizationPara
 {
@@ -120,6 +119,7 @@ public:
 
 struct CoreFittingPara
 {
+	int MultiEmitterFitEn;
 
 	// camera parameter
 	float Offset; // DN
@@ -140,11 +140,12 @@ struct CoreFittingPara
 
 
 
+
+
 // estimage WLE para, contained in the ROI extraction
 class WLEParameterEstimation_TypeDef
 {
 public:
-	unsigned short * d_ImageROI;
 
 	float *h_WLEPara;
 	float *d_WLEPara;
@@ -154,8 +155,9 @@ public:
 	void Init(LocalizationPara & LocPara);
 	void Deinit();
 
-	void WLEParameterEstimate(unsigned short * h_ImageROI, int LocType, int ROISize, int FluoNum, cudaStream_t cstream);
+	void WLEParameterEstimate(unsigned short * d_ImageROI, int LocType, int MultiEmitterFitEn, int ROISize, int FluoNum, cudaStream_t cstream);
 };
+
 
 
 
@@ -240,11 +242,8 @@ private:
 
 	void ImageFiltering(int LocType, int ImageWidth, int ImageHigh, int BatchedImageNum, cudaStream_t cstream);
 
-	void ROIExtraction(int ROISize, int LocType, int ImageWidth, int ImageHigh, int BatchedImageNum, int StartFrame, cudaStream_t cstream);
+	void ROIExtraction(int ROISize, int LocType, int MultiEmitterFitEn, int ImageWidth, int ImageHigh, int BatchedImageNum, int StartFrame, cudaStream_t cstream);
 };
-
-
-
 
 
 
@@ -324,6 +323,7 @@ private:
 	void MoleculePreFitClasify(float *d_WLEPara, int * d_SingleFitFluoNum, int * d_SingleFitFluoPos, int * d_MultiFitFluoNum_2E, int * d_MultiFitFluoPos_2E, int FluoNum, cudaStream_t cstream);
 
 };
+
 
 
 
@@ -411,6 +411,7 @@ private:
 
 
 
+
 // both 2d and 3d 
 class ImageRenderData_TypeDef
 {
@@ -431,8 +432,13 @@ public:
 	char *h_DispRendImg; // croped and down-sampled super-resolution image for display
 	char *d_DispRendImg; // croped and down-sampled super-resolution image for display
 	
-	char *h_SaveRendImg; // whole super-resolution image for save
-	char *d_SaveRendImg; // whole super-resolution image for save
+	char *h_SaveRendImg; // whole super-resolution image for save, mainly for 3D
+	char *d_SaveRendImg; // whole super-resolution image for save, mainly for 3D
+
+
+	// sr image histgram for 3d rendering threshold to correct save image
+	float *h_SRImageHist;
+	float *d_SRImageHist;
 
 private:
 	int tRendFluoNum;
@@ -460,6 +466,7 @@ public:
 	static void GetMaxImgSizeFromLocArry(float *h_LocArry, float *d_LocArry, int *MaxImgWidth, int *MaxImgHigh, int FluoNum, cudaStream_t cstream);
 
 };
+
 
 
 
@@ -546,6 +553,7 @@ private:
 	int *d_FluoNum_n0; // 0 neighbor
 	int *d_FluoNum_n1; // 1 neighbor
 
+
 public:
 
 	void Init();
@@ -583,7 +591,6 @@ private:
 	void UpdateStatDat(float *h_LocArry, int FluoNum);
 
 	void CalcLocalizationDensity2D(float *h_LocArry, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
-
 
 };
 

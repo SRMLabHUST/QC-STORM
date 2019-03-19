@@ -136,7 +136,7 @@ public class QC_STORM_ implements PlugInFilter{
             if(BatchedImgNum<1)BatchedImgNum=1;
             if(BatchedImgNum>FrameNum)BatchedImgNum=FrameNum;
 
-            //            BatchedImgNum=1;
+            // BatchedImgNum=1;
             
             BatchedImgDat = new short[BatchedImgNum*ImageWidthI*ImageHighI];
             PixelNumI=ImageWidthI*ImageHighI;
