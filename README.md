@@ -3,7 +3,7 @@ QC-STORM is an online processing plugin (Micro-Manager & ImageJ) for quality-con
 
 # Key features
 
-Ultrahigh efficient MLE localization: online processing for sCMOS camera based localization microscopy at full FOV and fastest frame rate without sacrificing localization precision (localization speed > 5x10^6 for 7x7 pixels ROI based on NVidia Titan xp graphics card). 
+Ultrahigh efficient MLE localization: online processing for sCMOS camera based localization microscopy at full FOV and fastest frame rate without sacrificing localization precision (localization speed is about 8x10^6 for 7x7 pixels ROI based on Gigabyte GeForce GTX 1080 Ti Gaming OC 11GB Graphic Cards). 
 
 Ultrahigh efficient multi-emitter MLE localization.
 
@@ -30,6 +30,7 @@ Sequential Multi-FOV acquisition (hardware dependent)
 1, Windows 7 sp1 or newer, x64.
 
 2, NVidia CUDA enabled GPU with compute capability no less than 3.5.
+Note: please upgrade your GPU driver to the newest (Compatible Driver Versions >= 411.31) or the plugin can't work successfully.
 
 3, ImageJ/Fiji, Micro-Manager 2.0 (beta 3).
 
@@ -39,7 +40,6 @@ Sequential Multi-FOV acquisition (hardware dependent)
 
 6, Copy the downloaded .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into "plugins" or "mmplugins" folder for ImageJ and Micro-Manager respectively.
 
-7, If the plugin cannot run, please make sure: 1, the compute capability of the gpu is no less than 3.5; 2, your GPU is detected by the operation system; 3, please update the GPU driver to the newest (Compatible Driver Versions >= 411.31) at https://www.geforce.com/drivers.
 
 
 # Recompile the source codes
@@ -58,4 +58,4 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU LESSER GENERAL
 
 You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-For more questions, pleast contact Prof. Zhenli-Huang at "leo@mail.hust.edu.cn" or author Luchang Li at "luchangli1993@163.com".
+For more questions, please contact Prof. Zhenli-Huang at "leo@mail.hust.edu.cn" or author Luchang Li at "luchangli1993@163.com".
