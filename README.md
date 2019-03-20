@@ -30,6 +30,7 @@ Sequential Multi-FOV acquisition (hardware dependent)
 1, Windows 7 sp1 or newer, x64.
 
 2, NVidia CUDA enabled GPU with compute capability no less than 3.5.
+
 Note: please upgrade your GPU driver to the newest (Compatible Driver Versions >= 411.31) or the plugin can't work successfully.
 
 3, ImageJ/Fiji, Micro-Manager 2.0 (beta 3).
