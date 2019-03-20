@@ -142,6 +142,7 @@ struct CoreFittingPara
 
 
 
+
 // estimage WLE para, contained in the ROI extraction
 class WLEParameterEstimation_TypeDef
 {
@@ -157,6 +158,8 @@ public:
 
 	void WLEParameterEstimate(unsigned short * d_ImageROI, int LocType, int MultiEmitterFitEn, int ROISize, int FluoNum, cudaStream_t cstream);
 };
+
+
 
 
 
@@ -247,6 +250,11 @@ private:
 
 
 
+
+
+
+
+
 // both 2d and 3d localization data structure
 class LDLocData_TypeDef
 {
@@ -320,9 +328,11 @@ private:
 
 	void CopyFittingPara(LocalizationPara & LocPara, cudaStream_t cstream);
 
-	void MoleculePreFitClasify(float *d_WLEPara, int * d_SingleFitFluoNum, int * d_SingleFitFluoPos, int * d_MultiFitFluoNum_2E, int * d_MultiFitFluoPos_2E, int FluoNum, cudaStream_t cstream);
+	void MoleculePreFitClasify(int MultiEmitterFitEn, int FluoNum, cudaStream_t cstream);
 
 };
+
+
 
 
 
