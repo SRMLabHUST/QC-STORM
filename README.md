@@ -7,7 +7,7 @@ Ultrahigh efficient MLE localization: online processing for sCMOS camera based l
 
 Ultrahigh efficient multi-emitter MLE localization.
 
-Most processing parts of QC-STORM are GPU accelerated, and their performance increase almost linearly with GPU’s single floating performance (GFLOPS). Note the speed may be reduced by CPU memory bandwidth and low speed image reading from hard disk.
+Most processing parts of QC-STORM are GPU accelerated, and their performance increase almost linearly with GPU’s single floating performance (GFLOPS). Note the speed value could be measured low with small and low activation density image, and the speed may also be reduced by low CPU memory bandwidth and low speed image reading from hard disk.
 
 The localization performance evaluation are available at previous work of Sage, Daniel, et al. "Super-resolution fight club: A broad assessment of 2D & 3D single-molecule localization microscopy software." bioRxiv (2018): 362517.
 
