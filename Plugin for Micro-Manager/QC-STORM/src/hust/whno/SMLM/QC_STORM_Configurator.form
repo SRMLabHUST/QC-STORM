@@ -37,13 +37,13 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="221" max="32767" attributes="0"/>
+              <EmptySpace pref="171" max="32767" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jTabbedPane1" min="-2" pref="524" max="-2" attributes="0"/>
-                  <EmptySpace pref="42" max="32767" attributes="0"/>
+                  <Component id="jTabbedPane1" min="-2" pref="496" max="-2" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -120,14 +120,6 @@
                               <Component id="jLabel22" min="-2" pref="160" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="jCheckBox_Stat_ConsecutiveFit" alignment="0" pref="160" max="32767" attributes="0"/>
-                                  <Component id="jLabel26" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jCheckBox_Stat_MultiFitEn" alignment="0" pref="160" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="239" pref="239" max="-2" attributes="0"/>
                               <Component id="jComboBox_RegionSize" min="-2" pref="74" max="-2" attributes="0"/>
                           </Group>
@@ -144,18 +136,27 @@
                               <Component id="jTextField_SNR_th" min="-2" pref="74" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="239" pref="239" max="-2" attributes="0"/>
-                              <Component id="jComboBox_LocType" min="-2" pref="130" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="239" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jButton_LoadResultPath" alignment="0" min="-2" pref="173" max="-2" attributes="0"/>
                                   <Component id="jButton_LoadParaFile" alignment="0" min="-2" pref="173" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="jCheckBox_Stat_ConsecutiveFit" alignment="0" pref="160" max="32767" attributes="0"/>
+                                  <Component id="jLabel26" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_MultiFitEn" alignment="0" pref="160" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jCheckBox_Stat_WLEDisable" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jComboBox_LocType" min="-2" pref="130" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
-                      <EmptySpace pref="107" max="32767" attributes="0"/>
+                      <EmptySpace pref="71" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -187,8 +188,11 @@
                           <Component id="jLabel26" alignment="1" min="-2" pref="21" max="-2" attributes="0"/>
                           <Component id="jComboBox_LocType" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jCheckBox_Stat_MultiFitEn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jCheckBox_Stat_MultiFitEn" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jCheckBox_Stat_WLEDisable" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jCheckBox_Stat_ConsecutiveFit" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -337,6 +341,11 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox_Stat_MultiFitEnActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_WLEDisable">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Low SNR image, disable WLE"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel4">
@@ -371,7 +380,7 @@
                               <Component id="jTextField_QE" min="-2" pref="77" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="252" max="32767" attributes="0"/>
+                      <EmptySpace pref="224" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -445,7 +454,21 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="34" pref="34" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jTextField_p4_XLY" min="-2" pref="67" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jTextField_p3_XLY" min="-2" pref="67" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jTextField_p2_XLY" min="-2" pref="67" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jTextField_p1_XLY" min="-2" pref="67" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jTextField_p0_XLY" pref="67" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="jLabel38" min="-2" pref="205" max="-2" attributes="0"/>
+                          <Component id="jLabel31" min="-2" pref="206" max="-2" attributes="0"/>
+                          <Component id="jLabel30" min="-2" pref="323" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="207" pref="207" max="-2" attributes="0"/>
                               <Component id="jTextField_ZDepthCorrFactor" min="-2" pref="66" max="-2" attributes="0"/>
@@ -461,32 +484,32 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                   <Component id="jLabel9" alignment="1" pref="67" max="32767" attributes="0"/>
-                                  <Component id="jTextField_p4" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="jTextField_p4_XGY" alignment="1" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="jLabel10" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jTextField_p3" alignment="0" min="-2" pref="67" max="-2" attributes="0"/>
+                                  <Component id="jTextField_p3_XGY" alignment="0" min="-2" pref="67" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="jLabel11" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jTextField_p2" alignment="0" min="-2" pref="67" max="-2" attributes="0"/>
+                                  <Component id="jTextField_p2_XGY" alignment="0" min="-2" pref="67" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jLabel12" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jTextField_p1" alignment="0" min="-2" pref="67" max="-2" attributes="0"/>
+                                  <Component id="jTextField_p1_XGY" pref="67" max="32767" attributes="0"/>
+                                  <Component id="jLabel12" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jTextField_p0" alignment="0" min="-2" pref="67" max="-2" attributes="0"/>
-                                  <Component id="jLabel8" alignment="0" min="-2" pref="67" max="-2" attributes="0"/>
+                                  <Component id="jTextField_p0_XGY" min="-2" pref="67" max="-2" attributes="0"/>
+                                  <Component id="jLabel8" min="-2" pref="67" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="jLabel27" alignment="0" min="-2" pref="306" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="78" max="32767" attributes="0"/>
+                      <EmptySpace pref="50" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -501,30 +524,50 @@
                           </Group>
                           <Component id="jLabel7" min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jTextField_ZDepthCorrFactor" max="32767" attributes="0"/>
                           <Component id="jLabel24" min="-2" pref="21" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="8" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" pref="22" max="32767" attributes="0"/>
                       <Component id="jLabel27" min="-2" pref="23" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel30" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      <Component id="jLabel31" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel8" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
-                          <Component id="jLabel12" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="jLabel12" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                              <Component id="jLabel8" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="jLabel11" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
                           <Component id="jLabel10" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
                           <Component id="jLabel9" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jTextField_p4" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextField_p3" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextField_p2" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
-                          <Component id="jTextField_p1" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
-                          <Component id="jTextField_p0" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextField_p4_XGY" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextField_p3_XGY" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextField_p2_XGY" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="jTextField_p1_XGY" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                              <Component id="jTextField_p0_XGY" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace pref="245" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel38" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                              <Component id="jTextField_p1_XLY" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextField_p0_XLY" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jTextField_p2_XLY" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextField_p3_XLY" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextField_p4_XLY" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="146" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -543,7 +586,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel27">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Z Depth calibration curve by 4 order polynomial:"/>
+                <Property name="text" type="java.lang.String" value="Z depth calibration curve by 4 order polynomial:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel9">
@@ -564,17 +607,17 @@
                 <Property name="text" type="java.lang.String" value="p2:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField_p0">
+            <Component class="javax.swing.JTextField" name="jTextField_p0_XGY">
               <Properties>
                 <Property name="text" type="java.lang.String" value="0"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField_p3">
+            <Component class="javax.swing.JTextField" name="jTextField_p3_XGY">
               <Properties>
                 <Property name="text" type="java.lang.String" value="-4.2170"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField_p4">
+            <Component class="javax.swing.JTextField" name="jTextField_p4_XGY">
               <Properties>
                 <Property name="text" type="java.lang.String" value="0"/>
               </Properties>
@@ -585,12 +628,12 @@
                 <Property name="text" type="java.lang.String" value="p1:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField_p2">
+            <Component class="javax.swing.JTextField" name="jTextField_p2_XGY">
               <Properties>
                 <Property name="text" type="java.lang.String" value="13.08"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField_p1">
+            <Component class="javax.swing.JTextField" name="jTextField_p1_XGY">
               <Properties>
                 <Property name="text" type="java.lang.String" value="-278.79"/>
               </Properties>
@@ -614,8 +657,48 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField_ZDepthCorrFactor">
               <Properties>
-                <Property name="text" type="java.lang.String" value="0.75"/>
+                <Property name="text" type="java.lang.String" value="1.0"/>
                 <Property name="toolTipText" type="java.lang.String" value="Min Z depth"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel30">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Z = p4*d^4 + ... + p0*d^0, d = SigmaX^2 - SigmaY^2 "/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel31">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="part1, PSF SigmaX &gt; PSF SigmaY:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel38">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="part2, PSF SigmaX &lt; PSF SigmaY:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jTextField_p4_XLY">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="0"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jTextField_p3_XLY">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-4.2170"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jTextField_p2_XLY">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="13.08"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jTextField_p1_XLY">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="-278.79"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jTextField_p0_XLY">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="0"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -690,10 +773,10 @@
                                               </Group>
                                           </Group>
                                       </Group>
-                                      <EmptySpace min="0" pref="14" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="99" max="32767" attributes="0"/>
+                              <EmptySpace pref="85" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -917,7 +1000,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="135" max="32767" attributes="0"/>
+                      <EmptySpace pref="107" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1501,11 +1584,11 @@
                           <Component id="jButton_TRXAdj2" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jButton_TRYAdj2" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextField_StageMoveSteps_Y" alignment="0" min="-2" pref="57" max="-2" attributes="0"/>
-                          <Component id="jTextField_MultiROINum_Y" alignment="0" pref="58" max="32767" attributes="0"/>
+                          <Component id="jTextField_MultiROINum_Y" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jTextField_TRStageUARTBaudRate" min="-2" pref="61" max="-2" attributes="0"/>
-                      <EmptySpace pref="86" max="32767" attributes="0"/>
+                      <EmptySpace pref="59" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">

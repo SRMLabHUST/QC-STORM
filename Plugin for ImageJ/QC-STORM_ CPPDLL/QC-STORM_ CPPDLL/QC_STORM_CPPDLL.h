@@ -36,7 +36,7 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetImagePara
 * Signature: (FFFIIIFFF)V
 */
 JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetLocPara
-	(JNIEnv *, jclass, jfloat, jfloat, jfloat, jint, jint, jint, jint, jfloat, jfloat, jfloat, jfloat);
+	(JNIEnv *, jclass, jfloat, jfloat, jfloat, jint, jint, jint, jint, jint, jfloat, jfloat, jfloat, jfloat);
 
 /*
 * Class:     QC_STORM_
@@ -44,7 +44,7 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetLocPara
 * Signature: (FFFFFFFFI)V
 */
 JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetLocPara3D
-	(JNIEnv *, jclass, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
+	(JNIEnv *, jclass, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
 
 /*
 * Class:     QC_STORM_

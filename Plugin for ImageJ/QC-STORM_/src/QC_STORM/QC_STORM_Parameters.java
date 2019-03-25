@@ -42,26 +42,31 @@ public class QC_STORM_Parameters {
         int LocType=0;
         
         int MultiEmitterFitEn = 0;
-        
+        int WLEEn = 1;
+
         int ConsecutiveFitEn = 0;
         float ConsecFilterRadius = 80;
         
         float MinZDepth = -500;
         float MaxZDepth = 500;
         
-        float ZDepthCorrFactor = 0.75f;
+        float ZDepthCorrFactor = 1.0f;
 
-        // calibration curve parameters
-        float p4 = -0.007253f;
-        float p3 = 0.24f;
-        float p2 = 0.5187f;
-        float p1 = -71.25f;
-        float p0 = -3.813f;
-        
-        // double helix 3d spetial
-        float MeanDistance = 10.1f;
-        float DistanceTh = 0.9f;
-        int RotateType = 0;
+
+        // calibration of sigma X >= sigma Y
+    	float p4_XGY = 0.0f;
+    	float p3_XGY = 0.0f;
+    	float p2_XGY = 0.0f;
+    	float p1_XGY = 1.0f;
+    	float p0_XGY = 0.0f;
+
+    	// calibration of sigma X < sigma Y
+    	float p4_XLY = 0.0f;
+    	float p3_XLY = 0.0f;
+    	float p2_XLY = 0.0f;
+    	float p1_XLY = 1.0f;
+    	float p0_XLY = 0.0f;
+
 
         // rendering
         float SNR_th = 5; // used in rendering

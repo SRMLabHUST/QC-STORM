@@ -92,7 +92,7 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetSavePath
 * Signature: (FFFIIIFFF)V
 */
 JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetLocPara
-(JNIEnv *env, jclass obj, jfloat KAdc, jfloat Offset, jfloat QE, jint ROISizeI, jint LocTypeI, jint MultiEmitterFitEn, jint ConsecutiveFitEnI, jfloat ConsecFilterRadiusF, jfloat RawPixelSizeF, jfloat RenderPixelZoomF, jfloat SNR_th)
+(JNIEnv *env, jclass obj, jfloat KAdc, jfloat Offset, jfloat QE, jint ROISizeI, jint LocTypeI, jint MultiEmitterFitEn, jint WLEEn, jint ConsecutiveFitEnI, jfloat ConsecFilterRadiusF, jfloat RawPixelSizeF, jfloat RenderPixelZoomF, jfloat SNR_th)
 {
 	OpenConsole();
 
@@ -109,6 +109,7 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetLocPara
 	LocPara_Global.LocType = LocTypeI;
 
 	LocPara_Global.MultiEmitterFitEn = MultiEmitterFitEn;
+	LocPara_Global.WLEEn = WLEEn;
 
 
 	LocPara_Global.ConsecFit_DistanceTh_nm = ConsecFilterRadiusF;
@@ -129,7 +130,7 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetLocPara
 * Signature: (FFFFFFFFI)V
 */
 JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetLocPara3D
-(JNIEnv *env, jclass obj, jfloat MinZDepthF, jfloat MaxZDepthF, jfloat ZDepthCorrFactor, jfloat p4, jfloat p3, jfloat p2, jfloat p1, jfloat p0)
+(JNIEnv *env, jclass obj, jfloat MinZDepthF, jfloat MaxZDepthF, jfloat ZDepthCorrFactor, jfloat p4_XGY, jfloat p3_XGY, jfloat p2_XGY, jfloat p1_XGY, jfloat p0_XGY, jfloat p4_XLY, jfloat p3_XLY, jfloat p2_XLY, jfloat p1_XLY, jfloat p0_XLY)
 {
 	// astigmatism and double helix
 	LocPara_Global.MinZDepth = MinZDepthF;
@@ -137,14 +138,21 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetLocPara3D
 
 	LocPara_Global.ZDepthCorrFactor = ZDepthCorrFactor;
 
-	LocPara_Global.p4 = p4;
-	LocPara_Global.p3 = p3;
-	LocPara_Global.p2 = p2;
-	LocPara_Global.p1 = p1;
-	LocPara_Global.p0 = p0;
+
+	LocPara_Global.p4_XGY = p4_XGY;
+	LocPara_Global.p3_XGY = p3_XGY;
+	LocPara_Global.p2_XGY = p2_XGY;
+	LocPara_Global.p1_XGY = p1_XGY;
+	LocPara_Global.p0_XGY = p0_XGY;
+
+	LocPara_Global.p4_XLY = p4_XLY;
+	LocPara_Global.p3_XLY = p3_XLY;
+	LocPara_Global.p2_XLY = p2_XLY;
+	LocPara_Global.p1_XLY = p1_XLY;
+	LocPara_Global.p0_XLY = p0_XLY;
+
 
 	LocPara_Global.ColorMode_3D = ImgRend_ColorMode_3D_BlueToRed;
-
 
 }
 

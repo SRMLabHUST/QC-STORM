@@ -55,7 +55,7 @@ public:
 	float Offset; // DN
 	float KAdc; // e-/DN
 	float QE; // e-/pn
-	float ReadNoise_e;// e-
+	float ReadNoise_e; // e-
 
 	// localization and rendering
 	int ROISize;
@@ -63,6 +63,7 @@ public:
 
 	int MultiEmitterFitEn;
 
+	int WLEEn;
 
 	// consecutive molecules filter or fit
 	float ConsecFit_DistanceTh_nm; // pixel
@@ -92,11 +93,19 @@ public:
 
 	float ZDepthCorrFactor;
 
-	float p4;
-	float p3;
-	float p2;
-	float p1;
-	float p0;
+	// calibration of sigma X >= sigma Y
+	float p4_XGY;
+	float p3_XGY;
+	float p2_XGY;
+	float p1_XGY;
+	float p0_XGY;
+
+	// calibration of sigma X < sigma Y
+	float p4_XLY;
+	float p3_XLY;
+	float p2_XLY;
+	float p1_XLY;
+	float p0_XLY;
 
 
 	// spatial resolution calculation
@@ -120,26 +129,32 @@ public:
 struct CoreFittingPara
 {
 	int MultiEmitterFitEn;
+	int WLEEn;
 
 	// camera parameter
 	float Offset; // DN
 	float KAdc; // e-/DN
 	float QE; // e-/pn
-	float ReadNoise_e;// e-
+	float ReadNoise_e; // e-
 
 	// 3D imaging
 	float ZDepthCorrFactor;
 
-	float p4;
-	float p3;
-	float p2;
-	float p1;
-	float p0;
+	// calibration of sigma X >= sigma Y
+	float p4_XGY;
+	float p3_XGY;
+	float p2_XGY;
+	float p1_XGY;
+	float p0_XGY;
+
+	// calibration of sigma X < sigma Y
+	float p4_XLY;
+	float p3_XLY;
+	float p2_XLY;
+	float p1_XLY;
+	float p0_XLY;
 
 };
-
-
-
 
 
 
@@ -212,12 +227,8 @@ private:
 	// threshold  = 10*sqrt(ImageVariance)
 	float ImageVariance;
 
-	// image filter kernel
-	float *h_LineFilterH_Bkg;
-	float *d_LineFilterH_Bkg;
-
+	// seperable image filter kernel
 	float *h_LineFilterH_Signal;
-	float *d_LineFilterH_Signal;
 
 
 public:
@@ -239,18 +250,14 @@ public:
 
 private:
 
-	void FilterInit(int ROISize, int LocType);
+	void FilterInit(int ROISize, int LocType, int MultiEmitterFitEn);
 
 	void ImageVarianceCalc(unsigned short *d_iRawImg, int ImageWidth, int ImageHigh, cudaStream_t cstream);
 
-	void ImageFiltering(int LocType, int ImageWidth, int ImageHigh, int BatchedImageNum, cudaStream_t cstream);
+	void ImageFiltering(int LocType, int MultiEmitterFitEn, int ImageWidth, int ImageHigh, int BatchedImageNum, cudaStream_t cstream);
 
 	void ROIExtraction(int ROISize, int LocType, int MultiEmitterFitEn, int ImageWidth, int ImageHigh, int BatchedImageNum, int StartFrame, cudaStream_t cstream);
 };
-
-
-
-
 
 
 
@@ -291,12 +298,13 @@ public:
 	int * d_MultiFitFluoNum_3E;
 	int * d_MultiFitFluoPos_3E; // position id of molecules need to be fitted
 
-	float MultiFitRatio_2E;
-	float MultiFitRatio_3E;
 
 	int *h_MultiFit_AddedFluoNum;
 	int *d_MultiFit_AddedFluoNum;
 
+	float FitRatio_1E; // single molecule fit ratio
+	float FitRatio_2E; // two emitter fit ratio
+	float FitRatio_3E; // three emitter fit ratio
 
 private:
 
@@ -331,8 +339,6 @@ private:
 	void MoleculePreFitClasify(int MultiEmitterFitEn, int FluoNum, cudaStream_t cstream);
 
 };
-
-
 
 
 

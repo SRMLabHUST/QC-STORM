@@ -54,7 +54,7 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetSavePath
 * Signature: (FFFIIIFFF)V
 */
 JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetLocPara
-	(JNIEnv *, jclass, jfloat, jfloat, jfloat, jint, jint, jint, jint, jfloat, jfloat, jfloat, jfloat);
+	(JNIEnv *, jclass, jfloat, jfloat, jfloat, jint, jint, jint, jint, jint, jfloat, jfloat, jfloat, jfloat);
 
 /*
 * Class:     hust_whno_SMLM_QC_STORM_Plug
@@ -62,7 +62,7 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetLocPara
 * Signature: (FFFFFFFFI)V
 */
 JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetLocPara3D
-	(JNIEnv *, jclass, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
+	(JNIEnv *, jclass, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
 
 /*
 * Class:     hust_whno_SMLM_QC_STORM_Plug

@@ -222,6 +222,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			TotalFluoNum += LDLocData.oValidFluoNum;
 
 
+			time1 = clock();
 			// remove invalid molecules and sort frame, frame is disordered by LDROIExtractData and LDLocData
 			ZeroLocRemovel.RemoveZeroLocalizations(LDLocData.h_LocArry, LDLocData.oValidFluoNum, 1, FirstFrame, EndFrame, loc_stream1);
 
@@ -230,7 +231,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			WriteLocNum = ZeroLocRemovel.ValidFluoNum;
 
 			
-			time1 = clock();
 			// consecutive fit
 			if (LocPara_Global.ConsecFitEn)
 			{
@@ -314,7 +314,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 				RenderingState.MakeAProcess();
 				LastFrame = CurFrame;
 
-				// for speed testing, can be annotated
 				while (RenderingState.HaveProcessWait()); // wait rend finish
 
 				RendTime += (clock() - time1);
