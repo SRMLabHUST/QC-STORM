@@ -1,0 +1,11 @@
+first remove all none necessary code in .java file, only keep public native static function
+then open cmd
+
+cd C:\java code\OnlineSMLM\src
+
+javac hust\whno\SMLM\QC_STORM_Plug.java
+
+javah -jni hust.whno.SMLM.QC_STORM_Plug
+
+
+
