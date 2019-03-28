@@ -216,16 +216,13 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1FeedImageData
 
 	jboolean iscopy = false;
 	jshort * elems = (jshort *)env->GetPrimitiveArrayCritical(jImgArry, &iscopy);
-	//	if (iscopy == false)AfxMessageBox(_T("not copy"));
-
-//	jshort * elems = (*env).GetShortArrayElements(jImgArry,0);
 
 	qImgData CurImgInf;
 
 	// cur image info
 	int BatchedImgSize = FrameNumI*LocPara_Global.ImageWidth*LocPara_Global.ImageHigh;
 
-	unsigned int MaxBufferImageNum = 200 * 1024 * 1024 / BatchedImgSize;
+	unsigned int MaxBufferImageNum = 200 * 2048 * 2048 / BatchedImgSize;
 
 	while (ImgDataQueue.unsafe_size() > MaxBufferImageNum)
 	{
@@ -237,45 +234,29 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1FeedImageData
 
 	cudaError_t err = cudaErrorMemoryAllocation;
 
-	for (int cnt = 0; cnt<5; cnt++)
-	{
-		// try allocate CPU memory
-		err = cudaMallocHost((void **)&CurImgInf.pImgData, BatchedImgSize * sizeof(short));
 
-		if (err == cudaSuccess)
-		{
-			break;
-		}
-		else
-		{
-			Sleep(2);
-		}
-	}
+	// try allocate CPU memory
+	err = cudaMallocHost((void **)&CurImgInf.pImgData, BatchedImgSize * sizeof(short));
 
 
 	if (err == cudaSuccess)
 	{
 		//	printf("cuda suc:%s\n", str);
 		CurImgInf.ImageSource = ImageSource_CPU_Pinned;
-
-		cudaMemcpy(CurImgInf.pImgData, elems, BatchedImgSize*sizeof(short), cudaMemcpyHostToDevice);
 	}
 	else
 	{
-		// if GPU memory is allocate error, then try CPU memory
-		CurImgInf.pImgData = new unsigned short[BatchedImgSize];
-		CurImgInf.ImageSource = ImageSource_CPU_Normal;
-
-		if (CurImgInf.pImgData != NULL)
-		{	
-			memcpy(CurImgInf.pImgData, elems, BatchedImgSize*sizeof(short));
-		}
-		else
+		while (1)
 		{
-			CurImgInf.ImageSource = ImageSource_ERR;
-			printf("allocate raw image mem error\n");
+			// if GPU memory is allocate error, then try CPU memory
+			CurImgInf.pImgData = new unsigned short[BatchedImgSize];
+			CurImgInf.ImageSource = ImageSource_CPU_Normal;
+
+			if (CurImgInf.pImgData != NULL)break;
 		}
 	}
+
+	memcpy(CurImgInf.pImgData, elems, BatchedImgSize * sizeof(short));
 
 	//
 	ImgDataQueue.push(CurImgInf);

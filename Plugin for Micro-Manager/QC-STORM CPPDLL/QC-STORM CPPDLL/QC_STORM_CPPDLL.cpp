@@ -236,79 +236,48 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1FeedImageData
 
 	jboolean iscopy = false;
 	jshort * elems = (jshort *)env->GetPrimitiveArrayCritical(jImgArry, &iscopy);
-//	if (iscopy == false)AfxMessageBox(_T("not copy"));
-
-//	jshort * elems = (*env).GetShortArrayElements(jImgArry, NULL);
-
-	FrameNumI = 1;
 
 
 
 	qImgData CurImgInf;
 
 	// cur image info
+	FrameNumI = 1;
 	int BatchedImgSize = FrameNumI*LocPara_Global.ImageWidth*LocPara_Global.ImageHigh;
 
-	unsigned int MaxBufferImageNum = 200 * 1024 * 1024 / BatchedImgSize;
-
-	while (ImgDataQueue.unsafe_size() > MaxBufferImageNum)
-	{
-		Sleep(2);
-	}
 
 	CurImgInf.BatchFrameNum = FrameNumI;
 
 
 	cudaError_t err = cudaErrorMemoryAllocation;
 
-	for (int cnt = 0; cnt<5; cnt++)
-	{
-		// try allocate CPU memory
-		err = cudaMallocHost((void **)&CurImgInf.pImgData, BatchedImgSize * sizeof(short));
-
-		if (err == cudaSuccess)
-		{
-			break;
-		}
-		else
-		{
-			Sleep(2);
-		}
-	}
+	// try allocate CPU memory
+	err = cudaMallocHost((void **)&CurImgInf.pImgData, BatchedImgSize * sizeof(short));
 
 
 	if (err == cudaSuccess)
 	{
 		//	printf("cuda suc:%s\n", str);
 		CurImgInf.ImageSource = ImageSource_CPU_Pinned;
-
-		cudaMemcpy(CurImgInf.pImgData, elems, BatchedImgSize * sizeof(short), cudaMemcpyHostToDevice);
 	}
 	else
 	{
-		// if GPU memory is allocate error, then try CPU memory
-		CurImgInf.pImgData = new unsigned short[BatchedImgSize];
-		CurImgInf.ImageSource = ImageSource_CPU_Normal;
+		while (1)
+		{
+			// if GPU memory is allocate error, then try CPU memory
+			CurImgInf.pImgData = new unsigned short[BatchedImgSize];
+			CurImgInf.ImageSource = ImageSource_CPU_Normal;
 
-		if (CurImgInf.pImgData != NULL)
-		{
-			memcpy(CurImgInf.pImgData, elems, BatchedImgSize * sizeof(short));
-		}
-		else
-		{
-			CurImgInf.ImageSource = ImageSource_ERR;
-			printf("allocate raw image mem error\n");
+			if (CurImgInf.pImgData != NULL)break;
 		}
 	}
+
+	memcpy(CurImgInf.pImgData, elems, BatchedImgSize * sizeof(short));
 
 	//
 	ImgDataQueue.push(CurImgInf);
 
 
-
-
-
-//	env->ReleaseShortArrayElements(jImgArry, elems, 0);
 	env->ReleasePrimitiveArrayCritical(jImgArry, elems, JNI_ABORT);
 
 	// 

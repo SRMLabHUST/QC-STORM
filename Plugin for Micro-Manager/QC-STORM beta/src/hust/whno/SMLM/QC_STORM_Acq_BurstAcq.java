@@ -91,7 +91,8 @@ public class QC_STORM_Acq_BurstAcq {
         
         if(IsSaveRawImage)
         {
-            ImageSavePath = MyConfigurator.GetResultsSavePath() + "RawImage_" + MyDataProcessor.CreateTimeIdxStr; //+ ".tif"
+            String ImageNamePreFix = String.format("RawImage_%dD_", MyConfigurator.LocPara.LocType + 2);
+            ImageSavePath = MyConfigurator.GetResultsSavePath() + ImageNamePreFix + MyDataProcessor.CreateTimeIdxStr;
             
             MyDatastore = studio_.data().createMultipageTIFFDatastore(ImageSavePath, true, true);
             

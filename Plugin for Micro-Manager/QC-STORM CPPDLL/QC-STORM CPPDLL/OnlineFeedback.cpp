@@ -251,7 +251,7 @@ void UpdateFeedbackDat()
 
 	if (LocDensityArraySize > 0)
 	{
-		float CurLocDensity = FluoStatData.TimeVary_LocDensity2D[LocDensityArraySize - 1];
+		float CurLocDensity = FluoStatData.MeanLocDensity2D;
 
 		LocDensity_CtlData.UpdateVaryData(CurLocDensity);
 

@@ -1368,30 +1368,12 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         
         pps.setProperty("LocType", Integer.toString(jComboBox_LocType.getSelectedIndex()));
 
-        if(LocPara.MultiEmitterFitEn!=0)
-        {
-            pps.setProperty("MultiEmitterFitEn", "true");
-        }
-        else
-        {
-            pps.setProperty("MultiEmitterFitEn", "false");
-        }
         
-        if(LocPara.WLEEn!=0)
-        {
-            pps.setProperty("WLEEn", "true");
-        }else
-        {
-            pps.setProperty("WLEEn", "false");
-        }
-                
-        if(LocPara.ConsecutiveFitEn!=0)
-        {
-            pps.setProperty("ConsecutiveFitEnable", "true");
-        }else
-        {
-            pps.setProperty("ConsecutiveFitEnable", "false");
-        }
+        pps.setProperty("MultiEmitterFitEn", Boolean.toString(LocPara.MultiEmitterFitEn!=0));
+        pps.setProperty("WLEEn", Boolean.toString(LocPara.WLEEn!=0));
+        pps.setProperty("ConsecutiveFitEnable", Boolean.toString(LocPara.ConsecutiveFitEn!=0));
+
+        
         pps.setProperty("ConsecFilterRadius", jTextField_ConsecFilterRadius.getText());
         
         
