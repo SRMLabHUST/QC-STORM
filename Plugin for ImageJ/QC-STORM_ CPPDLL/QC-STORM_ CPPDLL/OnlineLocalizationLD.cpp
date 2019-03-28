@@ -187,14 +187,15 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 
 			// after use the image
+			if (RecImg.ImageSource == ImageSource_CPU_Pinned)
+			{
+				cudaFreeHost(RecImg.pImgData);
+			}
 			if (RecImg.ImageSource == ImageSource_CPU_Normal)
 			{
 				delete[] RecImg.pImgData;
 			}
-			else if (RecImg.ImageSource == ImageSource_GPU)
-			{
-				cudaFree(RecImg.pImgData);
-			}
+
 		}
 
 
