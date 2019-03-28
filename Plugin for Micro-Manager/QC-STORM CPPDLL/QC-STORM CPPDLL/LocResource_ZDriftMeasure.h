@@ -33,14 +33,13 @@ public:
 	cudaStream_t loc_stream1_;
 
 
-
 	int MLELocalization(unsigned short *h_RawImg, int BatchedImgNum)
 	{
 
 		FluoStatData_.ResetAllDat(loc_stream1_);
 
 
-		memcpy(LDROIExtractData_.h_RawImg, h_RawImg, BatchedImgNum*LocPara_Global.ImageWidth*LocPara_Global.ImageHigh * sizeof(short));
+//		memcpy(LDROIExtractData_.h_RawImg, h_RawImg, BatchedImgNum*LocPara_Global.ImageWidth*LocPara_Global.ImageHigh * sizeof(short));
 
 		// subregion extraction for current image
 		LDROIExtractData_.ExtractMolecules(LDROIExtractData_.h_RawImg, ImageSource_CPU_Pinned, LocPara_Global, 1, BatchedImgNum, loc_stream1_);
@@ -65,6 +64,10 @@ public:
 		return FluoNum;
 	}
 
+	unsigned short* GetRawImageMem()
+	{
+		return LDROIExtractData_.h_RawImg;
+	}
 
 	void Init(LocalizationPara &LocPara_Global)
 	{
@@ -74,6 +77,10 @@ public:
 		FluoStatData_.Init();
 
 		CreatStream(&loc_stream1_);
+
+		int BatchedImgNum = 32;
+		int BatchedImgSize = BatchedImgNum*LocPara_Global.ImageWidth*LocPara_Global.ImageHigh;
+
 	}
 
 	void Deinit(LocalizationPara &LocPara_Global)
@@ -85,6 +92,7 @@ public:
 
 		// free stream
 		FreeStream(loc_stream1_);
+
 	}
 
 };

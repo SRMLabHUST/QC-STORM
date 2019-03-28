@@ -940,47 +940,44 @@ JNIEXPORT jfloatArray JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1LocBatched
 	jshort * elems = (jshort *)env->GetPrimitiveArrayCritical(jImgArry, &iscopy);
 	//	jshort * elems = (*env).GetShortArrayElements(jImgArry, NULL);
 
+	// only work at the first time
+	InitAllLocResource();
+
 
 	int BatchedImgSize = BatchedImgNum*LocPara_Global.ImageWidth*LocPara_Global.ImageHigh;
 
 //	printf("rec dat:%d %d %d\n", len, BatchedImgSize, BatchedImgNum);
 
 
-	unsigned short*h_RawImg = new unsigned short[BatchedImgSize];
-	int ImageSource = ImageSource_CPU_Normal;
 
-
-	memcpy(h_RawImg, elems, BatchedImgSize*sizeof(short));
-
+	memcpy(ZDriftCtl.GetRawImageMem(), elems, BatchedImgSize*sizeof(short));
 
 	//	env->ReleaseShortArrayElements(jImgArry, elems, 0);
 	env->ReleasePrimitiveArrayCritical(jImgArry, elems, JNI_ABORT);
 
 
-	// only work at the first time
-	InitAllLocResource();
+
+	int FluoNum = ZDriftCtl.MLELocalization(NULL, BatchedImgNum);
 
 
-
-	int FluoNum = ZDriftCtl.MLELocalization(h_RawImg, BatchedImgNum);
-
-	delete [] h_RawImg;
 
 	// return results 
-	int ReturnInfSize = 4;
+	int ReturnInfSize = 8;
 	float *oInf = new float[ReturnInfSize];
 
 
-
-	float Mean_PSFWidth = FluoStatisticData_TypeDef::GetTimeVaryMean(ZDriftCtl.FluoStatData_.TimeVary_PSFWidth);
-	float Mean_PSFWidth_Ctl = FluoStatisticData_TypeDef::GetTimeVaryMean(ZDriftCtl.FluoStatData_.TimeVary_PSFWidth_Ctl);
-	float Mean_LocDensity2D = FluoStatisticData_TypeDef::GetTimeVaryMean(ZDriftCtl.FluoStatData_.TimeVary_LocDensity2D);
+	float Mean_PSFWidth = ZDriftCtl.FluoStatData_.MeanPSFWidth;
+	float Mean_SNR = ZDriftCtl.FluoStatData_.MeanPeakSNR;
+	float Mean_PSFWidth_Ctl = ZDriftCtl.FluoStatData_.MeanPSFWidth_Ctl;
+	float Mean_LocDensity2D = ZDriftCtl.FluoStatData_.MeanLocDensity2D;
 
 
 	oInf[0] = Mean_PSFWidth;
-	oInf[1] = Mean_PSFWidth_Ctl;
-	oInf[2] = FluoNum;
-	oInf[3] = Mean_LocDensity2D;
+	oInf[1] = -Mean_SNR;
+
+	oInf[2] = Mean_PSFWidth - Mean_SNR;
+	oInf[3] = Mean_PSFWidth*(-Mean_SNR);
+	oInf[4] = FluoNum;
 
 	// set results contents
 	jfloatArray result = env->NewFloatArray(ReturnInfSize);

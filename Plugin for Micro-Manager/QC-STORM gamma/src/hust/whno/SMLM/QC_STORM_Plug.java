@@ -143,7 +143,7 @@ public class QC_STORM_Plug implements ProcessorPlugin, SciJavaPlugin{
 
     @Override
     public String getVersion() {
-        return "gamma";
+        return "beta";
     }
 
     @Override

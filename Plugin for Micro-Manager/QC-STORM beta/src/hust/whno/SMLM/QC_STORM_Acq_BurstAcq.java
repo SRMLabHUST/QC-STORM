@@ -23,7 +23,9 @@ import mmcorej.CMMCore;
 import mmcorej.TaggedImage;
 import org.micromanager.ScriptController;
 import org.micromanager.Studio;
+import org.micromanager.data.Datastore;
 import org.micromanager.data.Image;
+import org.micromanager.display.DisplayWindow;
 
 
 
@@ -49,7 +51,15 @@ public class QC_STORM_Acq_BurstAcq {
     public ImageWindow RawImageDispWindow;
     
     boolean IsResolutionAchieved = false;
-      
+    
+    // save raw image
+    boolean IsSaveRawImage = false;
+    Datastore MyDatastore;
+    DisplayWindow Mydisp;
+    String ImageSavePath;
+    
+    
+    
     QC_STORM_Acq_BurstAcq(Studio studio, QC_STORM_Configurator iConfigurator) throws Exception
     {
         studio_ = studio;
@@ -58,7 +68,8 @@ public class QC_STORM_Acq_BurstAcq {
         
         MyConfigurator = iConfigurator;
         
-
+        
+        
         // send localization para and image data for processing
         MyDataProcessor = new QC_STORM_Processor(studio, iConfigurator);
 
@@ -74,6 +85,22 @@ public class QC_STORM_Acq_BurstAcq {
         RawImagePlus = new ImagePlus("raw image", RawImageProcessor);
         RawImageDispWindow = new ImageWindow(RawImagePlus); 
         
+        
+        // save raw images
+        IsSaveRawImage = MyConfigurator.IsRawImageSave();
+        
+        if(IsSaveRawImage)
+        {
+            ImageSavePath = MyConfigurator.GetResultsSavePath() + "RawImage_" + MyDataProcessor.CreateTimeIdxStr; //+ ".tif"
+            
+            MyDatastore = studio_.data().createMultipageTIFFDatastore(ImageSavePath, true, true);
+            
+            
+            // don't managed by micro-manager, or the memory are not enough
+//            studio_.displays().manage(MyDatastore);
+//           Mydisp = studio_.displays().createDisplay(MyDatastore);
+            
+        }
 
 //		gui.message("into QC_STORM_BurstLiveProc");
 
@@ -149,6 +176,12 @@ public class QC_STORM_Acq_BurstAcq {
                             MyDataProcessor.ProcessAImage(image1);
                 
                             
+                            if(IsSaveRawImage)
+                            {
+                                MyDatastore.putImage(image1);
+                            }
+
+                            
                             // manually display raw images, don't display every image to improve efficiency
                             if((curFrame-1)%DispGap==0)
                             {
@@ -206,7 +239,7 @@ public class QC_STORM_Acq_BurstAcq {
                     if((gcnt < GroupNumI-1)  && MyConfigurator.CurBurstLiveActive && MyConfigurator.IsZDriftCtlEn())
                     {
                         // correct z drift by move to the place where the PSF width is minimum
-                        QC_STORM_ZDriftCorrection ZdriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, 0, 1, 2, 1); 
+                        QC_STORM_ZDriftCorrection ZdriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 1, 2, 1); 
                         ZdriftCorrThread.start();
                         ZdriftCorrThread.join();
                     }
@@ -215,6 +248,11 @@ public class QC_STORM_Acq_BurstAcq {
                 // save super resolution image
                 MyDataProcessor.CleanProcessing();
 
+                if(IsSaveRawImage)
+                {
+                    MyDatastore.freeze();
+                    MyDatastore.setSavePath(ImageSavePath);
+                }
             }
             catch (Exception ex) 
             {

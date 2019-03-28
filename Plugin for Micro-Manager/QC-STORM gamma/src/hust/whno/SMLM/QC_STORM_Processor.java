@@ -47,7 +47,7 @@ public class QC_STORM_Processor  extends Processor{
     private int MyProcessorId = 0; // avoid system clean after a class is destroyed when users' processor is running
     
     // create time of this processor
-    String CreateTimeIdxStr;
+    public String CreateTimeIdxStr;
 
     public int ImageWidthI, ImageHighI;
     public int SRImageWidthI, SRImageHighI;

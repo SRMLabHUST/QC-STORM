@@ -155,12 +155,12 @@ public class QC_STORM_Acq_MultiROI {
                     // make sure z drift is corrected and the density is ok  
                     // correct z drift befor acquistion
                     
-                    ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, 1, 4, 3, 3);
+                    ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, 4, 4, 3, 3);
                     ZDriftCorrThread.start();
                     ZDriftCorrThread.join();
 
                     
-                    ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, 0, 1, 3, 2);
+                    ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 1, 3, 2);
                     ZDriftCorrThread.start();
                     ZDriftCorrThread.join();
 
@@ -203,7 +203,7 @@ public class QC_STORM_Acq_MultiROI {
                 // also correct PSF when wait density down
                 try {
                     
-                    QC_STORM_ZDriftCorrection ZdriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, 0, 1, 2, 1); 
+                    QC_STORM_ZDriftCorrection ZdriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 1, 2, 1); 
                     
                     // get localization density
                     int BatchedImgNum = ZdriftCorrThread.GetBatchedImgNum();

@@ -39,7 +39,7 @@ public class QC_STORM_ZDriftCorrection  extends Thread
         int ImageWidth;
         int ImageHigh;
         
-        int JudgeMode;
+        int ZCorrMode;
         int StepZoom;
         // move step motor to correct z drift
         int SMMoveNum_half;
@@ -47,7 +47,7 @@ public class QC_STORM_ZDriftCorrection  extends Thread
         int IterationNum;
         
                 
-        QC_STORM_ZDriftCorrection(Studio iStudio, QC_STORM_Configurator iConfigurator, int iJudgeMode, int iStepZoom, int iSMMoveNum_half, int iIterationNum)
+        QC_STORM_ZDriftCorrection(Studio iStudio, QC_STORM_Configurator iConfigurator, int iZCorrMode, int iStepZoom, int iSMMoveNum_half, int iIterationNum)
         {
         	MyStudio=iStudio;
         	MMCore=MyStudio.getCMMCore();
@@ -58,7 +58,7 @@ public class QC_STORM_ZDriftCorrection  extends Thread
             ImageWidth = (int) MMCore.getImageWidth();
             ImageHigh = (int) MMCore.getImageHeight();
             
-            JudgeMode = iJudgeMode;
+            ZCorrMode = iZCorrMode;
             StepZoom = iStepZoom;
         	//
         	SMMoveNum_half = iSMMoveNum_half;
@@ -93,18 +93,16 @@ public class QC_STORM_ZDriftCorrection  extends Thread
                     float [] LocResults = QC_STORM_Plug.lm_LocBatchedImg(BatchedImgDat, BatchedImgNum);
                     
                     // PSF width as a reference to adjust focus knob
-                    switch(JudgeMode)
-                    {
-                        case 0:
-                            PSFVaryInf[mcnt] = LocResults[0]; // mean PSF width
-                            break;
-                        case 1:
-                            PSFVaryInf[mcnt] = -LocResults[2]; // fluo number
-                            break;
-                        case 2:
-                            PSFVaryInf[mcnt] = LocResults[1]; // mean PSF width - SNR
-                            break;
-                    }
+    /*                
+oInf[0] = Mean_PSFWidth;
+oInf[1] = -Mean_SNR;
+
+oInf[2] = Mean_PSFWidth - Mean_SNR;
+oInf[3] = Mean_PSFWidth*(-Mean_SNR);
+oInf[4] = FluoNum;*/
+                    
+                    PSFVaryInf[mcnt] = LocResults[ZCorrMode]; // mean PSF width
+ 
 
                     // move to a new depth
                     ZDriftSMMoveAndWait(SMMoveSteps);
