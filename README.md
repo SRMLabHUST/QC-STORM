@@ -25,6 +25,8 @@ Online feedback control for localization density stabilizing and axial drift cor
 
 Sequential Multi-FOV acquisition (hardware dependent)
 
+Configuration parameters remembering, saving and loading
+
 
 # System requirements and installation
 1, Windows 7 sp1 or newer, x64.
