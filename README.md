@@ -33,9 +33,10 @@ Configuration parameters remembering, saving and loading
 
 2, NVidia CUDA enabled GPU with compute capability no less than 3.5.
 
-Note: please upgrade your GPU driver to the newest (Compatible Driver Versions >= 411.31) or the plugin can't work successfully.
+**Note: please upgrade your GPU driver to the newest (Compatible Driver Versions >= 411.31) or the plugin can't work successfully.**
 
-3, ImageJ/Fiji, Micro-Manager 2.0 (beta or gamma). Note: please set at least 4 GB memory buffer for ImageJ, Micro-Manager and ImageJ of Micro-Manager.
+3, ImageJ/Fiji, Micro-Manager 2.0 (beta or gamma). 
+**Note: please set at least 4 GB memory buffer for ImageJ, Micro-Manager and ImageJ of Micro-Manager.
 
 4, Download and install Microsoft Visual C++ 2015 Redistributable Update 3 (x64) (https://www.microsoft.com/en-us/download/details.aspx?id=53587). You may need to uninstall Visual C++ 2017 Redistributable first.
 
