@@ -177,8 +177,6 @@ public:
 
 
 
-
-
 // molecular subregion detection and extraction for 2d and 3d low density
 class LDROIExtractData_TypeDef
 {
@@ -197,16 +195,15 @@ public:
 	WLEParameterEstimation_TypeDef *WLEParameterEstimator;
 
 private:
+
+	unsigned short * d_MoleculePosImage;
+
 	// region number for batched frames
 	int *h_ValidROINum;
 	int *d_ValidROINum;
 
-	// region position array
-	int *h_PossibleROINum;
-	int *d_PossibleROINum;
 	
-	int *d_ROIMarkInfArray_P; // possible molecule
-	int *d_ROIMarkInfArray_V; // valid molecule
+	int *d_ROIMarkInfArray; // molecule position
 
 	int TotalROINumber;
 
@@ -258,6 +255,7 @@ private:
 
 	void ROIExtraction(int ROISize, int LocType, int MultiEmitterFitEn, int ImageWidth, int ImageHigh, int BatchedImageNum, int StartFrame, cudaStream_t cstream);
 };
+
 
 
 

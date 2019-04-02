@@ -40,15 +40,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 
-
-#define ThreadsPerBlock			32 //Threads Per Block
-
-
 // stored parameter number for each types of fitting for each fitted molecule
 
 #define OutParaNumGS2D			12 // gaussian 2d
 #define OutParaNumAS3D			12 // astigmatism 3d
-#define OutParaNumDH3D			12 // double-helix 3d
 
 
 // loc results information order for OutParaNumGS2D and OutParaNumAS3D and OutParaNumDH3D
@@ -67,22 +62,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define Pos_Frme			11 // frame
 
 
-// WLE parameter estimation
-#define WLE_ParaNumber				6
 
 
-#define WLE_Para_NearDistance		0
-#define WLE_Para_SigmaL				1
-#define WLE_Para_SigmaR				2
-#define WLE_Para_SigmaU				3
-#define WLE_Para_SigmaD				4
-#define WLE_Para_FluoType			5
+// maximum molecules in allocated memory for each class
+#define PointNumTh					20480
+#define MaxPointNum					(20480*5)
 
+// memory type
+#define ImageSource_GPU					0
+#define ImageSource_CPU_Pinned			1
+#define ImageSource_CPU_Normal			2
+#define ImageSource_GPU_NoCopy			3
+#define ImageSource_ERR					1000
 
-
-#define MoleculeType_MLEFit			0
-#define MoleculeType_WLEFit			1
-#define MoleculeType_MultiFit		2
 
 
 // stastical information
@@ -109,20 +101,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define LocDensityCalc_RadiusTh_pixel_3D		20
 
 
-
-
-// all localization
-
-#define PointNumTh				20480
-#define MaxPointNum				(20480*5)
-
-
-// memory type
-#define ImageSource_GPU					0
-#define ImageSource_CPU_Pinned			1
-#define ImageSource_CPU_Normal			2
-#define ImageSource_GPU_NoCopy			3
-#define ImageSource_ERR					1000
 
 
 /*
