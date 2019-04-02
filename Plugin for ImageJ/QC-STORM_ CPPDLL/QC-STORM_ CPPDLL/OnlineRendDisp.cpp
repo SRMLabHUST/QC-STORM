@@ -55,7 +55,7 @@ UINT th_OnlineRendDispLD(LPVOID params)
 		}
 		else
 		{
-			Sleep(20);
+			Sleep(2);
 		}
 	}
 

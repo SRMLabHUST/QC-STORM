@@ -87,6 +87,11 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	// accumulate a group of molecular from multiple images to accelerate localization
 	int RecFluoNumTh = PointNumTh;
 
+	if (LocPara_Global.LocType == LocType_AS3D)
+	{
+		RecFluoNumTh = PointNumTh / 4;
+	}
+
 	if (LocPara_Global.SpatialResolutionCalcEn)
 	{
 		RecFluoNumTh = PointNumTh*(LocPara_Global.ImageWidth + LocPara_Global.ImageHigh) / 2 / 2048;
@@ -94,7 +99,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 		RecFluoNumTh = max(RecFluoNumTh, 4096);
 		RecFluoNumTh = RecFluoNumTh / 32 * 32;
 	}
-
 
 
 	// time counting
@@ -224,6 +228,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 
 			time1 = clock();
+
 			// remove invalid molecules and sort frame, frame is disordered by LDROIExtractData and LDLocData
 			ZeroLocRemovel.RemoveZeroLocalizations(LDLocData.h_LocArry, LDLocData.oValidFluoNum, 1, FirstFrame, EndFrame, loc_stream1);
 
@@ -266,11 +271,13 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			RendTime += (clock() - time1);
 
 
+			time1 = clock();
 
 			// get statistic information
 			FluoStatData.GetStatisticalInf(WriteLocArry, LocPara_Global, WriteLocNum, loc_stream1);
 
 			StatTime += (clock() - time1);
+
 
 			time1 = clock();
 

@@ -65,6 +65,10 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	// accumulate a group of molecular from multiple images to accelerate localization
 	int RecFluoNumTh = PointNumTh/2;
 
+	if (LocPara_Global.LocType == LocType_AS3D)
+	{
+		RecFluoNumTh = PointNumTh / 5;
+	}
 
 	if (LocPara_Global.SpatialResolutionCalcEn)
 	{
@@ -265,6 +269,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			RendTime += (clock() - time1);
 
 
+			time1 = clock();
 
 			// get statistic information
 			FluoStatData.GetStatisticalInf(WriteLocArry, LocPara_Global, WriteLocNum, loc_stream1);
