@@ -90,7 +90,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
            
         }
         
-        jTabbedPane1.remove(jPanel_ROMP);
+//        jTabbedPane1.remove(jPanel_ROMP);
 
     }
     void AllocateResources()

@@ -150,10 +150,10 @@ oInf[4] = FluoNum;*/
         
         public int GetBatchedImgNum()
         {
-            int BatchedImgNum = 2048 * 2048 / 2 / ImageWidth / ImageHigh;
+            int BatchedImgNum = 2048 * 2048 / ImageWidth / ImageHigh;
             
-            BatchedImgNum = Math.max(BatchedImgNum, 2);
-            BatchedImgNum = Math.min(BatchedImgNum, 10);
+            BatchedImgNum = Math.max(BatchedImgNum, 4);
+            BatchedImgNum = Math.min(BatchedImgNum, 16);
             
             return BatchedImgNum;
         }
