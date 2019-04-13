@@ -44,6 +44,7 @@ Configuration parameters remembering, saving and loading
 
 6, Copy the downloaded .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into "plugins" or "mmplugins" folder for ImageJ and Micro-Manager respectively.
 
+7, Note: QC-STORM only supports English file name.
 
 
 # Recompile the source codes
