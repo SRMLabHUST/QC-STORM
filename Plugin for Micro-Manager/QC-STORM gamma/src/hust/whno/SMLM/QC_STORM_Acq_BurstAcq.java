@@ -60,7 +60,7 @@ public class QC_STORM_Acq_BurstAcq {
     
     
     
-    QC_STORM_Acq_BurstAcq(Studio studio, QC_STORM_Configurator iConfigurator) throws Exception
+    QC_STORM_Acq_BurstAcq(Studio studio, QC_STORM_Configurator iConfigurator, String iNamePostFix) throws Exception
     {
         studio_ = studio;
         mmc = studio_.getCMMCore();
@@ -71,7 +71,7 @@ public class QC_STORM_Acq_BurstAcq {
         
         
         // send localization para and image data for processing
-        MyDataProcessor = new QC_STORM_Processor(studio, iConfigurator);
+        MyDataProcessor = new QC_STORM_Processor(studio, iConfigurator, iNamePostFix);
 
         BurstAcqFrameNum = MyConfigurator.GetBurstAcqFrameNum();
         SpatialResolutionTh = MyConfigurator.GetSpatialResolutionTh();
@@ -97,7 +97,7 @@ public class QC_STORM_Acq_BurstAcq {
             MyDatastore = studio_.data().createMultipageTIFFDatastore(ImageSavePath, true, true);
             
             
-            // don't managed by micro-manager, or the memory are not enough
+            // don't managed by micro-manager, or the memory will always increase and not enough
 //            studio_.displays().manage(MyDatastore);
 //           Mydisp = studio_.displays().createDisplay(MyDatastore);
             
@@ -262,6 +262,8 @@ public class QC_STORM_Acq_BurstAcq {
             // finish
 			MyConfigurator.ResetBurstLiveBtn();
 
+            
+            QC_STORM_Plug.lm_ResetFeedback();
 		}
     }
 }

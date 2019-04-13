@@ -114,10 +114,7 @@ UINT th_SendFeedbackCmdToMCU(LPVOID params)
 
 			}
 		}
-		else
-		{
-			Sleep(2);
-		}
+
 	}
 
 	UARTCmdQueue.clear();

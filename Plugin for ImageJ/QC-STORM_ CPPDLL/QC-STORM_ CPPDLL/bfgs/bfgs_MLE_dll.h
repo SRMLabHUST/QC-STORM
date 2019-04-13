@@ -260,6 +260,7 @@ private:
 
 
 
+
 // both 2d and 3d localization data structure
 class LDLocData_TypeDef
 {
@@ -286,19 +287,23 @@ public:
 	int * d_SingleFitFluoNum;
 	int * d_SingleFitFluoPos; // position id of molecules need to be fitted
 
+
 	// multi emitter fitting, two emitter fitting
 	int * h_MultiFitFluoNum_2E;
 	int * d_MultiFitFluoNum_2E;
+
 	int * d_MultiFitFluoPos_2E; // position id of molecules need to be fitted
 
 	// multi emitter fitting, three emitter fitting
 	int * h_MultiFitFluoNum_3E;
 	int * d_MultiFitFluoNum_3E;
+
 	int * d_MultiFitFluoPos_3E; // position id of molecules need to be fitted
 
 
 	int *h_MultiFit_AddedFluoNum;
 	int *d_MultiFit_AddedFluoNum;
+
 
 	float FitRatio_1E; // single molecule fit ratio
 	float FitRatio_2E; // two emitter fit ratio
@@ -337,6 +342,10 @@ private:
 	void MoleculePreFitClasify(int MultiEmitterFitEn, int FluoNum, cudaStream_t cstream);
 
 };
+
+
+
+
 
 
 
@@ -483,8 +492,6 @@ public:
 
 
 
-
-
 // stastical information class for both 2d and 3d
 class FluoStatisticData_TypeDef
 {
@@ -583,7 +590,7 @@ public:
 
 
 public:
-	static float GetActivationDensity(float Ov1MoleculesRatio, float RadiusTh_um);
+	static float GetActivationDensity(float Neibhgor0_Ratio, float Neibhgor1_Ratio, float RadiusTh_um);
 
 
 	static float GetHistogramMeanData(int *HistData, int DatLen, float PercentTh);
@@ -600,14 +607,13 @@ private:
 	// reset all distributions to avoid accumulate, keep time variation data,
 	void ResetDistribDat(cudaStream_t cstream); // already be called in GetStatisticalInf()
 
-	void GetOverlapMolecules(int*oNeighbor0_Num, int *oTotalFluo, float RadiusTh_pixel, int CurFrame, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
+	void GetOverlapMolecules(int*oNeighbor0_Num, int *oNeighbor1_Num, int *oTotalFluo, float RadiusTh_pixel, int CurFrame, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
 	void UpdateStatDat(float *h_LocArry, int FluoNum);
 
 	void CalcLocalizationDensity2D(float *h_LocArry, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
 };
-
 
 
 

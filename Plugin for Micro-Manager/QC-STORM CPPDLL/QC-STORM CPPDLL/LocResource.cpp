@@ -59,15 +59,13 @@ LDROIExtractData_TypeDef LDROIExtractData;
 
 LDLocData_TypeDef LDLocData;
 
+ZeroLocalizationsRemovel_TypeDef ZeroLocRemovel;
 
 ConsecutiveFit_TypeDef ConsecutiveFitData;
 
-ZeroLocalizationsRemovel_TypeDef ZeroLocRemovel;
 
 FluoStatisticData_TypeDef FluoStatData;
 ImageRenderData_TypeDef RendData;
-
-
 
 
 
@@ -115,14 +113,19 @@ void InitAllLocResource()
 		CreatStreamWithPriority(&loc_stream1, leastPriority);
 		CreatStreamWithPriority(&loc_stream2, leastPriority);
 
+
 		// extraction and localization
 		LDROIExtractData.Init(LocPara_Global);
 		LDLocData.Init(LocPara_Global);
 
-
-		ConsecutiveFitData.Init();
-
 		ZeroLocRemovel.Init();
+
+
+		if (LocPara_Global.ConsecFitEn)
+		{
+			ConsecutiveFitData.Init();
+		}
+
 
 		// rendering and stastical
 		FluoStatData.Init();
@@ -137,11 +140,15 @@ void InitAllLocResource()
 		{
 		}
 
-		// spatial resolution calculation
-		DimensionDensityCalc.Init(MAX_FLUO_NUM_PER_GROUP, LocPara_Global.ImagesPerGroup);
-		SpatialResolutionCalc.Init();
+		if (LocPara_Global.SpatialResolutionCalcEn)
+		{
+			// spatial resolution calculation
+			DimensionDensityCalc.Init(MAX_FLUO_NUM_PER_GROUP, LocPara_Global.ImagesPerGroup);
+			SpatialResolutionCalc.Init();
 
-		MarginDataFilter.Init();
+			MarginDataFilter.Init();
+
+		}
 
 		// z drift measure by seperated localization
 
@@ -174,10 +181,13 @@ void DeinitAllLocResource()
 		LDROIExtractData.Deinit();
 		LDLocData.Deinit(LocPara_Global);
 
-
-		ConsecutiveFitData.Deinit();
-
 		ZeroLocRemovel.Deinit();
+
+
+		if (LocPara_Global.ConsecFitEn)
+		{
+			ConsecutiveFitData.Deinit();
+		}
 
 
 		// rendering and stastical
@@ -193,11 +203,15 @@ void DeinitAllLocResource()
 		}
 
 
-		// spatial resolution calculation
-		DimensionDensityCalc.DeInit();
-		SpatialResolutionCalc.DeInit();
+		if (LocPara_Global.SpatialResolutionCalcEn)
+		{
+			// spatial resolution calculation
+			DimensionDensityCalc.DeInit();
+			SpatialResolutionCalc.DeInit();
 
-		MarginDataFilter.DeInit();
+			MarginDataFilter.DeInit();
+
+		}
 
 		// z drift measure by seperated localization
 		ZDriftCtl.Deinit(LocPara_Global);

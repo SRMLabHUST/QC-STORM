@@ -33,7 +33,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 /*
 * Class:     hust_whno_SMLM_QC_STORM_Plug
 * Method:    lm_SetProcessorID
-* Signature: ([C)V
+* Signature: (I)V
 */
 JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetProcessorID
 (JNIEnv *, jclass, jint id)
@@ -765,40 +765,20 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1ZDepthSMMove
 	UARTCmdQueue.push(cmdString);
 	delete[]UARTBuf;
 	
+	Sleep(10);
+
 }
 
 
 /*
 * Class:     hust_whno_SMLM_QC_STORM_Plug
-* Method:    lm_FeedbackCtlTest
-* Signature: (II)V
+* Method:    lm_SetActivationLaserPower
+* Signature: (F)V
 */
-JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1FeedbackCtlTest
-(JNIEnv *env, jclass obj, jint ControlParaId, jint SetState)
+JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetActivationLaserPower
+(JNIEnv *env, jclass obj, jfloat PowerPercentage)
 {
-	switch (ControlParaId)
-	{
-	case 0:
-		// density
-		if (SetState)
-		{
-			LocDensityTest_Set();
-		}
-		else
-		{
-			LocDensityTest_Reset();
-		}
-
-		break;
-	case 1:
-
-
-		break;
-
-	default:
-		break;
-	}
-
+	ActivationLaserPowerSet(PowerPercentage);
 
 }
 
@@ -940,13 +920,17 @@ JNIEXPORT jfloatArray JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1LocBatched
 	float Mean_PSFWidth_Ctl = ZDriftCtl.FluoStatData_.MeanPSFWidth_Ctl;
 	float Mean_LocDensity2D = ZDriftCtl.FluoStatData_.MeanLocDensity2D;
 
+	// max is better
+	oInf[0] = -Mean_PSFWidth;
+	oInf[1] = Mean_SNR;
 
-	oInf[0] = Mean_PSFWidth;
-	oInf[1] = -Mean_SNR;
-
-	oInf[2] = Mean_PSFWidth - Mean_SNR;
-	oInf[3] = Mean_PSFWidth*(-Mean_SNR);
+	oInf[2] = Mean_SNR - Mean_PSFWidth;
+	oInf[3] = Mean_SNR *(-Mean_PSFWidth);
 	oInf[4] = FluoNum;
+	oInf[5] = Mean_LocDensity2D;
+
+	printf("z ctl inf:%d %.2f %.2f\n", FluoNum, Mean_SNR, Mean_PSFWidth);
+
 
 	// set results contents
 	jfloatArray result = env->NewFloatArray(ReturnInfSize);

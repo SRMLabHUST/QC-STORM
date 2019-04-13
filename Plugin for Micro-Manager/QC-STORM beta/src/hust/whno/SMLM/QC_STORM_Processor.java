@@ -48,7 +48,8 @@ public class QC_STORM_Processor  extends Processor{
     
     // create time of this processor
     public String CreateTimeIdxStr;
-
+    public String NamePostFix;
+    
     public int ImageWidthI, ImageHighI;
     public int SRImageWidthI, SRImageHighI;
     
@@ -68,7 +69,7 @@ public class QC_STORM_Processor  extends Processor{
     volatile boolean IsSaved = false;
     
 
-    QC_STORM_Processor(Studio studio, QC_STORM_Configurator iConfigurator)
+    QC_STORM_Processor(Studio studio, QC_STORM_Configurator iConfigurator, String iNamePostFix)
     {
         studio_ = studio;
         mmc = studio_.getCMMCore();
@@ -80,12 +81,14 @@ public class QC_STORM_Processor  extends Processor{
         
         CurLocPara = MyConfigurator.GetLocalizationPara();
         
-
+        NamePostFix = iNamePostFix;
+        
+        
         IsAcquisitionB = true;
         IsSaved = false;
         
         // use time to mark each acquistion
-        CreateTimeIdxStr = QC_STORM_Parameters.GetCreateTimeIdx();
+        CreateTimeIdxStr = QC_STORM_Parameters.GetCreateTimeIdx() + NamePostFix;
         
         CurSRImagePlus = new ImagePlus();
         CurSRImagePlus.setTitle("rec SR image " + CreateTimeIdxStr);

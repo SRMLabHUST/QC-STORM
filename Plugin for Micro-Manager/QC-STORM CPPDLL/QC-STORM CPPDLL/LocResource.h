@@ -113,15 +113,14 @@ extern LDROIExtractData_TypeDef LDROIExtractData;
 
 extern LDLocData_TypeDef LDLocData;
 
+extern ZeroLocalizationsRemovel_TypeDef ZeroLocRemovel;
 
 
 extern ConsecutiveFit_TypeDef ConsecutiveFitData;
 
-extern ZeroLocalizationsRemovel_TypeDef ZeroLocRemovel;
 
 extern FluoStatisticData_TypeDef FluoStatData;
 extern ImageRenderData_TypeDef RendData;
-
 
 
 

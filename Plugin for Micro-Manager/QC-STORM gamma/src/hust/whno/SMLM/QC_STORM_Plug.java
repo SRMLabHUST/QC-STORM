@@ -74,12 +74,15 @@ public class QC_STORM_Plug implements ProcessorPlugin, SciJavaPlugin{
     
     public native static void lm_SetFeedbackManualTarget(int ControlParaId, float ValueF, int EnableI);
     public native static void lm_SetFeedbackPIDParameters(int ControlParaId, float ProportionF, float IntegralF, float DerivativeF);
+
     public native static void lm_ResetFeedback();
     public native static int lm_GetFirstUARTId();
     
     public native static void lm_ZDepthSMMove(int MoveSteps);
     
-    public native static void lm_FeedbackCtlTest(int ControlParaId, int SetState);
+    // set activation laser power
+    public native static void lm_SetActivationLaserPower(float PowerPercentage);
+    
     
     // multi FOV acquisition, transtlation stage control
     public native static void lm_SetTranslationStage(int UARTID, int DataRateI, int IsEnableB);
@@ -88,6 +91,17 @@ public class QC_STORM_Plug implements ProcessorPlugin, SciJavaPlugin{
     
     // for z drift control, independent localization of several images
     public native static float [] lm_LocBatchedImg(short ImgDataS[], int BatchedImgNum);
+    
+    public static final int LocInfID_PSFWidth = 0;
+    public static final int LocInfID_MeanSNR = 1;
+    public static final int LocInfID_PSFSNR1 = 2;
+    public static final int LocInfID_PSFSNR2 = 3;
+    public static final int LocInfID_FluoNum = 4;
+    public static final int LocInfID_LocDensity = 5;
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     
     
     public static int SendProcessorID()

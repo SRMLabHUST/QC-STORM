@@ -8,4 +8,5 @@ javac hust\whno\SMLM\QC_STORM_Plug.java
 javah -jni hust.whno.SMLM.QC_STORM_Plug
 
 
+javah -classpath C:\java_code\src -d C:\java_code\src hust.whno.SMLM.QC_STORM_Plug
 

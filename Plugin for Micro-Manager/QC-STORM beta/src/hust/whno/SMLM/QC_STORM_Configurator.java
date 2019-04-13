@@ -63,6 +63,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     
     volatile public boolean CurMultiROIAcqActive=false;
     
+    volatile public boolean CurZDriftCorrActive = false;
+
     public int MultiROINum_X;
     public int MultiROINum_Y;
     public int ROIMoveSteps_X;
@@ -90,7 +92,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
            
         }
         
-//        jTabbedPane1.remove(jPanel_ROMP);
+        jTabbedPane1.remove(jPanel_ROMP);
 
     }
     void AllocateResources()
@@ -1016,7 +1018,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
                 }
             });
 
-            jTextField_ManualDensity.setText("0.35");
+            jTextField_ManualDensity.setText("1.2");
             jTextField_ManualDensity.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jTextField_ManualDensityActionPerformed(evt);
@@ -1033,14 +1035,14 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
             jLabel32.setText("PID Proportion & Integral :");
 
-            jTextField_DensityCtl_P.setText("2");
+            jTextField_DensityCtl_P.setText("1");
             jTextField_DensityCtl_P.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jTextField_DensityCtl_PActionPerformed(evt);
                 }
             });
 
-            jTextField_DensityCtl_I.setText("0.2");
+            jTextField_DensityCtl_I.setText("0.1");
             jTextField_DensityCtl_I.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jTextField_DensityCtl_IActionPerformed(evt);
@@ -1084,7 +1086,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
                 }
             });
 
-            jTextField_MaxLocDensity.setText("0.35");
+            jTextField_MaxLocDensity.setText("1.5");
             jTextField_MaxLocDensity.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jTextField_MaxLocDensityActionPerformed(evt);
@@ -1112,7 +1114,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
             });
 
             jComboBox_ZCorrPara.setMaximumRowCount(10);
-            jComboBox_ZCorrPara.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "PSF width", "-SNR", "PSF width - SNR", "PSF width * (-SNR)", "Fluo number" }));
+            jComboBox_ZCorrPara.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "PSF width", "SNR", "SNR - PSF width", "SN * (-PSF width)", "Fluo number" }));
             jComboBox_ZCorrPara.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jComboBox_ZCorrParaActionPerformed(evt);
@@ -1648,6 +1650,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     private void jButton_MROIAcqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_MROIAcqActionPerformed
         // TODO add your handling code here:
 
+        SetFeedbackDevicePort();
+        
         SetTranslationStagePort();
 
         QC_STORM_Plug.lm_SetMultiFOVAcqParameters(GetMultiFovOverlapPercent());
@@ -1663,11 +1667,13 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
         if(CurMultiROIAcqActive==false)
         {
+
             // start burst acquisition
             ClearLiveData();
             
-
-            CurMultiROIAcqActive=true;
+            CurZDriftCorrActive = true;
+            
+            CurMultiROIAcqActive = true;
             jButton_MROIAcq.setText("Stop acq");
             
             jButton_BurstLive.setEnabled(false);
@@ -1678,6 +1684,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         else
         {
             // stop burst acquisition
+            
+            CurZDriftCorrActive = false;
+            
             CurMultiROIAcqActive = false;
 
             // also stop burst acq
@@ -1685,6 +1694,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
             // wait thread finish and set enable
             jButton_MROIAcq.setEnabled(false);
+            
+            
+            
         }
 
         if(CurMultiROIAcqActive)
@@ -1755,7 +1767,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     }//GEN-LAST:event_jButton_NewSRImageActionPerformed
 
     private void jButton_BurstLiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_BurstLiveActionPerformed
-        // TODO add your handling code here:
+
+        SetFeedbackDevicePort();
         
         QC_STORM_Plug.lm_SetMultiFOVAcqParameters(0.0f);
         
@@ -1764,12 +1777,13 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
             // start burst acquisition
             ClearLiveData();
             
-
-            CurBurstLiveActive=true;
+            CurZDriftCorrActive = true;
+            
+            CurBurstLiveActive = true;
             jButton_BurstLive.setText("Stop acq");
 
             try {
-                BurstLiveProc = new QC_STORM_Acq_BurstAcq(studio_, this);
+                BurstLiveProc = new QC_STORM_Acq_BurstAcq(studio_, this, "");
                 BurstLiveProc.StartBurstAcq();
 
             } catch (Exception ex) {
@@ -1778,8 +1792,10 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         }
         else
         {
+            CurZDriftCorrActive = false;
+            
             // stop burst acquisition
-            CurBurstLiveActive=false;
+            CurBurstLiveActive = false;
 
             // wait thread finish and set enable
             jButton_BurstLive.setEnabled(false);
@@ -1857,12 +1873,12 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
     private void jButton_DnsitySetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DnsitySetActionPerformed
         // TODO add your handling code here:
-        QC_STORM_Plug.lm_FeedbackCtlTest(0, 1);
+        QC_STORM_Plug.lm_SetActivationLaserPower(100.0f);
     }//GEN-LAST:event_jButton_DnsitySetActionPerformed
 
     private void jButton_DensityResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DensityResetActionPerformed
         // TODO add your handling code here:
-        QC_STORM_Plug.lm_FeedbackCtlTest(0, 0);
+        QC_STORM_Plug.lm_SetActivationLaserPower(0.0f);
     }//GEN-LAST:event_jButton_DensityResetActionPerformed
 
     private void jTextField_StructureSize2DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_StructureSize2DActionPerformed
@@ -2342,8 +2358,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         // feedbacks
         jCheckBox_DensityManualTargetEn.setSelected(Boolean.parseBoolean(pps.getProperty("DensityManualTargetEn",Boolean.toString(true))));
         
-        jTextField_MaxLocDensity.setText(pps.getProperty("MaxAcqDensity", Float.toString(0.35f)));
-        jTextField_ManualDensity.setText(pps.getProperty("ManualDensityTarget", Float.toString(0.35f)));
+        jTextField_MaxLocDensity.setText(pps.getProperty("MaxAcqDensity", Float.toString(1.5f)));
+        jTextField_ManualDensity.setText(pps.getProperty("ManualDensityTarget", Float.toString(1.2f)));
         jTextField_DensityCtl_P.setText(pps.getProperty("Density_PID_P", Float.toString(10.0f)));
         jTextField_DensityCtl_I.setText(pps.getProperty("Density_PID_I", Float.toString(1.0f)));
 
@@ -2621,9 +2637,19 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     {
         return Integer.parseInt(jTextField_ZFocusMoveSteps.getText());
     }
+    
     public float GetMaxTolerableLocDensity()
     {
         return Float.parseFloat(jTextField_MaxLocDensity.getText());
+    }
+    public float GetLocDensityTarget()
+    {
+        return Float.parseFloat(jTextField_ManualDensity.getText());
+    }
+    
+    public boolean IsHighDensityImaging()
+    {
+        return jCheckBox_Stat_MultiFitEn.isSelected();
     }
     
     public boolean IsRandomDensity()
@@ -2723,4 +2749,18 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     {
         return jComboBox_ZCorrPara.getSelectedIndex();
     }
+    
+    public boolean IsBurstLiveActive()
+    {
+        return CurBurstLiveActive;
+    }
+    public boolean IsMultiROIAcqActive()
+    {
+        return CurMultiROIAcqActive;
+    }  
+     public boolean IsZDriftCorrActive()
+    {
+        return CurZDriftCorrActive;
+    }       
+      
 }

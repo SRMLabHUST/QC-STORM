@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "bfgs_MLE_dll.h"
 
-#include "LocResource.h"
+extern LocalizationPara LocPara_Global;
 
 
 // molecule finding, MLE localization,rendering,statistical processing
@@ -28,6 +28,9 @@ class ZDriftMeasureData_TypeDef
 public:
 	LDROIExtractData_TypeDef LDROIExtractData_;
 	LDLocData_TypeDef LDLocData_;
+
+	ZeroLocalizationsRemovel_TypeDef ZeroLocRemovel_;
+
 	FluoStatisticData_TypeDef FluoStatData_;
 
 	cudaStream_t loc_stream1_;
@@ -39,7 +42,6 @@ public:
 		FluoStatData_.ResetAllDat(loc_stream1_);
 
 
-//		memcpy(LDROIExtractData_.h_RawImg, h_RawImg, BatchedImgNum*LocPara_Global.ImageWidth*LocPara_Global.ImageHigh * sizeof(short));
 
 		// subregion extraction for current image
 		LDROIExtractData_.ExtractMolecules(LDROIExtractData_.h_RawImg, ImageSource_CPU_Pinned, LocPara_Global, 1, BatchedImgNum, loc_stream1_);
@@ -49,16 +51,23 @@ public:
 
 
 		// localization
-		LDLocData_.BFGS_MLELocalization(LDROIExtractData_.h_ImageROI, LDROIExtractData.Get_h_WLEPara(), LocPara_Global, FluoNum, loc_stream1_);
+		LDLocData_.BFGS_MLELocalization(LDROIExtractData_.h_ImageROI, LDROIExtractData_.Get_h_WLEPara(), LocPara_Global, FluoNum, loc_stream1_);
+
+		// remove invalid molecules and sort frame, frame is disordered by LDROIExtractData and LDLocData
+		ZeroLocRemovel_.RemoveZeroLocalizations(LDLocData_.h_LocArry, LDLocData_.oValidFluoNum, 1, 1, BatchedImgNum, loc_stream1_);
+
 
 		// get statistic information
-		FluoStatData_.GetStatisticalInf(LDLocData_.h_LocArry, LocPara_Global, LDLocData_.oValidFluoNum, loc_stream1_);
+		FluoStatData_.GetStatisticalInf(ZeroLocRemovel_.h_LocArry, LocPara_Global, ZeroLocRemovel_.ValidFluoNum, loc_stream1_);
 
-		FluoNum = LDLocData_.oValidFluoNum;
+		FluoNum = ZeroLocRemovel_.ValidFluoNum;
 
 //		printf("mean psf:%f %f\n", FluoStatData_.h_MeanPSFWidth, FluoStatData_.h_MeanPSFWidth_ctl);
 
-		printf("batch loc molecule num:%d\n", FluoNum);
+
+
+
+
 
 
 		return FluoNum;
@@ -74,6 +83,8 @@ public:
 		LDROIExtractData_.Init(LocPara_Global);
 		LDLocData_.Init(LocPara_Global);
 
+		ZeroLocRemovel_.Init();
+
 		FluoStatData_.Init();
 
 		CreatStream(&loc_stream1_);
@@ -87,6 +98,8 @@ public:
 	{
 		LDROIExtractData_.Deinit();
 		LDLocData_.Deinit(LocPara_Global);
+
+		ZeroLocRemovel_.Deinit();
 
 		FluoStatData_.Deinit();
 

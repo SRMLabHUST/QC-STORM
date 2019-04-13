@@ -48,6 +48,5 @@ extern serial::Serial TranslationStageUART;
 
 void ResetFeedbackCtl();
 
-void LocDensityTest_Set();
-void LocDensityTest_Reset();
+void ActivationLaserPowerSet(float PowerPercentage);
 

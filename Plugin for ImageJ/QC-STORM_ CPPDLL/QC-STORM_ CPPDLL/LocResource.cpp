@@ -54,18 +54,16 @@ LDROIExtractData_TypeDef LDROIExtractData;
 
 LDLocData_TypeDef LDLocData;
 
+ZeroLocalizationsRemovel_TypeDef ZeroLocRemovel;
 
 ConsecutiveFit_TypeDef ConsecutiveFitData;
 
-ZeroLocalizationsRemovel_TypeDef ZeroLocRemovel;
 
 FluoStatisticData_TypeDef FluoStatData;
 ImageRenderData_TypeDef RendData;
 
 
 int SelectedGPUID;
-
-
 
 
 int ImagesPerGroup;
@@ -75,8 +73,6 @@ float StrucuteSize_3D;
 
 NyqDimensionDensityCalc_TypeDef DimensionDensityCalc;
 SpatialResolutionCalc_TypeDef SpatialResolutionCalc;
-
-
 
 
 
@@ -105,9 +101,14 @@ void InitAllLocResource(int IsPostprocess)
 
 		LDLocData.Init(LocPara_Global);
 
-		ConsecutiveFitData.Init(); 
-
 		ZeroLocRemovel.Init();
+
+
+		if (LocPara_Global.ConsecFitEn)
+		{
+			ConsecutiveFitData.Init(); 
+		}
+
 
 		// rendering and stastical
 		FluoStatData.Init();
@@ -125,14 +126,15 @@ void InitAllLocResource(int IsPostprocess)
 		{
 		}
 
-		// spatial resolution calculation
-		DimensionDensityCalc.Init(MAX_FLUO_NUM_PER_GROUP, LocPara_Global.ImagesPerGroup);
-		SpatialResolutionCalc.Init();
-
+		if (LocPara_Global.SpatialResolutionCalcEn)
+		{
+			// spatial resolution calculation
+			DimensionDensityCalc.Init(MAX_FLUO_NUM_PER_GROUP, LocPara_Global.ImagesPerGroup);
+			SpatialResolutionCalc.Init();
+		}
 
 		IsLocResourceAllocated = true;
 	}
-
 
 }
 
@@ -162,10 +164,14 @@ void DeinitAllLocResource(int IsPostprocess)
 
 		LDLocData.Deinit(LocPara_Global);
 
-
-		ConsecutiveFitData.Deinit();
-
 		ZeroLocRemovel.Deinit();
+
+
+		if (LocPara_Global.ConsecFitEn)
+		{
+			ConsecutiveFitData.Deinit();
+
+		}
 		// rendering and stastical
 
 		FluoStatData.Deinit();
@@ -185,9 +191,13 @@ void DeinitAllLocResource(int IsPostprocess)
 		{
 		}
 
-		// spatial resolution calculation
-		DimensionDensityCalc.DeInit();
-		SpatialResolutionCalc.DeInit();
+		if (LocPara_Global.SpatialResolutionCalcEn)
+		{
+			// spatial resolution calculation
+			DimensionDensityCalc.DeInit();
+			SpatialResolutionCalc.DeInit();
+
+		}
 
 
 		//

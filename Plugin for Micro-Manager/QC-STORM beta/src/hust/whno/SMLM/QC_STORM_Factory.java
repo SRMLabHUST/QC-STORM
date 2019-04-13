@@ -40,7 +40,7 @@ public class QC_STORM_Factory implements ProcessorFactory {
     @Override
     public Processor createProcessor() {
         // get para from PropertyMap settings and create processing based on those parameters
-        MyProcessor = new QC_STORM_Processor(studio_, MyConfigurator);
+        MyProcessor = new QC_STORM_Processor(studio_, MyConfigurator, "");
         return MyProcessor;
     }
     

@@ -49,16 +49,16 @@ CloseSerialPorts closeSerialPorts;
 
 
 
-void LocDensityTest_Set()
+void ActivationLaserPowerSet(float PowerPercentage)
 {
+
 	// send to MCU
 	char *UARTBuf = new char[64];
 	string cmdString;
 
-	float LocDensityCtl_Ajust = 10000;
 
 	// sent to the MCU to drive the step motor to adjust laser power by rotating the ND filter	
-	sprintf(UARTBuf, "@a%.4f#", LocDensityCtl_Ajust);
+	sprintf(UARTBuf, "@A%.2f#", PowerPercentage);
 	cmdString = UARTBuf;
 
 	UARTCmdQueue.push(cmdString);
@@ -68,10 +68,7 @@ void LocDensityTest_Set()
 
 }
 
-void LocDensityTest_Reset()
-{
-	ResetFeedbackCtl();
-}
+
 
 
 void ResetFeedbackCtl()

@@ -16,192 +16,117 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package hust.whno.SMLM;
 
-import static java.lang.Thread.sleep;
-import mmcorej.CMMCore;
-import mmcorej.TaggedImage;
-import org.micromanager.ScriptController;
 import org.micromanager.Studio;
-import org.micromanager.data.Image;
+
+
+
 
 /**
  *
- * z drift correction by move the focus knob to minimize the PSF width, may also consider molecule number and SNR
+ * z drift correction by move the focus knob to minimize the PSF width, optional the molecule number and SNR
  */
 
 public class QC_STORM_ZDriftCorrection  extends Thread
 {
-        private Studio MyStudio;
-        private CMMCore MMCore;
-        private ScriptController MMScript;
     
-        QC_STORM_Configurator myConfigurator;
-                
-        int ImageWidth;
-        int ImageHigh;
+    QC_STORM_SmallBatchImageAcq SmallBatchImageAcq;
+    
+    QC_STORM_Configurator myConfigurator;
+
+
+    int ZCorrMode;
+    int StepZoom;
+
+    // move step motor to correct z drift
+    int SMMoveNum_half;
+    int SMMoveNum;
+    int IterationNum;
         
-        int ZCorrMode;
-        int StepZoom;
-        // move step motor to correct z drift
-        int SMMoveNum_half;
-        int SMMoveNum;
-        int IterationNum;
-        
                 
-        QC_STORM_ZDriftCorrection(Studio iStudio, QC_STORM_Configurator iConfigurator, int iZCorrMode, int iStepZoom, int iSMMoveNum_half, int iIterationNum)
+    QC_STORM_ZDriftCorrection(Studio iStudio, QC_STORM_Configurator iConfigurator, int iZCorrMode, int iStepZoom, int iSMMoveNum_half, int iIterationNum)
+    {
+
+        SmallBatchImageAcq = new QC_STORM_SmallBatchImageAcq(iStudio, iConfigurator);
+
+        ZCorrMode = iZCorrMode;
+        StepZoom = iStepZoom;
+        //
+        SMMoveNum_half = iSMMoveNum_half;
+        SMMoveNum = SMMoveNum_half*2+1;
+        IterationNum = iIterationNum;
+    }
+
+    @Override
+    public void run()
+    {
+        // set localization parameters 
+        myConfigurator.SendLocalizationPara();
+        myConfigurator.SetFeedbackDevicePort();
+
+
+        int SMMoveSteps = myConfigurator.GetZMoveSteps() ;
+
+        SMMoveSteps = SMMoveSteps * StepZoom;
+
+
+        float [] ZDriftCorrInfVary = new float[SMMoveNum];
+
+//            gui.message(String.format("it:%d %d %d %d", IterationNum,SMMoveNum_half, SMMoveNum, StepZoom));
+
+        for(int itcnt=0; itcnt<IterationNum; itcnt++)
         {
-        	MyStudio=iStudio;
-        	MMCore=MyStudio.getCMMCore();
-        	MMScript=MyStudio.scripter();
-            
-            myConfigurator = iConfigurator;
-            
-            ImageWidth = (int) MMCore.getImageWidth();
-            ImageHigh = (int) MMCore.getImageHeight();
-            
-            ZCorrMode = iZCorrMode;
-            StepZoom = iStepZoom;
-        	//
-        	SMMoveNum_half = iSMMoveNum_half;
-        	SMMoveNum = SMMoveNum_half*2+1;
-        	IterationNum = iIterationNum;
-        }
+            // pre move
+            ZDriftSMMoveAndWait(-SMMoveNum_half*SMMoveSteps);
 
-        @Override
-        public void run()
-        {
-            // set localization parameters 
-            myConfigurator.SendLocalizationPara();
-            myConfigurator.SetFeedbackDevicePort();
-            
-            
-            int BatchedImgNum = GetBatchedImgNum(); 
-            int SMMoveSteps = myConfigurator.GetZMoveSteps() ;
-            
-            SMMoveSteps = SMMoveSteps * StepZoom;
-
-
-            float [] PSFVaryInf = new float[SMMoveNum];
-            
-            for(int icnt=0; icnt<IterationNum; icnt++)
+            for(int mcnt = 0; mcnt < SMMoveNum; mcnt++)
             {
-                // pre move
-                ZDriftSMMoveAndWait(-SMMoveNum_half*SMMoveSteps);
+                
+                float [] LocResults = SmallBatchImageAcq.GetLocResultsOfBatchedImageDat_Default();
 
-                for(int mcnt=0; mcnt<SMMoveNum; mcnt++)
+                // maximize
+                ZDriftCorrInfVary[mcnt] = LocResults[ZCorrMode]; //  
+
+                if(mcnt<SMMoveNum-1)
                 {
-                    short [] BatchedImgDat = GetBatchedImgDat(BatchedImgNum);
-                    float [] LocResults = QC_STORM_Plug.lm_LocBatchedImg(BatchedImgDat, BatchedImgNum);
-                    
-                    // PSF width as a reference to adjust focus knob
-    /*                
-oInf[0] = Mean_PSFWidth;
-oInf[1] = -Mean_SNR;
-
-oInf[2] = Mean_PSFWidth - Mean_SNR;
-oInf[3] = Mean_PSFWidth*(-Mean_SNR);
-oInf[4] = FluoNum;*/
-                    
-                    PSFVaryInf[mcnt] = LocResults[ZCorrMode]; // mean PSF width
- 
-
                     // move to a new depth
-                    ZDriftSMMoveAndWait(SMMoveSteps);
+                    ZDriftSMMoveAndWait(SMMoveSteps);   
                 }
-                
-                int MinPos = FindArryMinPos(PSFVaryInf);
-                
-//                MMScript.message("move target:"+Float.toString(PSFVaryInf[MinPos])+" "+Integer.toString(MinPos));
-                
-                // move to the place with minimum PSF width
-                ZDriftSMMoveAndWait(-SMMoveSteps*(SMMoveNum-MinPos));
 
-                
-                if(MinPos == SMMoveNum_half)
+                if(!myConfigurator.IsZDriftCorrActive())
                 {
-                    // already in the center focus
                     break;
                 }
             }
+
+            int MaxPos = FindArryMaxPos(ZDriftCorrInfVary);
+
+//                MMScript.message("move target:"+Float.toString(PSFVaryInf[MinPos])+" "+Integer.toString(MinPos));
+
+            // move to the place with max ZDriftCorrInfVary
+            ZDriftSMMoveAndWait(-SMMoveSteps*(SMMoveNum - 1 - MaxPos));
+
+
         }
-        
-        int FindArryMinPos(float iArry[])
+    }
+
+    int FindArryMaxPos(float iArry[])
+    {
+        int FindPos = 0;
+
+        for (int cnt = 0; cnt < iArry.length; cnt++)
         {
-            int MinPos=0;
-            for (int cnt=0; cnt<iArry.length;cnt++)
+            if(iArry[cnt] > iArry[FindPos])
             {
-                if(iArry[cnt]<iArry[MinPos])
-                {
-                    MinPos=cnt;
-                }
-            }
-            return MinPos;
-        }    
-        
-        void ZDriftSMMoveAndWait(int MoveSteps)
-        {
-            QC_STORM_Plug.lm_ZDepthSMMove(MoveSteps);
-
-            try {
-                sleep(12);
-            } catch (InterruptedException ex) {
-
+                FindPos = cnt;
             }
         }
-        
-        public int GetBatchedImgNum()
-        {
-            int BatchedImgNum = 2048 * 2048 / ImageWidth / ImageHigh;
-            
-            BatchedImgNum = Math.max(BatchedImgNum, 4);
-            BatchedImgNum = Math.min(BatchedImgNum, 16);
-            
-            return BatchedImgNum;
-        }
-        
-        public short [] GetBatchedImgDat(int BatchedImgNum)
-        {
-            int ImgPixelNum=ImageWidth*ImageHigh;
-            short [] BatchedImgDat = new short[BatchedImgNum*ImgPixelNum];
-            short [] RawImgDatS;
+        return FindPos;
+    }    
 
-            try {
-                int CurFrame=0;
+    void ZDriftSMMoveAndWait(int MoveSteps)
+    {
+        QC_STORM_Plug.lm_ZDepthSMMove(MoveSteps);
 
-                // Start burst acq
-                double exposureMs = MMCore.getExposure();
+    }
 
-                MMCore.startSequenceAcquisition(BatchedImgNum, 0, true);
-
-                while ((MMCore.getRemainingImageCount() > 0) || MMCore.isSequenceRunning(MMCore.getCameraDevice())) 
-                {
-                    if (MMCore.getRemainingImageCount() > 0) 
-                    {
-                        TaggedImage taggedImg = MMCore.popNextTaggedImage();
-
-                        Image image1 = MyStudio.data().convertTaggedImage(taggedImg, MyStudio.data().getCoordsBuilder().time(CurFrame).build(), null);
-
-                        RawImgDatS = (short [])image1.getRawPixels();
-
-                        // debug
-                        // simulation, read from hard disk
-//                        RawImgDatS = QC_STORM_Plug.GetSimuImage512x512();
-
-                        // group several images into one
-                        System.arraycopy(RawImgDatS, 0 ,BatchedImgDat, ImgPixelNum*CurFrame, ImgPixelNum);
-
-                        CurFrame++;
-                    }
-                    else 
-                    {
-                        // Wait for another image to arrive.
-                        MMCore.sleep(Math.max(0.4 * exposureMs, 1));
-                    }
-                }       
-                MMCore.stopSequenceAcquisition();
-                
-            } catch (Exception ex) {
-
-            }
-            return BatchedImgDat;
-        }    
 }

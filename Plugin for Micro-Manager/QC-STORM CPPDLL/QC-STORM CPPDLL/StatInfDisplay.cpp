@@ -199,7 +199,6 @@ void UpdateStatInfDisplay()
 	StatInfDisplay.InfDisp_Curve_Background->SetAllData(FluoStatData.TimeVary_Background.data(), FluoStatData.TimeVary_Background.size(), 0);
 	// time variation curve of PSF width
 	StatInfDisplay.InfDisp_Curve_PSFWidth->SetAllData(FluoStatData.TimeVary_PSFWidth.data(), FluoStatData.TimeVary_PSFWidth.size(), 0);
-	StatInfDisplay.InfDisp_Curve_PSFWidth->SetAllData(FluoStatData.TimeVary_PSFWidth_Ctl.data(), FluoStatData.TimeVary_PSFWidth_Ctl.size(), 1);
 
 	// time variation curve of Localization density 2D
 	StatInfDisplay.InfDisp_Curve_LocDensity2D->SetAllData(FluoStatData.TimeVary_LocDensity2D.data(), FluoStatData.TimeVary_LocDensity2D.size(), 0);
