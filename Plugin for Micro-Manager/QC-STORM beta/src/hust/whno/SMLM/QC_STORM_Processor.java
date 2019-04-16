@@ -68,6 +68,8 @@ public class QC_STORM_Processor  extends Processor{
     volatile boolean IsAcquisitionB = true;    
     volatile boolean IsSaved = false;
     
+    boolean IsMultiFOVAcqB = false;
+    
 
     QC_STORM_Processor(Studio studio, QC_STORM_Configurator iConfigurator, String iNamePostFix)
     {
@@ -83,6 +85,13 @@ public class QC_STORM_Processor  extends Processor{
         
         NamePostFix = iNamePostFix;
         
+        if(NamePostFix.length()>0)
+        {
+            IsMultiFOVAcqB = true;
+        }else
+        {
+            IsMultiFOVAcqB = false;
+        }
         
         IsAcquisitionB = true;
         IsSaved = false;
@@ -137,11 +146,10 @@ public class QC_STORM_Processor  extends Processor{
             IsSaved=true;
             
             // avoid system clean after a class is destroyed when users' processor is running
-            if(MyProcessorId==QC_STORM_Plug.lm_GetProcessorID())
+            if(MyProcessorId == QC_STORM_Plug.lm_GetProcessorID())
             {
                 CloseAndSaveSRImage();
 
-                QC_STORM_Plug.lm_ReleaseLocResource();
             }      
         }       
     }
@@ -153,8 +161,19 @@ public class QC_STORM_Processor  extends Processor{
         
         IsAcquisitionB = false;
         
+        /*         
+        // don't save image for multi fov acq for time savting
+        if(!IsMultiFOVAcqB)
+        {
+        }
+        */
         SaveAndDispSRImage();
-      
+        
+        // close super-resolution image for save memory buffer of ImageJ platform
+        if(IsMultiFOVAcqB)
+        {
+            CurSRImagePlus.close();
+        }
     }
     
     public void SaveAndDispSRImage()
@@ -178,7 +197,8 @@ public class QC_STORM_Processor  extends Processor{
         String SaveImgName = String.format("loc_result%dD%d_%s%s%s_rend%.2fnm.tif", CurLocPara.LocType+2,CurLocPara.RegionSize, CreateTimeIdxStr,MultiFitStr,ConsecFitStr, CurLocPara.RenderingPixelSize);
         
         ResultTifSaver.saveAsTiff(ResultSavePathStr + SaveImgName);
-                
+            
+
     }
     
     public void GetSRImage()
@@ -235,12 +255,10 @@ public class QC_STORM_Processor  extends Processor{
         ///////////////////////////////////////////////////////////////////////////////
         // simulation, read from hard disk
 //        pImgData = QC_STORM_Parameters.GetSimuImage512x512();
-    
         
         // send image to c++ and processed by GPU
         QC_STORM_Plug.lm_FeedImageData(pImgData, 1);
-
-      
+   
     }
     
     @Override
@@ -250,8 +268,5 @@ public class QC_STORM_Processor  extends Processor{
  
         pc.outputImage(image);      
     }
-    
-
-
 
 }

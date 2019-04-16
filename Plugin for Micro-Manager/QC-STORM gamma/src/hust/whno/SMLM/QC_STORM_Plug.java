@@ -40,6 +40,7 @@ public class QC_STORM_Plug implements ProcessorPlugin, SciJavaPlugin{
     // wrapper of CPP & CUDA library
     public native static void lm_SetProcessorID(int id);
     public native static int lm_GetProcessorID();
+    
     public native static void lm_SetSavePath(char PathCs[]);
     // for both 2d and 3d
     public native static void lm_SetLocPara(float KAdc, float Offset, float QE, int ROISizeI, int LocTypeI, int MultiEmitterFitEn, int WLEEn, int ConsecutiveFitEnI, float ConsecFilterRadiusF, float RawPixelSizeF, float RenderPixelZoomF, float SNR_th);
@@ -92,8 +93,8 @@ public class QC_STORM_Plug implements ProcessorPlugin, SciJavaPlugin{
     // for z drift control, independent localization of several images
     public native static float [] lm_LocBatchedImg(short ImgDataS[], int BatchedImgNum);
     
-    public static final int LocInfID_PSFWidth = 0;
-    public static final int LocInfID_MeanSNR = 1;
+    public static final int LocInfID_MeanSNR = 0;
+    public static final int LocInfID_PSFWidth = 1;
     public static final int LocInfID_PSFSNR1 = 2;
     public static final int LocInfID_PSFSNR2 = 3;
     public static final int LocInfID_FluoNum = 4;

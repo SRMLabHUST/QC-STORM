@@ -97,10 +97,8 @@ extern CString CreateTimeIdxStr;
 
 
 extern cudaStream_t loc_stream1;
-extern cudaStream_t loc_stream2;
 
 extern cudaStream_t render_stream1;
-extern cudaStream_t render_stream2;
 
 extern int SelectedGPUID;
 

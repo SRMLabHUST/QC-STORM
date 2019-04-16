@@ -27,12 +27,9 @@ volatile bool OnlineRendAlive = false;
 volatile bool OnlineFeedbackAlive = false;
 
 
-
 volatile bool IsLocRunning = false;
 volatile bool IsRendRunning = false;
 
-
-volatile bool IsLocResourceAllocated = false;
 
 
 // image info
@@ -43,10 +40,8 @@ CString CreateTimeIdxStr;
 
 
 cudaStream_t loc_stream1;
-cudaStream_t loc_stream2;
 
 cudaStream_t render_stream1;
-cudaStream_t render_stream2;
 
 int SelectedGPUID;
 
@@ -96,22 +91,31 @@ void ClearAllOnlineThreadAlive()
 }
 
 
+volatile bool IsLocResourceAllocated = false;
+
+LocalizationPara LocPara_Cmp;
+
+
+
 void InitAllLocResource()
 {
 
-	if (IsLocResourceAllocated == false)
+	if ((IsLocResourceAllocated == false) || (!LocPara_Global.IsEqual(LocPara_Cmp)))
 	{
+		DeinitAllLocResource();
+
+		LocPara_Cmp = LocPara_Global;
+
+		//
 		SelectedGPUID = SelectBestGPU();
+		cudaSetDevice(SelectedGPUID);
 
 		// alloc stream with priority
 		int leastPriority, greatestPriority;
 		cudaDeviceGetStreamPriorityRange(&leastPriority, &greatestPriority);
 
 		CreatStreamWithPriority(&render_stream1, leastPriority + 1);
-		CreatStreamWithPriority(&render_stream2, leastPriority + 1);
-
 		CreatStreamWithPriority(&loc_stream1, leastPriority);
-		CreatStreamWithPriority(&loc_stream2, leastPriority);
 
 
 		// extraction and localization
@@ -136,9 +140,7 @@ void InitAllLocResource()
 		{
 			h_RendFloatImage2D = new float[LocPara_Global.SRImageWidth*LocPara_Global.SRImageHigh];
 		}
-		else
-		{
-		}
+
 
 		if (LocPara_Global.SpatialResolutionCalcEn)
 		{
@@ -158,7 +160,6 @@ void InitAllLocResource()
 		IsLocResourceAllocated = true;
 	}
 
-
 }
 
 
@@ -168,14 +169,13 @@ void DeinitAllLocResource()
 	if (IsLocResourceAllocated == true)
 	{
 		// for both 2d and 3d
+		SelectedGPUID = SelectBestGPU();
 		cudaSetDevice(SelectedGPUID);
+
 
 		// free stream
 		FreeStream(render_stream1);
-		FreeStream(render_stream2);
-
 		FreeStream(loc_stream1);
-		FreeStream(loc_stream2);
 
 		// extraction and localization
 		LDROIExtractData.Deinit();
@@ -217,12 +217,10 @@ void DeinitAllLocResource()
 		ZDriftCtl.Deinit(LocPara_Global);
 
 
-//		cudaDeviceReset();
+		cudaDeviceReset();
 
 		IsLocResourceAllocated = false;
 	}
-
-
 
 }
 

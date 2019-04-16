@@ -131,14 +131,17 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 	bool IsBreak = 0;
 
+	// reset state
+	LDROIExtractData.ResetROINum();
 
-	// reset rendered image
-	RendData.ResetFillImgTop(LocPara_Global);
+	RendData.ResetFillImgTop(LocPara_Global); // reset rendered image
+
 	FluoStatData.ResetAllDat(loc_stream1);
+
+
 
 	// spatial resolution calculation
 	DimensionDensityCalc.ResetAccumulatedData();
-
 
 
 	SpatialResolutionCalc.ResetData();

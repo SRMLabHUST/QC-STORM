@@ -1520,7 +1520,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField_MaxLocDensity">
               <Properties>
-                <Property name="text" type="java.lang.String" value="1.5"/>
+                <Property name="text" type="java.lang.String" value="2"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField_MaxLocDensityActionPerformed"/>
@@ -1559,8 +1559,8 @@
                 <Property name="maximumRowCount" type="int" value="10"/>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="5">
-                    <StringItem index="0" value="PSF width"/>
-                    <StringItem index="1" value="SNR"/>
+                    <StringItem index="0" value="SNR"/>
+                    <StringItem index="1" value="PSF width"/>
                     <StringItem index="2" value="SNR - PSF width"/>
                     <StringItem index="3" value="SN * (-PSF width)"/>
                     <StringItem index="4" value="Fluo number"/>

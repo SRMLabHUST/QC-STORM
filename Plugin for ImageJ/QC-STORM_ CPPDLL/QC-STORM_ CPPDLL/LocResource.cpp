@@ -29,8 +29,6 @@ volatile bool IsLocRunning = false;
 volatile bool IsRendRunning = false;
 
 
-bool IsLocResourceAllocated = false;
-
 // image for display and save in ImageJ
 float *h_RendFloatImage2D = NULL;
 
@@ -75,13 +73,25 @@ NyqDimensionDensityCalc_TypeDef DimensionDensityCalc;
 SpatialResolutionCalc_TypeDef SpatialResolutionCalc;
 
 
+volatile bool IsLocResourceAllocated = false;
+
+LocalizationPara LocPara_Cmp;
+
 
 void InitAllLocResource(int IsPostprocess)
 {
-	SelectedGPUID = SelectBestGPU();
-
-	if (IsLocResourceAllocated == false)
+	if ((IsLocResourceAllocated == false) || (!LocPara_Global.IsEqual(LocPara_Cmp)))
 	{
+		DeinitAllLocResource(IsPostprocess);
+
+		LocPara_Cmp = LocPara_Global;
+
+
+		//
+		SelectedGPUID = SelectBestGPU();
+		cudaSetDevice(SelectedGPUID);
+
+
 		// alloc stream with priority
 		int leastPriority, greatestPriority;
 		cudaDeviceGetStreamPriorityRange(&leastPriority, &greatestPriority);
@@ -142,6 +152,7 @@ void InitAllLocResource(int IsPostprocess)
 void DeinitAllLocResource(int IsPostprocess)
 {
 	// for both 2d and 3d
+	SelectedGPUID = SelectBestGPU();
 	cudaSetDevice(SelectedGPUID);
 
 

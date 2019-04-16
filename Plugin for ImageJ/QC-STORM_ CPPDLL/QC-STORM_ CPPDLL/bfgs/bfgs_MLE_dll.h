@@ -118,11 +118,16 @@ public:
 	int SpatialResolutionCalcEn;
 
 
+	int ProcessingMode; // online or offline
+
 public:
 	// construction
 	LocalizationPara();
 
 	void UpdateSRImageSize(); // SRImageWidth = ((int)(ImageWidth*PixelZoom) + 3) / 4 * 4; same for ImageHigh
+
+	bool IsEqual(LocalizationPara & iPara);
+
 };
 
 
@@ -155,7 +160,6 @@ struct CoreFittingPara
 	float p0_XLY;
 
 };
-
 
 
 // estimage WLE para, contained in the ROI extraction
@@ -489,6 +493,7 @@ public:
 	static void GetMaxImgSizeFromLocArry(float *h_LocArry, float *d_LocArry, int *MaxImgWidth, int *MaxImgHigh, int FluoNum, cudaStream_t cstream);
 
 };
+
 
 
 

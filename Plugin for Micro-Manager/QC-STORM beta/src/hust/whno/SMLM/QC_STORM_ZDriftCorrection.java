@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package hust.whno.SMLM;
 
+import org.micromanager.ScriptController;
 import org.micromanager.Studio;
 
 
@@ -33,6 +34,7 @@ public class QC_STORM_ZDriftCorrection  extends Thread
     
     QC_STORM_Configurator myConfigurator;
 
+    private ScriptController gui;
 
     int ZCorrMode;
     int StepZoom;
@@ -41,12 +43,19 @@ public class QC_STORM_ZDriftCorrection  extends Thread
     int SMMoveNum_half;
     int SMMoveNum;
     int IterationNum;
-        
+    
+    float LocDensity_FocalPlane;
+    
                 
     QC_STORM_ZDriftCorrection(Studio iStudio, QC_STORM_Configurator iConfigurator, int iZCorrMode, int iStepZoom, int iSMMoveNum_half, int iIterationNum)
     {
 
         SmallBatchImageAcq = new QC_STORM_SmallBatchImageAcq(iStudio, iConfigurator);
+        
+        myConfigurator = iConfigurator;
+        
+        
+        gui = iStudio.scripter();
 
         ZCorrMode = iZCorrMode;
         StepZoom = iStepZoom;
@@ -54,15 +63,19 @@ public class QC_STORM_ZDriftCorrection  extends Thread
         SMMoveNum_half = iSMMoveNum_half;
         SMMoveNum = SMMoveNum_half*2+1;
         IterationNum = iIterationNum;
+        
+        LocDensity_FocalPlane = 0;
     }
 
     @Override
     public void run()
     {
+                
         // set localization parameters 
         myConfigurator.SendLocalizationPara();
+        
+        
         myConfigurator.SetFeedbackDevicePort();
-
 
         int SMMoveSteps = myConfigurator.GetZMoveSteps() ;
 
@@ -70,8 +83,9 @@ public class QC_STORM_ZDriftCorrection  extends Thread
 
 
         float [] ZDriftCorrInfVary = new float[SMMoveNum];
+        
+        float [] LocDensityVary = new float[SMMoveNum];
 
-//            gui.message(String.format("it:%d %d %d %d", IterationNum,SMMoveNum_half, SMMoveNum, StepZoom));
 
         for(int itcnt=0; itcnt<IterationNum; itcnt++)
         {
@@ -83,9 +97,14 @@ public class QC_STORM_ZDriftCorrection  extends Thread
                 
                 float [] LocResults = SmallBatchImageAcq.GetLocResultsOfBatchedImageDat_Default();
 
+//                gui.message("QC_STORM_ZDriftCorrection:"+String.format("%f", LocResults[0]));
+
                 // maximize
                 ZDriftCorrInfVary[mcnt] = LocResults[ZCorrMode]; //  
-
+                
+                LocDensityVary[mcnt] = LocResults[QC_STORM_Plug.LocInfID_LocDensity]; //  
+                
+                
                 if(mcnt<SMMoveNum-1)
                 {
                     // move to a new depth
@@ -105,10 +124,10 @@ public class QC_STORM_ZDriftCorrection  extends Thread
             // move to the place with max ZDriftCorrInfVary
             ZDriftSMMoveAndWait(-SMMoveSteps*(SMMoveNum - 1 - MaxPos));
 
-
+            LocDensity_FocalPlane = LocDensityVary[MaxPos];
         }
     }
-
+    
     int FindArryMaxPos(float iArry[])
     {
         int FindPos = 0;
@@ -128,5 +147,9 @@ public class QC_STORM_ZDriftCorrection  extends Thread
         QC_STORM_Plug.lm_ZDepthSMMove(MoveSteps);
 
     }
-
+    
+    float GetCurrentDensity()
+    {
+        return LocDensity_FocalPlane;
+    }
 }

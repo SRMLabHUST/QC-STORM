@@ -27,7 +27,12 @@ import static ij.plugin.filter.PlugInFilter.NO_IMAGE_REQUIRED;
 import ij.process.*;
 
 import java.awt.image.ColorModel;
+import java.io.File;
+import java.io.FileNotFoundException;
 import static java.lang.Thread.sleep;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 
@@ -54,7 +59,7 @@ public class QC_STORM_ implements PlugInFilter{
     public ColorModel hotCM;
 
     public ImageLocalizationThread LocThread=null;
-    public  RerendThread CurRerendThread=null;
+   
 
     
     // receive rendered image thread
@@ -317,36 +322,73 @@ public class QC_STORM_ implements PlugInFilter{
           
         }
     }
-    public void StartRerend()
+    public void StartRerend() throws InterruptedException, FileNotFoundException
     {
-        if((CurRerendThread!=null))
-        {
-            if(CurRerendThread.isAlive())
-            {
-                return;
-            }
-        }       
-        MyConfigurator.GetLocalizationPara();
-        MyConfigurator.SendLocalizationPara();        
-        
-        
-        CurSRImagePlus.setTitle("Rerend image");
 
 //        JOptionPane.showMessageDialog(null, "begin to rend", "loc finish!", JOptionPane.PLAIN_MESSAGE);
         
-        CurRerendThread = new RerendThread();
-        CurRerendThread.start();
-           
+        RerendThread_Main RerendThread_Entry = new RerendThread_Main();
+        RerendThread_Entry.start();
+        
     }
+    
+    public class RerendThread_Main extends Thread
+    {
+        @Override
+        public void run()
+        {
+            RerendThread CurRerendThread;
+                             
+            MyConfigurator.GetLocalizationPara();
+            MyConfigurator.SendLocalizationPara();        
 
+            CurSRImagePlus.setTitle("Rerend image");
+
+            try {
+                if(MyConfigurator.RerendMode==0)
+                {
+                    CurRerendThread = new RerendThread(MyConfigurator.RerendLocDataPath);
+                    CurRerendThread.start();
+
+                    CurRerendThread.join();
+                }
+                else
+                {
+                    ArrayList<String> FilesList = ListTxtFiles(MyConfigurator.RerendLocDataPath);
+
+                    for(int i = 0; i < FilesList.size(); i ++)
+                    {
+                        String FullFilePath = FilesList.get(i);
+                        
+                        CurRerendThread = new RerendThread(FullFilePath);
+                        CurRerendThread.start();
+                        CurRerendThread.join();
+                    }
+                }
+
+                MyConfigurator.EnableRerend();
+
+            } catch (Exception ex) {
+                    
+            }
+        }
+    }
+    
     public class RerendThread extends Thread
     {
+        String LocFileName;
+        
+        RerendThread(String iLocFileName)
+        {
+            LocFileName = iLocFileName;
+        }
+        
         @Override
         public void run()
         {
             int [] ImgInf;
 
-            lm_SetRerendImagePara(MyConfigurator.RerendLocDataPath.toCharArray(), MyConfigurator.DriftCorrEnableI, MyConfigurator.DriftCorrGroupFrameNum);  
+            lm_SetRerendImagePara(LocFileName.toCharArray(), MyConfigurator.DriftCorrEnableI, MyConfigurator.DriftCorrGroupFrameNum);  
             lm_StartRerend();
             
 
@@ -369,31 +411,28 @@ public class QC_STORM_ implements PlugInFilter{
 
             InitSRDisplay();
             
-             
-            // receive rendered image        
+            try {
+            
+                // receive rendered image        
             recImgThread = new RecSRImgThread();
             recImgThread.start();
+            recImgThread.join();
             
-
-            try {
-                recImgThread.join();
             } catch (InterruptedException ex) {
 
             }
-            
 
  //           while(recImgThread.isAlive());
 
-            FileSaver ResultTifSaver=new FileSaver(CurSRImagePlus);
-            String SaveImgName_PostFix=String.format("_rerend%.2fnm.tif", MyConfigurator.LocPara.RenderingPixelSize);
+            FileSaver ResultTifSaver = new FileSaver(CurSRImagePlus);
+            String SaveImgName_PostFix = String.format("_rerend%.2fnm.tif", MyConfigurator.LocPara.RenderingPixelSize);
 
-            String SaveImgName=MyConfigurator.RerendLocDataPath.substring(0, MyConfigurator.RerendLocDataPath.length()-4) + SaveImgName_PostFix;
+            String SaveImgName = LocFileName.substring(0, LocFileName.length()-4) + SaveImgName_PostFix;
             ResultTifSaver.saveAsTiff(SaveImgName);
                       
             
             lm_ReleaseRerendResource();
             
-            JOptionPane.showMessageDialog(null, "rend finish", "loc finish!", JOptionPane.PLAIN_MESSAGE);
         }
     }
 
@@ -409,11 +448,11 @@ public class QC_STORM_ implements PlugInFilter{
             {
                 if(lm_IsLocFinish()==0)
                 {
-                    IsBreakB=false;
+                    IsBreakB = false;
  //                   continue;// for speed testing
                 }else
                 {
-                    IsBreakB=true;
+                    IsBreakB = true;
                 }              
 
                 if(MyConfigurator.LocPara.LocType == 0)
@@ -581,6 +620,31 @@ public class QC_STORM_ implements PlugInFilter{
         }
     }
 
+    public static ArrayList<String> ListTxtFiles(String FolderPath) throws FileNotFoundException{
+        
+        ArrayList<String> FilesList = new ArrayList<String>();
 
+		File directory = new File(FolderPath);
+        
+        
+		if(directory.isDirectory()){
+            
+			File [] filelist = directory.listFiles();
+            
+			for(int i = 0; i < filelist.length; i ++){
+                
+				if(!filelist[i].isDirectory()){
+                    
+                    String CurFilePath = filelist[i].getAbsolutePath();
+                    
+                    if(CurFilePath.endsWith(".txt"))
+                    {
+                        FilesList.add(CurFilePath);
+                    }
+				}
+			}
+		}
+        return FilesList;
+	}
 }
 

@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 
@@ -40,7 +42,10 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
     volatile public String ResultsFilePath = "D:\\";
     
-    public String RerendLocDataPath=null;
+    public String RerendLocDataPath = null;
+    
+    public int RerendMode = 0; // 0: single file, 1: dir
+    
     
     public QC_STORM_ fa_QC_STORM_;
     
@@ -196,6 +201,10 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jButton_Rerend = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
         jTextField_DriftCorrGroupFrameNum = new javax.swing.JTextField();
+        jTextField_LocDataDir = new javax.swing.JTextField();
+        jButton_LoadLocDir = new javax.swing.JButton();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
 
         jButton_Start2.setText("Rerendering");
@@ -771,7 +780,10 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
             jTabbedPane1.addTab("Statistics", jPanel3);
 
-            jButton_LoadLocData.setText("Load binary localization result file");
+            jTextField_LocDataPath.setToolTipText("targer binary txt file");
+
+            jButton_LoadLocData.setText("Load localization result file");
+            jButton_LoadLocData.setToolTipText("targer binary txt file");
             jButton_LoadLocData.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jButton_LoadLocDataActionPerformed(evt);
@@ -791,36 +803,71 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
             jTextField_DriftCorrGroupFrameNum.setText("1000");
 
+            jTextField_LocDataDir.setToolTipText("binary txt files in a folder, no other txt files");
+
+            jButton_LoadLocDir.setText("Load localization results dir");
+            jButton_LoadLocDir.setToolTipText("binary txt files in a folder, no other txt files");
+            jButton_LoadLocDir.setActionCommand("");
+            jButton_LoadLocDir.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton_LoadLocDirActionPerformed(evt);
+                }
+            });
+
+            jLabel25.setText("Single file rendering:");
+
+            jLabel27.setText("Multi-files rendering:");
+
             javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
             jPanel4.setLayout(jPanel4Layout);
             jPanel4Layout.setHorizontalGroup(
                 jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
-                    .addGap(55, 55, 55)
-                    .addComponent(jButton_Rerend, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addGap(55, 55, 55)
+                            .addComponent(jButton_Rerend, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addGap(10, 10, 10)
+                            .addComponent(jCheckBox_ShiftCorrection, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addGap(10, 10, 10)
                             .addComponent(jLabel17)
                             .addGap(18, 18, 18)
                             .addComponent(jTextField_DriftCorrGroupFrameNum, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jCheckBox_ShiftCorrection, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(jTextField_LocDataPath, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(28, 28, 28)
-                            .addComponent(jButton_LoadLocData)))
-                    .addGap(18, 18, 18))
+                            .addContainerGap()
+                            .addComponent(jLabel25))
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jLabel27))
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextField_LocDataPath)
+                                .addComponent(jTextField_LocDataDir, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jButton_LoadLocDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton_LoadLocData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addContainerGap(57, Short.MAX_VALUE))
             );
             jPanel4Layout.setVerticalGroup(
                 jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
-                    .addGap(23, 23, 23)
+                    .addGap(13, 13, 13)
+                    .addComponent(jLabel25)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField_LocDataPath, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton_LoadLocData, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(14, 14, 14)
+                    .addGap(12, 12, 12)
+                    .addComponent(jLabel27)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField_LocDataDir, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton_LoadLocDir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(30, 30, 30)
                     .addComponent(jCheckBox_ShiftCorrection)
                     .addGap(10, 10, 10)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -828,7 +875,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                         .addComponent(jTextField_DriftCorrGroupFrameNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
                     .addComponent(jButton_Rerend, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(235, Short.MAX_VALUE))
+                    .addContainerGap(142, Short.MAX_VALUE))
             );
 
             jTabbedPane1.addTab("PostProc", jPanel4);
@@ -929,26 +976,48 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
         String filePath = dlgDialog.getPath();
         jTextField_LocDataPath.setText(filePath);
-        
+        jTextField_LocDataDir.setText("");
         RerendLocDataPath = filePath;
 
+        RerendMode = 0;
     }//GEN-LAST:event_jButton_LoadLocDataActionPerformed
 
     private void jButton_RerendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RerendActionPerformed
        
         if(RerendLocDataPath==null)return;
-        if(!RerendLocDataPath.endsWith(".txt"))return;
         
-        DriftCorrEnableI=jCheckBox_ShiftCorrection.isSelected()? 1 : 0;
-        DriftCorrGroupFrameNum=Integer.parseInt(jTextField_DriftCorrGroupFrameNum.getText());
+        if(RerendLocDataPath.length() < 2 )return;
         
-        fa_QC_STORM_.StartRerend();     
+        if(RerendMode == 0)
+        {
+            if(!RerendLocDataPath.endsWith(".txt"))
+            {
+                return;
+            }
+        }
+        
+        DriftCorrEnableI = jCheckBox_ShiftCorrection.isSelected()? 1 : 0;
+        DriftCorrGroupFrameNum = Integer.parseInt(jTextField_DriftCorrGroupFrameNum.getText());
+        
+        
+        DisableRerend();
+        
+        try {
+            fa_QC_STORM_.StartRerend();  
+            
+            
+        } catch (Exception ex) {
+
+        }
         
         try {
             SavePropertyFile(GetParaFileSavePath());
         }catch (Exception ex) {
             
         }
+        
+        
+        
     }//GEN-LAST:event_jButton_RerendActionPerformed
 
     private void jButton_Start2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Start2ActionPerformed
@@ -997,6 +1066,24 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox_Stat_NyqResolutionVaryActionPerformed
 
+    private void jButton_LoadLocDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LoadLocDirActionPerformed
+        // TODO add your handling code here:
+                // TODO add your handling code here:
+        JFileChooser jf = new JFileChooser();  
+        jf.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);  
+        jf.showDialog(null,null);  
+        File fi = jf.getSelectedFile();  
+        
+        RerendLocDataPath = fi.getAbsolutePath();
+        
+        
+        
+        jTextField_LocDataPath.setText("");
+        jTextField_LocDataDir.setText(RerendLocDataPath);
+        
+        RerendMode = 1;
+    }//GEN-LAST:event_jButton_LoadLocDirActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1033,6 +1120,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_LoadLocData;
+    private javax.swing.JButton jButton_LoadLocDir;
     private javax.swing.JButton jButton_LoadParaFile;
     private javax.swing.JButton jButton_LoadResultPath;
     private javax.swing.JButton jButton_Rerend;
@@ -1078,7 +1166,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
@@ -1100,6 +1190,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField_DriftCorrGroupFrameNum;
     private javax.swing.JTextField jTextField_ImagePerGroup;
     private javax.swing.JTextField jTextField_Kadc;
+    private javax.swing.JTextField jTextField_LocDataDir;
     private javax.swing.JTextField jTextField_LocDataPath;
     private javax.swing.JTextField jTextField_MaxZDepth;
     private javax.swing.JTextField jTextField_MinZDepth;
@@ -1453,6 +1544,15 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         return Valid;
     }
 
+    public void EnableRerend()
+    {
+        jButton_Rerend.setEnabled(true);
+    }
+    
+    public void DisableRerend()
+    {
+        jButton_Rerend.setEnabled(false);
+    }
     
     public class MyListener implements WindowListener
     {

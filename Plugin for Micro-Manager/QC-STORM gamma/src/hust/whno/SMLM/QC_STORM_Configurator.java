@@ -1086,7 +1086,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
                 }
             });
 
-            jTextField_MaxLocDensity.setText("1.5");
+            jTextField_MaxLocDensity.setText("2");
             jTextField_MaxLocDensity.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jTextField_MaxLocDensityActionPerformed(evt);
@@ -1114,7 +1114,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
             });
 
             jComboBox_ZCorrPara.setMaximumRowCount(10);
-            jComboBox_ZCorrPara.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "PSF width", "SNR", "SNR - PSF width", "SN * (-PSF width)", "Fluo number" }));
+            jComboBox_ZCorrPara.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SNR", "PSF width", "SNR - PSF width", "SN * (-PSF width)", "Fluo number" }));
             jComboBox_ZCorrPara.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jComboBox_ZCorrParaActionPerformed(evt);
@@ -1622,7 +1622,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         SetFeedbackDevicePort();
 
         int SMMoveSteps = GetZMoveSteps();
-        SMMoveSteps=-SMMoveSteps;
+        SMMoveSteps = -SMMoveSteps;
 
         QC_STORM_Plug.lm_ZDepthSMMove(SMMoveSteps);  //SMMoveSteps
 
@@ -1762,7 +1762,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     private void jButton_NewSRImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NewSRImageActionPerformed
         studio_.data().notifyPipelineChanged();
         
-        QC_STORM_Plug.lm_SetMultiFOVAcqParameters(0.0f);
         
     }//GEN-LAST:event_jButton_NewSRImageActionPerformed
 
@@ -2093,8 +2092,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
     @Override
     public void cleanup() {
-        QC_STORM_Plug.lm_StopLocThread();
 
+        QC_STORM_Plug.lm_ReleaseLocResource();
     }
 
     @Override
@@ -2188,7 +2187,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     {
         GetLocalizationPara();
         
-
+        
         QC_STORM_Plug.lm_SetLocPara(LocPara.Kadc,LocPara.Offset,LocPara.QE,LocPara.RegionSize,LocPara.LocType, LocPara.MultiEmitterFitEn, LocPara.WLEEn, LocPara.ConsecutiveFitEn, LocPara.ConsecFilterRadius, LocPara.RawImgPixelSize, LocPara.RenderingPixelZoom,LocPara.SNR_th);
         
         QC_STORM_Plug.lm_SetLocPara3D(LocPara.MinZDepth, LocPara.MaxZDepth, LocPara.ZDepthCorrFactor, LocPara.p4_XGY, LocPara.p3_XGY, LocPara.p2_XGY, LocPara.p1_XGY, LocPara.p0_XGY, LocPara.p4_XLY, LocPara.p3_XLY, LocPara.p2_XLY, LocPara.p1_XLY, LocPara.p0_XLY);
@@ -2198,7 +2197,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         
         QC_STORM_Plug.lm_SetStatInfSelection(LocPara.StatDispSel, LocPara.SpatialResolutionEn);
         
-        
+
         //
         CMMCore mmc = studio_.getCMMCore();
         
@@ -2213,11 +2212,12 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         
         QC_STORM_Plug.lm_SetImagePara(ImageWidthI, ImageHighI, SRImageWidthI, SRImageHighI);
     
-        
+
         SetFeedbackEnable(0);
         SetFeedbackEnable(1);
         SetFeedbackEnable(2);
         
+
     }
     
     public int GetStasticalInfDispEn()
@@ -2356,14 +2356,19 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         jCheckBox_Stat_SpaResolutionEn.setSelected(Boolean.parseBoolean(pps.getProperty("SpaResolutionCalcEnable", Boolean.toString(false))));
 
         // feedbacks
-        jCheckBox_DensityManualTargetEn.setSelected(Boolean.parseBoolean(pps.getProperty("DensityManualTargetEn",Boolean.toString(true))));
         
         jTextField_MaxLocDensity.setText(pps.getProperty("MaxAcqDensity", Float.toString(1.5f)));
         jTextField_ManualDensity.setText(pps.getProperty("ManualDensityTarget", Float.toString(1.2f)));
         jTextField_DensityCtl_P.setText(pps.getProperty("Density_PID_P", Float.toString(10.0f)));
         jTextField_DensityCtl_I.setText(pps.getProperty("Density_PID_I", Float.toString(1.0f)));
 
+        
+        jCheckBox_DensityManualTargetEn.setSelected(Boolean.parseBoolean(pps.getProperty("DensityManualTargetEn",Boolean.toString(true))));
 
+        jCheckBox_TrackDensity.setSelected(Boolean.parseBoolean(pps.getProperty("DensityFeedbackEn",Boolean.toString(true))));
+        jCheckBox_TrackZPos.setSelected(Boolean.parseBoolean(pps.getProperty("ZDriftCorrEn",Boolean.toString(true))));
+        
+        
         jTextField_ZFocusMoveSteps.setText(pps.getProperty("ZMoveSteps", Integer.toString(3)));
         jTextField_ZDriftCorrFrameNum.setText(pps.getProperty("ZDriftCorrFrameNum", Integer.toString(500)));
 
@@ -2413,8 +2418,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
         pps.setProperty("LocType", Integer.toString(jComboBox_LocType.getSelectedIndex()));
                 
+        pps.setProperty("MultiEmitterFitEn", Boolean.toString(jCheckBox_Stat_MultiFitEn.isSelected()));
         
-        pps.setProperty("MultiEmitterFitEn", Boolean.toString(LocPara.MultiEmitterFitEn!=0));
         pps.setProperty("WLEEn", Boolean.toString(LocPara.WLEEn!=0));
         pps.setProperty("ConsecutiveFitEnable", Boolean.toString(LocPara.ConsecutiveFitEn!=0));
 
@@ -2471,14 +2476,19 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         pps.setProperty("SpaResolutionCalcEnable", Boolean.toString(jCheckBox_Stat_SpaResolutionEn.isSelected()));        
              
         // feedbacks
-        pps.setProperty("DensityManualTargetEn", Boolean.toString(jCheckBox_DensityManualTargetEn.isSelected()));
 
         pps.setProperty("MaxAcqDensity", jTextField_MaxLocDensity.getText());
         pps.setProperty("ManualDensityTarget", jTextField_ManualDensity.getText());
         pps.setProperty("Density_PID_P", jTextField_DensityCtl_P.getText());
         pps.setProperty("Density_PID_I", jTextField_DensityCtl_I.getText());
         
-     
+               
+        pps.setProperty("DensityManualTargetEn", Boolean.toString(jCheckBox_DensityManualTargetEn.isSelected()));
+        pps.setProperty("DensityFeedbackEn", Boolean.toString(jCheckBox_TrackDensity.isSelected()));
+        pps.setProperty("ZDriftCorrEn", Boolean.toString(jCheckBox_TrackZPos.isSelected()));
+
+
+        
         pps.setProperty("ZMoveSteps", jTextField_ZFocusMoveSteps.getText());
         pps.setProperty("ZDriftCorrFrameNum", jTextField_ZDriftCorrFrameNum.getText());
         
@@ -2761,6 +2771,13 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
      public boolean IsZDriftCorrActive()
     {
         return CurZDriftCorrActive;
-    }       
+    }
+     
+     void ResetFeedbackCtl()
+     {
+         SetFeedbackDevicePort();
+         
+         QC_STORM_Plug.lm_ResetFeedback();
+     }
       
 }

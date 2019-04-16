@@ -80,7 +80,7 @@ extern volatile bool IsLocRunning;
 extern volatile bool IsRendRunning;
 
 
-extern bool IsLocResourceAllocated;
+extern volatile bool IsLocResourceAllocated;
 
 extern float *h_RendFloatImage2D;
 

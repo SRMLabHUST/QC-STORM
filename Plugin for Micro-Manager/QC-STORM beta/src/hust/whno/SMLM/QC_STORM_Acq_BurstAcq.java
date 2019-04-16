@@ -255,15 +255,18 @@ public class QC_STORM_Acq_BurstAcq {
                     MyDatastore.setSavePath(ImageSavePath);
                 }
             }
+            
             catch (Exception ex) 
             {
                 gui.message("get BurstLiveAcqThread exception");
 			}
+            
             // finish
 			MyConfigurator.ResetBurstLiveBtn();
 
+            MyConfigurator.ResetFeedbackCtl();
             
-            QC_STORM_Plug.lm_ResetFeedback();
+            RawImagePlus.close();
 		}
     }
 }

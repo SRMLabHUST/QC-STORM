@@ -298,9 +298,6 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1FeedImageData
 JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1StartLocThread
 (JNIEnv *env, jclass obj)
 {
-#if DLL_CALL_DEBUG
-	printf("lm_StartLocThread called %d %d\n", OnlineLocAlive, IsLocRunning);
-#endif // DLL_CALL_DEBUG
 
 	if (OnlineLocAlive == false)
 	{
@@ -778,7 +775,10 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1ZDepthSMMove
 JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetActivationLaserPower
 (JNIEnv *env, jclass obj, jfloat PowerPercentage)
 {
+
 	ActivationLaserPowerSet(PowerPercentage);
+
+	Sleep(20);
 
 }
 
@@ -889,8 +889,11 @@ JNIEXPORT jfloatArray JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1LocBatched
 	jshort * elems = (jshort *)env->GetPrimitiveArrayCritical(jImgArry, &iscopy);
 	//	jshort * elems = (*env).GetShortArrayElements(jImgArry, NULL);
 
+
 	// only work at the first time
 	InitAllLocResource();
+
+
 
 
 	int BatchedImgSize = BatchedImgNum*LocPara_Global.ImageWidth*LocPara_Global.ImageHigh;
@@ -921,8 +924,8 @@ JNIEXPORT jfloatArray JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1LocBatched
 	float Mean_LocDensity2D = ZDriftCtl.FluoStatData_.MeanLocDensity2D;
 
 	// max is better
-	oInf[0] = -Mean_PSFWidth;
-	oInf[1] = Mean_SNR;
+	oInf[0] = Mean_SNR;
+	oInf[1] = -Mean_PSFWidth;
 
 	oInf[2] = Mean_SNR - Mean_PSFWidth;
 	oInf[3] = Mean_SNR *(-Mean_PSFWidth);
