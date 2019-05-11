@@ -367,6 +367,8 @@ public class QC_STORM_ implements PlugInFilter{
                 }
 
                 MyConfigurator.EnableRerend();
+                
+                JOptionPane.showMessageDialog(null, "rend finish", "rend finish!", JOptionPane.PLAIN_MESSAGE);
 
             } catch (Exception ex) {
                     

@@ -95,7 +95,7 @@ public class QC_STORM_ZDriftCorrection  extends Thread
             for(int mcnt = 0; mcnt < SMMoveNum; mcnt++)
             {
                 
-                float [] LocResults = SmallBatchImageAcq.GetLocResultsOfBatchedImageDat_Default();
+                float [] LocResults = SmallBatchImageAcq.GetLocResultsOfBatchedImageDat_Default(0);
 
 //                gui.message("QC_STORM_ZDriftCorrection:"+String.format("%f", LocResults[0]));
 
@@ -130,7 +130,7 @@ public class QC_STORM_ZDriftCorrection  extends Thread
     
     int FindArryMaxPos(float iArry[])
     {
-        int FindPos = 0;
+        int FindPos = iArry.length / 2;
 
         for (int cnt = 0; cnt < iArry.length; cnt++)
         {

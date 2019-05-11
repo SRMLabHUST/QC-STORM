@@ -98,7 +98,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         }
         
 
-        jTabbedPane1.remove(jPanel_ROMP);
+//        jTabbedPane1.remove(jPanel_ROMP);
         
     }
 
@@ -1068,14 +1068,25 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
     private void jButton_LoadLocDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LoadLocDirActionPerformed
         // TODO add your handling code here:
-                // TODO add your handling code here:
-        JFileChooser jf = new JFileChooser();  
+
+        String Path = jTextField_LocDataDir.getText();
+        
+        JFileChooser jf;
+        
+        if(Path.length()>5)
+        {
+            jf = new JFileChooser(Path);  
+        }else
+        {
+            jf = new JFileChooser();  
+        }
+        
+        
         jf.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);  
         jf.showDialog(null,null);  
         File fi = jf.getSelectedFile();  
         
         RerendLocDataPath = fi.getAbsolutePath();
-        
         
         
         jTextField_LocDataPath.setText("");

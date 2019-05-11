@@ -31,6 +31,7 @@ volatile bool IsLocRunning = false;
 volatile bool IsRendRunning = false;
 
 
+int DepthMapDispEn = 0;
 
 // image info
 

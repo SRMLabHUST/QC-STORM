@@ -89,6 +89,9 @@ extern volatile  bool IsRendRunning;
 extern volatile bool IsLocResourceAllocated;
 
 
+extern int DepthMapDispEn;
+
+
 // image info
 
 

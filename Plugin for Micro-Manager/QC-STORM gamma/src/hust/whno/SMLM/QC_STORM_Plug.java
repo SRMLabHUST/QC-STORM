@@ -49,7 +49,7 @@ public class QC_STORM_Plug implements ProcessorPlugin, SciJavaPlugin{
     public native static void lm_SetImagePara(int ImageWidth, int ImageHigh, int SRImageWidth, int SRImageHigh);
     public native static void lm_SetAcquisitionPara(char CreateTimeIdx[]);
     
-    public native static void lm_SetStatInfSelection(int DispSel, int SpatialResolutionEn);
+    public native static void lm_SetStatInfSelection(int DispSel, int SpatialResolutionEn, int DepthMapDispEn);
     
     // send image to be processed by GPU
     public native static void lm_FeedImageData(short ImgDataS[], int FrameNumI);
@@ -92,6 +92,7 @@ public class QC_STORM_Plug implements ProcessorPlugin, SciJavaPlugin{
     
     // for z drift control, independent localization of several images
     public native static float [] lm_LocBatchedImg(short ImgDataS[], int BatchedImgNum);
+    
     
     public static final int LocInfID_MeanSNR = 0;
     public static final int LocInfID_PSFWidth = 1;

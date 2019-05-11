@@ -162,6 +162,36 @@ struct CoreFittingPara
 };
 
 
+struct FitPosInf_TypeDef
+{
+
+	// single molecule fitting
+	int * h_SingleFitFluoNum;
+	int * d_SingleFitFluoNum; 
+	int * d_SingleFitFluoPos;
+
+
+	// two emitter fitting
+	int * h_MultiFitFluoNum_2E;
+	int * d_MultiFitFluoNum_2E;
+	int * d_MultiFitFluoPos_2E;
+
+	// three emitter fitting
+	int * h_MultiFitFluoNum_3E;
+	int * d_MultiFitFluoNum_3E;
+	int * d_MultiFitFluoPos_3E;
+
+	int * h_RejectedFluoNum;
+	int * d_RejectedFluoNum;
+
+
+	int *h_MultiFit_AddedFluoNum;
+	int *d_MultiFit_AddedFluoNum;
+
+};
+
+
+
 // estimage WLE para, contained in the ROI extraction
 class WLEParameterEstimation_TypeDef
 {
@@ -265,6 +295,8 @@ private:
 
 
 
+
+
 // both 2d and 3d localization data structure
 class LDLocData_TypeDef
 {
@@ -274,53 +306,37 @@ public:
 
 	float *d_WLEPara; // copy data from roi extraction
 
+
 	float * h_LocArry;
 	float * d_LocArry;
 
 
-	CoreFittingPara *h_FitPara;
-	CoreFittingPara *d_FitPara;
-
 	// valid number after localization
 	int oValidFluoNum;
 
+
 public:
 
-	// single molecule fitting
-	int * h_SingleFitFluoNum;
-	int * d_SingleFitFluoNum;
-	int * d_SingleFitFluoPos; // position id of molecules need to be fitted
+	// ratio of ROI to all detected ROIs, include molecules fitted by multi modality
+	float FitRatio_1E; // single molecule fitting ratio
+	float FitRatio_2E; // two emitter fitting ratio
+	float FitRatio_3E; // three emitter fitting ratio
 
-
-	// multi emitter fitting, two emitter fitting
-	int * h_MultiFitFluoNum_2E;
-	int * d_MultiFitFluoNum_2E;
-
-	int * d_MultiFitFluoPos_2E; // position id of molecules need to be fitted
-
-	// multi emitter fitting, three emitter fitting
-	int * h_MultiFitFluoNum_3E;
-	int * d_MultiFitFluoNum_3E;
-
-	int * d_MultiFitFluoPos_3E; // position id of molecules need to be fitted
-
-
-	int *h_MultiFit_AddedFluoNum;
-	int *d_MultiFit_AddedFluoNum;
-
-
-	float FitRatio_1E; // single molecule fit ratio
-	float FitRatio_2E; // two emitter fit ratio
-	float FitRatio_3E; // three emitter fit ratio
+	// ratio of ROI by last fitting modality to all detected ROIs
+	float FitRatio_Final_1E; // single molecule fitting ratio
+	float FitRatio_Final_2E; // two emitter fitting ratio
+	float FitRatio_Final_3E; // three emitter fitting ratio
+	float FitRatio_Final_4E; // four or more emitter fitting ratio
 
 private:
 
-	// localization filter
-	float *h_SNRSumUp;
-	int *h_ValidNum;
+	// for convinient parameter transimission
+	CoreFittingPara* h_FitPara;
+	CoreFittingPara* d_FitPara;
 
-	float *d_SNRSumUp;
-	int *d_ValidNum;
+	FitPosInf_TypeDef* h_FitPosInf;
+	FitPosInf_TypeDef* d_FitPosInf;
+
 
 
 public:
@@ -329,9 +345,17 @@ public:
 
 	void BFGS_MLELocalization(unsigned short * h_ImageROI, float *h_WLEPara, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
+private:
+
+	void CopyFittingPara(LocalizationPara & LocPara, cudaStream_t cstream);
+
+
+	void MoleculePreFitClasify(int ROISize, int MultiEmitterFitEn, int FluoNum, cudaStream_t cstream);
+
+	void ResetNumbers(cudaStream_t cstream);
 
 public:
-	// note the frame must be sorted by ZeroLocalizationsRemove
+	// note the frame must be sorted by ZeroLocalizationsRemove class
 	static int GetFirstFrame(float * h_LocArry, int FluoNum);
 	static int GetLastFrame(float * h_LocArry, int FluoNum);
 
@@ -339,15 +363,7 @@ public:
 	// two optional localization precision method, only suitable for 2d localization with symmetric Gaussian PSF
 	static void LocPrecCalc_GaussianCRLB(float* d_LocArry, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream);
 
-private:
-
-	void CopyFittingPara(LocalizationPara & LocPara, cudaStream_t cstream);
-
-	void MoleculePreFitClasify(int MultiEmitterFitEn, int FluoNum, cudaStream_t cstream);
-
 };
-
-
 
 
 

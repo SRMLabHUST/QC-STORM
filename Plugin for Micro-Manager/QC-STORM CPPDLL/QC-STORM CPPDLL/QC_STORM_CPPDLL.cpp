@@ -121,7 +121,7 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetLocPara
 	// image rendering
 	LocPara_Global.SNR_th = SNR_th;
 
-
+	LocPara_Global.ProcessingMode = ProcessMode_Online;
 }
 
 /*
@@ -210,10 +210,12 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetAcquisitionPar
 * Signature: (I)V
 */
 JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetStatInfSelection
-(JNIEnv *env, jclass obj, jint DispSel, jint SpatialResolutionEn)
+(JNIEnv *env, jclass obj, jint DispSel, jint SpatialResolutionEn, jint iDepthMapDispEn)
 {
 	StatInfDispSel = DispSel;
 	
+	DepthMapDispEn = iDepthMapDispEn;
+
 	LocPara_Global.SpatialResolutionCalcEn = SpatialResolutionEn;
 
 	RenderingState.MakeAProcess();
@@ -644,8 +646,6 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetFeedbackEnable
 
 
 
-
-
 /*
 * Class:     hust_whno_SMLM_QC_STORM_Plug
 * Method:    lm_ResetFeedback
@@ -762,7 +762,12 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1ZDepthSMMove
 	UARTCmdQueue.push(cmdString);
 	delete[]UARTBuf;
 	
-	Sleep(10);
+	int SleepTime = 2 * MoveSteps;
+
+	if (SleepTime < 5)SleepTime = 5;
+	if (SleepTime > 12)SleepTime = 12;
+
+	Sleep(SleepTime);
 
 }
 

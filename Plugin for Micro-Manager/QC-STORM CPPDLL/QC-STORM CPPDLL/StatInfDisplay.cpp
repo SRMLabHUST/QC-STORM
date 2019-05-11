@@ -134,6 +134,16 @@ void DispOntimeInf()
 	DisplayStatInf_SingleItem("Emission in 3 frames ", FluoStatData.h_OntimeRatio[2], OnTimeImage, XPos, YPos + 60);
 	DisplayStatInf_SingleItem("Emission in >3 frames", FluoStatData.h_OntimeRatio[3], OnTimeImage, XPos, YPos + 80);
 
+
+	//
+	auto FitPercentageImage = StatInfDisplay.InfDisp_Curve_FittingPercentage->GetAxisImage();
+
+	DisplayStatInf_SingleItem("1 emitter fit: ", LDLocData.FitRatio_Final_1E, FitPercentageImage, XPos, YPos + 0);
+	DisplayStatInf_SingleItem("2 emitter fit: ", LDLocData.FitRatio_Final_2E, FitPercentageImage, XPos, YPos + 20);
+	DisplayStatInf_SingleItem("3 emitter fit: ", LDLocData.FitRatio_Final_3E, FitPercentageImage, XPos, YPos + 40);
+	DisplayStatInf_SingleItem("Rejected:      ", LDLocData.FitRatio_Final_4E, FitPercentageImage, XPos, YPos + 60);
+
+
 }
 
 void DispStatInfOnFigure_All()
@@ -261,6 +271,9 @@ void DisplayStatInfImageBySelection(int DispSel)
 	StatInfDisplay.InfDisp_Curve_PSFWidth->UpdateDisplay(DispSel & (0x01 << 8));
 	StatInfDisplay.InfDisp_Curve_LocDensity2D->UpdateDisplay(DispSel & (0x01 << 9));
 	StatInfDisplay.InfDisp_Curve_Background->UpdateDisplay(DispSel & (0x01 << 10));
+
+
+	StatInfDisplay.InfDisp_Curve_FittingPercentage->UpdateDisplay(DispSel & (0x01 << 9));
 
 
 	StatInfDisplay.InfDisp_Curve_SpatialResolution->UpdateDisplay(DispSel & (0x01 << 11));

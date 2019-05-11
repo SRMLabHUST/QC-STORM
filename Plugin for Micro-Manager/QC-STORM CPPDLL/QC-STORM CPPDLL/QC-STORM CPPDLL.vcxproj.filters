@@ -33,6 +33,9 @@
     <Filter Include="CImageDisplay">
       <UniqueIdentifier>{37d07450-0a33-4015-b51e-d629e7c83493}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DepthMapDisplay">
+      <UniqueIdentifier>{4e46917f-9b43-490a-83b5-61596735a2f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -98,6 +101,15 @@
     <ClInclude Include="SuperResolutionImageDisplay.h">
       <Filter>Online Display</Filter>
     </ClInclude>
+    <ClInclude Include="DepthMapDisplay\BFGSOptimizer.h">
+      <Filter>DepthMapDisplay</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthMapDisplay\CurveFitting.h">
+      <Filter>DepthMapDisplay</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthMapDisplay\DepthMapCalc.h">
+      <Filter>DepthMapDisplay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -135,6 +147,12 @@
     </ClCompile>
     <ClCompile Include="SuperResolutionImageDisplay.cpp">
       <Filter>Online Display</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthMapDisplay\CurveFitting.cpp">
+      <Filter>DepthMapDisplay</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthMapDisplay\DepthMapCalc.cpp">
+      <Filter>DepthMapDisplay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

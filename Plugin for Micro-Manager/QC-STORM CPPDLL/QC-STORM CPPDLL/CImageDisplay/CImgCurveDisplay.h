@@ -292,6 +292,7 @@ private:
 			if (chn == 1)CurCurveColor = CImg_Blue;
 			if (chn == 2)CurCurveColor = CImg_Orange;
 			if (chn == 3)CurCurveColor = CImg_White;
+			if (chn == 4)CurCurveColor = CImg_Red;
 
 
 			if (DatLen > 0)

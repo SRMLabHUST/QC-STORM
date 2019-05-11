@@ -57,10 +57,10 @@ public class QC_STORM_SmallBatchImageAcq {
 
     public int GetBatchedImgNum()
     {
-        int BatchedImgNum = 2048 * 2048 / ImageWidth / ImageHigh;
+        int BatchedImgNum = 2000 * 2048 / ImageWidth / ImageHigh;
 
-        BatchedImgNum = Math.max(BatchedImgNum, 4);
-        BatchedImgNum = Math.min(BatchedImgNum, 12);
+        BatchedImgNum = Math.max(BatchedImgNum, 2);
+        BatchedImgNum = Math.min(BatchedImgNum, 10);
 
         return BatchedImgNum;
     }
@@ -119,9 +119,11 @@ public class QC_STORM_SmallBatchImageAcq {
         return GetBatchedImgDat(BatchedImgNum);
     }
     
-    public float [] GetLocResultsOfBatchedImageDat_Default()
+    public float [] GetLocResultsOfBatchedImageDat_Default(int ImageNumOffset)
     {
-        int BatchedImgNum = GetBatchedImgNum();
+        if(ImageNumOffset<0)ImageNumOffset=0;
+        
+        int BatchedImgNum = GetBatchedImgNum() + ImageNumOffset;
         
         short [] BatchedImgDat = GetBatchedImgDat(BatchedImgNum);
         

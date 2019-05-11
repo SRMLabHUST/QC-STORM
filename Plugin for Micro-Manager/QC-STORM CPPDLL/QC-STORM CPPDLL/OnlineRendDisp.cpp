@@ -178,29 +178,4 @@ void ConvertBMPToCImg(unsigned char*poImgData, unsigned char*piImgData, int Imag
 }
 
 
-void ConvertCImgToImageJ(unsigned char*poImgData, unsigned char*piImgData, int ImageWidth, int ImageHigh)
-{
-	// convert it to bmp raw data for ImageJ
-	// format is {B,G,R,0XFF} for each pixel
-
-	int PixelNum = ImageWidth*ImageHigh;
-	int rOffsetr = 0;
-	int rOffsetg = ImageWidth*ImageHigh;
-	int rOffsetb = ImageWidth*ImageHigh * 2;
-
-	int cnt = 0;
-	int cpos = 0;
-	memset(poImgData, 0xff, ImageWidth*ImageHigh * 4);
-
-	for (cnt = 0; cnt < PixelNum; cnt++)
-	{
-		cpos = cnt * 4;
-
-		poImgData[cpos + 0] = piImgData[rOffsetb + cnt]; // b
-		poImgData[cpos + 1] = piImgData[rOffsetg + cnt]; // g
-		poImgData[cpos + 2] = piImgData[rOffsetr + cnt]; // r
-		//		poImgData[cpos + 3] = 0xff; // alpha
-	}
-}
-
 

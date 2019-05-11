@@ -70,10 +70,14 @@ public class QC_STORM_Acq_MultiROI {
         {
 
             try {
-                int ROINum_X=MyConfigurator.MultiROINum_X;
-                int ROINum_Y=MyConfigurator.MultiROINum_Y;
-                int ROISteps_X=MyConfigurator.ROIMoveSteps_X;
-                int ROISteps_Y=MyConfigurator.ROIMoveSteps_Y;   
+                int ROINum_X   = MyConfigurator.GetMultiAcq_ROINum_X();
+                int ROINum_Y   = MyConfigurator.GetMultiAcq_ROINum_Y();
+                
+                int ROISteps_X = MyConfigurator.GetMultiAcq_StepsNum_X();
+                int ROISteps_Y = MyConfigurator.GetMultiAcq_StepsNum_Y();
+                
+                int X_id = 0;
+                int Y_id = 0;
                 
                 gui.message("into MultiROIAcqThread");
 
@@ -81,22 +85,32 @@ public class QC_STORM_Acq_MultiROI {
                 {
                     if(!MyConfigurator.IsMultiROIAcqActive())break;
                     
+                    ROINum_Y   = MyConfigurator.GetMultiAcq_ROINum_Y();
+                    
+                    Y_id = ycnt;
+
+                    
                     for(int xcnt = 0; xcnt < ROINum_X; xcnt++)
                     {
                         if(!MyConfigurator.IsMultiROIAcqActive())break;
-                       
+                        
+                        X_id = xcnt;
+                        if(ycnt%2 != 0){
+                            X_id = ROINum_X - xcnt;
+                        }
+                        
                         
                         // if this is selected, don't perform acquisition initialization
                         if(!MyConfigurator.IsNoAcqIni())
                         {
                             // initial before acquisition
-                            NewAcqInitial acqInitial = new NewAcqInitial(xcnt, ycnt);
+                            NewAcqInitial acqInitial = new NewAcqInitial();
                             acqInitial.start();
                             acqInitial.join();
                         }
                         // start acquisition
                         
-                        String NamePostFix = String.format("_Y%d_X%d", ycnt, xcnt);
+                        String NamePostFix = String.format("_Y%d_X%d", X_id, Y_id);
                         
                         MyConfigurator.CurBurstLiveActive = true;
                         
@@ -109,22 +123,35 @@ public class QC_STORM_Acq_MultiROI {
                         // move ROI first and then save raw images to save time, such as wait density down
                         if(xcnt < ROINum_X-1)
                         {
+                            // s shape move
                             // x move a ROI
-                            QC_STORM_Plug.lm_TranslationStageMove(ROISteps_X, 0, 0);   
+                            if(ycnt%2 == 0)
+                            {
+                                QC_STORM_Plug.lm_TranslationStageMove(ROISteps_X, 0, 0);   
+                            }
+                            else
+                            {
+                                QC_STORM_Plug.lm_TranslationStageMove(-ROISteps_X, 0, 0);   
+                            }
                         }     
-
                     }
                     if(ycnt < ROINum_Y-1)
                     {
                         // move to new line
-                        // x return to the front
-                        QC_STORM_Plug.lm_TranslationStageMove(-ROISteps_X*(ROINum_X-1), 0, 0);
-
-                        // y move a ROI
                         QC_STORM_Plug.lm_TranslationStageMove(0, ROISteps_Y, 0);       
                     }
+                }
+                
+                if(MyConfigurator.IsStageReturn())
+                {
+                    QC_STORM_Plug.lm_TranslationStageMove(0, -ROISteps_Y*(ROINum_Y - 1), 0);
                     
-                }  
+                    if(ROINum_Y%2 != 0)
+                    {
+                        QC_STORM_Plug.lm_TranslationStageMove(-ROISteps_X*(ROINum_X - 1), 0, 0);
+                    }
+                }
+                
             } catch (Exception ex) {
                 gui.message("get exception");
             }
@@ -135,13 +162,7 @@ public class QC_STORM_Acq_MultiROI {
     
     public class NewAcqInitial extends Thread
     {
-        int CurX = 0;
-        int CurY = 0;
-        NewAcqInitial(int ix, int iy)
-        {
-            CurX = ix;
-            CurY = iy;
-        }
+
     
         @Override
         public void run()
@@ -150,26 +171,29 @@ public class QC_STORM_Acq_MultiROI {
 
             QC_STORM_ZDriftCorrection ZDriftCorrThread;
 
+            int WaitTime = MyConfigurator.GetMultiAcqWaitTime();
             
             try {
                     QC_STORM_Plug.lm_ResetFeedback();
+
                     
-                    // move to a new line
-                    if((CurX == 0) && (CurY > 0))
-                    {
-                        // correct z drift befor acquistion
-                        ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 8, 2, 1);
-                        ZDriftCorrThread.start();
-                        ZDriftCorrThread.join();
-                    }
                     
                     // make sure z drift is corrected and the density is ok  
                     // correct z drift befor acquistion
-                    ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 4, 2, 1);
+                    ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 6, 2, 1);
                     ZDriftCorrThread.start();
                     ZDriftCorrThread.join();
                     
-                    ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 3, 2, 1);
+                    if(WaitTime > 0)
+                    {
+                        Thread.currentThread().sleep(WaitTime);
+                        
+                        ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 6, 1, 1);
+                        ZDriftCorrThread.start();
+                        ZDriftCorrThread.join();                        
+                    }
+                    
+                    ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 3, 1, 1);
                     ZDriftCorrThread.start();
                     ZDriftCorrThread.join();
                     
@@ -181,7 +205,7 @@ public class QC_STORM_Acq_MultiROI {
                     float LocDensityTarget = MyConfigurator.GetLocDensityTarget();
 
                     
-                    /*
+                    
                     float CurDensity = ZDriftCorrThread.GetCurrentDensity();
                     float MaxTolerableDensity = MyConfigurator.GetMaxTolerableLocDensity();
                     
@@ -191,16 +215,20 @@ public class QC_STORM_Acq_MultiROI {
                         WaitLocDensityDown WaitLocDensityThread = new WaitLocDensityDown(true, MaxTolerableDensity);
                         WaitLocDensityThread.start();
                         WaitLocDensityThread.join();
-                    }*/
+                    }
+                    else
+                    {
+                        SetOptimalActivationDensity ActivationDensityIni = new SetOptimalActivationDensity(LocDensityTarget);
 
-                    SetOptimalActivationDensity ActivationDensityIni = new SetOptimalActivationDensity(LocDensityTarget);
+                        ActivationDensityIni.start();
+                        ActivationDensityIni.join();
 
-                    ActivationDensityIni.start();
-                    ActivationDensityIni.join();
-                    
-                    ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 1, 2, 1);
-                    ZDriftCorrThread.start();
-                    ZDriftCorrThread.join();
+                        ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 1, 1, 1);
+                        ZDriftCorrThread.start();
+                        ZDriftCorrThread.join();                        
+                    }
+
+
 
                 } catch (InterruptedException ex) {              
             }
@@ -234,7 +262,7 @@ public class QC_STORM_Acq_MultiROI {
                     
                     // get localization density
 
-                    float [] LocResults = SmallBatchImageAcq.GetLocResultsOfBatchedImageDat_Default();
+                    float [] LocResults = SmallBatchImageAcq.GetLocResultsOfBatchedImageDat_Default(4);
                     
                     float CurLocDensity = LocResults[QC_STORM_Plug.LocInfID_LocDensity];
                     
@@ -263,7 +291,9 @@ public class QC_STORM_Acq_MultiROI {
         float LocDensityTarget = 0.0f;
         
         float PowerFullRange = 100.0f;
-        final int SearchSteps = 8;
+        
+        final int SearchSteps = 12;
+        
         
         SetOptimalActivationDensity(float iLocDensityTarget)
         {
@@ -276,6 +306,8 @@ public class QC_STORM_Acq_MultiROI {
         {
             QC_STORM_SmallBatchImageAcq SmallBatchImageAcq = new QC_STORM_SmallBatchImageAcq(studio_, MyConfigurator);
             
+            float [] DensityVary = new float [SearchSteps];
+            
             for(int cnt = 0; cnt <= SearchSteps; cnt++)
             {
                 float PowerPercentage = cnt*PowerFullRange/SearchSteps;
@@ -284,13 +316,26 @@ public class QC_STORM_Acq_MultiROI {
                 
                 // get localization density
 
-                float [] LocResults = SmallBatchImageAcq.GetLocResultsOfBatchedImageDat_Default();
+                float [] LocResults = SmallBatchImageAcq.GetLocResultsOfBatchedImageDat_Default(4);
 
                 float CurLocDensity = LocResults[QC_STORM_Plug.LocInfID_LocDensity];
                 
-                if(CurLocDensity >= LocDensityTarget - 0.05f)
+                DensityVary[cnt] = CurLocDensity;
+                
+                if(CurLocDensity >= LocDensityTarget - 0.02f)
                 {
                     break;
+                }
+                
+                if(cnt >= 2)
+                {
+                    // density is decrease: density is already too high
+                    if((DensityVary[cnt] < DensityVary[cnt-1]) && (DensityVary[cnt-1] < DensityVary[cnt-2]))
+                    {
+                        PowerPercentage = (cnt-2)*PowerFullRange/SearchSteps;
+                        QC_STORM_Plug.lm_SetActivationLaserPower(PowerPercentage);
+                        break;
+                    }
                 }
                 
             }

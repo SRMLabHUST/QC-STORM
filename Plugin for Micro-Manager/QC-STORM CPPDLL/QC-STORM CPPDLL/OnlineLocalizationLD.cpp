@@ -20,7 +20,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "OnlineFeedback_rc.h"
 
+#include "DepthMapCalc.h"
 
+
+#define DEPTH_MAP_DISP_EN		1
+
+#if(DEPTH_MAP_DISP_EN)
+
+CImgDisplay DepthMap_Display;
+
+#endif
 
 
 #include <io.h>  
@@ -77,6 +86,14 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 		RecFluoNumTh = max(RecFluoNumTh, 4096);
 		RecFluoNumTh = RecFluoNumTh / 32 * 32;
 	}
+
+
+	if (DepthMapDispEn)
+	{
+		RecFluoNumTh = 2048;
+	}
+
+
 
 	CString MultiFitStr;
 	if (LocPara_Global.MultiEmitterFitEn) MultiFitStr = L"_M";
@@ -146,6 +163,11 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 	SpatialResolutionCalc.ResetData();
 	SpatialResolutionCalc.SetStructureSize(LocPara_Global.StrucuteSize_2D);
+
+
+	StatInfDisplay.InfDisp_Curve_FittingPercentage->ClearAllData(0);
+	StatInfDisplay.InfDisp_Curve_FittingPercentage->ClearAllData(1);
+	StatInfDisplay.InfDisp_Curve_FittingPercentage->ClearAllData(2);
 
 
 	RenderingState.MakeAProcess(); // display window
@@ -227,8 +249,13 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 			LocTime += (clock() - time1);
 			
-
 			TotalFluoNum += LDLocData.oValidFluoNum;
+
+
+			StatInfDisplay.InfDisp_Curve_FittingPercentage->AddAData(LDLocData.FitRatio_Final_1E, 0, 0);
+			StatInfDisplay.InfDisp_Curve_FittingPercentage->AddAData(LDLocData.FitRatio_Final_2E, 0, 1);
+			StatInfDisplay.InfDisp_Curve_FittingPercentage->AddAData(LDLocData.FitRatio_Final_3E, 0, 2);
+
 
 
 			// remove invalid molecules and sort frame, frame is disordered by LDROIExtractData and LDLocData
@@ -237,6 +264,35 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			// write localization data into file
 			WriteLocArry = ZeroLocRemovel.h_LocArry;
 			WriteLocNum = ZeroLocRemovel.ValidFluoNum;
+
+
+#if(DEPTH_MAP_DISP_EN)
+			if (DepthMapDispEn)
+			{
+				DepthMapCalc_TypeDef *DepthMapCalc = new DepthMapCalc_TypeDef(LocPara_Global.ImageWidth, LocPara_Global.ImageHigh);
+
+				DepthMapCalc->FitZPlane(WriteLocArry, WriteLocNum);
+
+				CImg<unsigned char> *DepthMapImage = new CImg<unsigned char>(DepthMapCalc->DepthMap_ImageWidth, DepthMapCalc->DepthMap_ImageHigh, 1, 3, 0);
+
+				unsigned char *pImage = DepthMapImage->data();
+
+				ConvertRGBToCImg(pImage, DepthMapCalc->DepthMap, DepthMapCalc->DepthMap_ImageWidth, DepthMapCalc->DepthMap_ImageHigh);
+
+
+				DepthMap_Display.resize().display(*DepthMapImage);
+				DepthMap_Display.set_title("depth map");
+				if (DepthMap_Display.is_closed())
+				{
+					DepthMap_Display.show();
+				}
+
+				delete DepthMapCalc;
+				delete DepthMapImage;
+
+			}				
+
+#endif
 
 
 			time1 = clock();

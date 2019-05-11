@@ -64,12 +64,6 @@ public:
 
 //		printf("mean psf:%f %f\n", FluoStatData_.h_MeanPSFWidth, FluoStatData_.h_MeanPSFWidth_ctl);
 
-
-
-
-
-
-
 		return FluoNum;
 	}
 

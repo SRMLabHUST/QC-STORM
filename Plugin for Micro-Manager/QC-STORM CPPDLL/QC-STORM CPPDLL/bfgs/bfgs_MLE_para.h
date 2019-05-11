@@ -111,11 +111,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 RenderingMode 0 : peak photon as weight for each molecule, rendered by localization precision calculated by CRLB
 RenderingMode 1 : 1 as weight for each molecule, rendered by localization precision calculated by CRLB
 RenderingMode 2 : 1 as weight for each molecule, rendered by fixed localization precision
+RenderingMode 3 : peak photon as weight for each molecule, only render one pixel in the center
 */
 
 #define RenderingMode_FittedPhoton_CalculatedLocPrec		0
 #define RenderingMode_1Photon_CalculatedLocPrec				1
 #define RenderingMode_1Photon_FixedLocPrec					2
+#define RenderingMode_FittedPhoton_1Pixel					3
 
 
 // regular RGB image

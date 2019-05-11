@@ -503,7 +503,7 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetRerendImagePara
 	jboolean IsCopy = true;
 	jchar * elems = (*env).GetCharArrayElements(DataPath, &IsCopy);
 
-	wchar_t *NameBuf = new wchar_t[200];
+	wchar_t *NameBuf = new wchar_t[1024];
 	memcpy(NameBuf, elems, 2 * len);
 	NameBuf[len + 0] = 0;
 	NameBuf[len + 1] = 0;

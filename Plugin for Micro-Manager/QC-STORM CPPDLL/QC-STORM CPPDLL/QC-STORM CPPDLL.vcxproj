@@ -80,7 +80,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>C:\Program Files\Micro-Manager-2.0beta</OutDir>
-    <IncludePath>C:\Program Files\Java\jdk1.6.0_45\include;C:\Program Files\Java\jdk1.6.0_45\include\win32;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\include;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\intel tbb\include;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\intel tbb\include\tbb;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\bfgs;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\CImg;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\CImageDisplay;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\Cross-platform Serial Port library;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files\Java\jdk1.6.0_45\include;C:\Program Files\Java\jdk1.6.0_45\include\win32;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\include;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\intel tbb\include;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\intel tbb\include\tbb;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\bfgs;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\CImg;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\CImageDisplay;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\Cross-platform Serial Port library;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\DepthMapDisplay;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\lib\x64;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\bfgs;G:\0codes\c++ plus java\QC-STORM CPPDLL\QC-STORM CPPDLL\intel tbb\lib\intel64_win\vc14;$(LibraryPath)</LibraryPath>
     <TargetName>QC-STORM CPPDLL</TargetName>
   </PropertyGroup>
@@ -157,6 +157,9 @@
     <ClInclude Include="CImg\CImg.h" />
     <ClInclude Include="Cross-platform Serial Port library\MySerial.h" />
     <ClInclude Include="Cross-platform Serial Port library\serial\serial.h" />
+    <ClInclude Include="DepthMapDisplay\BFGSOptimizer.h" />
+    <ClInclude Include="DepthMapDisplay\CurveFitting.h" />
+    <ClInclude Include="DepthMapDisplay\DepthMapCalc.h" />
     <ClInclude Include="LocResource_ZDriftMeasure.h" />
     <ClInclude Include="OnlineFeedback_rc.h" />
     <ClInclude Include="OnlineFeedback.h" />
@@ -172,6 +175,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cross-platform Serial Port library\MySerial.cpp" />
+    <ClCompile Include="DepthMapDisplay\CurveFitting.cpp" />
+    <ClCompile Include="DepthMapDisplay\DepthMapCalc.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>

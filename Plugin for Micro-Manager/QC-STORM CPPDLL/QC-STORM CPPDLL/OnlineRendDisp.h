@@ -34,6 +34,5 @@ void RendSaveImage();
 
 void ConvertBMPToCImg(unsigned char*poImgData, unsigned char*piImgData, int ImageWidth, int ImageHigh);
 
-void ConvertCImgToImageJ(unsigned char*poImgData, unsigned char*piImgData, int ImageWidth, int ImageHigh);
 
 
