@@ -49,6 +49,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     public DevicePortInf CtlBoxUART;
     public DevicePortInf TRStageUART;
 
+    public int LaserPowerPercentage = 0;
+    
     final String LocParafileName = "QC_STORM\\QC_STORM_MM_para.properties";
 
     volatile public String ResultsFilePath = "D:\\";
@@ -87,7 +89,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
            
         }
         
-//        jTabbedPane1.remove(jPanel_ROMP);
+        jTabbedPane1.remove(jPanel_ROMP);
 
     }
     void AllocateResources()
@@ -230,6 +232,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         jButton_DensityReset = new javax.swing.JButton();
         jComboBox_ZCorrPara = new javax.swing.JComboBox();
         jLabel47 = new javax.swing.JLabel();
+        jTextField_AcLaserPower = new javax.swing.JTextField();
+        jButton_DensityReset1 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
@@ -1133,9 +1137,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
             jLabel39.setText("Max tolerable density:");
 
-            jLabel46.setText("Test :");
+            jLabel46.setText("LaserPower (%):");
 
-            jButton_DnsitySet.setText("Max");
+            jButton_DnsitySet.setText("Inc");
             jButton_DnsitySet.setActionCommand("");
             jButton_DnsitySet.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1143,7 +1147,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
                 }
             });
 
-            jButton_DensityReset.setText("Min");
+            jButton_DensityReset.setText("Dec");
             jButton_DensityReset.setActionCommand("");
             jButton_DensityReset.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1161,6 +1165,21 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
             jLabel47.setText("Correction para:");
 
+            jTextField_AcLaserPower.setText("0");
+            jTextField_AcLaserPower.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jTextField_AcLaserPowerActionPerformed(evt);
+                }
+            });
+
+            jButton_DensityReset1.setText("Reset");
+            jButton_DensityReset1.setActionCommand("");
+            jButton_DensityReset1.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton_DensityReset1ActionPerformed(evt);
+                }
+            });
+
             javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
             jPanel5.setLayout(jPanel5Layout);
             jPanel5Layout.setHorizontalGroup(
@@ -1177,9 +1196,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
                                         .addComponent(jTextField_ZDriftCorrFrameNum, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jComboBox_ZCorrPara, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGroup(jPanel5Layout.createSequentialGroup()
-                                    .addGap(21, 21, 21)
-                                    .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel5Layout.createSequentialGroup()
                                     .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
                                     .addComponent(jComboBox_CtlBoxUART, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1194,15 +1210,13 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
                                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jCheckBox_DensityManualTargetEn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                                        .addComponent(jLabel39, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel46, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jLabel39, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel5Layout.createSequentialGroup()
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                 .addComponent(jTextField_MaxLocDensity, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-                                                .addComponent(jTextField_ManualDensity, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-                                                .addComponent(jButton_DnsitySet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                                .addComponent(jTextField_ManualDensity, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                                             .addGap(10, 10, 10)
                                             .addComponent(jTextField_DensityCtl_P, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -1212,28 +1226,39 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
                                         .addComponent(jLabel36, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
                                     .addGap(30, 30, 30)
                                     .addComponent(jTextField_ZFocusMoveSteps, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jCheckBox_TrackZPos, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jCheckBox_TrackZPos, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel5Layout.createSequentialGroup()
+                                    .addComponent(jLabel46, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jTextField_AcLaserPower, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(23, 23, 23)
+                                    .addComponent(jButton_DnsitySet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGap(18, 18, 18)
                             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel5Layout.createSequentialGroup()
-                                    .addGap(18, 18, 18)
                                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel5Layout.createSequentialGroup()
                                             .addComponent(jButton_ZAdjN, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(jButton_ZAdjP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addComponent(jLabel35, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jLabel35, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(jPanel5Layout.createSequentialGroup()
+                                            .addComponent(jButton_DensityReset)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jButton_DensityReset1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGap(7, 7, 7)))
                                     .addGap(275, 275, 275))
                                 .addGroup(jPanel5Layout.createSequentialGroup()
-                                    .addGap(18, 18, 18)
-                                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jButton_DensityReset, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-                                        .addComponent(jTextField_DensityCtl_I))
+                                    .addComponent(jTextField_DensityCtl_I, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(0, 0, Short.MAX_VALUE))))
                         .addGroup(jPanel5Layout.createSequentialGroup()
                             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jCheckBox_TrackDensity))
-                            .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGroup(jPanel5Layout.createSequentialGroup()
+                                    .addComponent(jCheckBox_TrackDensity)
+                                    .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(jSeparator3)
+                                .addComponent(jSeparator2))
+                            .addGap(282, 282, 282))))
             );
             jPanel5Layout.setVerticalGroup(
                 jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1263,13 +1288,15 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
                             .addComponent(jTextField_DensityCtl_P, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField_DensityCtl_I, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel46, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton_DnsitySet, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton_DensityReset, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel46, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField_AcLaserPower, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton_DnsitySet, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton_DensityReset, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton_DensityReset1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                     .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jCheckBox_TrackZPos))
@@ -1923,12 +1950,24 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
     private void jButton_DnsitySetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DnsitySetActionPerformed
         // TODO add your handling code here:
-        QC_STORM_Plug.lm_SetActivationLaserPower(100.0f);
+        
+        LaserPowerPercentage += 5;
+        
+        if(LaserPowerPercentage<0)LaserPowerPercentage=0;
+        if(LaserPowerPercentage>100)LaserPowerPercentage=100;
+        
+        QC_STORM_Plug.lm_SetActivationLaserPower(LaserPowerPercentage);
+        
     }//GEN-LAST:event_jButton_DnsitySetActionPerformed
 
     private void jButton_DensityResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DensityResetActionPerformed
         // TODO add your handling code here:
-        QC_STORM_Plug.lm_SetActivationLaserPower(0.0f);
+        LaserPowerPercentage -= 1;
+        
+        if(LaserPowerPercentage<0)LaserPowerPercentage=0;
+        if(LaserPowerPercentage>100)LaserPowerPercentage=100;
+        
+        QC_STORM_Plug.lm_SetActivationLaserPower(LaserPowerPercentage); 
     }//GEN-LAST:event_jButton_DensityResetActionPerformed
 
     private void jTextField_StructureSize2DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_StructureSize2DActionPerformed
@@ -1969,6 +2008,16 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         
     }//GEN-LAST:event_jCheckBox_Stat_DepthMapDispActionPerformed
 
+    private void jTextField_AcLaserPowerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_AcLaserPowerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField_AcLaserPowerActionPerformed
+
+    private void jButton_DensityReset1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DensityReset1ActionPerformed
+        // TODO add your handling code here:
+        LaserPowerPercentage = 0;
+        QC_STORM_Plug.lm_SetActivationLaserPower(LaserPowerPercentage);
+    }//GEN-LAST:event_jButton_DensityReset1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2007,6 +2056,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     private javax.swing.JButton jButton_3DCalibAcq;
     private javax.swing.JButton jButton_BurstLive;
     private javax.swing.JButton jButton_DensityReset;
+    private javax.swing.JButton jButton_DensityReset1;
     private javax.swing.JButton jButton_DnsitySet;
     private javax.swing.JButton jButton_LoadParaFile;
     private javax.swing.JButton jButton_LoadResultPath;
@@ -2111,6 +2161,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField_3DCalibPlaneNum_H;
+    private javax.swing.JTextField jTextField_AcLaserPower;
     private javax.swing.JTextField jTextField_BufferedImgNum;
     private javax.swing.JTextField jTextField_BurstCapturedNum;
     private javax.swing.JTextField jTextField_BurstFrameNum;

@@ -1254,10 +1254,6 @@
                                       </Group>
                                   </Group>
                                   <Group type="102" attributes="0">
-                                      <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
-                                      <Component id="jSeparator3" min="-2" pref="372" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
                                       <Component id="jLabel20" min="-2" pref="90" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="jComboBox_CtlBoxUART" min="-2" pref="74" max="-2" attributes="0"/>
@@ -1276,7 +1272,6 @@
                                           <Component id="jLabel32" alignment="0" max="32767" attributes="0"/>
                                           <Component id="jCheckBox_DensityManualTargetEn" alignment="0" pref="181" max="32767" attributes="0"/>
                                           <Component id="jLabel39" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="jLabel46" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" attributes="0">
@@ -1284,7 +1279,6 @@
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Component id="jTextField_MaxLocDensity" alignment="0" pref="74" max="32767" attributes="0"/>
                                                   <Component id="jTextField_ManualDensity" alignment="0" pref="74" max="32767" attributes="0"/>
-                                                  <Component id="jButton_DnsitySet" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <Group type="102" alignment="1" attributes="0">
@@ -1302,10 +1296,17 @@
                                       <Component id="jTextField_ZFocusMoveSteps" min="-2" pref="74" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jCheckBox_TrackZPos" min="-2" pref="144" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel46" min="-2" pref="107" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="jTextField_AcLaserPower" min="-2" pref="74" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                                      <Component id="jButton_DnsitySet" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" attributes="0">
                                               <Component id="jButton_ZAdjN" min="-2" pref="56" max="-2" attributes="0"/>
@@ -1313,25 +1314,31 @@
                                               <Component id="jButton_ZAdjP" max="32767" attributes="0"/>
                                           </Group>
                                           <Component id="jLabel35" max="32767" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="jButton_DensityReset" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="jButton_DensityReset1" max="32767" attributes="0"/>
+                                              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
                                       <EmptySpace min="-2" pref="275" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="jButton_DensityReset" pref="74" max="32767" attributes="0"/>
-                                          <Component id="jTextField_DensityCtl_I" max="32767" attributes="0"/>
-                                      </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jTextField_DensityCtl_I" min="-2" pref="74" max="-2" attributes="0"/>
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jSeparator2" alignment="0" min="-2" pref="393" max="-2" attributes="0"/>
-                                  <Component id="jCheckBox_TrackDensity" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jCheckBox_TrackDensity" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="jSeparator3" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jSeparator2" alignment="0" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="282" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -1370,14 +1377,16 @@
                           </Group>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel46" alignment="1" min="-2" pref="21" max="-2" attributes="0"/>
-                          <Component id="jButton_DnsitySet" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
-                          <Component id="jButton_DensityReset" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel46" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                          <Component id="jTextField_AcLaserPower" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButton_DnsitySet" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                          <Component id="jButton_DensityReset" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                          <Component id="jButton_DensityReset1" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace pref="10" max="32767" attributes="0"/>
                       <Component id="jSeparator3" min="-2" pref="10" max="-2" attributes="0"/>
-                      <EmptySpace pref="9" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel35" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
                           <Component id="jCheckBox_TrackZPos" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -1583,12 +1592,12 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel46">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Test :"/>
+                <Property name="text" type="java.lang.String" value="LaserPower (%):"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="jButton_DnsitySet">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Max"/>
+                <Property name="text" type="java.lang.String" value="Inc"/>
                 <Property name="actionCommand" type="java.lang.String" value=""/>
               </Properties>
               <Events>
@@ -1597,7 +1606,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButton_DensityReset">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Min"/>
+                <Property name="text" type="java.lang.String" value="Dec"/>
                 <Property name="actionCommand" type="java.lang.String" value=""/>
               </Properties>
               <Events>
@@ -1625,6 +1634,23 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Correction para:"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jTextField_AcLaserPower">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="0"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField_AcLaserPowerActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton_DensityReset1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Reset"/>
+                <Property name="actionCommand" type="java.lang.String" value=""/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_DensityReset1ActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

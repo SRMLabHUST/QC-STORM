@@ -292,8 +292,8 @@ public class QC_STORM_Acq_MultiROI {
         
         float PowerFullRange = 100.0f;
         
-        final int SearchSteps = 12;
-        
+        final int SearchSteps = 10;
+
         
         SetOptimalActivationDensity(float iLocDensityTarget)
         {
@@ -306,11 +306,12 @@ public class QC_STORM_Acq_MultiROI {
         {
             QC_STORM_SmallBatchImageAcq SmallBatchImageAcq = new QC_STORM_SmallBatchImageAcq(studio_, MyConfigurator);
             
-            float [] DensityVary = new float [SearchSteps];
+            
+            int FoundPos = 0;
             
             for(int cnt = 0; cnt <= SearchSteps; cnt++)
             {
-                float PowerPercentage = cnt*PowerFullRange/SearchSteps;
+                float PowerPercentage = PowerFullRange*cnt/SearchSteps;
                 
                 QC_STORM_Plug.lm_SetActivationLaserPower(PowerPercentage);
                 
@@ -320,24 +321,36 @@ public class QC_STORM_Acq_MultiROI {
 
                 float CurLocDensity = LocResults[QC_STORM_Plug.LocInfID_LocDensity];
                 
-                DensityVary[cnt] = CurLocDensity;
                 
-                if(CurLocDensity >= LocDensityTarget - 0.02f)
+                if(CurLocDensity >= LocDensityTarget)
                 {
+                    FoundPos = cnt;
                     break;
                 }
                 
-                if(cnt >= 2)
+            }
+            
+            if(FoundPos > 0)
+            {
+                 for(int cnt = 0; cnt <= SearchSteps; cnt++)
                 {
-                    // density is decrease: density is already too high
-                    if((DensityVary[cnt] < DensityVary[cnt-1]) && (DensityVary[cnt-1] < DensityVary[cnt-2]))
+                    float PowerPercentage = PowerFullRange*((FoundPos-1)*1.0f/SearchSteps + cnt*1.0f/SearchSteps/SearchSteps);
+
+                    QC_STORM_Plug.lm_SetActivationLaserPower(PowerPercentage);
+
+                    // get localization density
+
+                    float [] LocResults = SmallBatchImageAcq.GetLocResultsOfBatchedImageDat_Default(4);
+
+                    float CurLocDensity = LocResults[QC_STORM_Plug.LocInfID_LocDensity];
+
+
+                    if(CurLocDensity >= LocDensityTarget - 0.02f)
                     {
-                        PowerPercentage = (cnt-2)*PowerFullRange/SearchSteps;
-                        QC_STORM_Plug.lm_SetActivationLaserPower(PowerPercentage);
                         break;
                     }
-                }
-                
+
+                }   
             }
             
         }
