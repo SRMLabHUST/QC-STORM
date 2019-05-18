@@ -239,8 +239,6 @@ public class QC_STORM_ implements PlugInFilter{
             SaveFileName=MyConfigurator.GetResultsSavePath() + RawImgName;
 
 
-            // start to localize
-            long startTime = System.currentTimeMillis(); //
 
             MyConfigurator.SendLocalizationPara();
 
@@ -299,9 +297,6 @@ public class QC_STORM_ implements PlugInFilter{
                 // wait GPU localization finsih
             }
 
-            long endTime = System.currentTimeMillis();
-            long runtimeL = endTime-startTime;
-            
 
             try {
                 recImgThread.join();
@@ -314,8 +309,7 @@ public class QC_STORM_ implements PlugInFilter{
             ResultTifSaver.saveAsTiff(SaveImgName);
             
             
-            String str1=String.format("loc finish,runtime=%d ms", runtimeL);
-            JOptionPane.showMessageDialog(null, str1, "loc finish!", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, "loc finish", "loc finish!", JOptionPane.PLAIN_MESSAGE);
             
        
             lm_StopLocThread(); // finish localization and release resources

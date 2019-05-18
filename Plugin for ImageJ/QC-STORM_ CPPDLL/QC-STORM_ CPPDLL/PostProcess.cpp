@@ -44,11 +44,33 @@ UINT th_RerendImage(LPVOID params)
 	int ImageWidth = 0;
 	int ImageHigh = 0;
 
-
 	int TotalFrame = 0;
 	
 
+	wstring iFileName_ws = RerendDataPath.GetBuffer();
+	string iFileName = EncodeConvert::ws2s(iFileName_ws);
+
+
+	// get image size
+	SRDriftCorrData_TypeDef::GetMaxImgSize(iFileName, &ImageWidth, &ImageHigh);
+	TotalFrame = SRDriftCorrData_TypeDef::GetTotalFrame(iFileName);
+
+	printf("find img size:%d %d %d\n", ImageWidth, ImageHigh, TotalFrame);
+
+
+	LocPara_Global.ImageWidth = ImageWidth;
+	LocPara_Global.ImageHigh = ImageHigh;
+	LocPara_Global.UpdateSRImageSize();
+
 	CString CorrectedDataPath = RerendDataPath;
+
+
+	if (DriftCorrGroupFrameNum > TotalFrame / 2)
+	{
+		printf("\n\nDrift corr frame number is too large\n\n");
+		IsDriftCorrection = 0;
+	}
+
 
 	if (IsDriftCorrection)
 	{
@@ -59,33 +81,17 @@ UINT th_RerendImage(LPVOID params)
 		CorrectedDataPath += PostFixStr;
 	}
 
-
 	// find image size from loc arry first
-	
-	wstring iFileName_ws = RerendDataPath.GetBuffer();
+
 	wstring oFileName_ws = CorrectedDataPath.GetBuffer();
-
-	string iFileName = EncodeConvert::ws2s(iFileName_ws);
 	string oFileName = EncodeConvert::ws2s(oFileName_ws);
-
-
-
-	// get image size
-	SRDriftCorrData_TypeDef::GetMaxImgSize(iFileName, &ImageWidth, &ImageHigh);
-	TotalFrame = SRDriftCorrData_TypeDef::GetTotalFrame(iFileName);
-
-	printf("find img size:%d %d %d\n", ImageWidth, ImageHigh, TotalFrame);
-
-	LocPara_Global.ImageWidth = ImageWidth;
-	LocPara_Global.ImageHigh = ImageHigh;
-	LocPara_Global.UpdateSRImageSize();
 
 
 
 
 	if (IsDriftCorrection)
 	{
-		printf("begin shift correction\n");
+		printf("drift correction begin\n");
 
 		cudaStream_t CurStream1;
 		cudaStreamCreate(&CurStream1);
@@ -111,7 +117,7 @@ UINT th_RerendImage(LPVOID params)
 		h_SRDriftCorrData.Deinit();
 		cudaStreamDestroy(CurStream1);
 
-		printf("shift correction finish\n");
+		printf("drift correction finish\n");
 	}
 
 	// begin rendering super-resolution image

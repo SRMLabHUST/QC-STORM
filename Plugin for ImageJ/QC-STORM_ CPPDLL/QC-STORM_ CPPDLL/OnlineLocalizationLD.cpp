@@ -351,7 +351,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 	printf("total time : %d ms\n", WholeProc_EndTime - WholeProc_StartTime);
 
-	printf("Molecular Extraction time: %d ms\n", ExtractTime);
+	printf("Molecular Extraction time : %d ms\n", ExtractTime);
 	printf("Localization time : %d ms\n", LocTime);
 	printf("Rendering time : %d ms\n", RendTime);
 	printf("Stastics calc time : %d ms\n", StatTime);

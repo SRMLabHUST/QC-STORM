@@ -66,6 +66,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     volatile public boolean CurMultiROIAcqActive=false;
     
     volatile public boolean CurZDriftCorrActive = false;
+    
+    boolean ResolutionEn = false;
 
     /**
      * Creates new form QC_STORM_Configurator
@@ -90,7 +92,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         }
         
         jTabbedPane1.remove(jPanel_ROMP);
-
+        ResolutionEn = false;
     }
     void AllocateResources()
     {
@@ -1956,6 +1958,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         if(LaserPowerPercentage<0)LaserPowerPercentage=0;
         if(LaserPowerPercentage>100)LaserPowerPercentage=100;
         
+        jTextField_AcLaserPower.setText(Integer.toString(LaserPowerPercentage));
+        
         QC_STORM_Plug.lm_SetActivationLaserPower(LaserPowerPercentage);
         
     }//GEN-LAST:event_jButton_DnsitySetActionPerformed
@@ -1967,6 +1971,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         if(LaserPowerPercentage<0)LaserPowerPercentage=0;
         if(LaserPowerPercentage>100)LaserPowerPercentage=100;
         
+        jTextField_AcLaserPower.setText(Integer.toString(LaserPowerPercentage));
+
         QC_STORM_Plug.lm_SetActivationLaserPower(LaserPowerPercentage); 
     }//GEN-LAST:event_jButton_DensityResetActionPerformed
 
@@ -2015,6 +2021,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     private void jButton_DensityReset1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DensityReset1ActionPerformed
         // TODO add your handling code here:
         LaserPowerPercentage = 0;
+        
+        jTextField_AcLaserPower.setText(Integer.toString(LaserPowerPercentage));
+
         QC_STORM_Plug.lm_SetActivationLaserPower(LaserPowerPercentage);
     }//GEN-LAST:event_jButton_DensityReset1ActionPerformed
 
@@ -2525,6 +2534,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         }
         
         jTextField_ResultPath.setText(ResultsFilePath);
+        
+        SetResolutionEnable(ResolutionEn);
+        
     }
 
     public void SavePropertyFile(String filePath) throws FileNotFoundException, IOException
@@ -2956,4 +2968,15 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
      {
          return Integer.parseInt(jTextField_MultiROI_WaitTime.getText());
      }
+     
+         
+    void SetResolutionEnable(boolean en)
+    {
+        jCheckBox_Stat_SpaResolutionEn.setSelected(en);
+        jCheckBox_Stat_SpaResolutionVary.setSelected(en);
+        jCheckBox_Stat_NyqResolutionVary.setSelected(en);
+        jCheckBox_Stat_DimensionFDVary.setSelected(en);
+        jCheckBox_Stat_LocDensityFDVary.setSelected(en);
+    }
+    
 }
