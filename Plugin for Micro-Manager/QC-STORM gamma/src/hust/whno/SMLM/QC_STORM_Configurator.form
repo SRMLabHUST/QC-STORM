@@ -117,10 +117,6 @@
                               <Component id="jTextField_RenderPixelSize" min="-2" pref="74" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="239" pref="239" max="-2" attributes="0"/>
-                              <Component id="jTextField_SNR_th" min="-2" pref="74" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="239" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jButton_LoadResultPath" alignment="0" min="-2" pref="173" max="-2" attributes="0"/>
@@ -130,14 +126,9 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="jCheckBox_Stat_ConsecutiveFit" alignment="0" pref="160" max="32767" attributes="0"/>
-                                  <Component id="jLabel26" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jCheckBox_Stat_MultiFitEn" alignment="0" pref="160" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jCheckBox_Stat_WLEDisable" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jComboBox_LocType" min="-2" pref="130" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_ConsecutiveFit" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_MultiFitEn" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jLabel26" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -160,6 +151,14 @@
                                   <Component id="jTextField_BurstCapturedNum" min="-2" pref="57" max="-2" attributes="0"/>
                                   <Component id="jTextField_BurstFrameNum" min="-2" pref="57" max="-2" attributes="0"/>
                                   <Component id="jTextField_ConsecFilterRadius" min="-2" pref="64" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="239" pref="239" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jComboBox_LocType" min="-2" pref="130" max="-2" attributes="0"/>
+                                  <Component id="jTextField_SNR_th" min="-2" pref="74" max="-2" attributes="0"/>
+                                  <Component id="jCheckBox_Stat_WLEDisable" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -190,15 +189,15 @@
                           <Component id="jLabel22" alignment="1" min="-2" pref="21" max="-2" attributes="0"/>
                           <Component id="jTextField_SNR_th" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel26" alignment="1" min="-2" pref="21" max="-2" attributes="0"/>
-                          <Component id="jComboBox_LocType" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel26" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                          <Component id="jComboBox_LocType" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jCheckBox_Stat_MultiFitEn" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jCheckBox_Stat_WLEDisable" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jCheckBox_Stat_MultiFitEn" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jCheckBox_Stat_WLEDisable" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jCheckBox_Stat_ConsecutiveFit" min="-2" max="-2" attributes="0"/>
@@ -272,7 +271,7 @@
             </Component>
             <Component class="javax.swing.JCheckBox" name="jCheckBox_Stat_ConsecutiveFit">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Consecutive fitting"/>
+                <Property name="text" type="java.lang.String" value="Consecutive fitting (temporal grouping)"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox_Stat_ConsecutiveFitActionPerformed"/>
@@ -568,6 +567,7 @@
                                       </Group>
                                   </Group>
                               </Group>
+                              <Component id="jSeparator5" alignment="1" pref="407" max="32767" attributes="0"/>
                           </Group>
                           <Component id="jButton_3DCalibAcq" min="-2" pref="237" max="-2" attributes="0"/>
                       </Group>
@@ -591,7 +591,7 @@
                           <Component id="jTextField_ZDepthCorrFactor" max="32767" attributes="0"/>
                           <Component id="jLabel24" min="-2" pref="21" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" pref="22" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="32767" attributes="0"/>
                       <Component id="jLabel27" min="-2" pref="23" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel30" min="-2" max="-2" attributes="0"/>
@@ -629,14 +629,16 @@
                           <Component id="jTextField_p3_XLY" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextField_p4_XLY" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                      <Component id="jSeparator5" min="-2" pref="10" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel48" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
                           <Component id="jTextField_3DCalibPlaneNum_H" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButton_3DCalibAcq" min="-2" pref="39" max="-2" attributes="0"/>
-                      <EmptySpace pref="29" max="32767" attributes="0"/>
+                      <EmptySpace pref="38" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -788,6 +790,8 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="15"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JSeparator" name="jSeparator5">
             </Component>
           </SubComponents>
         </Container>

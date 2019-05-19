@@ -268,7 +268,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
             }
         });
 
-        jCheckBox_Stat_ConsecutiveFitEn.setText("Consecutive fitting");
+        jCheckBox_Stat_ConsecutiveFitEn.setText("Consecutive fitting (temporal grouping)");
 
         jButton_LoadParaFile.setText("Load configuration file");
         jButton_LoadParaFile.setActionCommand("");
