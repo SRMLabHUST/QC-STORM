@@ -27,6 +27,8 @@ Sequential Multi-FOV acquisition (hardware dependent)
 
 Configuration parameters remembering, saving and loading
 
+The open dataset evaluation of QC-STORM can be found in http://bigwww.epfl.ch/smlm/challenge2016/index.html using name QC-STORM-2019. Note the evaluation of QC-STORM in recently published paper "Super-resolution fight club: assessment of 2D and 3D single-molecule localization microscopy software" is based on submission in 2017, and the results were only processed by single-molecule localization. Moreover, the double-helix localization mode was removed in current version.
+
 
 # System requirements and installation
 1, Windows 7 sp1 or newer, x64.
