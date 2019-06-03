@@ -50,7 +50,7 @@ The open dataset evaluation of QC-STORM can be found in http://bigwww.epfl.ch/sm
 
 
 # Recompile the source codes
-1, The Java GUI for ImageJ (v1.52g) and Micro-Manager (MMSetup_64bit_2.0.0-beta3 from nightly builds of Micro-Manager 2.0) are developed by NetBeans IDE 7.3.1 with Java jdk1.6.0_45.
+1, The Java GUI for ImageJ (v1.52g) and Micro-Manager beta (MMSetup_64bit_2.0.0-beta3 from nightly builds of Micro-Manager 2.0) are developed by NetBeans IDE 7.3.1 with Java jdk1.6.0_45. The Java GUI for Micro-Manager gamma are developed by NetBeans IDE 10.0 with Java jdk1.8.0_201.
 
 2, The C++ core image processing algorithms are developed by Visual Studio 2015 Update 3, and accelerated by NVidia CUDA 10.0.
 
