@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{6574C8A2-119A-4C80-A0AC-07CD36481B40}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>bfgsMLE_dll</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 10.0.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include;G:\0codes\cuda codes\Localization imaging\bfgs_mle_dll all1 x64\bfgsMLE_dll\bfgsMLE_dll\bfgs_top;G:\0codes\cuda codes\Localization imaging\bfgs_mle_dll all1 x64\bfgsMLE_dll\bfgsMLE_dll\bfgs2d;G:\0codes\cuda codes\Localization imaging\bfgs_mle_dll all1 x64\bfgsMLE_dll\bfgsMLE_dll\bfgs3d;G:\0codes\cuda codes\Localization imaging\bfgs_mle_dll all1 x64\bfgsMLE_dll\bfgsMLE_dll\bfgsHD;G:\0codes\cuda codes\Localization imaging\bfgs_mle_dll all1 x64\bfgsMLE_dll\bfgsMLE_dll\cudaWrapper;G:\0codes\cuda codes\Localization imaging\bfgs_mle_dll all1 x64\bfgsMLE_dll\bfgsMLE_dll\ImgRender;G:\0codes\cuda codes\Localization imaging\bfgs_mle_dll all1 x64\bfgsMLE_dll\bfgsMLE_dll\SubregionExtraction;G:\0codes\cuda codes\Localization imaging\bfgs_mle_dll all1 x64\bfgsMLE_dll\bfgsMLE_dll\ImageRender_3dStack;G:\0codes\cuda codes\Localization imaging\bfgs_mle_dll all1 x64\bfgsMLE_dll\bfgsMLE_dll\TinyTIFF;G:\0codes\cuda codes\Localization imaging\bfgs_mle_dll all1 x64\bfgsMLE_dll\bfgsMLE_dll\StatisticsInfo;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\include;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_top;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_LD;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\cudaWrapper;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ImgRender;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\SubregionExtraction;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ImageRender_3dStack;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\TinyTIFF;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\StatisticsInfo;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\DriftCorrection_SRImageXCorr;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\BFGS for curve fitting;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\FileReadWriteWrapper;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\WLEParaEstimation;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_HD;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ConsecutiveFit;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <CudaCompile>
+      <CodeGeneration>compute_20,sm_20;compute_30,sm_30;compute_35,sm_35;compute_50,sm_50;%(CodeGeneration)</CodeGeneration>
+    </CudaCompile>
+    <Lib>
+      <AdditionalDependencies>cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <CudaCompile>
+      <CodeGeneration>compute_35,sm_35;compute_50,sm_50;compute_52,sm_52;compute_60,sm_60;compute_61,sm_61;compute_75,sm_75</CodeGeneration>
+      <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+    </CudaCompile>
+    <Lib>
+      <AdditionalDependencies>cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="BFGS for curve fitting\BFGSOptimizer.h" />
+    <ClInclude Include="BFGS for curve fitting\CurveFitting.h" />
+    <ClInclude Include="bfgsMLE_Loc_HD\bfgsMLE_AS3D_2Emitter_core.h" />
+    <ClInclude Include="bfgsMLE_Loc_HD\bfgsMLE_GS2D_2Emitter_core.h" />
+    <ClInclude Include="bfgsMLE_Loc_HD\bfgsMLE_GS2D_3Emitter_core.h" />
+    <ClInclude Include="bfgsMLE_Loc_HD\bfgsMLE_Multi_Emitter_Fit.h" />
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_AS3D_core.h" />
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_core.h" />
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_GS2D_core.h" />
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgsMLE_Single_Emitter_Fit.h" />
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgs_base.h" />
+    <ClInclude Include="bfgsMLE_Loc_LD\bfgs_CommonPara.h" />
+    <ClInclude Include="bfgsMLE_Loc_top\bfgs_top.h" />
+    <ClInclude Include="bfgsMLE_Loc_top\LocPrecCalc_GaussianCRLB.h" />
+    <ClInclude Include="bfgsMLE_Loc_top\ZeroLocalizationsRemove.h" />
+    <ClInclude Include="ConsecutiveFit\ConsecutiveFit.h" />
+    <ClInclude Include="cudaWrapper\cudaWrapper.h" />
+    <ClInclude Include="DriftCorrection_SRImageXCorr\DriftCorrection_SRImageXCorr.h" />
+    <ClInclude Include="FileReadWriteWrapper\CppFileWrapper.h" />
+    <ClInclude Include="ImageRender_3dStack\ImageRender_3dStack.h" />
+    <ClInclude Include="ImgRender\ImageRender_base.h" />
+    <ClInclude Include="ImgRender\ImageRender_2d.h" />
+    <ClInclude Include="ImgRender\ImageRender_3d.h" />
+    <ClInclude Include="ImgRender\ImageRender_top.h" />
+    <ClInclude Include="StatisticsInfo\statisticsInfo.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SubregionExtraction\LDROIExtraction.h" />
+    <ClInclude Include="SubregionExtraction\LDROIExtraction_Param.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="WLEParaEstimation\SplineInterpolation.h" />
+    <ClInclude Include="WLEParaEstimation\WLEParaEstimation.h" />
+    <ClInclude Include="WLEParaEstimation\WLEParaEstimation_core.h" />
+    <ClInclude Include="WLEParaEstimation\WLEParaEstimation_Parameters.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BFGS for curve fitting\CurveFitting.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="WLEParaEstimation\WLEParaEstimation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="bfgsMLE_Loc_HD\bfgsMLE_Multi_Emitter_Fit.cu" />
+    <CudaCompile Include="bfgsMLE_Loc_LD\bfgsMLE_Single_Emitter_Fit.cu" />
+    <CudaCompile Include="bfgsMLE_Loc_LD\bfgs_base.cu" />
+    <CudaCompile Include="bfgsMLE_Loc_top\bfgs_top.cu" />
+    <CudaCompile Include="bfgsMLE_Loc_top\bfgs_top_MoleculeClasify.cu" />
+    <CudaCompile Include="bfgsMLE_Loc_top\LocPrecCalc_GaussianCRLB.cu" />
+    <CudaCompile Include="bfgsMLE_Loc_top\ZeroLocalizationsRemove.cu" />
+    <CudaCompile Include="ConsecutiveFit\ConsecutiveFit.cu" />
+    <CudaCompile Include="ConsecutiveFit\ConsecutiveFit_top.cu" />
+    <CudaCompile Include="cudaWrapper\cudaWrapper.cu" />
+    <CudaCompile Include="DriftCorrection_SRImageXCorr\DriftCorrection_SRImageXCorr.cu" />
+    <CudaCompile Include="DriftCorrection_SRImageXCorr\DriftCorrection_SRImageXCorr_rc.cu" />
+    <CudaCompile Include="DriftCorrection_SRImageXCorr\DriftCorrection_SRImageXCorr_top.cu" />
+    <CudaCompile Include="ImageRender_3dStack\ImageRender_3dStack.cu" />
+    <CudaCompile Include="ImgRender\ImageRender_2d.cu" />
+    <CudaCompile Include="ImgRender\ImageRender_3d.cu" />
+    <CudaCompile Include="ImgRender\ImageRender_top.cu" />
+    <CudaCompile Include="ImgRender\ImageRerender_rc.cu" />
+    <CudaCompile Include="StatisticsInfo\statisticsInfo_densityCalc.cu" />
+    <CudaCompile Include="StatisticsInfo\statisticsInfo.cu" />
+    <CudaCompile Include="StatisticsInfo\statisticsInfo_rc.cu" />
+    <CudaCompile Include="StatisticsInfo\statisticsInfo_top.cu" />
+    <CudaCompile Include="SubregionExtraction\LDROIExtraction.cu" />
+    <CudaCompile Include="SubregionExtraction\LDROIExtraction_ImageFiltering.cu" />
+    <CudaCompile Include="SubregionExtraction\LDROIExtraction_ROIExtraction.cu" />
+    <CudaCompile Include="WLEParaEstimation\WLEParaEstimation_core.cu" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 10.0.targets" />
+  </ImportGroup>
+</Project>
