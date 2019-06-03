@@ -15,7 +15,7 @@ We found that the MLEwt is able to suppress the signal contamination from neighb
 
 
 # How to use
-Download the codes and open MATLAB software (the author run the codes by MATLAB R2017a).
+Download the codes and open MATLAB software.
 
 Run Single Molecule Fitting 2D/BFGS_2D_main.m or Single Molecule Fitting AS3D/BFGS_3D_main.m
 
