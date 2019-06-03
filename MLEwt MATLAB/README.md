@@ -6,10 +6,10 @@ We found that the MLEwt is able to suppress the signal contamination from neighb
 
 # Results of three ROIs (cropped from experimental data set)
 
-![](https://github.com/SRMLabHUST/WLE/blob/master/image%20for%20display/figure%201s%20results%20on%20three%20ROI%202D.png)
+![](https://github.com/SRMLabHUST/QC-STORM/blob/master/MLEwt%20MATLAB/image%20for%20display/figure%201s%20results%20on%20three%20ROI%202D.png)
 
 
-![](https://github.com/SRMLabHUST/WLE/blob/master/image%20for%20display/figure%201s%20results%20on%20three%20ROI%203D.png)
+![](https://github.com/SRMLabHUST/QC-STORM/blob/master/MLEwt%20MATLAB/image%20for%20display/figure%201s%20results%20on%20three%20ROI%203D.png)
 
 
 
