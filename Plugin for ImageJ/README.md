@@ -5,4 +5,4 @@ The project QC-STORM_ is compiled for ImageJ. This project is compiled by NetBea
 
 The QC-STORM_ CPPDLL is the C++ codes of dynamic link library for ImageJ. This project is compiled by Visual studio 2015 with CUDA 10.0.
 
-QC-STORM_ calls dynamic link library of QC-STORM_ CPPDLL, while QC-STORM_ CPPDLL calls static link library of MLEbfgs.
+QC-STORM_ calls functions from dynamic link library of QC-STORM_ CPPDLL, while QC-STORM_ CPPDLL calls functions from static link library of MLEbfgs.
