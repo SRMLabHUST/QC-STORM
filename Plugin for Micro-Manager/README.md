@@ -8,4 +8,4 @@ The project QC-STORM gamma is compiled for Micro-Manager 2.0 gamma This project 
 The QC-STORM CPPDLL is the C++ codes of dynamic link library for Micro-Manager, shared by beta and gamma. This project is compiled by Visual studio 2015 with CUDA 10.0.
 
 
-QC-STORM calls dynamic link library of QC-STORM CPPDLL, while QC-STORM CPPDLL calls static link library of MLEbfgs.
+QC-STORM calls functions from dynamic link library of QC-STORM CPPDLL, while QC-STORM CPPDLL calls functions from static link library of MLEbfgs.
