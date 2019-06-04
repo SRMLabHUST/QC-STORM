@@ -1,7 +1,7 @@
 # MLEwt
-We applied Gaussian function weights to commonly used maximum likelihood estimation (MLE) based single-molecule localization algorithm for both 2D and astigmatism 3D imaging (abbreviated as MLEwt).
+We applied Gaussian weight function to widly used maximum likelihood estimation (MLE) based single-molecule localization algorithm for both 2D and astigmatism 3D imaging (abbreviated as MLEwt).
 
-We found that the MLEwt is able to suppress the signal contamination from neighboring molecules, thus improve localization precision and improve tolerable activation density compared with MLE. 
+We found that the MLEwt is able to suppress the signal contamination from neighboring molecules, thus improve localization precision and improve tolerable activation density compared with traditional MLE. 
 
 
 # Results of three ROIs (cropped from experimental data set)
@@ -21,7 +21,7 @@ Run Single Molecule Fitting 2D/BFGS_2D_main.m or Single Molecule Fitting AS3D/BF
 
 The codes will load a test data and give the fitting results.
 
-You can switch between MLEwt and MLE to watch the difference, and can replace the test data by your own data.
+You can switch between MLEwt and MLEbfgs to watch the difference, and can replace the test ROI by your own data.
 
 
 
