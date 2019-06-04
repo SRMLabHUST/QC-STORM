@@ -120,6 +120,7 @@ __global__ void bfgsMLELoc_AS3D(float *d_LocArry, unsigned short *d_ImageROI, fl
 
 
 	// load image region from global memory
+	// all threads in a block read data parallelly for a single ROI at each time
 	for (int fcnt = 0; fcnt < ThreadsPerBlock; fcnt++)
 	{
 		int CurId = gid_0 + fcnt;
