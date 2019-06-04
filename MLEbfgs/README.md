@@ -1,2 +1,2 @@
-# Cpp static link library project of MLEbfgs
+# C++ static link library project of MLEbfgs
 
