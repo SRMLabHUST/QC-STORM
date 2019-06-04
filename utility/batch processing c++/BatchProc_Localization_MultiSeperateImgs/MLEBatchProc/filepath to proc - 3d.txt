@@ -1,0 +1,10 @@
+E:\high throughput localization algorithm\localization precision eval\loc precision simulation\image simulation 3D\loc precision vs density LogNorm Photon\ImageSimu_dn0.10
+E:\high throughput localization algorithm\localization precision eval\loc precision simulation\image simulation 3D\loc precision vs density LogNorm Photon\ImageSimu_dn0.30
+E:\high throughput localization algorithm\localization precision eval\loc precision simulation\image simulation 3D\loc precision vs density LogNorm Photon\ImageSimu_dn0.50
+E:\high throughput localization algorithm\localization precision eval\loc precision simulation\image simulation 3D\loc precision vs density LogNorm Photon\ImageSimu_dn0.70
+E:\high throughput localization algorithm\localization precision eval\loc precision simulation\image simulation 3D\loc precision vs density LogNorm Photon\ImageSimu_dn0.90
+E:\high throughput localization algorithm\localization precision eval\loc precision simulation\image simulation 3D\loc precision vs density LogNorm Photon\ImageSimu_dn1.10
+E:\high throughput localization algorithm\localization precision eval\loc precision simulation\image simulation 3D\loc precision vs density LogNorm Photon\ImageSimu_dn1.30
+E:\high throughput localization algorithm\localization precision eval\loc precision simulation\image simulation 3D\loc precision vs density LogNorm Photon\ImageSimu_dn1.50
+E:\high throughput localization algorithm\localization precision eval\loc precision simulation\image simulation 3D\loc precision vs density LogNorm Photon\ImageSimu_dn1.70
+E:\high throughput localization algorithm\localization precision eval\loc precision simulation\image simulation 3D\loc precision vs density LogNorm Photon\ImageSimu_dn1.90
