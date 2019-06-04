@@ -1,3 +1,3 @@
 # C++ static link library project of MLEbfgs
 
-Compiled by Visual studio 2015 update 3 with CUDA 10.0
+This project is compiled by Visual studio 2015 update 3 with CUDA 10.0
