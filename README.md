@@ -57,6 +57,7 @@ The open dataset evaluation of QC-STORM can be found in http://bigwww.epfl.ch/sm
 3, Download the codes, open the projects by corresponding software and recompile the codes.
 
 4, Program framework of QC-STORM:
+
 ![](https://github.com/SRMLabHUST/QC-STORM/blob/master/QC-STORM%20program%20framework.png)
 
 # Declaration
