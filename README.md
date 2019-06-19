@@ -56,6 +56,8 @@ The open dataset evaluation of QC-STORM can be found in http://bigwww.epfl.ch/sm
 
 3, Download the codes, open the projects by corresponding software and recompile the codes.
 
+4, Program framework of QC-STORM:
+![](https://github.com/SRMLabHUST/QC-STORM/blob/master/QC-STORM%20program%20framework.png)
 
 # Declaration
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
