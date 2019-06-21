@@ -38,7 +38,7 @@ The open dataset evaluation of QC-STORM can be found in http://bigwww.epfl.ch/sm
 
 4, Download and install Microsoft Visual C++ 2015 Redistributable Update 3 (x64) (https://www.microsoft.com/en-us/download/details.aspx?id=53587). You may need to uninstall Visual C++ 2017 Redistributable first.
 
-5, Download newest QC-STORM release from https://github.com/SRMLabHUST/QC-STORM/releases.
+5, Download the newest QC-STORM release from https://github.com/SRMLabHUST/QC-STORM/releases.
 
 6, Copy the downloaded .dll files into installation directory of ImageJ or Micro-Manager, and .jar files into "plugins" or "mmplugins" folder for ImageJ and Micro-Manager respectively.
 
