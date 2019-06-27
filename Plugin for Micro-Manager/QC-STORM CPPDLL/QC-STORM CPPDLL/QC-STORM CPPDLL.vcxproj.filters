@@ -110,6 +110,9 @@
     <ClInclude Include="DepthMapDisplay\DepthMapCalc.h">
       <Filter>DepthMapDisplay</Filter>
     </ClInclude>
+    <ClInclude Include="OnlineSpatialResolutionCalc.h">
+      <Filter>Online Localization</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -153,6 +156,9 @@
     </ClCompile>
     <ClCompile Include="DepthMapDisplay\DepthMapCalc.cpp">
       <Filter>DepthMapDisplay</Filter>
+    </ClCompile>
+    <ClCompile Include="OnlineSpatialResolutionCalc.cpp">
+      <Filter>Online Localization</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

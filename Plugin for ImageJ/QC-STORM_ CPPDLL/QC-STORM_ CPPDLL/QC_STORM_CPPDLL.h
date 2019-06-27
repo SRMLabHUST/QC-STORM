@@ -108,7 +108,7 @@ JNIEXPORT jintArray JNICALL Java_QC_1STORM_1_lm_1GetSMLMImage3D
 * Signature: (IF)V
 */
 JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetSpatialResolutionInf
-	(JNIEnv *, jclass, jint, jint, jfloat, jfloat);
+	(JNIEnv *, jclass, jfloat);
 
 
 /*

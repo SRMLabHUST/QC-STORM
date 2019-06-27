@@ -84,6 +84,3 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define ImageSource_ERR					1000
 
 
-#define ProcessMode_Online				0
-#define ProcessMode_Offline				1
-

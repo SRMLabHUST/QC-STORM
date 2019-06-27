@@ -129,15 +129,9 @@ void FluoStatisticData_TypeDef::CalcLocalizationDensity2D(float *h_LocArry, Loca
 	int EndFrame = LDLocData_TypeDef::GetLastFrame(h_LocArry, FluoNum);
 
 
-	int FilteredStartFrame = StartFrame;
-	int FilteredEndFrame = EndFrame;
+	int FilteredStartFrame = StartFrame + 1;
+	int FilteredEndFrame = EndFrame - 1;
 
-
-	if (LocPara.ProcessingMode == ProcessMode_Offline)
-	{
-		FilteredStartFrame = StartFrame + 1;
-		FilteredEndFrame = EndFrame - 1;
-	}
 
 
 	float Neibhgor0_Ratio = 0;

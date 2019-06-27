@@ -69,17 +69,14 @@ LocalizationPara::LocalizationPara()
 	p0_XLY = 0;
 
 
-
 	// spatial resolution
 	ImagesPerGroup = 50;
 	IsHollowTube = 0;
 	StrucuteSize_2D = 40; // tublin
-	RSCResolutionTh = 0;
 
 	// calculation control
 	SpatialResolutionCalcEn = 1;
 
-	ProcessingMode = ProcessMode_Online;
 
 	UpdateSRImageSize();
 }
@@ -161,13 +158,9 @@ bool LocalizationPara::IsEqual(LocalizationPara & iPara)
 	SumNum += this->ImagesPerGroup != iPara.ImagesPerGroup;
 	SumNum += this->IsHollowTube != iPara.IsHollowTube; // tube width is significantly larger than localization precision
 	SumNum += this->StrucuteSize_2D != iPara.StrucuteSize_2D;
-	SumNum += this->RSCResolutionTh != iPara.RSCResolutionTh; // expected resolution threshold
 
 															  // calculation control
 	SumNum += this->SpatialResolutionCalcEn != iPara.SpatialResolutionCalcEn;
-
-
-	SumNum += this->ProcessingMode != iPara.ProcessingMode; // online or offline
 
 
 	return SumNum == 0;

@@ -58,7 +58,6 @@ void DispStatInfOnFigure_Single(CImg <unsigned char> *CImg_Axis, int XPos, int Y
 	bool IsTubeLikeStructure = true;
 	float Mean_LocPrecisionXY = FluoStatisticData_TypeDef::GetTimeVaryMean(FluoStatData.TimeVary_LocPrecisionXY);
 
-	int EstimatedAcqFrame = SpatialResolutionCalc.GetEstimatedAcquisitionFrame(LocPara_Global.RSCResolutionTh, Mean_DimensionFD, Cur_LocDensityFD*0.9f, Is3DImaging, IsTubeLikeStructure, Mean_LocPrecisionXY, 0, NYQUIST_RESOLUTION_OVERSAMPLING);
 
 //	printf("estimation: %d %.2f %.2f %.2f\n", EstimatedAcqFrame, LocPara_Global.RSCResolutionTh, Mean_DimensionFD, Cur_LocDensityFD);
 
@@ -75,7 +74,6 @@ void DispStatInfOnFigure_Single(CImg <unsigned char> *CImg_Axis, int XPos, int Y
 	DisplayStatInf_SingleItem("Mean Dimension FD", Mean_DimensionFD, CImg_Axis, XPos, YPos + 120);
 	DisplayStatInf_SingleItem("Current LocDensity FD", Cur_LocDensityFD, CImg_Axis, XPos, YPos + 140);
 	DisplayStatInf_SingleItem("Current LocDensity 2D (From FD)", Cur_LocDensity2D_ConvertFromFD, CImg_Axis, XPos, YPos + 160);
-	DisplayStatInf_SingleItem("Estimated Acq Frame Number", EstimatedAcqFrame, CImg_Axis, XPos, YPos + 180);
 
 }
 
@@ -107,7 +105,6 @@ void DispSpatialResolutionInf_SingleImage(CImg <unsigned char> *CImg_Axis, int X
 	bool IsTubeLikeStructure = true;
 	float Mean_LocPrecisionXY = FluoStatisticData_TypeDef::GetTimeVaryMean(FluoStatData.TimeVary_LocPrecisionXY);
 
-	int EstimatedAcqFrame = SpatialResolutionCalc.GetEstimatedAcquisitionFrame(LocPara_Global.RSCResolutionTh, Mean_DimensionFD, Cur_LocDensityFD*0.9f, Is3DImaging, IsTubeLikeStructure, Mean_LocPrecisionXY, 0, NYQUIST_RESOLUTION_OVERSAMPLING);
 
 	// display together
 	DisplayStatInf_SingleItem("Convolved Resolution XY (nm)", CurSpatialResolution, CImg_Axis, XPos, YPos + 0);
@@ -115,7 +112,6 @@ void DispSpatialResolutionInf_SingleImage(CImg <unsigned char> *CImg_Axis, int X
 	DisplayStatInf_SingleItem("Mean Dimension FD", Mean_DimensionFD, CImg_Axis, XPos, YPos + 40);
 	DisplayStatInf_SingleItem("Current LocDensity FD", Cur_LocDensityFD, CImg_Axis, XPos, YPos + 60);
 	DisplayStatInf_SingleItem("Current LocDensity 2D (From FD)", Cur_LocDensity2D_ConvertFromFD, CImg_Axis, XPos, YPos + 80);
-	DisplayStatInf_SingleItem("Estimated Acq Frame Number", EstimatedAcqFrame, CImg_Axis, XPos, YPos + 100);
 
 }
 

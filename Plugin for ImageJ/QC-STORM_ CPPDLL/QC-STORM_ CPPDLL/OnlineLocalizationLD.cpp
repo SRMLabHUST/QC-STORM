@@ -18,6 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "stdafx.h"
 #include "OnlineLocalizationLD.h"
 
+#include "OnlineSpatialResolutionCalc.h"
+
 #include "StatInfDisplay.h"
 
 #include <time.h>
@@ -47,6 +49,15 @@ void OpenConsole()
 
 UINT th_OnlineLocalizationLD(LPVOID params)
 {
+
+	cudaSetDevice(GPUID_1Best);
+
+
+	int CurDevice = 0;
+	cudaGetDevice(&CurDevice);
+	printf("Localization dev: %d\n", CurDevice);
+
+
 	IsLocRunning = true;
 
 	printf("image inf1:%d %d %d %d %d\n", LocPara_Global.ImageWidth, LocPara_Global.ImageHigh, LocPara_Global.TotalFrameNum, LocPara_Global.SRImageWidth, LocPara_Global.SRImageHigh);
@@ -109,12 +120,10 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	unsigned int LocTime = 0;
 	unsigned int RendTime = 0;
 	unsigned int StatTime = 0;
-	unsigned int ResolutionTime = 0;
 
 	unsigned int TotalFluoNum = 0;
 
 	//
-	int FluoNum=0;
 	int CurFrame = 0;
 	int BatchFrameNum = 0;
 	int LastFrame = 0;
@@ -125,7 +134,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	LastFrame = 0;
 
 
-	bool IsBreak = 0;
+	bool IsBreak = false;
 
 
 
@@ -133,15 +142,13 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	RendData.ResetFillImgTop(LocPara_Global);
 	FluoStatData.ResetAllDat(loc_stream1);
 
-	// spatial resolution calculation
-	DimensionDensityCalc.ResetAccumulatedData();
 
 
-
-	SpatialResolutionCalc.ResetData();
-	SpatialResolutionCalc.SetStructureSize(LocPara_Global.StrucuteSize_2D);
-
+	// receive image data send from plug-in GUI
 	qImgData RecImg;
+
+	// send localizations for resolution calc and multi-GPU acceleration
+	qLocArray LocArray_Send;
 
 
 	WholeProc_StartTime = clock();
@@ -186,7 +193,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			ExtractTime += (clock() - time1);
 
 
-
 			CurFrame += BatchFrameNum;
 
 
@@ -199,7 +205,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			{
 				delete[] RecImg.pImgData;
 			}
-
 		}
 
 
@@ -211,7 +216,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			int EndFrame = LDROIExtractData.EndFrame;
 
 
-			FluoNum = LDROIExtractData.GetAccumulatedROINum();
+			int FluoNum = LDROIExtractData.GetAccumulatedROINum();
 			LDROIExtractData.ResetROINum();
 
 
@@ -258,6 +263,19 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 			StatTime += (clock() - time1);
 		
+			// send for resolution calculation
+			if (LocPara_Global.SpatialResolutionCalcEn)
+			{
+
+				LocArray_Send.h_LocArray = new float[WriteLocNum * OutParaNumGS2D];
+				LocArray_Send.FluoNum = WriteLocNum;
+				LocArray_Send.IsEndCalc = IsBreak;
+
+				memcpy(LocArray_Send.h_LocArray, WriteLocArry, WriteLocNum * OutParaNumGS2D * sizeof(float));
+
+				LocArray_Resolution_Queue.push(LocArray_Send);
+			}
+
 
 			// write localization data into file
 			LocFile.Write(WriteLocArry, WriteLocNum * OutParaNumGS2D * sizeof(float));
@@ -278,40 +296,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 			StatTime += (clock() - time1);
 
-
-			time1 = clock();
-
-			if (LocPara_Global.SpatialResolutionCalcEn)
-			{
-				// dimension and density calculation, only calculate after enough frames are accumulated
-
-				int IsEnough = DimensionDensityCalc.AddLocArray_FewFrames(WriteLocArry, WriteLocNum, LocPara_Global.ConsecFit_DistanceTh_nm / LocPara_Global.PixelSize, IsBreak, loc_stream1);
-
-				if (IsEnough)
-				{
-					bool Is3DImaging = LocPara_Global.LocType == LocType_AS3D;
-					
-					DimensionDensityCalc.GetDimensionLocDensity_AGroup(DimensionDensityCalc.ImagesPerGroup_Valid * 1 / 10, DimensionDensityCalc.ImagesPerGroup_Valid * 2 / 10, DimensionDensityCalc.ImagesPerGroup_Valid, LocPara_Global.PixelSize, Is3DImaging, loc_stream1);
-
-//					printf("Dim data: %.2f %.2f %d\n", DimensionDensityCalc.DimensionFD, DimensionDensityCalc.LocDensityFD, DimensionDensityCalc.ImagesPerGroup_Valid);
-
-					// add current group's dimension and density to calculate spatial resolution
-					SpatialResolutionCalc.AddDimensionLocDensity_AGroup(DimensionDensityCalc.DimensionFD, DimensionDensityCalc.LocDensityFD, DimensionDensityCalc.ImagesPerGroup_Valid);
-
-
-					// get spatial resolution vary data
-
-					float Mean_LocPrecisionXY = FluoStatisticData_TypeDef::GetTimeVaryMean(FluoStatData.TimeVary_LocPrecisionXY);
-					float Mean_LocPrecisionZ = Mean_LocPrecisionXY / 1.414f * 2.0f;
-					
-					SpatialResolutionCalc.GetSpatialResolutionVary(Is3DImaging, LocPara_Global.IsHollowTube, Mean_LocPrecisionXY, Mean_LocPrecisionZ,  NYQUIST_RESOLUTION_OVERSAMPLING);
-
-
-					DimensionDensityCalc.ResetAccumulatedData();
-				}
-			}
-
-			ResolutionTime += (clock() - time1);
 
 		
 			// at least receive 50 frame to refresh display
@@ -338,8 +322,14 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 	while (RenderingState.HaveProcessWait()); // wait rend finish
 
-
 	OnlineRendAlive = false; // stop rend image
+
+
+	if (LocPara_Global.SpatialResolutionCalcEn)
+	{
+		while (LocArray_Resolution_Queue.unsafe_size()>0);
+	}
+
 
 	WholeProc_EndTime = clock();
 
@@ -356,12 +346,13 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	printf("Rendering time : %d ms\n", RendTime);
 	printf("Stastics calc time : %d ms\n", StatTime);
 
-	if (LocPara_Global.SpatialResolutionCalcEn)printf("Resolution calc time : %d ms\n", ResolutionTime);
 
 	printf("TotalFluoNum : %d\n", TotalFluoNum);
 	printf("Localization speed : %.0f/s\n", LocSpeed);
 
 
+	cudaGetDevice(&CurDevice);
+	printf("Localization dev: %d\n", CurDevice);
 
 
 	IsLocRunning = false;

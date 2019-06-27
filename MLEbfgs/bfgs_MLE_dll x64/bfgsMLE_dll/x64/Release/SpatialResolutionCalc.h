@@ -81,12 +81,15 @@ public:
 	float * h_LocArry;
 	float * d_LocArry;
 
+	// images number for a group to calculate dimension and localization density
+	int ImagesPerGroup_Ideal;
 
-	// add a fraction of loc data, may be only several frames
+	// acctually information per group
 	int AccumulatedFluoNum;
 	int ImagesPerGroup_Valid; 
 	
 	
+
 	float DimensionFD;
 	float LocDensityFD; 
 
@@ -105,9 +108,6 @@ private:
 	vector<float> AccumulatedMeanDistanceVary; // unit is um
 
 	
-	// images number for a group to calculate dimension and localization density
-	int ImagesPerGroup_Ideal;
-	
 	// consecutive filter for a group of localizations
 	NyqConsecutiveFilter_TypeDef ConsecutiveFilter;
 
@@ -121,10 +121,12 @@ private:
 	float *d_MinDistance;
 
 public:
-	void Init(int MaxFluoNumPerGroup, int ImagesPerGroup);
+	void Init();
 	void DeInit();
 
+	void FrameNumberPerGroupCalc(int ImageWidth, int ImageHigh);
 	
+
 	void ResetAccumulatedData();
 
 	// two methods of add localization data: AddLocArray_FewFrames, AddLocArray_AGroup
@@ -137,6 +139,7 @@ public:
 	
 	// get dimension, localization density fitting, use OffsetFrame as offset, calculate data point from StartFrame to EndFrame (not from the frist frame to EndFrame)
 	void GetDimensionLocDensity_AGroup(int OffsetFrame, int StartFrame, int EndFrame, float PixelSize_nm, bool Is3DImaging, cudaStream_t cstream);
+
 
 private:
 	
@@ -164,6 +167,8 @@ public:
 	static int GetFluoNumPerFrame(float * h_LocArry, int FluoNum, int CurFrame, int StartPos);
 
 };
+
+
 
 
 

@@ -121,7 +121,6 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetLocPara
 	// image rendering
 	LocPara_Global.SNR_th = SNR_th;
 
-	LocPara_Global.ProcessingMode = ProcessMode_Online;
 }
 
 /*
@@ -316,6 +315,14 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1StartLocThread
 		// later to start localization thread
 		AfxBeginThread(th_OnlineLocalizationLD, NULL);
 
+
+		if (LocPara_Global.SpatialResolutionCalcEn)
+		{
+			AfxBeginThread(th_OnlineSpatialResolutionCalc, NULL);
+
+		}
+
+
 	}
 }
 
@@ -481,12 +488,9 @@ JNIEXPORT jintArray JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1GetSMLMImage
 * Signature: (I)V
 */
 JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetSpatialResolutionInf
-(JNIEnv *env, jclass obj, jint iFramePerGroup, jint iIsHollowTube, jfloat iStructureSize, jfloat RSCResolutionTh)
+(JNIEnv *env, jclass obj, jfloat iStructureSize)
 {
-	LocPara_Global.ImagesPerGroup = iFramePerGroup;
 	LocPara_Global.StrucuteSize_2D = iStructureSize;
-	LocPara_Global.IsHollowTube = iIsHollowTube;
-	LocPara_Global.RSCResolutionTh = RSCResolutionTh;
 
 }
 

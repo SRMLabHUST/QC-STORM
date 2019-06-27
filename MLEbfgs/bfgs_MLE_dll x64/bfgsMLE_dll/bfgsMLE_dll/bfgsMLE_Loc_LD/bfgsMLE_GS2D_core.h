@@ -260,7 +260,7 @@ __global__ void bfgsMLELoc_Gauss2D(float *d_LocArry, unsigned short *d_ImageROI,
 		int IsFittingValid = isnan(Background) ? 0 : 1;
 
 
-		if (IsFittingValid && (CurSNR > 4.0f) && (SimgaX <= Simga_Max_Th) && (FittedXPos > XYLBound) && (FittedXPos < XYUBound) && (FittedYPos > XYLBound) && (FittedYPos < XYUBound)) //
+		if (IsFittingValid && (CurSNR > 4.0f) && (SimgaX <= Simga_Max_Th) && (SimgaX >= 0.6f) && (FittedXPos > XYLBound) && (FittedXPos < XYUBound) && (FittedYPos > XYLBound) && (FittedYPos < XYUBound)) //
 		{
 			pLocArry[CurFluoID][Pos_PPho] = PeakPhoton; // peak photon
 			pLocArry[CurFluoID][Pos_XPos] = XPos; // may have 0.5 or 1 pixel offset compared with other software

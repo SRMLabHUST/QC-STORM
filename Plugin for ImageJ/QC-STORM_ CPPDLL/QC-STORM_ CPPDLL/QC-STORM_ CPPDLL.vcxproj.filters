@@ -77,6 +77,9 @@
     <ClInclude Include="CImageDisplay\CImgCurveDisplayParameters.h">
       <Filter>CImageDisplay</Filter>
     </ClInclude>
+    <ClInclude Include="OnlineSpatialResolutionCalc.h">
+      <Filter>Online Localization</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -101,6 +104,9 @@
       <Filter>ImageJInterface</Filter>
     </ClCompile>
     <ClCompile Include="OnlineLocalizationLD.cpp">
+      <Filter>Online Localization</Filter>
+    </ClCompile>
+    <ClCompile Include="OnlineSpatialResolutionCalc.cpp">
       <Filter>Online Localization</Filter>
     </ClCompile>
   </ItemGroup>

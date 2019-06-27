@@ -103,7 +103,10 @@ extern cudaStream_t loc_stream1;
 
 extern cudaStream_t render_stream1;
 
-extern int SelectedGPUID;
+
+
+extern int GPUID_1Best;
+extern int GPUID_2Best;
 
 extern tbb::concurrent_queue<qImgData> ImgDataQueue;
 
@@ -124,6 +127,7 @@ extern FluoStatisticData_TypeDef FluoStatData;
 extern ImageRenderData_TypeDef RendData;
 
 
+extern cudaStream_t Resolution_stream1;
 
 extern NyqDimensionDensityCalc_TypeDef DimensionDensityCalc;
 extern SpatialResolutionCalc_TypeDef SpatialResolutionCalc;
@@ -139,5 +143,7 @@ void ClearAllOnlineThreadAlive();
 void InitAllLocResource();
 void DeinitAllLocResource();
 
-int SelectBestGPU();
+
+
+void SelectBestGPU();
 

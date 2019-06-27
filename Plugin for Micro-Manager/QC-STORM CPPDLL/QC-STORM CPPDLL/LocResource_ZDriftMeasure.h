@@ -1,6 +1,3 @@
-#pragma once
-
-
 /*
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
@@ -16,9 +13,15 @@ You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#pragma once
+
 #include "bfgs_MLE_dll.h"
 
 extern LocalizationPara LocPara_Global;
+
+
+extern int GPUID_1Best;
+extern int GPUID_2Best;
 
 
 // molecule finding, MLE localization,rendering,statistical processing
@@ -38,6 +41,7 @@ public:
 
 	int MLELocalization(unsigned short *h_RawImg, int BatchedImgNum)
 	{
+		cudaSetDevice(GPUID_1Best);
 
 		FluoStatData_.ResetAllDat(loc_stream1_);
 
@@ -74,6 +78,8 @@ public:
 
 	void Init(LocalizationPara &LocPara_Global)
 	{
+		cudaSetDevice(GPUID_1Best);
+
 		LDROIExtractData_.Init(LocPara_Global);
 		LDLocData_.Init(LocPara_Global);
 
@@ -90,6 +96,8 @@ public:
 
 	void Deinit(LocalizationPara &LocPara_Global)
 	{
+		cudaSetDevice(GPUID_1Best);
+
 		LDROIExtractData_.Deinit();
 		LDLocData_.Deinit(LocPara_Global);
 

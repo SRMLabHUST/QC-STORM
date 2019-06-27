@@ -55,7 +55,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     public float ZDepthGapF=50;
     public int FramePerDepth=100;
     
-    boolean ResolutionEn = false;
     
     /**
      * Creates new form QC_STORM_Configurator
@@ -99,9 +98,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
            
         }
         
-
         jTabbedPane1.remove(jPanel_ROMP);
-        ResolutionEn = false;
+
     }
 
     /**
@@ -174,9 +172,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jCheckBox_Stat_SpaResolutionEn = new javax.swing.JCheckBox();
         jLabel26 = new javax.swing.JLabel();
         jTextField_StructureSize2D = new javax.swing.JTextField();
-        jCheckBox_IsHollowStructure = new javax.swing.JCheckBox();
-        jLabel28 = new javax.swing.JLabel();
-        jTextField_ImagePerGroup = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         jCheckBox_Stat_SpaResolutionVary = new javax.swing.JCheckBox();
         jCheckBox_Stat_NyqResolutionVary = new javax.swing.JCheckBox();
@@ -597,18 +592,11 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                 }
             });
 
-            jCheckBox_IsHollowStructure.setText("Is hollow tube");
-            jCheckBox_IsHollowStructure.setToolTipText("not solid tube or structure width is significantly larger than localization precision");
-
-            jLabel28.setText("Images per group:");
-
-            jTextField_ImagePerGroup.setText("50");
-
             jLabel16.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
             jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
             jLabel16.setText("Spatial resolution time-varying curve:");
 
-            jCheckBox_Stat_SpaResolutionVary.setText("Spatial resolution");
+            jCheckBox_Stat_SpaResolutionVary.setText("Spatial resolution (Lateral)");
 
             jCheckBox_Stat_NyqResolutionVary.setText("Nyquist resolution");
             jCheckBox_Stat_NyqResolutionVary.addActionListener(new java.awt.event.ActionListener() {
@@ -634,18 +622,13 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                                 .addComponent(jCheckBox_Stat_SpaResolutionVary)
                                 .addComponent(jCheckBox_Stat_DimensionFDVary)
                                 .addComponent(jLabel16)
-                                .addComponent(jLabel28)
                                 .addComponent(jLabel26))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(jPanel_ROMPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel_ROMPLayout.createSequentialGroup()
-                                    .addComponent(jTextField_StructureSize2D, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jCheckBox_IsHollowStructure))
-                                .addComponent(jTextField_ImagePerGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextField_StructureSize2D, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jCheckBox_Stat_NyqResolutionVary)
                                 .addComponent(jCheckBox_Stat_LocDensityFDVary))))
-                    .addContainerGap(82, Short.MAX_VALUE))
+                    .addContainerGap(110, Short.MAX_VALUE))
             );
             jPanel_ROMPLayout.setVerticalGroup(
                 jPanel_ROMPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -655,13 +638,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(jPanel_ROMPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField_StructureSize2D, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jCheckBox_IsHollowStructure))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(jPanel_ROMPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField_ImagePerGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(24, 24, 24)
+                        .addComponent(jTextField_StructureSize2D, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(34, 34, 34)
                     .addComponent(jLabel16)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(jPanel_ROMPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -671,7 +649,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                     .addGroup(jPanel_ROMPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jCheckBox_Stat_DimensionFDVary)
                         .addComponent(jCheckBox_Stat_LocDensityFDVary))
-                    .addContainerGap(225, Short.MAX_VALUE))
+                    .addContainerGap(246, Short.MAX_VALUE))
             );
 
             jTabbedPane1.addTab("ROMP", jPanel_ROMP);
@@ -1044,14 +1022,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private void jTextField_StructureSize2DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_StructureSize2DActionPerformed
         // TODO add your handling code here:
         float StructureWidth = Float.parseFloat(jTextField_StructureSize2D.getText());
-        if((StructureWidth>=100)||(StructureWidth<=0.01))
-        {
-            jCheckBox_IsHollowStructure.setSelected(true);
-        }
-        else
-        {
-            jCheckBox_IsHollowStructure.setSelected(false);
-        }
+
     }//GEN-LAST:event_jTextField_StructureSize2DActionPerformed
 
     private void jCheckBox_Stat_NyqResolutionVaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_Stat_NyqResolutionVaryActionPerformed
@@ -1129,7 +1100,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JButton jButton_Rerend;
     private javax.swing.JButton jButton_Start;
     private javax.swing.JButton jButton_Start2;
-    private javax.swing.JCheckBox jCheckBox_IsHollowStructure;
     private javax.swing.JCheckBox jCheckBox_ShiftCorrection;
     private javax.swing.JCheckBox jCheckBox_Stat_BackgroundVary;
     private javax.swing.JCheckBox jCheckBox_Stat_ConsecutiveFitEn;
@@ -1172,7 +1142,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1191,7 +1160,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField_ConsecFilterRadius;
     private javax.swing.JTextField jTextField_DriftCorrGroupFrameNum;
-    private javax.swing.JTextField jTextField_ImagePerGroup;
     private javax.swing.JTextField jTextField_Kadc;
     private javax.swing.JTextField jTextField_LocDataDir;
     private javax.swing.JTextField jTextField_LocDataPath;
@@ -1268,15 +1236,13 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         // spatial resolution
        
         LocPara.StructureSize2D = Float.parseFloat(jTextField_StructureSize2D.getText());
-        LocPara.ImagePerGroup = Integer.parseInt(jTextField_ImagePerGroup.getText());
-        LocPara.IsHollowTube = jCheckBox_IsHollowStructure.isSelected()? 1 : 0;
-        LocPara.RSCResolutionTh = 0;
         
         // statastic information display enable
         LocPara.StatDispSel = GetStasticalInfDispEn();
         LocPara.SpatialResolutionEn = jCheckBox_Stat_SpaResolutionEn.isSelected() ? 1 : 0;
         
-        
+        LocPara.SpatialResolutionEn = 0;
+
         // save file path
         ResultsFilePath = jTextField_ResultPath.getText();  
         
@@ -1291,8 +1257,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         
         QC_STORM_.lm_SetLocPara3D(LocPara.MinZDepth, LocPara.MaxZDepth, LocPara.ZDepthCorrFactor, LocPara.p4_XGY, LocPara.p3_XGY, LocPara.p2_XGY, LocPara.p1_XGY, LocPara.p0_XGY, LocPara.p4_XLY, LocPara.p3_XLY, LocPara.p2_XLY, LocPara.p1_XLY, LocPara.p0_XLY);
        
+        
         QC_STORM_.lm_SetStatInfSelection(LocPara.StatDispSel, LocPara.SpatialResolutionEn);            
-        QC_STORM_.lm_SetSpatialResolutionInf(LocPara.ImagePerGroup, LocPara.IsHollowTube, LocPara.StructureSize2D, 0);
+        QC_STORM_.lm_SetSpatialResolutionInf(LocPara.StructureSize2D);
                      
     }
     
@@ -1400,7 +1367,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 		jTextField_SNR_th.setText(pps.getProperty("SNR_thF", Float.toString(LocPara.SNR_th)));
         
         jTextField_StructureSize2D.setText(pps.getProperty("StructureSize2D", Float.toString(50.0f)));
-        jTextField_ImagePerGroup.setText(pps.getProperty("ImagePerGroup", Integer.toString(50)));
         
         // statastic information display enable
 
@@ -1442,7 +1408,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jTextField_ResultPath.setText(ResultsFilePath);
         
         
-        SetResolutionEnable(ResolutionEn);
     }
 
 
@@ -1495,7 +1460,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         pps.setProperty("SNR_thF", jTextField_SNR_th.getText());
         
         pps.setProperty("StructureSize2D", jTextField_StructureSize2D.getText());
-        pps.setProperty("ImagePerGroup", jTextField_ImagePerGroup.getText());
         
         // statastic information display enable
         pps.setProperty("TPhotonEnable", Boolean.toString(jCheckBox_Stat_TotalPhoton.isSelected()));
@@ -1559,15 +1523,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     {
         jButton_Rerend.setEnabled(false);
     }
-    
-    void SetResolutionEnable(boolean en)
-    {
-        jCheckBox_Stat_SpaResolutionEn.setSelected(en);
-        jCheckBox_Stat_SpaResolutionVary.setSelected(en);
-        jCheckBox_Stat_NyqResolutionVary.setSelected(en);
-        jCheckBox_Stat_DimensionFDVary.setSelected(en);
-        jCheckBox_Stat_LocDensityFDVary.setSelected(en);
-    }
+
     
     public class MyListener implements WindowListener
     {

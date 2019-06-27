@@ -26,9 +26,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "tbb.h"
 using namespace tbb;
 
-#define Resource_BIT0	0X01 // common
-#define Resource_BIT1	0X02 // 2d
-#define Resource_BIT2	0X04 // 3d
 
 
 
@@ -39,6 +36,8 @@ struct qImgData
 	int BatchFrameNum;
 
 };
+
+
 
 class ThreadCmdProcessState
 {
@@ -90,10 +89,9 @@ extern CString ImageName;
 
 
 extern cudaStream_t loc_stream1;
-extern cudaStream_t loc_stream2;
 
 extern cudaStream_t render_stream1;
-extern cudaStream_t render_stream2;
+
 
 
 extern concurrent_queue<qImgData> ImgDataQueue;
@@ -115,18 +113,20 @@ extern ImageRenderData_TypeDef RendData;
 
 
 
+extern cudaStream_t Resolution_stream1;
 
 extern NyqDimensionDensityCalc_TypeDef DimensionDensityCalc;
 extern SpatialResolutionCalc_TypeDef SpatialResolutionCalc;
 
 
 
-extern int SelectedGPUID;
+extern int GPUID_1Best;
+extern int GPUID_2Best;
 
 
 void InitAllLocResource(int IsPostprocess);
 void DeinitAllLocResource(int IsPostprocess);
 
 
-int SelectBestGPU();
+void SelectBestGPU();
 

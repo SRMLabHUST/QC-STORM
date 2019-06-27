@@ -43,6 +43,8 @@ void RendDispImage()
 
 UINT th_OnlineRendDispLD(LPVOID params)
 {
+	cudaSetDevice(GPUID_1Best);
+
 	IsRendRunning = 1;
 
 	while (OnlineRendAlive)

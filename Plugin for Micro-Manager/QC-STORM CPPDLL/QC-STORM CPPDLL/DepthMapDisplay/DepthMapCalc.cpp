@@ -2,10 +2,16 @@
 #include "DepthMapCalc.h"
 
 
+/*
+only developed for beads imaging for 3D imaging plan inclination adjustment
+
+
+*/
+
 #define ZDepthTh		500
 
-#define MaxDispDepth	250
-#define MinDispDepth	-250
+#define MaxDispDepth	200
+#define MinDispDepth	-200
 
 
 void DepthMapCalc_TypeDef::FitZPlane(float *h_iLocArray, int iFluoNum)

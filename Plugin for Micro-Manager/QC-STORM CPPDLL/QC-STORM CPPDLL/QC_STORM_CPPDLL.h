@@ -149,7 +149,7 @@ extern "C" {
 	* Signature: (IIFF)V
 	*/
 	JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetSpatialResolutionInf
-	(JNIEnv *, jclass, jint, jint, jfloat, jfloat);
+	(JNIEnv *, jclass, jfloat);
 
 	/*
 	* Class:     hust_whno_SMLM_QC_STORM_Plug

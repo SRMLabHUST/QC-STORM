@@ -38,16 +38,16 @@ CString ImageName;
 
 
 cudaStream_t loc_stream1;
-cudaStream_t loc_stream2;
 
 cudaStream_t render_stream1;
-cudaStream_t render_stream2;
 
 
 
 concurrent_queue<qImgData> ImgDataQueue;
 
+
 LocalizationPara LocPara_Global;
+
 LDROIExtractData_TypeDef LDROIExtractData;
 
 LDLocData_TypeDef LDLocData;
@@ -61,13 +61,12 @@ FluoStatisticData_TypeDef FluoStatData;
 ImageRenderData_TypeDef RendData;
 
 
-int SelectedGPUID;
+int GPUID_1Best = 0;
+int GPUID_2Best = 0;
 
 
-int ImagesPerGroup;
-float StrucuteSize_2D;
-float StrucuteSize_3D;
 
+cudaStream_t Resolution_stream1;
 
 NyqDimensionDensityCalc_TypeDef DimensionDensityCalc;
 SpatialResolutionCalc_TypeDef SpatialResolutionCalc;
@@ -75,32 +74,30 @@ SpatialResolutionCalc_TypeDef SpatialResolutionCalc;
 
 volatile bool IsLocResourceAllocated = false;
 
-LocalizationPara LocPara_Cmp;
+LocalizationPara LocPara_Last;
 
 
 void InitAllLocResource(int IsPostprocess)
 {
-	if ((IsLocResourceAllocated == false) || (!LocPara_Global.IsEqual(LocPara_Cmp)))
+	SelectBestGPU();
+
+	if ((IsLocResourceAllocated == false) || (!LocPara_Global.IsEqual(LocPara_Last)))
 	{
 		DeinitAllLocResource(IsPostprocess);
 
-		LocPara_Cmp = LocPara_Global;
+		LocPara_Last = LocPara_Global;
 
 
-		//
-		SelectedGPUID = SelectBestGPU();
-		cudaSetDevice(SelectedGPUID);
+		// the GPU 1
+		cudaSetDevice(GPUID_1Best);
 
 
 		// alloc stream with priority
 		int leastPriority, greatestPriority;
 		cudaDeviceGetStreamPriorityRange(&leastPriority, &greatestPriority);
 
-		CreatStreamWithPriority(&render_stream1, leastPriority + 1);
-		CreatStreamWithPriority(&render_stream2, leastPriority + 1);
-
-		CreatStreamWithPriority(&loc_stream1, leastPriority);
-		CreatStreamWithPriority(&loc_stream2, leastPriority);
+		cudaStreamCreate(&loc_stream1);
+		cudaStreamCreate(&render_stream1);
 
 		if (IsPostprocess == 0)
 		{
@@ -138,8 +135,13 @@ void InitAllLocResource(int IsPostprocess)
 
 		if (LocPara_Global.SpatialResolutionCalcEn)
 		{
+			// the GPU 2
+			cudaSetDevice(GPUID_2Best);
+			
+			cudaStreamCreate(&Resolution_stream1);
+
 			// spatial resolution calculation
-			DimensionDensityCalc.Init(MAX_FLUO_NUM_PER_GROUP, LocPara_Global.ImagesPerGroup);
+			DimensionDensityCalc.Init();
 			SpatialResolutionCalc.Init();
 		}
 
@@ -151,20 +153,19 @@ void InitAllLocResource(int IsPostprocess)
 
 void DeinitAllLocResource(int IsPostprocess)
 {
+	SelectBestGPU();
+
 	// for both 2d and 3d
-	SelectedGPUID = SelectBestGPU();
-	cudaSetDevice(SelectedGPUID);
 
 
 	if (IsLocResourceAllocated == true)
 	{
 
-		// free stream
-		FreeStream(render_stream1);
-		FreeStream(render_stream2);
+		cudaSetDevice(GPUID_1Best);
 
-		FreeStream(loc_stream1);
-		FreeStream(loc_stream2);
+		// free stream
+		cudaStreamDestroy(loc_stream1);
+		cudaStreamDestroy(render_stream1);
 
 		if (IsPostprocess == 0)
 		{
@@ -202,69 +203,99 @@ void DeinitAllLocResource(int IsPostprocess)
 		{
 		}
 
+
 		if (LocPara_Global.SpatialResolutionCalcEn)
 		{
+			cudaSetDevice(GPUID_2Best);
+
+			cudaStreamDestroy(Resolution_stream1);
+
+
 			// spatial resolution calculation
 			DimensionDensityCalc.DeInit();
 			SpatialResolutionCalc.DeInit();
 
 		}
 
-
 		//
+		cudaSetDevice(GPUID_2Best);
 		cudaDeviceReset();
+		cudaSetDevice(GPUID_1Best);
+		cudaDeviceReset();
+
 
 		IsLocResourceAllocated = false;
 	}
 }
 
-int SelectBestGPU()
+void SelectBestGPU()
 {
-	int DevCnt;
+	GPUID_1Best = 0;
+	GPUID_2Best = 0;
+
+
+	int DevNum = 0;
 
 	int cnt = 0;
 	cudaDeviceProp iProp;
 
 
-	int BestGPUId = 0;
+	cudaGetDeviceCount(&DevNum);
+	printf("GPU num:%d\n", DevNum);
 
-	cudaGetDeviceCount(&DevCnt);
-	printf("GPU num:%d\n", DevCnt);
-
-	if ((DevCnt < 1) || (DevCnt > 10))
+	if ((DevNum < 1) || (DevNum > 10))
 	{
-		printf("GPU load error\n");
+		printf("error: No GPU find\n\n");
 
-		return -1;
+		return ;
 	}
 
 
-	int *ProcNumArray = new int[DevCnt];
-	for (cnt = 0; cnt < DevCnt; cnt++)
+	int *ProcessorNumArray = new int[DevNum];
+
+	// get processor number per GPU
+	for (cnt = 0; cnt < DevNum; cnt++)
 	{
 		cudaGetDeviceProperties(&iProp, cnt);
-		ProcNumArray[cnt] = iProp.multiProcessorCount;
+		ProcessorNumArray[cnt] = iProp.multiProcessorCount;
 	}
 
 
-	// find the device with largest multi processor count
-	BestGPUId = 0;
-	for (cnt = 0; cnt < DevCnt; cnt++)
+	// find the GPU with largest processor number
+
+	for (cnt = 0; cnt < DevNum; cnt++)
 	{
-		if (ProcNumArray[cnt] > ProcNumArray[BestGPUId])
+		if (ProcessorNumArray[cnt] > ProcessorNumArray[GPUID_1Best])
 		{
-			BestGPUId = cnt;
+			GPUID_1Best = cnt;
+		}
+	}
+
+	// find the send best GPU
+	GPUID_2Best = GPUID_1Best;
+	ProcessorNumArray[GPUID_1Best] = 0;
+
+	if (DevNum > 1)
+	{
+		for (cnt = 0; cnt < DevNum; cnt++)
+		{
+			if (ProcessorNumArray[cnt] > ProcessorNumArray[GPUID_2Best])
+			{
+				GPUID_2Best = cnt;
+			}
 		}
 	}
 
 
-	delete[] ProcNumArray;
+	delete[] ProcessorNumArray;
 
-	cudaGetDeviceProperties(&iProp, BestGPUId);
-	printf("BestGPUId %d:%s\n", BestGPUId, iProp.name);
+	// print information
+	cudaGetDeviceProperties(&iProp, GPUID_1Best);
+	printf("1st BestGPUId %d:%s\n", GPUID_1Best, iProp.name);
 	printf("Number of multiprocessors: %d\n", iProp.multiProcessorCount);
 
-	cudaSetDevice(BestGPUId);
 
-	return BestGPUId;
+	cudaGetDeviceProperties(&iProp, GPUID_2Best);
+	printf("2nd BestGPUId %d:%s\n", GPUID_2Best, iProp.name);
+	printf("Number of multiprocessors: %d\n", iProp.multiProcessorCount);
 }

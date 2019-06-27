@@ -65,7 +65,7 @@ public class QC_STORM_Plug implements ProcessorPlugin, SciJavaPlugin{
     public native static float [] lm_GetSMLMImage();
     public native static int [] lm_GetSMLMImage3D();
    
-    public native static void lm_SetSpatialResolutionInf(int FramePerGroup, int IsHollowTube, float StructureSize, float RSCResolutionTh);
+    public native static void lm_SetSpatialResolutionInf(float StructureSize);
     public native static float lm_GetCurSpatialResolution();
     public native static float lm_GetMeanLocPrec();
     

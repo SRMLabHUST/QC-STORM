@@ -165,6 +165,13 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StartLocThread
 
 	AfxBeginThread(th_OnlineRendDispLD, NULL);
 
+
+	if (LocPara_Global.SpatialResolutionCalcEn)
+	{
+		AfxBeginThread(th_OnlineSpatialResolutionCalc, NULL);
+
+	}
+
 	IsLocRunning = true;
 
 }
@@ -337,12 +344,9 @@ JNIEXPORT jintArray JNICALL Java_QC_1STORM_1_lm_1GetSMLMImage3D
 * Signature: (I)V
 */
 JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetSpatialResolutionInf
-(JNIEnv *env, jclass obj, jint iFramePerGroup, jint iIsHollowTube, jfloat iStructureSize, jfloat RSCResolutionTh)
+(JNIEnv *env, jclass obj, jfloat iStructureSize)
 {
-	LocPara_Global.ImagesPerGroup = iFramePerGroup;
 	LocPara_Global.StrucuteSize_2D = iStructureSize;
-	LocPara_Global.IsHollowTube = iIsHollowTube;
-	LocPara_Global.RSCResolutionTh = 0;
 
 }
 

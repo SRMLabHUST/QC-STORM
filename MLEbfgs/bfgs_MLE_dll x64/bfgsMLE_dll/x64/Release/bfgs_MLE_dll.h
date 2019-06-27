@@ -111,14 +111,12 @@ public:
 	// spatial resolution calculation
 	int ImagesPerGroup;
 	int IsHollowTube; // tube width is significantly larger than localization precision
+
 	float StrucuteSize_2D;
-	float RSCResolutionTh; // expected resolution threshold
 
 	// calculation control
 	int SpatialResolutionCalcEn;
 
-
-	int ProcessingMode; // online or offline
 
 public:
 	// construction

@@ -38,8 +38,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 UINT th_OnlineLocalizationLD(LPVOID params);
+
 UINT th_OnlineRendDispLD(LPVOID params);
+
 UINT th_OnlineFeedback(LPVOID params);
+
+
+UINT th_OnlineSpatialResolutionCalc(LPVOID params);
 
 
 void OpenConsole();

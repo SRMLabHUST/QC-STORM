@@ -163,6 +163,7 @@
     <ClInclude Include="LocResource_ZDriftMeasure.h" />
     <ClInclude Include="OnlineFeedback_rc.h" />
     <ClInclude Include="OnlineFeedback.h" />
+    <ClInclude Include="OnlineSpatialResolutionCalc.h" />
     <ClInclude Include="PIDController.h" />
     <ClInclude Include="QC_STORM_CPPDLL.h" />
     <ClInclude Include="LocResource.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="OnlineFeedback.cpp" />
     <ClCompile Include="OnlineLocalizationLD.cpp" />
     <ClCompile Include="OnlineRendDisp.cpp" />
+    <ClCompile Include="OnlineSpatialResolutionCalc.cpp" />
     <ClCompile Include="QC_STORM_CPPDLL.cpp" />
     <ClCompile Include="StatInfDisplay.cpp" />
     <ClCompile Include="stdafx.cpp">

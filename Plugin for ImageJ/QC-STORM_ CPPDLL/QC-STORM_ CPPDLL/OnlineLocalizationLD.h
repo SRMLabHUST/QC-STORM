@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "QC_STORM_CPPDLL.h"
 
+
 // for multi-thread program useage
 #include "tbb.h"
 using namespace tbb;
@@ -39,6 +40,8 @@ UINT th_OnlineLocalizationLD(LPVOID params);
 
 UINT th_OnlineRendDispLD(LPVOID params);
 
+
+UINT th_OnlineSpatialResolutionCalc(LPVOID params);
 
 
 #endif // __LM_ONLINE_LOC_H

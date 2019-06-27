@@ -72,10 +72,7 @@ public class QC_STORM_Parameters {
         float SNR_th = 5; // used in rendering
         
         // spatial resolution
-        int ImagePerGroup = 50;
-        int IsHollowTube = 0;
         float StructureSize2D = 40;
-        float RSCResolutionTh = 0;
         
         // statastic information display enable
         int StatDispSel = 0;

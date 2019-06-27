@@ -36,6 +36,8 @@ ThreadCmdProcessState RenderingState;
 
 UINT th_OnlineRendDispLD(LPVOID params)
 {
+	cudaSetDevice(GPUID_1Best);
+
 	IsRendRunning = true;
 
 	int clkbtn = 0;

@@ -4,6 +4,11 @@
 #include <algorithm>
 using namespace std;
 
+/*
+only developed for beads imaging for 3D imaging plan inclination adjustment
+
+
+*/
 
 
 #include "bfgs_MLE_para.h"

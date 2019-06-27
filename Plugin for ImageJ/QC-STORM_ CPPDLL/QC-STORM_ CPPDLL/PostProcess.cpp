@@ -31,6 +31,8 @@ int DriftCorrGroupFrameNum = 800;
 
 UINT th_RerendImage(LPVOID params)
 {
+	cudaSetDevice(GPUID_1Best);
+
 	IsLocRunning = true;
 
 	OpenConsole(); // open console window to display printf
@@ -196,7 +198,8 @@ UINT th_RerendImage(LPVOID params)
 
 			if (IsEnough)
 			{
-				bool Is3DImaging = LocPara_Global.LocType == LocType_AS3D;
+//				bool Is3DImaging = LocPara_Global.LocType == LocType_AS3D;
+				bool Is3DImaging = false;
 
 				DimensionDensityCalc.GetDimensionLocDensity_AGroup(DimensionDensityCalc.ImagesPerGroup_Valid * 1 / 10, DimensionDensityCalc.ImagesPerGroup_Valid * 2 / 10, DimensionDensityCalc.ImagesPerGroup_Valid - 1, LocPara_Global.PixelSize, Is3DImaging, loc_stream1);
 

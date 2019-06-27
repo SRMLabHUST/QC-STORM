@@ -97,7 +97,7 @@ public class QC_STORM_ implements PlugInFilter{
     public native static float [] lm_GetSMLMImage();
     public native static int [] lm_GetSMLMImage3D();
     
-    public native static void lm_SetSpatialResolutionInf(int FramePerGroup, int IsHollowTube, float StructureSize, float RSCResolutionTh);
+    public native static void lm_SetSpatialResolutionInf(float StructureSize);
     
     public native static int [] lm_GetStatInfImageSize();
     public native static int [] lm_GetStatInfImage(int n);
