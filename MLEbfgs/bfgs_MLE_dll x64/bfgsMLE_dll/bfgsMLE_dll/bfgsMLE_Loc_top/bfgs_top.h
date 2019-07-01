@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "device_launch_parameters.h"
 
 
-#include "bfgs_CommonPara.h"
 #include "bfgs_base.h"
 
 #include "cudaWrapper.h"

@@ -36,15 +36,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // localziation type, for 2d or 3d selection
 #define LocType_GS2D				0	// Gaussian symitrical 2d localization
 #define LocType_AS3D				1	// astigmatism 3d
+#define LocType_DH3D				2	// astigmatism 3d
 
 
 // use gaussian 2d or 3d localization
-#define LocType_IsGS2D(x)				(x == LocType_GS2D)
+#define LocType_IsGS2D(x)				((x == LocType_GS2D)||(x == LocType_DH3D))
 #define LocType_IsAS3D(x)				(x == LocType_AS3D)
 
 // use red hot 2d or color encoded depth 3d
 #define RendType_Is2D(x)				(x == LocType_GS2D)
-#define RendType_Is3D(x)				(x == LocType_AS3D)
+#define RendType_Is3D(x)				((x == LocType_AS3D)||(x == LocType_DH3D))
 
 
 

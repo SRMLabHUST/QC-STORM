@@ -56,6 +56,7 @@ ZeroLocalizationsRemovel_TypeDef ZeroLocRemovel;
 
 ConsecutiveFit_TypeDef ConsecutiveFitData;
 
+DH3D_MoleculePair_TypeDef DH3D_MoleculePair;
 
 FluoStatisticData_TypeDef FluoStatData;
 ImageRenderData_TypeDef RendData;
@@ -110,6 +111,7 @@ void InitAllLocResource(int IsPostprocess)
 
 		ZeroLocRemovel.Init();
 
+		DH3D_MoleculePair.Init();
 
 		if (LocPara_Global.ConsecFitEn)
 		{
@@ -177,6 +179,8 @@ void DeinitAllLocResource(int IsPostprocess)
 		LDLocData.Deinit(LocPara_Global);
 
 		ZeroLocRemovel.Deinit();
+
+		DH3D_MoleculePair.Deinit();
 
 
 		if (LocPara_Global.ConsecFitEn)

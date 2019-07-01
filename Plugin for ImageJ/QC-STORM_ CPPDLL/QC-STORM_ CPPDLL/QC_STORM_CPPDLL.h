@@ -48,6 +48,15 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetLocPara3D
 
 /*
 * Class:     QC_STORM_
+* Method:    lm_SetLocParaDH3D
+* Signature: (I)V
+*/
+JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetLocParaDH3D
+(JNIEnv *, jclass, jint, jfloat, jfloat);
+
+
+/*
+* Class:     QC_STORM_
 * Method:    lm_SetStatInfSelection
 * Signature: (I)V
 */

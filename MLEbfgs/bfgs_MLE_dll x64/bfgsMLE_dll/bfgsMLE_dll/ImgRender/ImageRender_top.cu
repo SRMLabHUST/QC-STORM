@@ -50,6 +50,7 @@ void ImageRenderData_TypeDef::FluoRenderTop(float *h_LocArry, LocalizationPara &
 		break;
 
 	case LocType_AS3D:
+	case LocType_DH3D:
 		// for 3d localization
 
 		ImgRender_FluoRender_3D(h_LocArry, this, LocPara, RenderingMode, FixedlocPrec, FluoNum, cstream);

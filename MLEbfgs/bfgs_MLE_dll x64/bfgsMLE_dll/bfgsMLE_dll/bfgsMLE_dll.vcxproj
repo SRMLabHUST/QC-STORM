@@ -75,7 +75,7 @@
     <LibraryPath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\include;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_top;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_LD;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\cudaWrapper;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ImgRender;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\SubregionExtraction;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ImageRender_3dStack;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\TinyTIFF;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\StatisticsInfo;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\DriftCorrection_SRImageXCorr;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\BFGS for curve fitting;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\FileReadWriteWrapper;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\WLEParaEstimation;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_HD;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ConsecutiveFit;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\include;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_top;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_LD;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\cudaWrapper;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ImgRender;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\SubregionExtraction;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ImageRender_3dStack;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\TinyTIFF;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\StatisticsInfo;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\DriftCorrection_SRImageXCorr;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\BFGS for curve fitting;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\FileReadWriteWrapper;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\WLEParaEstimation;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\bfgsMLE_Loc_HD;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\ConsecutiveFit;G:\0codes\cuda codes\Localization imaging\bfgs_MLE_dll x64\bfgsMLE_dll\bfgsMLE_dll\DH-3D molecule pair;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -170,6 +170,7 @@
     <ClInclude Include="bfgsMLE_Loc_top\ZeroLocalizationsRemove.h" />
     <ClInclude Include="ConsecutiveFit\ConsecutiveFit.h" />
     <ClInclude Include="cudaWrapper\cudaWrapper.h" />
+    <ClInclude Include="DH-3D molecule pair\DH3D_MoleculePair.h" />
     <ClInclude Include="DriftCorrection_SRImageXCorr\DriftCorrection_SRImageXCorr.h" />
     <ClInclude Include="FileReadWriteWrapper\CppFileWrapper.h" />
     <ClInclude Include="ImageRender_3dStack\ImageRender_3dStack.h" />
@@ -208,6 +209,8 @@
     <CudaCompile Include="ConsecutiveFit\ConsecutiveFit.cu" />
     <CudaCompile Include="ConsecutiveFit\ConsecutiveFit_top.cu" />
     <CudaCompile Include="cudaWrapper\cudaWrapper.cu" />
+    <CudaCompile Include="DH-3D molecule pair\DH3D_MoleculePair.cu" />
+    <CudaCompile Include="DH-3D molecule pair\DH3D_MoleculePair_core.cu" />
     <CudaCompile Include="DriftCorrection_SRImageXCorr\DriftCorrection_SRImageXCorr.cu" />
     <CudaCompile Include="DriftCorrection_SRImageXCorr\DriftCorrection_SRImageXCorr_rc.cu" />
     <CudaCompile Include="DriftCorrection_SRImageXCorr\DriftCorrection_SRImageXCorr_top.cu" />

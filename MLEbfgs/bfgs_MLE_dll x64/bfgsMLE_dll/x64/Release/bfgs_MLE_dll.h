@@ -47,6 +47,7 @@ using namespace std;
 
 
 
+
 // basic parameters for localization for both 2d and 3d
 class LocalizationPara
 {
@@ -108,6 +109,12 @@ public:
 	float p0_XLY;
 
 
+	// double-helix special
+	int DH_RotateType;
+	float DH_MeanDistance;
+	float DH_DistanceTh;
+
+
 	// spatial resolution calculation
 	int ImagesPerGroup;
 	int IsHollowTube; // tube width is significantly larger than localization precision
@@ -127,6 +134,8 @@ public:
 	bool IsEqual(LocalizationPara & iPara);
 
 };
+
+
 
 
 struct CoreFittingPara
@@ -412,7 +421,6 @@ public:
 
 
 
-
 // remove invalid localizations with zero value
 class ZeroLocalizationsRemovel_TypeDef {
 public:
@@ -449,6 +457,40 @@ private:
 };
 
 
+
+
+
+// based on localized or even consecutive fitted position from bfgs_top
+class DH3D_MoleculePair_TypeDef
+{
+
+public:
+	float *h_LocArry;
+	float *d_LocArry;
+
+	float *h_oLocArry;
+	float *d_oLocArry;
+
+	int oValidFluoNum;
+
+
+private:
+	// paired molecule id for the same molecule
+	int *h_PairID;
+	int *d_PairID;
+
+	int * h_ValidoFluoNum;
+	int * d_ValidoFluoNum;
+
+public:
+
+	void Init();
+
+	void Deinit();
+
+	void MoleculePair(float *h_iLocArry, int FluoNum, LocalizationPara & LocPara, cudaStream_t cstream);
+
+};
 
 
 

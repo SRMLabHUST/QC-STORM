@@ -68,6 +68,10 @@ LocalizationPara::LocalizationPara()
 	p1_XLY = 1;
 	p0_XLY = 0;
 
+	// double-helix special
+	DH_RotateType = 0;
+	DH_MeanDistance = 10.0f;
+	DH_DistanceTh = 2.0f;
 
 	// spatial resolution
 	ImagesPerGroup = 50;
@@ -153,6 +157,11 @@ bool LocalizationPara::IsEqual(LocalizationPara & iPara)
 	SumNum += this->p1_XLY != iPara.p1_XLY;
 	SumNum += this->p0_XLY != iPara.p0_XLY;
 
+	// double-helix special
+	SumNum += this->DH_RotateType != iPara.DH_RotateType;
+	SumNum += this->DH_MeanDistance != iPara.DH_MeanDistance;
+	SumNum += this->DH_DistanceTh != iPara.DH_DistanceTh;
+
 
 	// spatial resolution calculation
 	SumNum += this->ImagesPerGroup != iPara.ImagesPerGroup;
@@ -165,3 +174,4 @@ bool LocalizationPara::IsEqual(LocalizationPara & iPara)
 
 	return SumNum == 0;
 }
+

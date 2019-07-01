@@ -107,6 +107,7 @@ extern ZeroLocalizationsRemovel_TypeDef ZeroLocRemovel;
 
 extern ConsecutiveFit_TypeDef ConsecutiveFitData;
 
+extern DH3D_MoleculePair_TypeDef DH3D_MoleculePair;
 
 extern FluoStatisticData_TypeDef FluoStatData;
 extern ImageRenderData_TypeDef RendData;

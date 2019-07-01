@@ -261,9 +261,18 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 			}
 
+			if (LocPara_Global.LocType == LocType_DH3D)
+			{
+				DH3D_MoleculePair.MoleculePair(WriteLocArry, WriteLocNum, LocPara_Global, loc_stream1);
+				WriteLocArry = DH3D_MoleculePair.h_oLocArry;
+				WriteLocNum = DH3D_MoleculePair.oValidFluoNum;
+			}
+
+
+
 			StatTime += (clock() - time1);
 		
-			// send for resolution calculation
+			// send localization data to another thread and queue for resolution calculation
 			if (LocPara_Global.SpatialResolutionCalcEn)
 			{
 

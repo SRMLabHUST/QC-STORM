@@ -67,7 +67,11 @@ public class QC_STORM_Parameters {
     	float p1_XLY = 1.0f;
     	float p0_XLY = 0.0f;
 
-
+        // double-helix special
+        int RotationType = 0;
+        float MeanDistance = 10.0f;
+        float DistanceTh = 1.5f;
+        
         // rendering
         float SNR_th = 5; // used in rendering
         

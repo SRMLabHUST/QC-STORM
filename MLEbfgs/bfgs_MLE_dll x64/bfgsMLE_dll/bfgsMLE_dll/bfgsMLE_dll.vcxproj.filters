@@ -51,6 +51,9 @@
     <Filter Include="DriftCorrection_SRImage">
       <UniqueIdentifier>{fc9c12e7-c7fd-491c-be58-652f84a2f93c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DH-3D molecule pair">
+      <UniqueIdentifier>{d600eb23-45d8-4e61-8f64-de883c47a415}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -152,6 +155,9 @@
     <ClInclude Include="bfgsMLE_Loc_HD\bfgsMLE_GS2D_3Emitter_core.h">
       <Filter>bfgsMLE_Loc_HD</Filter>
     </ClInclude>
+    <ClInclude Include="DH-3D molecule pair\DH3D_MoleculePair.h">
+      <Filter>DH-3D molecule pair</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -242,6 +248,12 @@
     </CudaCompile>
     <CudaCompile Include="bfgsMLE_Loc_HD\bfgsMLE_Multi_Emitter_Fit.cu">
       <Filter>bfgsMLE_Loc_HD</Filter>
+    </CudaCompile>
+    <CudaCompile Include="DH-3D molecule pair\DH3D_MoleculePair.cu">
+      <Filter>DH-3D molecule pair</Filter>
+    </CudaCompile>
+    <CudaCompile Include="DH-3D molecule pair\DH3D_MoleculePair_core.cu">
+      <Filter>DH-3D molecule pair</Filter>
     </CudaCompile>
   </ItemGroup>
 </Project>

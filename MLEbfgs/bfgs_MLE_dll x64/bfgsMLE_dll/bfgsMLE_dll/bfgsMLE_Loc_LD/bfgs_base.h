@@ -83,6 +83,12 @@ public:
 	float p0_XLY;
 
 
+	// double-helix special
+	int DH_RotateType;
+	float DH_MeanDistance;
+	float DH_DistanceTh;
+
+
 	// spatial resolution calculation
 	int ImagesPerGroup;
 	int IsHollowTube; // tube width is significantly larger than localization precision

@@ -72,7 +72,7 @@ void LDLocData_TypeDef::BFGS_MLELocalization(unsigned short * h_ImageROI, float 
 
 
 	// Low density fitting
-	if (LocPara.LocType == LocType_GS2D)
+	if ((LocPara.LocType == LocType_GS2D) ||(LocPara.LocType == LocType_DH3D))
 	{
 		// for 2d round Gaussian localization
 		LDLoc_BFGS_MLELocalizationGS2D(d_LocArry, d_ImageROI, d_WLEPara, SingleFitNum, d_FitPosInf, d_FitPara, LocPara.ROISize, cstream);

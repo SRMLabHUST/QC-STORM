@@ -126,6 +126,20 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetLocPara3D
 
 }
 
+/*
+* Class:     QC_STORM_
+* Method:    lm_SetLocParaDH3D
+* Signature: (I)V
+*/
+JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetLocParaDH3D
+(JNIEnv *, jclass, jint RotationType, jfloat MeanDistance, jfloat DistanceTh)
+{
+	LocPara_Global.DH_RotateType = RotationType;
+	LocPara_Global.DH_MeanDistance = MeanDistance;
+	LocPara_Global.DH_DistanceTh = DistanceTh;
+
+}
+
 
 /*
 * Class:     hust_whno_SMLM_QC_STORM_Plug
