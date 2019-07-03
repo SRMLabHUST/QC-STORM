@@ -96,7 +96,7 @@ public class QC_STORM_Acq_MultiROI {
                         
                         X_id = xcnt;
                         if(ycnt%2 != 0){
-                            X_id = ROINum_X - xcnt;
+                            X_id = ROINum_X - 1 - xcnt;
                         }
                         
                         
@@ -108,9 +108,10 @@ public class QC_STORM_Acq_MultiROI {
                             acqInitial.start();
                             acqInitial.join();
                         }
+                        
                         // start acquisition
                         
-                        String NamePostFix = String.format("_Y%d_X%d", X_id, Y_id);
+                        String NamePostFix = String.format("_Y%d_X%d", Y_id, X_id);
                         
                         MyConfigurator.CurBurstLiveActive = true;
                         
@@ -176,7 +177,6 @@ public class QC_STORM_Acq_MultiROI {
             try {
                     QC_STORM_Plug.lm_ResetFeedback();
 
-                    
                     
                     // make sure z drift is corrected and the density is ok  
                     // correct z drift befor acquistion
@@ -349,11 +349,8 @@ public class QC_STORM_Acq_MultiROI {
                     {
                         break;
                     }
-
                 }   
             }
-            
         }
     }
-    
 }

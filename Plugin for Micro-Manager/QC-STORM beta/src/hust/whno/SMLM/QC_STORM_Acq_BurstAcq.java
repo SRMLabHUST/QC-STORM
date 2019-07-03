@@ -50,7 +50,6 @@ public class QC_STORM_Acq_BurstAcq {
     public ImagePlus RawImagePlus;
     public ImageWindow RawImageDispWindow;
     
-    boolean IsResolutionAchieved = false;
     
     // save raw image
     boolean IsSaveRawImage = false;
@@ -135,8 +134,6 @@ public class QC_STORM_Acq_BurstAcq {
         public void run()
         {            
             
-            float CurSpatialResolution;
-            
             MyConfigurator.UpdateBurstAcqFrameNum(0);
             
             //
@@ -148,6 +145,7 @@ public class QC_STORM_Acq_BurstAcq {
                 int GroupNumI = (BurstAcqFrameNum + CorrImgNumI - 1) /CorrImgNumI;
                 
                 boolean IsBreak=false;
+                boolean IsWholeBreak = false;
                 
                 for(int gcnt=0; (gcnt< GroupNumI) && MyConfigurator.CurBurstLiveActive; gcnt++)
                 {
@@ -203,25 +201,28 @@ public class QC_STORM_Acq_BurstAcq {
                             // don't update GUI to frequently
                             if(curFrame % 10 == 0)
                             {
-                                CurSpatialResolution = QC_STORM_Plug.lm_GetCurSpatialResolution();
-                                float CurMeanLocPrec = QC_STORM_Plug.lm_GetMeanLocPrec();
-                                
-                                MyConfigurator.SetBufferedImgNum(QC_STORM_Plug.lm_GetWaitImageNum(), mmc.getRemainingImageCount(), (int)CurSpatialResolution); // show buffered image num in cuda fifo
+
+                                MyConfigurator.SetBufferedImgNum(QC_STORM_Plug.lm_GetWaitImageNum(), mmc.getRemainingImageCount()); // show buffered image num in cuda fifo
                                 MyConfigurator.UpdateBurstAcqFrameNum(curFrame);  
                                 
-                                // normal acquisition
-                                if(SpatialResolutionTh > 0)
+                                float CurSpatialResolution = QC_STORM_Plug.lm_GetCurSpatialResolution();
+                                float CurMeanLocPrec = QC_STORM_Plug.lm_GetMeanLocPrec();
+                                
+                                
+                                // normal acquisition or spatial resolution guided acquisition
+                                if((MyConfigurator.SpatialResolutionCalcEn()) && (SpatialResolutionTh > 0))
                                 {
                                     // when use 3 oversampling, can achieve same locprecision in x and 
                                     if((CurSpatialResolution <= SpatialResolutionTh)|| (CurSpatialResolution < 1.1f*2.35f*CurMeanLocPrec)) // 
                                     {
-                                        IsResolutionAchieved = true;
+                                        IsWholeBreak = true;
                                         IsBreak = true;
                                     }
                                     
                                     // after many frames, the spatial resolution is still high, thus could be blank images
                                     if((curFrame >= 500) && (CurSpatialResolution > 500.0f))
                                     {
+                                        IsWholeBreak = true;
                                         IsBreak = true;
                                     }
                                 }
@@ -234,7 +235,7 @@ public class QC_STORM_Acq_BurstAcq {
                     }
                     mmc.stopSequenceAcquisition();
                     
-                    if(IsResolutionAchieved)break;
+                    if(IsWholeBreak)break;
                     
                     // z drift correct
                     if((gcnt < GroupNumI-1)  && MyConfigurator.CurBurstLiveActive && MyConfigurator.IsZDriftCtlEn())

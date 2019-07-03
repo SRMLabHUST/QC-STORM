@@ -43,6 +43,9 @@ UINT th_OnlineRendDispLD(LPVOID params)
 	int clkbtn = 0;
 	int WinWidth, WinHigh;
 
+
+	ResetDisplay();
+
 	RenderingState.Reset();
 
 	while (OnlineRendAlive)

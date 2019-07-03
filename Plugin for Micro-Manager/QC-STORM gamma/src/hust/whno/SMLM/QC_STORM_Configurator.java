@@ -384,10 +384,11 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
                                 .addComponent(jButton_LoadParaFile, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(24, 24, 24)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jCheckBox_Stat_ConsecutiveFit, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jCheckBox_Stat_MultiFitEn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jCheckBox_Stat_ConsecutiveFit, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jCheckBox_Stat_MultiFitEn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE))))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(24, 24, 24)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -2260,7 +2261,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     	LocPara.p1_XLY = Float.parseFloat(jTextField_p1_XLY.getText());
     	LocPara.p0_XLY = Float.parseFloat(jTextField_p0_XLY.getText());
                 
-        
         //
         LocPara.SNR_th = Float.parseFloat(jTextField_SNR_th.getText());
         
@@ -2771,9 +2771,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         return false;
     }
     
-    public void SetBufferedImgNum(int GPUBufferedNum, int MJRemainCount, int SpatialResolution)
+    public void SetBufferedImgNum(int GPUBufferedNum, int MJRemainCount)
     {
-        jTextField_BufferedImgNum.setText(Integer.toString(GPUBufferedNum) + ", "+Integer.toString(MJRemainCount)+ ", "+Integer.toString(SpatialResolution));
+        jTextField_BufferedImgNum.setText(Integer.toString(GPUBufferedNum) + ", "+Integer.toString(MJRemainCount));
         
     }
 
@@ -2872,7 +2872,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         LocPara.StatDispSel = GetStasticalInfDispEn();
         
         int DispMapDisp = jCheckBox_Stat_DepthMapDisp.isSelected()?1:0;
-         
+        
+        
+        
         QC_STORM_Plug.lm_SetStatInfSelection(LocPara.StatDispSel, LocPara.SpatialResolutionEn, DispMapDisp);  
     }
     
@@ -2932,6 +2934,10 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
          return Integer.parseInt(jTextField_MultiROI_WaitTime.getText());
      }
      
+     public boolean SpatialResolutionCalcEn()
+     {
+         return jCheckBox_Stat_SpaResolutionEn.isSelected();
+     }
 
     
 }

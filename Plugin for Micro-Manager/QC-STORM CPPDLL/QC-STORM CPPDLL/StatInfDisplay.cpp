@@ -132,12 +132,12 @@ void DispOntimeInf()
 
 
 	//
-	auto FitPercentageImage = StatInfDisplay.InfDisp_Curve_FittingPercentage->GetAxisImage();
-
-	DisplayStatInf_SingleItem("1 emitter fit: ", LDLocData.FitRatio_Final_1E, FitPercentageImage, XPos, YPos + 0);
-	DisplayStatInf_SingleItem("2 emitter fit: ", LDLocData.FitRatio_Final_2E, FitPercentageImage, XPos, YPos + 20);
-	DisplayStatInf_SingleItem("3 emitter fit: ", LDLocData.FitRatio_Final_3E, FitPercentageImage, XPos, YPos + 40);
-	DisplayStatInf_SingleItem("Rejected:      ", LDLocData.FitRatio_Final_4E, FitPercentageImage, XPos, YPos + 60);
+//	auto FitPercentageImage = StatInfDisplay.InfDisp_Curve_FittingPercentage->GetAxisImage();
+//
+//	DisplayStatInf_SingleItem("1 emitter fit: ", LDLocData.FitRatio_Final_1E, FitPercentageImage, XPos, YPos + 0);
+//	DisplayStatInf_SingleItem("2 emitter fit: ", LDLocData.FitRatio_Final_2E, FitPercentageImage, XPos, YPos + 20);
+//	DisplayStatInf_SingleItem("3 emitter fit: ", LDLocData.FitRatio_Final_3E, FitPercentageImage, XPos, YPos + 40);
+//	DisplayStatInf_SingleItem("Rejected:      ", LDLocData.FitRatio_Final_4E, FitPercentageImage, XPos, YPos + 60);
 
 
 }
@@ -206,8 +206,15 @@ void UpdateStatInfDisplay()
 	// time variation curve of PSF width
 	StatInfDisplay.InfDisp_Curve_PSFWidth->SetAllData(FluoStatData.TimeVary_PSFWidth.data(), FluoStatData.TimeVary_PSFWidth.size(), 0);
 
+
 	// time variation curve of Localization density 2D
 	StatInfDisplay.InfDisp_Curve_LocDensity2D->SetAllData(FluoStatData.TimeVary_LocDensity2D.data(), FluoStatData.TimeVary_LocDensity2D.size(), 0);
+
+
+//	StatInfDisplay.InfDisp_Curve_FittingPercentage->AddAData(LDLocData.FitRatio_Final_1E, 0, 0);
+//	StatInfDisplay.InfDisp_Curve_FittingPercentage->AddAData(LDLocData.FitRatio_Final_2E, 0, 1);
+//	StatInfDisplay.InfDisp_Curve_FittingPercentage->AddAData(LDLocData.FitRatio_Final_3E, 0, 2);
+
 
 
 
@@ -240,6 +247,14 @@ void UpdateStatInfDisplay()
 
 }
 
+void ResetDisplay()
+{
+	// 
+	//	StatInfDisplay.InfDisp_Curve_FittingPercentage->ClearAllData(0);
+	//	StatInfDisplay.InfDisp_Curve_FittingPercentage->ClearAllData(1);
+	//	StatInfDisplay.InfDisp_Curve_FittingPercentage->ClearAllData(2);
+
+}
 
 void DisplayStatInfImageBySelection(int DispSel)
 {
@@ -269,7 +284,7 @@ void DisplayStatInfImageBySelection(int DispSel)
 	StatInfDisplay.InfDisp_Curve_Background->UpdateDisplay(DispSel & (0x01 << 10));
 
 
-	StatInfDisplay.InfDisp_Curve_FittingPercentage->UpdateDisplay(DispSel & (0x01 << 9));
+//	StatInfDisplay.InfDisp_Curve_FittingPercentage->UpdateDisplay(DispSel & (0x01 << 9));
 
 
 	StatInfDisplay.InfDisp_Curve_SpatialResolution->UpdateDisplay(DispSel & (0x01 << 11));

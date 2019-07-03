@@ -52,7 +52,7 @@ public:
 
 
 	// time variation curve of fitting percentage
-	CImgCurveDisplay <float, DISP_TYPE_CURVE, LOG_AXIS_OFF, FIXED_DATA_LEN_OFF, 0, LABEL_DISPLAY_OFF, LABEL_DISPLAY_ON, LABEL_TYPE_FLOAT, 3> *InfDisp_Curve_FittingPercentage;
+//	CImgCurveDisplay <float, DISP_TYPE_CURVE, LOG_AXIS_OFF, FIXED_DATA_LEN_OFF, 0, LABEL_DISPLAY_OFF, LABEL_DISPLAY_ON, LABEL_TYPE_FLOAT, 3> *InfDisp_Curve_FittingPercentage;
 
 
 	// time variation curve of dimension fd
@@ -96,7 +96,7 @@ public:
 
 
 		// time variation curve of fitting percentage
-		InfDisp_Curve_FittingPercentage = new CImgCurveDisplay <float, DISP_TYPE_CURVE, LOG_AXIS_OFF, FIXED_DATA_LEN_OFF, 0, LABEL_DISPLAY_OFF, LABEL_DISPLAY_ON, LABEL_TYPE_FLOAT, 3>("Fitting percentage variation", true, 1, 0, true);
+//		InfDisp_Curve_FittingPercentage = new CImgCurveDisplay <float, DISP_TYPE_CURVE, LOG_AXIS_OFF, FIXED_DATA_LEN_OFF, 0, LABEL_DISPLAY_OFF, LABEL_DISPLAY_ON, LABEL_TYPE_FLOAT, 3>("Fitting percentage variation", true, 1, 0, true);
 
 
 		// time variation curve of Dimension FD
@@ -128,7 +128,7 @@ public:
 		InfDisp_Curve_LocDensity2D->CreateFigure();
 		InfDisp_Curve_Ontime->CreateFigure();
 
-		InfDisp_Curve_FittingPercentage->CreateFigure();
+//		InfDisp_Curve_FittingPercentage->CreateFigure();
 
 		InfDisp_Curve_DimensionFD->CreateFigure();
 		InfDisp_Curve_LocDensityFD->CreateFigure();
@@ -163,6 +163,7 @@ extern volatile int StatInfDispSel;
 
 extern StatisticalInformationDisplay StatInfDisplay;
 
+void ResetDisplay();
 
 
 void UpdateStatInfDisplay();

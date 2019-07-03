@@ -76,20 +76,19 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 
 	// accumulate a group of molecular from multiple images to accelerate localization
-	int RecFluoNumTh = PointNumTh/2;
+
+
+	int RecFluoNumTh = PointNumTh*(LocPara_Global.ImageWidth + LocPara_Global.ImageHigh) / 2 / 1024;
 
 	if (LocPara_Global.LocType == LocType_AS3D)
 	{
-		RecFluoNumTh = PointNumTh / 5;
+		RecFluoNumTh = RecFluoNumTh / 2;
 	}
 
-	if (LocPara_Global.SpatialResolutionCalcEn)
-	{
-		RecFluoNumTh = PointNumTh*(LocPara_Global.ImageWidth + LocPara_Global.ImageHigh) / 2 / 2048;
-		RecFluoNumTh = min(RecFluoNumTh, PointNumTh);
-		RecFluoNumTh = max(RecFluoNumTh, 4096);
-		RecFluoNumTh = RecFluoNumTh / 32 * 32;
-	}
+	RecFluoNumTh = min(RecFluoNumTh, PointNumTh);
+	RecFluoNumTh = max(RecFluoNumTh, 4096);
+	RecFluoNumTh = RecFluoNumTh / 32 * 32;
+
 
 
 	if (DepthMapDispEn)
@@ -159,11 +158,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	FluoStatData.ResetAllDat(loc_stream1);
 
 
-
-
-	StatInfDisplay.InfDisp_Curve_FittingPercentage->ClearAllData(0);
-	StatInfDisplay.InfDisp_Curve_FittingPercentage->ClearAllData(1);
-	StatInfDisplay.InfDisp_Curve_FittingPercentage->ClearAllData(2);
 
 
 	RenderingState.MakeAProcess(); // display window
@@ -252,11 +246,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 			LocTime += (clock() - time1);
 			
 			TotalFluoNum += LDLocData.oValidFluoNum;
-
-
-			StatInfDisplay.InfDisp_Curve_FittingPercentage->AddAData(LDLocData.FitRatio_Final_1E, 0, 0);
-			StatInfDisplay.InfDisp_Curve_FittingPercentage->AddAData(LDLocData.FitRatio_Final_2E, 0, 1);
-			StatInfDisplay.InfDisp_Curve_FittingPercentage->AddAData(LDLocData.FitRatio_Final_3E, 0, 2);
 
 
 
@@ -358,7 +347,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 				// must after stastical data are avalible
 				OnlineFeedbackState.MakeAProcess(); // update feedback
 			}
-			
 
 
 

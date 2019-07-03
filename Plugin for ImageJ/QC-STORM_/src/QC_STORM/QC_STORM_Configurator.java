@@ -27,8 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 
@@ -98,7 +96,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
            
         }
         
-        jTabbedPane1.remove(jPanel_ROMP);
+//        jTabbedPane1.remove(jPanel_ROMP);
 
     }
 
@@ -1336,7 +1334,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         LocPara.StatDispSel = GetStasticalInfDispEn();
         LocPara.SpatialResolutionEn = jCheckBox_Stat_SpaResolutionEn.isSelected() ? 1 : 0;
         
-        LocPara.SpatialResolutionEn = 0;
 
         // save file path
         ResultsFilePath = jTextField_ResultPath.getText();  
