@@ -97,7 +97,7 @@ public class QC_STORM_Processor  extends Processor{
         IsSaved = false;
         
         // use time to mark each acquistion
-        CreateTimeIdxStr = QC_STORM_Parameters.GetCreateTimeIdx() + NamePostFix;
+        CreateTimeIdxStr = NamePostFix + QC_STORM_Parameters.GetCreateTimeIdx();
         
         CurSRImagePlus = new ImagePlus();
         CurSRImagePlus.setTitle("rec SR image " + CreateTimeIdxStr);

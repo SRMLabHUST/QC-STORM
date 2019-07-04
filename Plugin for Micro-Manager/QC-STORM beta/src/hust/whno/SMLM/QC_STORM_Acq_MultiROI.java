@@ -68,8 +68,9 @@ public class QC_STORM_Acq_MultiROI {
         @Override
         public void run()
         {
-
+            
             try {
+                
                 int ROINum_X   = MyConfigurator.GetMultiAcq_ROINum_X();
                 int ROINum_Y   = MyConfigurator.GetMultiAcq_ROINum_Y();
                 
@@ -78,6 +79,8 @@ public class QC_STORM_Acq_MultiROI {
                 
                 int X_id = 0;
                 int Y_id = 0;
+                
+                String TimeStamp = QC_STORM_Parameters.GetCreateTimeIdx_Sum();
                 
                 gui.message("into MultiROIAcqThread");
 
@@ -111,7 +114,7 @@ public class QC_STORM_Acq_MultiROI {
                         
                         // start acquisition
                         
-                        String NamePostFix = String.format("_Y%d_X%d", Y_id, X_id);
+                        String NamePostFix = String.format("%s_Y%d_X%d_", TimeStamp, Y_id, X_id);
                         
                         MyConfigurator.CurBurstLiveActive = true;
                         

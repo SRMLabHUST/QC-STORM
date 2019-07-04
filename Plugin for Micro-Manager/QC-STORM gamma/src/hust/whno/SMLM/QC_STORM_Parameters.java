@@ -181,7 +181,20 @@ public class QC_STORM_Parameters {
         
         return TimeIdxStr;
     }
- 
+    
+    public static String GetCreateTimeIdx_Sum()
+    {
+        Calendar c = Calendar.getInstance();//可以对每个时间域单独修改   
+
+
+        int hour = c.get(Calendar.HOUR_OF_DAY);   
+        int minute = c.get(Calendar.MINUTE);   
+
+        String TimeIdxStr = String.format("%d", hour*60 + minute);
+        
+        return TimeIdxStr;
+    }
+    
     public static ColorModel GetHotColorModel()
     {
                 // construct hot colormap
