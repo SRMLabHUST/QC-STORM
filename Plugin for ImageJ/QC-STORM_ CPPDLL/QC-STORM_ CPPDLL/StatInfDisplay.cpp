@@ -38,21 +38,7 @@ void DisplayStatInf_SingleItem(char *DispStr, float DispValue,  CImg <unsigned c
 
 void DispStatInfOnFigure_Single(CImg <unsigned char> *CImg_Axis, int XPos, int YPos)
 {
-	float Mean_DimensionFD = SpatialResolutionCalc.GetMeanVectorValue(SpatialResolutionCalc.Dimension_Vary_Group_FD);
 
-	float Cur_LocDensityFD = 0;
-	float Cur_LocDensity2D_ConvertFromFD = 0;
-
-	int ArraySize = SpatialResolutionCalc.LocDensity_Vary_Group_FD.size();
-	if (ArraySize > 1)
-	{
-		Cur_LocDensityFD = SpatialResolutionCalc.LocDensity_Vary_Group_FD[ArraySize - 1];
-	}
-
-	if (Mean_DimensionFD > 0)
-	{
-		Cur_LocDensity2D_ConvertFromFD = expf(2 / Mean_DimensionFD*logf(Cur_LocDensityFD));
-	}
 
 	// display together
 
@@ -64,41 +50,19 @@ void DispStatInfOnFigure_Single(CImg <unsigned char> *CImg_Axis, int XPos, int Y
 	DisplayStatInf_SingleItem("Current PSF Width (pixel)", FluoStatData.MeanPSFWidth, CImg_Axis, XPos, YPos + 80);
 	DisplayStatInf_SingleItem("Current LocDensity 2D (0 neighbor)", FluoStatData.MeanLocDensity2D, CImg_Axis, XPos, YPos + 100);
 
-	DisplayStatInf_SingleItem("Mean Dimension FD", Mean_DimensionFD, CImg_Axis, XPos, YPos + 120);
-	DisplayStatInf_SingleItem("Current LocDensity FD", Cur_LocDensityFD, CImg_Axis, XPos, YPos + 140);
-	DisplayStatInf_SingleItem("Current LocDensity 2D (From FD)", Cur_LocDensity2D_ConvertFromFD, CImg_Axis, XPos, YPos + 160);
-
 }
 
 
 void DispSpatialResolutionInf_SingleImage(CImg <unsigned char> *CImg_Axis, int XPos, int YPos)
 {
-	float CurSpatialResolution = SpatialResolutionCalc.GetCurSpatialResolution();
-	float CurNyquistResolution = SpatialResolutionCalc.GetCurNyquistResolution();
+	float CurSpatialResolution = SpatialResolutionCalc.CurSpatialResolution;
+	float CurNyquistResolution = SpatialResolutionCalc.CurNyquistResolution;
 
-
-	float Mean_DimensionFD = SpatialResolutionCalc.GetMeanVectorValue(SpatialResolutionCalc.Dimension_Vary_Group_FD);
-	float Mean_LocDensityFD = 0;
-	float Mean_LocDensity2D_ConvertFromFD = 0;
-
-	int ArraySize = SpatialResolutionCalc.LocDensity_Vary_Group_FD.size();
-	if (ArraySize > 1)
-	{
-		Mean_LocDensityFD = SpatialResolutionCalc.LocDensity_Vary_Group_FD[ArraySize - 1];
-	}
-
-	if (Mean_DimensionFD > 0)
-	{
-		Mean_LocDensity2D_ConvertFromFD = expf(2 / Mean_DimensionFD*logf(Mean_LocDensityFD));
-	}
 
 
 	// display together
 	DisplayStatInf_SingleItem("Convolved Resolution XY (nm)", CurSpatialResolution, CImg_Axis, XPos, YPos + 0);
 	DisplayStatInf_SingleItem("Nyquist Resolution (nm)", CurNyquistResolution, CImg_Axis, XPos, YPos + 20);
-	DisplayStatInf_SingleItem("Mean Dimension FD", Mean_DimensionFD, CImg_Axis, XPos, YPos + 40);
-	DisplayStatInf_SingleItem("Current LocDensity FD", Mean_LocDensityFD, CImg_Axis, XPos, YPos + 60);
-	DisplayStatInf_SingleItem("Current LocDensity 2D (From FD)", Mean_LocDensity2D_ConvertFromFD, CImg_Axis, XPos, YPos + 80);
 
 }
 
@@ -201,10 +165,11 @@ void UpdateStatInfDisplay()
 	StatInfDisplay.InfDisp_Curve_DimensionFD->SetAllData(SpatialResolutionCalc.Dimension_Vary_Group_FD.data(), SpatialResolutionCalc.Dimension_Vary_Group_FD.size(), 0);
 	// time variation curve of Localization density FD
 	StatInfDisplay.InfDisp_Curve_LocDensityFD->SetAllData(SpatialResolutionCalc.LocDensity_Vary_Group_FD.data(), SpatialResolutionCalc.LocDensity_Vary_Group_FD.size(), 0);
+
 	// time variation curve of Spatial resolution
-	StatInfDisplay.InfDisp_Curve_SpatialResolution->SetAllData(SpatialResolutionCalc.NyquistResolutionVary_10f.data(), SpatialResolutionCalc.NyquistResolutionVary_10f.size(), 0);
+	StatInfDisplay.InfDisp_Curve_SpatialResolution->SetAllData(SpatialResolutionCalc.NyquistResolutionVary_10f, SpatialResolutionCalc.VaryDataLen_10f, 0);
 	// time variation curve of Nyquist resolution
-	StatInfDisplay.InfDisp_Curve_NyquistResolution->SetAllData(SpatialResolutionCalc.SpatialResolutionVary_10f.data(), SpatialResolutionCalc.SpatialResolutionVary_10f.size(), 0);
+	StatInfDisplay.InfDisp_Curve_NyquistResolution->SetAllData(SpatialResolutionCalc.SpatialResolutionVary_10f, SpatialResolutionCalc.VaryDataLen_10f, 0);
 
 
 

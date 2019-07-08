@@ -312,15 +312,15 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1StartLocThread
 		AfxBeginThread(th_OnlineRendDispLD, NULL);
 		AfxBeginThread(th_OnlineFeedback, NULL);
 
-		// later to start localization thread
-		AfxBeginThread(th_OnlineLocalizationLD, NULL);
-
 
 		if (LocPara_Global.SpatialResolutionCalcEn)
 		{
 			AfxBeginThread(th_OnlineSpatialResolutionCalc, NULL);
 
 		}
+
+		// later to start localization thread
+		AfxBeginThread(th_OnlineLocalizationLD, NULL);
 
 
 	}
@@ -502,12 +502,8 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetSpatialResolut
 JNIEXPORT jfloat JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1GetCurSpatialResolution
 (JNIEnv *env, jclass obj)
 {
-	float CurResolution = 1000;
-
-	if (OnlineLocAlive)
-	{
-		CurResolution = SpatialResolutionCalc.GetCurSpatialResolution();
-	}
+	float CurResolution = SpatialResolutionCalc.CurSpatialResolution;
+	
 
 	return CurResolution;
 }
@@ -520,12 +516,8 @@ JNIEXPORT jfloat JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1GetCurSpatialRe
 JNIEXPORT jfloat JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1GetMeanLocPrec
 (JNIEnv *env, jclass obj)
 {
-	float Mean_LocPrecisionXY = 0;
+	float Mean_LocPrecisionXY = FluoStatData.TimeVaryMean_LocPrecisionXY;
 
-	if (OnlineLocAlive)
-	{
-		Mean_LocPrecisionXY = FluoStatisticData_TypeDef::GetTimeVaryMean(FluoStatData.TimeVary_LocPrecisionXY);
-	}
 
 	return Mean_LocPrecisionXY;
 }

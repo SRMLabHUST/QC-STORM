@@ -66,7 +66,7 @@ extern "C" {
 	/*
 	* Class:     hust_whno_SMLM_QC_STORM_Plug
 	* Method:    lm_SetStatInfSelection
-	* Signature: (II)V
+	* Signature: (III)V
 	*/
 	JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetStatInfSelection
 	(JNIEnv *, jclass, jint, jint, jint);
@@ -146,7 +146,7 @@ extern "C" {
 	/*
 	* Class:     hust_whno_SMLM_QC_STORM_Plug
 	* Method:    lm_SetSpatialResolutionInf
-	* Signature: (IIFF)V
+	* Signature: (F)V
 	*/
 	JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetSpatialResolutionInf
 	(JNIEnv *, jclass, jfloat);

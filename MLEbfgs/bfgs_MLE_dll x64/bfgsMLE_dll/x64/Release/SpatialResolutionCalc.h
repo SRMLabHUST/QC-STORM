@@ -33,6 +33,7 @@ using namespace std;
 
 // Nyquist resolution and spatial resolution
 
+
 // max fluo mum for a group with 50 frame 2048*2048 images
 #define MAX_FLUO_NUM_PER_GROUP								(10240*3*50)
 
@@ -41,11 +42,14 @@ using namespace std;
 
 
 // calculate only min neighboring distance of some molecules, calculation of all molecules is not necessary and time consuming
-#define NEIGHBOR_DISTANCE_CALC_DATA_SELECT_NUMBER			22000
+#define NEIGHBOR_DISTANCE_CALC_DATA_SELECT_NUMBER			20000
 
 
 
-#define NYQUIST_RESOLUTION_OVERSAMPLING			4
+
+#define NYQUIST_RESOLUTION_OVERSAMPLING					4
+
+
 
 
 
@@ -67,6 +71,7 @@ public:
 	void FilterConsecutiveFluo(float * d_LocArry, int FluoNum, float Distance_th_pixel, cudaStream_t cstream);
 
 };
+
 
 
 
@@ -179,32 +184,39 @@ class SpatialResolutionCalc_TypeDef
 {
 public:
 
-	// dimension and density of each group
-	vector<int> FrameNum_Vary_Group;
-	vector<int> AccumulatedFrameNum_Vary_Group;
-
 	// dimension and localization density vary with group
 	vector<float> Dimension_Vary_Group_FD; 
 	vector<float> LocDensity_Vary_Group_FD; 
 	vector<float> LocDensity_Vary_Group_2D; 
 	vector<float> LocDensity_Vary_Group_3D; 
 
+
+	// each data point is seperated by 10 frames
+	float* NyqResolutionVary_FD_10f; // mean Nyquist resolution of FD
+	float* NyqResolutionVary_2D_10f; // mean Nyquist resolution of 2D
+	float* NyqResolutionVary_3D_10f; // mean Nyquist resolution of 3D
+
+	float* NyquistResolutionVary_10f; // corrected mean Nyquist resolution
+	float* SpatialResolutionVary_10f; // lateral convolved spatial resolution
+
+	int VaryDataLen_10f;
+
+
+	float CurSpatialResolution;
+	float CurNyquistResolution;
+
+private:
+
+	// dimension and density of each group
+	vector<int> FrameNum_Vary_Group;
+	vector<int> AccumulatedFrameNum_Vary_Group;
+
 	// accumulated localization density
 	vector<float> AccumulatedLocDensity_Vary_FD;
 	vector<float> AccumulatedLocDensity_Vary_2D;
 	vector<float> AccumulatedLocDensity_Vary_3D;
 
-
-	// each data point is seperated by 10 frames
-	vector<float> NyqResolutionVary_FD_10f; // mean Nyquist resolution of FD
-	vector<float> NyqResolutionVary_2D_10f; // mean Nyquist resolution of 2D
-	vector<float> NyqResolutionVary_3D_10f; // mean Nyquist resolution of 3D
-
-	vector<float> NyquistResolutionVary_10f; // corrected mean Nyquist resolution
-	vector<float> SpatialResolutionVary_10f; // lateral convolved spatial resolution
-
-private:
-
+	//
 	float StructureSize_2D; // nm
 
 	// Nyquist and spatial resolution vary with frame
@@ -213,27 +225,29 @@ private:
 	float MetStructureSize2D_Value;
 	float MetStructureSize3D_Value;
 
+	// accumulated data
+	float Accu_LocDensity_FD;
+	float Accu_LocDensity_2D;
+	float Accu_LocDensity_3D;
+
+
 public:
 
 	void Init();
 	void DeInit();
+	void ResetData(); // should be called if a new acquisition set will be calculated
+
 
 	void SetStructureSize(float StructureSize_2D); // nm
 	
+
 	void AddDimensionLocDensity_AGroup(float DimensionFD, float LocDensityFD, int FrameNum_CurGroup);
 
 	// calculate spatial resolution by Nyquist resolution and localization precision, each data is 10 frame increasing
 	// MeanLocPrecXY is sqrt(loc prec X^2 + loc prec Y^2)
-	// IsHollowTube : StructureSize_2D significantly larget than MeanLocPrec*2.35
+	// IsHollowTube : StructureSize_2D significantly larget than MeanLocPrec*2.35, only for 3D
 	void GetSpatialResolutionVary(bool Is3DImaging, bool IsHollowTube, float MeanLocPrecXY, float MeanLocPrecZ, float OverSamplingRatio);
 	
-	
-	float GetCurSpatialResolution();
-	float GetCurNyquistResolution();
-
-	int GetEstimatedAcquisitionFrame(float RSCResolution_th, float DimensionFD, float LocDensityFD, bool Is3DImaging, bool IsHollowTube, float MeanLocPrecXY, float MeanLocPrecZ, float OverSamplingRatio);
-
-	void ResetData(); // already called in Init(), should be called if a new acquisition set will be calculated
 
 	// debug
 	void PrintData();
@@ -241,6 +255,10 @@ public:
 	float GetMeanVectorValue(vector<float> &iData_Vary_Group);
 
 private:
+
+	void UpdateSpatialResolution();
+	void UpdateNyquistResolution();
+
 
 	void GetDimensionConversionWidth(float *oWidth2D, float *oWidth3D, bool Is3DImaging, bool IsHollowTube, float MeanLocPrecXY, float MeanLocPrecZ);
 	int GetAccumulatedFrameNum();

@@ -91,6 +91,12 @@ public:
 	float MeanPSFWidth_Ctl; // h_MeanPSFWidth1 = MeanPSFWidth  * 10.0f / MeanPeakSNR1; // lower is better for feedback control
 	float MeanLocDensity2D; // cur activation density
 
+	// time vary mean
+	float TimeVaryMean_TotalPhoton;
+	float TimeVaryMean_LocPrecisionXY;
+	float TimeVaryMean_PeakSNR;
+
+
 	// time variation curve data 
 
 	vector<float> TimeVary_TotalPhoton;

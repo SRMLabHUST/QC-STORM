@@ -103,6 +103,11 @@ void FluoStatisticData_TypeDef::GetStatisticalInf(float *h_LocArry, Localization
 	// update to display data
 	UpdateStatDat(h_LocArry, FluoNum);
 
+
+	TimeVaryMean_TotalPhoton = GetTimeVaryMean(TimeVary_TotalPhoton);
+	TimeVaryMean_LocPrecisionXY = GetTimeVaryMean(TimeVary_LocPrecisionXY);
+	TimeVaryMean_PeakSNR = GetTimeVaryMean(TimeVary_PeakSNR);
+	
 }
 
 void FluoStatisticData_TypeDef::CalcLocalizationDensity2D(float *h_LocArry, LocalizationPara & LocPara, int FluoNum, cudaStream_t cstream)
@@ -416,7 +421,11 @@ void FluoStatisticData_TypeDef::ResetAllDat(cudaStream_t cstream)
 	MeanPSFWidth = 0;
 	MeanPSFWidth_Ctl = 0;
 	MeanLocDensity2D = 0;
+	// time vary mean
 
+	TimeVaryMean_TotalPhoton = 0;
+	TimeVaryMean_LocPrecisionXY = 0;
+	TimeVaryMean_PeakSNR = 0;
 
 }
 

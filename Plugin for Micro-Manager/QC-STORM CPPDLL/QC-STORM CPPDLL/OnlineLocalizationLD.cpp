@@ -68,6 +68,12 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	printf("image inf:%f %f %f \n", LocPara_Global.Offset, LocPara_Global.KAdc, LocPara_Global.QE);
 	printf("structure size:%f\n", LocPara_Global.StrucuteSize_2D);
 
+	printf("consecutive fitting radius: %.2f nm\n", LocPara_Global.ConsecFit_DistanceTh_nm);
+
+	if (LocPara_Global.ConsecFit_DistanceTh_nm > 100.0f)
+	{
+		printf("\n warning: large consecutive fitting radius\n");
+	}
 
 	int CurFrame = 0;
 	int BatchFrameNum = 0;

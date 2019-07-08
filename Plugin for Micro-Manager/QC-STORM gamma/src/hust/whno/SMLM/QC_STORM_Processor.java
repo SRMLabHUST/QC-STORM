@@ -256,6 +256,8 @@ public class QC_STORM_Processor  extends Processor{
         // simulation, read from hard disk
 //        pImgData = QC_STORM_Parameters.GetSimuImage512x512();
         
+        
+        
         // send image to c++ and processed by GPU
         QC_STORM_Plug.lm_FeedImageData(pImgData, 1);
    

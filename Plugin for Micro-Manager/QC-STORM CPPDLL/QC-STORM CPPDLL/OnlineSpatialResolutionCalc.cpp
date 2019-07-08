@@ -16,6 +16,7 @@ UINT th_OnlineSpatialResolutionCalc(LPVOID params)
 	cudaGetDevice(&CurDevice);
 	printf("Resolution dev: %d\n", CurDevice);
 
+	LocArray_Resolution_Queue.clear();
 
 	// spatial resolution calculation
 	DimensionDensityCalc.ResetAccumulatedData();
@@ -53,6 +54,8 @@ UINT th_OnlineSpatialResolutionCalc(LPVOID params)
 			// dimension and density calculation, only calculate after enough frames are accumulated
 
 			int IsEnough = DimensionDensityCalc.AddLocArray_FewFrames(WriteLocArry, WriteLocNum, LocPara_Global.ConsecFit_DistanceTh_nm / LocPara_Global.PixelSize, IsBreak, Resolution_stream1);
+		
+			delete [] WriteLocArry;
 
 			if (IsEnough)
 			{
@@ -68,9 +71,10 @@ UINT th_OnlineSpatialResolutionCalc(LPVOID params)
 
 
 				// get spatial resolution vary data
-
-				float Mean_LocPrecisionXY = FluoStatisticData_TypeDef::GetTimeVaryMean(FluoStatData.TimeVary_LocPrecisionXY);
+				
+				float Mean_LocPrecisionXY = FluoStatData.TimeVaryMean_LocPrecisionXY;
 				float Mean_LocPrecisionZ = Mean_LocPrecisionXY / 1.414f * 2.0f;
+
 
 				SpatialResolutionCalc.GetSpatialResolutionVary(Is3DImaging, LocPara_Global.IsHollowTube, Mean_LocPrecisionXY, Mean_LocPrecisionZ, NYQUIST_RESOLUTION_OVERSAMPLING);
 
@@ -78,7 +82,6 @@ UINT th_OnlineSpatialResolutionCalc(LPVOID params)
 				DimensionDensityCalc.ResetAccumulatedData();
 			}
 
-			delete [] LocArray_Rec.h_LocArray;
 
 			ResolutionTime += (clock() - time1);
 
@@ -86,6 +89,10 @@ UINT th_OnlineSpatialResolutionCalc(LPVOID params)
 
 		if (IsBreak)break;
 	}
+
+//	SpatialResolutionCalc.PrintData();
+
+	SpatialResolutionCalc.ResetData();
 
 
 	printf("Resolution calc time : %d ms\n", ResolutionTime);

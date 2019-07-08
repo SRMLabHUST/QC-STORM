@@ -228,7 +228,8 @@ public class QC_STORM_Acq_BurstAcq {
                                 }
                             }
                         }
-                        else {
+                        else 
+                        {
                             // Wait for another image to arrive.
                             mmc.sleep(Math.max(.4 * exposureMs, 1));
                         }
