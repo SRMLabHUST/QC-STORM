@@ -163,12 +163,9 @@ public class QC_STORM_ implements PlugInFilter{
 
     @Override
     public void run(ImageProcessor ip) {
-        CurImageProcessor=ip;
+        CurImageProcessor = ip;
         
-        while(MyConfigurator.PluginStatus!=2)
-        {
-            // wait the window closed
-        }        
+      
     }
     
     public void StartLocalization()

@@ -33,7 +33,7 @@ import javax.swing.JFileChooser;
 
 public class QC_STORM_Configurator extends javax.swing.JFrame {
     
-    volatile public int PluginStatus; // 0: open, 1: process, 2: closed
+
     public QC_STORM_Parameters.LocalizationPara LocPara;
 
     final String LocParafileName = "QC_STORM\\QC_STORM_IJ_para.properties";
@@ -64,9 +64,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         setTitle("QC-STORM");
         
         LocPara = new QC_STORM_Parameters.LocalizationPara();
-        PluginStatus = 0;
-        this.addWindowListener(new MyListener());
-        
+
+
         try {
             LoadPropertyFile(GetParaFileSavePath());
         } catch (FileNotFoundException ex) {
@@ -85,8 +84,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         fa_QC_STORM_ = fa_OnlineSMLM;
         
         LocPara = new QC_STORM_Parameters.LocalizationPara();
-        PluginStatus = 0;
-        this.addWindowListener(new MyListener());
+
         
         try {
             LoadPropertyFile(GetParaFileSavePath());
@@ -971,7 +969,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         fa_QC_STORM_.StartLocalization();
         
         // start to localize
-        PluginStatus = 1;                            
 
         try {
             SavePropertyFile(GetParaFileSavePath());
@@ -1628,48 +1625,5 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jButton_Rerend.setEnabled(false);
     }
 
-    
-    public class MyListener implements WindowListener
-    {
-
-        @Override
-        public void windowOpened(WindowEvent e) {
-            
-        }
-
-        @Override
-        public void windowClosing(WindowEvent e) {
-            
-            // closed
-            PluginStatus = 2;
-
-        }
-
-        @Override
-        public void windowClosed(WindowEvent e) {
-
-        }
-
-        @Override
-        public void windowIconified(WindowEvent e) {
- 
-        }
-
-        @Override
-        public void windowDeiconified(WindowEvent e) {
-
-        }
-
-        @Override
-        public void windowActivated(WindowEvent e) {
-
-        }
-
-        @Override
-        public void windowDeactivated(WindowEvent e) {
-
-        }
-        
-    }
 
 }
