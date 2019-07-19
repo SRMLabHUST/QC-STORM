@@ -38,6 +38,7 @@ The open dataset evaluation of QC-STORM can be found in http://bigwww.epfl.ch/sm
 
 3, ImageJ/Fiji, Micro-Manager 2.0 (beta or gamma). 
 **Note: please set at least 4 GB memory buffer for ImageJ, Micro-Manager and ImageJ of Micro-Manager.**
+(The 64 bits ImageJ with Java 1.8 works well and can be downloaded at https://imagej.nih.gov/ij/download.html)
 
 4, Download and install Microsoft Visual C++ 2015 Redistributable Update 3 (x64) (https://www.microsoft.com/en-us/download/details.aspx?id=53587). You may need to uninstall Visual C++ 2017 Redistributable first.
 
