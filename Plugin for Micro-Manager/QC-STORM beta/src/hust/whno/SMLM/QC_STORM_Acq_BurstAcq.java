@@ -67,6 +67,7 @@ public class QC_STORM_Acq_BurstAcq {
         
         MyConfigurator = iConfigurator;
         
+        MyConfigurator.SendLocalizationPara();
         
         
         // send localization para and image data for processing
@@ -142,9 +143,15 @@ public class QC_STORM_Acq_BurstAcq {
                 int curFrame = 0;
                 
                 int CorrImgNumI = Math.max(MyConfigurator.GetZDriftCorrFrameNum(), 100);
+                
+                if(!MyConfigurator.IsZDriftCtlEn())
+                {
+                    CorrImgNumI = BurstAcqFrameNum;
+                }
+                
                 int GroupNumI = (BurstAcqFrameNum + CorrImgNumI - 1) /CorrImgNumI;
                 
-                boolean IsBreak=false;
+                boolean IsBreak = false;
                 boolean IsWholeBreak = false;
                 
                 for(int gcnt=0; (gcnt< GroupNumI) && MyConfigurator.CurBurstLiveActive; gcnt++)

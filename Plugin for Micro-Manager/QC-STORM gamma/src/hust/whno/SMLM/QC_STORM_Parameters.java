@@ -30,6 +30,16 @@ public class QC_STORM_Parameters {
     // for debug, read image from local data file
     public static int CurImgId = 1;
 
+    public static int GetSRImageSize(int ImageSize, float PixelZoom)
+    {
+        int SRImageSize = (int) (ImageSize*PixelZoom);
+        
+        SRImageSize = (SRImageSize+3)/4*4;
+        
+        return SRImageSize;
+        
+    }
+    
     public static class DevicePortInf
     {
         int IsEnableI;
@@ -108,7 +118,7 @@ public class QC_STORM_Parameters {
         
         // statastic information display enable
         int StatDispSel = 0;
-        int SpatialResolutionEn = 1;
+        int SpatialResolutionEn = 0;
 
     }
     

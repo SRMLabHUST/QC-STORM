@@ -64,9 +64,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     public QC_STORM_Acq_MultiROI MultiROIAcq=null;
     
     volatile public boolean CurMultiROIAcqActive=false;
-    
-    volatile public boolean CurZDriftCorrActive = false;
-    
+        
 
     /**
      * Creates new form QC_STORM_Configurator
@@ -1719,8 +1717,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
         QC_STORM_Plug.lm_SetMultiFOVAcqParameters(GetMultiFovOverlapPercent());
 
-        // enable z feedback
-        jCheckBox_TrackZPos.setSelected(true);
 
 
         if(CurMultiROIAcqActive==false)
@@ -1729,7 +1725,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
             // start burst acquisition
             ClearLiveData();
             
-            CurZDriftCorrActive = true;
             
             CurMultiROIAcqActive = true;
             jButton_MROIAcq.setText("Stop acq");
@@ -1743,8 +1738,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         {
             // stop burst acquisition
             
-            CurZDriftCorrActive = false;
-            
             CurMultiROIAcqActive = false;
 
             // also stop burst acq
@@ -1752,9 +1745,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
             // wait thread finish and set enable
             jButton_MROIAcq.setEnabled(false);
-            
-            
-            
+
         }
 
         if(CurMultiROIAcqActive)
@@ -1834,7 +1825,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
             // start burst acquisition
             ClearLiveData();
             
-            CurZDriftCorrActive = true;
             
             CurBurstLiveActive = true;
             jButton_BurstLive.setText("Stop acq");
@@ -1849,7 +1839,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         }
         else
         {
-            CurZDriftCorrActive = false;
             
             // stop burst acquisition
             CurBurstLiveActive = false;
@@ -2308,10 +2297,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         int ImageHighI = (int) mmc.getImageHeight();
 
         // set super resolution image size
-        int SRImageWidthI = (int) (ImageWidthI*LocPara.RenderingPixelZoom);
-        int SRImageHighI = (int) (ImageHighI*LocPara.RenderingPixelZoom);
-        SRImageWidthI = (SRImageWidthI+3)/4*4;
-        SRImageHighI = (SRImageHighI+3)/4*4;
+        int SRImageWidthI = QC_STORM_Parameters.GetSRImageSize(ImageWidthI, LocPara.RenderingPixelZoom);
+        int SRImageHighI = QC_STORM_Parameters.GetSRImageSize(ImageHighI, LocPara.RenderingPixelZoom);;
+ 
         
         QC_STORM_Plug.lm_SetImagePara(ImageWidthI, ImageHighI, SRImageWidthI, SRImageHighI);
     
@@ -2898,7 +2886,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
     }  
      public boolean IsZDriftCorrActive()
     {
-        return CurZDriftCorrActive;
+        return jCheckBox_TrackZPos.isSelected();
     }
      
      void ResetFeedbackCtl()

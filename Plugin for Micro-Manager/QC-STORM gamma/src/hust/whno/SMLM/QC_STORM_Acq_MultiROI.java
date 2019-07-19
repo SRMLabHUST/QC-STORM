@@ -48,27 +48,24 @@ public class QC_STORM_Acq_MultiROI {
         ImageWidthI = (int) mmc.getImageWidth();
         ImageHighI = (int) mmc.getImageHeight();              
         
-    
 //		gui.message("into QC_STORM_BurstLiveProc");
-
     }
 
     public void StartMultiROIAcq()
     {
-                
+        MyConfigurator.SendLocalizationPara();
+        
+        
         // start loc thread
         MultiAcqThread = new MultiROIAcqThread();
         MultiAcqThread.start();
-   
     }    
 
     public class MultiROIAcqThread extends Thread
     {
-        
         @Override
         public void run()
         {
-            
             try {
                 
                 int ROINum_X   = MyConfigurator.GetMultiAcq_ROINum_X();
@@ -167,7 +164,6 @@ public class QC_STORM_Acq_MultiROI {
     public class NewAcqInitial extends Thread
     {
 
-    
         @Override
         public void run()
         {
@@ -180,57 +176,56 @@ public class QC_STORM_Acq_MultiROI {
             try {
                     QC_STORM_Plug.lm_ResetFeedback();
 
-                    
-                    // make sure z drift is corrected and the density is ok  
-                    // correct z drift befor acquistion
-                    ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 6, 2, 1);
-                    ZDriftCorrThread.start();
-                    ZDriftCorrThread.join();
+                    if(MyConfigurator.IsZDriftCtlEn())
+                    {
+                        // make sure z drift is corrected and the density is ok  
+                        // correct z drift befor acquistion
+                        ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 6, 2, 1);
+                        ZDriftCorrThread.start();
+                        ZDriftCorrThread.join();   
+                    }
                     
                     if(WaitTime > 0)
                     {
                         Thread.currentThread().sleep(WaitTime);
-                        
-                        ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 6, 1, 1);
-                        ZDriftCorrThread.start();
-                        ZDriftCorrThread.join();                        
                     }
                     
-                    ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 3, 1, 1);
-                    ZDriftCorrThread.start();
-                    ZDriftCorrThread.join();
-                    
-                    ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 1, 2, 1);
-                    ZDriftCorrThread.start();
-                    ZDriftCorrThread.join();
-                    
-                    
-                    float LocDensityTarget = MyConfigurator.GetLocDensityTarget();
+                    if(MyConfigurator.IsZDriftCtlEn())
+                    {
+                        ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 3, 1, 1);
+                        ZDriftCorrThread.start();
+                        ZDriftCorrThread.join();
 
+                        ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 1, 2, 1);
+                        ZDriftCorrThread.start();
+                        ZDriftCorrThread.join();
+                    }
                     
-                    
-                    float CurDensity = ZDriftCorrThread.GetCurrentDensity();
                     float MaxTolerableDensity = MyConfigurator.GetMaxTolerableLocDensity();
                     
-                    if(CurDensity > MaxTolerableDensity + 0.05f)
+
+                    // wait localization density down to software's ability
+                    WaitLocDensityDown WaitLocDensityThread = new WaitLocDensityDown(true, MaxTolerableDensity);
+                    WaitLocDensityThread.start();
+                    WaitLocDensityThread.join();
+
+                    if(WaitLocDensityThread.IsWaited == true)
                     {
-                        // wait localization density down to software's ability
-                        WaitLocDensityDown WaitLocDensityThread = new WaitLocDensityDown(true, MaxTolerableDensity);
-                        WaitLocDensityThread.start();
-                        WaitLocDensityThread.join();
-                    }
-                    else
-                    {
+                                            
+                        float LocDensityTarget = MyConfigurator.GetLocDensityTarget();
+
                         SetOptimalActivationDensity ActivationDensityIni = new SetOptimalActivationDensity(LocDensityTarget);
 
                         ActivationDensityIni.start();
                         ActivationDensityIni.join();
 
-                        ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 1, 1, 1);
-                        ZDriftCorrThread.start();
-                        ZDriftCorrThread.join();                        
+                        if(MyConfigurator.IsZDriftCtlEn())
+                        {
+                            ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 1, 1, 1);
+                            ZDriftCorrThread.start();
+                            ZDriftCorrThread.join();               
+                        }
                     }
-
 
 
                 } catch (InterruptedException ex) {              
@@ -242,11 +237,13 @@ public class QC_STORM_Acq_MultiROI {
     {
         boolean WaitDensityEn;
         float DensityTh;
+        boolean IsWaited = false;
         
         WaitLocDensityDown(boolean iWaitDensityEn, float iDensityTh)
         {
             WaitDensityEn = iWaitDensityEn;
             DensityTh = iDensityTh;
+            IsWaited = false;
         }
         
         @Override
@@ -275,11 +272,20 @@ public class QC_STORM_Acq_MultiROI {
                     }
                     else
                     {
-                        // z drift correction in the wait process
-                        QC_STORM_ZDriftCorrection ZdriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 1, 2, 1); 
+                        if(MyConfigurator.IsZDriftCtlEn())
+                        {
+                            // z drift correction in the wait process
+                            QC_STORM_ZDriftCorrection ZdriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 1, 2, 1); 
+
+                            ZdriftCorrThread.start();
+                            ZdriftCorrThread.join();
+                        }
+                        else
+                        {
+                            Thread.currentThread().sleep(500);
+                        }
                         
-                        ZdriftCorrThread.start();
-                        ZdriftCorrThread.join();
+                        IsWaited = true;
                     }
                     
                 } catch (InterruptedException ex) {

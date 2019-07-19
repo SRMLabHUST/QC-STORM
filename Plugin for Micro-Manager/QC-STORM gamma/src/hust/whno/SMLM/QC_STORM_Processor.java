@@ -82,6 +82,9 @@ public class QC_STORM_Processor  extends Processor{
         MyConfigurator = iConfigurator;
         
         CurLocPara = MyConfigurator.GetLocalizationPara();
+                
+        MyConfigurator.SendLocalizationPara();
+
         
         NamePostFix = iNamePostFix;
         
@@ -108,15 +111,11 @@ public class QC_STORM_Processor  extends Processor{
                    
   
         // set super resolution image size
-        SRImageWidthI = (int) (ImageWidthI*CurLocPara.RenderingPixelZoom);
-        SRImageHighI = (int) (ImageHighI*CurLocPara.RenderingPixelZoom);
-        SRImageWidthI = (SRImageWidthI+3)/4*4;
-        SRImageHighI = (SRImageHighI+3)/4*4;
-        
-     
+       
+        SRImageWidthI = QC_STORM_Parameters.GetSRImageSize(ImageWidthI, CurLocPara.RenderingPixelZoom);
+        SRImageHighI = QC_STORM_Parameters.GetSRImageSize(ImageHighI, CurLocPara.RenderingPixelZoom);;
+ 
         // start loc thread
-        
-        MyConfigurator.SendLocalizationPara();
         
         ResultSavePathStr = MyConfigurator.GetResultsSavePath();
         QC_STORM_Plug.lm_SetSavePath(ResultSavePathStr.toCharArray());

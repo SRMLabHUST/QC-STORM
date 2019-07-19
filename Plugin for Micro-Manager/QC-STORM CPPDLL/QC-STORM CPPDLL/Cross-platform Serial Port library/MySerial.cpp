@@ -17,9 +17,46 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "stdafx.h"
 #include "MySerial.h"
 
+
+int Cp2PortNum()
+{
+
+	vector<serial::PortInfo> devices_found = serial::list_ports();
+
+	vector<serial::PortInfo>::iterator iter = devices_found.begin();
+
+	int PortNum = 0;
+
+	while (iter != devices_found.end())
+	{
+		serial::PortInfo device = *iter++;
+		//		printf("(%s, %s, %s %d)\n", device.port.c_str(), device.description.c_str(), device.hardware_id.c_str(), id);
+
+		//	
+		const char *PortID = device.port.c_str();
+
+		string str1 = device.description.c_str();
+
+		int pos = str1.find("CP2");
+		if (pos >= 0)
+		{
+			PortNum += 1;
+		}
+	}
+
+	return PortNum;
+
+}
+
+
 int GetFirstPortId()
 {
 	int FirstId = 0;
+
+	if (Cp2PortNum() > 1)
+	{
+		return 0;
+	}
 
 	vector<serial::PortInfo> devices_found = serial::list_ports();
 

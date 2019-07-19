@@ -70,7 +70,11 @@ public class QC_STORM_ZDriftCorrection  extends Thread
     @Override
     public void run()
     {
-                
+        if(!myConfigurator.IsZDriftCtlEn())
+        {
+            return;
+        }
+        
         // set localization parameters 
         myConfigurator.SendLocalizationPara();
         
@@ -148,8 +152,4 @@ public class QC_STORM_ZDriftCorrection  extends Thread
 
     }
     
-    float GetCurrentDensity()
-    {
-        return LocDensity_FocalPlane;
-    }
 }

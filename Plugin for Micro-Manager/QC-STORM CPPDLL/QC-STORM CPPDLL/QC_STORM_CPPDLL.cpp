@@ -528,6 +528,7 @@ JNIEXPORT jfloat JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1GetMeanLocPrec
 int SetUARTPort(serial::Serial & UARTPort, jint UARTID, jint BaudRateI, jint IsEnable)
 {
 
+
 	char buf[64];
 	sprintf(buf, "COM%d", UARTID);
 

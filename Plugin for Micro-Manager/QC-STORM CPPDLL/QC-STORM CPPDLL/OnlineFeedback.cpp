@@ -96,6 +96,7 @@ UINT th_OnlineFeedback_LocalizationDensity(LPVOID params)
 UINT th_SendFeedbackCmdToMCU(LPVOID params)
 {
 	string cmdString;
+	UARTCmdQueue.clear();
 
 	IsFeedbackCmdUARTRunning = 1;
 
