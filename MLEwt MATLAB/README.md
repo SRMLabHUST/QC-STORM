@@ -1,5 +1,5 @@
 # MLEwt
-We applied Gaussian weight function to widly used maximum likelihood estimation (MLE) based single-molecule localization algorithm for both 2D and astigmatism 3D imaging (abbreviated as MLEwt).
+We applied Gaussian weight function to the widely used maximum likelihood estimation (MLE) based single-molecule localization algorithm for both 2D and astigmatism 3D imaging (abbreviated as MLEwt).
 
 We found that the MLEwt is able to suppress the signal contamination from neighboring molecules, thus improve localization precision and improve tolerable activation density compared with traditional MLE. 
 
