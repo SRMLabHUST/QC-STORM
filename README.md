@@ -50,6 +50,11 @@ The open dataset evaluation of QC-STORM can be found in http://bigwww.epfl.ch/sm
 
 7, Note: QC-STORM only supports English file name / path.
 
+# Output file format
+The QC-STORM generates a super-resolution image and a binary txt file in the result save path. 
+There are 12 float parameters saved for each localizations, please see the user's guide of QC-STORM. 
+We provide a MATLAB code to read the binary txt file. We also provide a ConvertBinLocArrayToCSV.exe file to convert the binary txt file into .csv file, just drag the binary txt files onto the ConvertBinLocArrayToCSV.exe to use.
+
 
 # Recompile the source codes
 1, The Java GUI for ImageJ (v1.52g) and Micro-Manager beta (MMSetup_64bit_2.0.0-beta3 from nightly builds of Micro-Manager 2.0) are developed by NetBeans IDE 7.3.1 with Java jdk1.6.0_45. The Java GUI for Micro-Manager gamma are developed by NetBeans IDE 10.0 with Java jdk1.8.0_201.
