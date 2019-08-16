@@ -69,10 +69,10 @@ In the downloaded release, we provide a MATLAB code LoadLocResult_BinaryTxt_Sing
 
 # Frequently asked questions
 ## 1, peak and total intensity (photon)
-	For the peak and total intensity, since we fit the PSF of molecules by Gaussian function, the peak intensity is the peak value of the Gaussian function. While the total intensity is the summed photon number in whole ROI.
+For the peak and total intensity, since we fit the PSF of molecules by Gaussian function, the peak intensity is the peak value of the Gaussian function. While the total intensity is the summed photon number in whole ROI.
 
 ## 2, Kadc setting of EMCCD
-	For the parameters setting, the camera offset (baseline) is the mean gray value of the camera when there is not light. The Kadc is the photoelectrons per A/D count. The setting of the two items should be the same with ThunderSTORM when the EM gain is 1. For the condition that EM gain is larger than 1, typically you should divide the original Kadc by EM gain, since the EM gain amplifies the photon converted photoelectrons. The role of the Kadc in QC-STORM is to convert the gray value into the true photoelectron number that is calculated by input photon and QE.
+For the parameters setting, the camera offset (baseline) is the mean gray value of the camera when there is not light. The Kadc is the photoelectrons per A/D count. The setting of the two items should be the same with ThunderSTORM when the EM gain is 1. For the condition that EM gain is larger than 1, typically you should divide the original Kadc by EM gain, since the EM gain amplifies the photon converted photoelectrons. The role of the Kadc in QC-STORM is to convert the gray value into the true photoelectron number that is calculated by input photon and QE.
 
 
 
