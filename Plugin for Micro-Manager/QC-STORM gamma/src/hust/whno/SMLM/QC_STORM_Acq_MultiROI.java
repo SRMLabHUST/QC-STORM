@@ -176,6 +176,13 @@ public class QC_STORM_Acq_MultiROI {
             try {
                     QC_STORM_Plug.lm_ResetFeedback();
 
+                    
+                    if(WaitTime > 0)
+                    {
+                        Thread.currentThread().sleep(WaitTime);
+                    }
+                    
+                    
                     if(MyConfigurator.IsZDriftCtlEn())
                     {
                         // make sure z drift is corrected and the density is ok  
@@ -183,15 +190,8 @@ public class QC_STORM_Acq_MultiROI {
                         ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 6, 2, 1);
                         ZDriftCorrThread.start();
                         ZDriftCorrThread.join();   
-                    }
-                    
-                    if(WaitTime > 0)
-                    {
-                        Thread.currentThread().sleep(WaitTime);
-                    }
-                    
-                    if(MyConfigurator.IsZDriftCtlEn())
-                    {
+                        
+                        
                         ZDriftCorrThread = new QC_STORM_ZDriftCorrection(studio_, MyConfigurator, MyConfigurator.ZCorrMode(), 3, 1, 1);
                         ZDriftCorrThread.start();
                         ZDriftCorrThread.join();
@@ -226,7 +226,6 @@ public class QC_STORM_Acq_MultiROI {
                             ZDriftCorrThread.join();               
                         }
                     }
-
 
                 } catch (InterruptedException ex) {              
             }
@@ -336,7 +335,6 @@ public class QC_STORM_Acq_MultiROI {
                     FoundPos = cnt;
                     break;
                 }
-                
             }
             
             if(FoundPos > 0)

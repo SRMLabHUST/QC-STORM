@@ -77,7 +77,7 @@ public class QC_STORM_Plug implements ProcessorPlugin, SciJavaPlugin{
     public native static void lm_SetFeedbackPIDParameters(int ControlParaId, float ProportionF, float IntegralF, float DerivativeF);
 
     public native static void lm_ResetFeedback();
-    public native static int lm_GetFirstUARTId();
+//    public native static int lm_GetFirstUARTId();
     
     public native static void lm_ZDepthSMMove(int MoveSteps);
     
@@ -90,8 +90,10 @@ public class QC_STORM_Plug implements ProcessorPlugin, SciJavaPlugin{
     public native static void lm_TranslationStageMove(int XSteps, int YSteps, int ZSteps);
     public native static void lm_SetMultiFOVAcqParameters(float FOVOverlapPercent);
     
-    // for z drift control, independent localization of several images
+    //  independent localization of several images
     public native static float [] lm_LocBatchedImg(short ImgDataS[], int BatchedImgNum);
+    
+    // z drift correct
     
     
     public static final int LocInfID_MeanSNR = 0;

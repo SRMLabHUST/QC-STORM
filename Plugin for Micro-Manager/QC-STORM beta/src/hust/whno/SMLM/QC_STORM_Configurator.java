@@ -664,7 +664,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jTextField_ZDepthCorrFactor)
                         .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, Short.MAX_VALUE)
+                    .addGap(18, 19, Short.MAX_VALUE)
                     .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jLabel30)
@@ -704,7 +704,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
                         .addComponent(jTextField_3DCalibPlaneNum_H, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(jButton_3DCalibAcq, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(38, Short.MAX_VALUE))
+                    .addContainerGap(37, Short.MAX_VALUE))
             );
 
             jTabbedPane1.addTab("3D", jPanel2);
@@ -1013,7 +1013,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
             jComboBox_CtlBoxUART.setMaximumRowCount(10);
             jComboBox_CtlBoxUART.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "COM0", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10", "COM11", "COM12", "COM13", "COM14", "COM15", "COM16", "COM17", "COM18", "COM19" }));
-            jComboBox_CtlBoxUART.setSelectedIndex(3);
             jComboBox_CtlBoxUART.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jComboBox_CtlBoxUARTActionPerformed(evt);
@@ -1383,9 +1382,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
             jCheckBox_StageReturn.setText("Return to starting point");
 
-            jLabel49.setText("Wait time (ms):");
+            jLabel49.setText("Wait time (ms) before acq:");
 
-            jTextField_MultiROI_WaitTime.setText("0");
+            jTextField_MultiROI_WaitTime.setText("2000");
 
             javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
             jPanel6.setLayout(jPanel6Layout);
@@ -1416,10 +1415,10 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
                         .addComponent(jButton_TRXAdj2)
                         .addComponent(jButton_TRYAdj2)
                         .addComponent(jTextField_StageMoveSteps_Y, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField_MultiROINum_Y))
+                        .addComponent(jTextField_MultiROINum_Y, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
                     .addGap(18, 18, 18)
                     .addComponent(jTextField_TRStageUARTBaudRate, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(59, Short.MAX_VALUE))
+                    .addContainerGap(35, Short.MAX_VALUE))
                 .addGroup(jPanel6Layout.createSequentialGroup()
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel6Layout.createSequentialGroup()
@@ -1445,7 +1444,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
                             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jTextField_MultiROI_WaitTime, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jCheckBox_StageReturn))))
-                    .addContainerGap(101, Short.MAX_VALUE))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
             jPanel6Layout.setVerticalGroup(
                 jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2343,12 +2342,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
 
     public void LoadPropertyFile(String FilePath) throws FileNotFoundException, IOException
     {
-        // get likely uart port
-        int UartidI=QC_STORM_Plug.lm_GetFirstUARTId();
-        if(UartidI<0)UartidI=0;
-        if(UartidI>19)UartidI=19;
-        jComboBox_CtlBoxUART.setSelectedIndex(UartidI);
-        
+
 
         File Parafile = new File(FilePath);
         File Parafiledir = new File(Parafile.getParent());
@@ -2465,6 +2459,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         jTextField_BurstFrameNum.setText(pps.getProperty("BurstAcqFrameNum", Integer.toString(20000)));
         jTextField_ResolutionTh.setText(pps.getProperty("SpatialResolutionTh", Float.toString(0.0f)));
         
+        
+        jComboBox_CtlBoxUART.setSelectedIndex(Integer.parseInt(pps.getProperty("CtlBoxUART", Integer.toString(0))));
+
         // multi ROI acquisition
         jComboBox_TRStageUART.setSelectedIndex(Integer.parseInt(pps.getProperty("TRStagePort", Integer.toString(0))));
         
@@ -2473,7 +2470,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         jTextField_StageMoveSteps_X.setText(pps.getProperty("StageMoveSteps_X", Integer.toString(1000)));
         jTextField_StageMoveSteps_Y.setText(pps.getProperty("StageMoveSteps_Y", Integer.toString(1000)));
 
-        
+        jTextField_MultiROI_WaitTime.setText(pps.getProperty("WaitTime", Integer.toString(2000)));
         
         jCheckBox_Stat_SaveRawImage.setSelected(Boolean.parseBoolean(pps.getProperty("SaveRawImage", Boolean.toString(true))));
         jComboBox_ZCorrPara.setSelectedIndex(Integer.parseInt(pps.getProperty("ZFeedbackPara", Integer.toString(0))));
@@ -2586,7 +2583,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         pps.setProperty("BurstAcqFrameNum", jTextField_BurstFrameNum.getText());
         pps.setProperty("SpatialResolutionTh", jTextField_ResolutionTh.getText());
                
-                       
+                               
+        pps.setProperty("CtlBoxUART", Integer.toString(jComboBox_CtlBoxUART.getSelectedIndex()));
+
         // multi ROI acquisition       
         pps.setProperty("TRStagePort", Integer.toString(jComboBox_TRStageUART.getSelectedIndex()));
         
@@ -2595,7 +2594,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame implements Process
         pps.setProperty("StageMoveSteps_X", jTextField_StageMoveSteps_X.getText());
         pps.setProperty("StageMoveSteps_Y", jTextField_StageMoveSteps_Y.getText());
         
-        
+        pps.setProperty("WaitTime", jTextField_MultiROI_WaitTime.getText());
+
         pps.setProperty("SaveRawImage", Boolean.toString(jCheckBox_Stat_SaveRawImage.isSelected()));
         pps.setProperty("ZFeedbackPara", Integer.toString(jComboBox_ZCorrPara.getSelectedIndex()));
         

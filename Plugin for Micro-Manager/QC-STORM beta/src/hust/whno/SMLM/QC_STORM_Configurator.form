@@ -593,7 +593,7 @@
                           <Component id="jTextField_ZDepthCorrFactor" max="32767" attributes="0"/>
                           <Component id="jLabel24" min="-2" pref="21" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" pref="19" max="32767" attributes="0"/>
                       <Component id="jLabel27" min="-2" pref="23" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel30" min="-2" max="-2" attributes="0"/>
@@ -640,7 +640,7 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButton_3DCalibAcq" min="-2" pref="39" max="-2" attributes="0"/>
-                      <EmptySpace pref="38" max="32767" attributes="0"/>
+                      <EmptySpace pref="37" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1427,7 +1427,6 @@
                     <StringItem index="19" value="COM19"/>
                   </StringArray>
                 </Property>
-                <Property name="selectedIndex" type="int" value="3"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBox_CtlBoxUARTActionPerformed"/>
@@ -1666,11 +1665,11 @@
                           <Component id="jButton_TRXAdj2" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jButton_TRYAdj2" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextField_StageMoveSteps_Y" alignment="0" min="-2" pref="57" max="-2" attributes="0"/>
-                          <Component id="jTextField_MultiROINum_Y" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jTextField_MultiROINum_Y" alignment="0" pref="81" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jTextField_TRStageUARTBaudRate" min="-2" pref="61" max="-2" attributes="0"/>
-                      <EmptySpace pref="59" max="32767" attributes="0"/>
+                      <EmptySpace pref="35" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -1705,7 +1704,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="101" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1941,12 +1940,12 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel49">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Wait time (ms):"/>
+                <Property name="text" type="java.lang.String" value="Wait time (ms) before acq:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField_MultiROI_WaitTime">
               <Properties>
-                <Property name="text" type="java.lang.String" value="0"/>
+                <Property name="text" type="java.lang.String" value="2000"/>
               </Properties>
             </Component>
           </SubComponents>
