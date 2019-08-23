@@ -20,20 +20,7 @@ int main(int argc, char* argv[])
 	int LocType = LocType_GS2D;
 
 	int MultiEmitterFitEn = 1;
-	int WLEEn = 0;
-
-
-	int IsSameAcq = 1; // batch processing come from the same acq?
-
-
-	CString curPath ;
-	CString oFileName;
-
-	CStdioFile FileToProc(L"filepath to proc.txt",CFile::modeRead);
-
-	int TotalFrame;
-	int ImageWidth;
-	int ImageHigh;
+	int WLEEn = 1;
 
 
 
@@ -85,14 +72,6 @@ int main(int argc, char* argv[])
 
 
 
-	int fcnt = 0;
-	int TotalFcnt = 0;
-
-	CString ImgName;
-	TinyTIFFReaderFile* tiffr = NULL;
-	char buf[1024];
-
-
 	LDROIExtractData_TypeDef LDROIExtractData;
 	LDLocData_TypeDef LDLocData;
 	ConsecutiveFit_TypeDef ConsecutiveFitData;
@@ -103,33 +82,23 @@ int main(int argc, char* argv[])
 
 	cudaStream_t loc_stream1;
 	
-	int leastPriority, greatestPriority;
-	cudaDeviceGetStreamPriorityRange(&leastPriority, &greatestPriority);
-
 	// loc_stream1 declear at bfgs lib
-	CreatStreamWithPriority(&loc_stream1, leastPriority);
+	CreatStream(&loc_stream1);
 
 
 	int FluoNum;
 	int TotalFluoNum;
 
 
-	int time1, time2;
-	int ExtractTime = 0;
-	int LocTime = 0;
-
 	int RecFluoNumTh = PointNumTh;
 
-	//
-	// ratio of ROI by last fitting modality to all detected ROIs
-	float FitRatio_Final_1E = 0; // single molecule fitting ratio
-	float FitRatio_Final_2E = 0; // two emitter fitting ratio
-	float FitRatio_Final_3E = 0; // three emitter fitting ratio
-	float FitRatio_Final_4E = 0; // four or more emitter fitting ratio
 
-	float SumNum = 0;
+	CString curPath;
+	CString oFileName;
 
+	CStdioFile FileToProc(L"filepath to proc.txt", CFile::modeRead);
 
+	char buf[1024];
 
 	while (FileToProc.ReadString(curPath))
 	{
@@ -141,7 +110,7 @@ int main(int argc, char* argv[])
 		oFileName.TrimRight(L".tif");
 		oFileName = oFileName + L"_LocArray.txt";
 
-		ImgName = curPath; //+L"\\MMStack_Pos0.ome.tif"
+		CString ImgName = curPath; //+L"\\MMStack_Pos0.ome.tif"
 
 
 		wprintf(L"CurFile:%s\n", curPath);
@@ -149,9 +118,8 @@ int main(int argc, char* argv[])
 
 		WideCharToMultiByte(CP_ACP, 0, ImgName.GetBuffer(), -1, buf, 1024, NULL, NULL);
 
-		//			printf("conv:%s\n", buf);
 
-		tiffr = TinyTIFFReader_open(buf);
+		TinyTIFFReaderFile* tiffr = TinyTIFFReader_open(buf);
 
 		if (!tiffr)
 		{
@@ -170,14 +138,13 @@ int main(int argc, char* argv[])
 
 
 		TotalFluoNum = 0;
-		LocTime = 0;
 
 
-		TotalFrame = TinyTIFFReader_countFrames(tiffr);
+		int TotalFrame = TinyTIFFReader_countFrames(tiffr);
 		printf("total image frame:%d\n", TotalFrame);
 
-		ImageWidth = TinyTIFFReader_getWidth(tiffr);
-		ImageHigh = TinyTIFFReader_getHeight(tiffr);
+		int ImageWidth = TinyTIFFReader_getWidth(tiffr);
+		int ImageHigh = TinyTIFFReader_getHeight(tiffr);
 		printf("raw image size:%d x %d\n", ImageWidth, ImageHigh);
 
 
@@ -187,8 +154,6 @@ int main(int argc, char* argv[])
 		LocPara_Global.UpdateSRImageSize();
 
 
-		//TotalFrame = 50;
-		
 
 		LDROIExtractData.Init(LocPara_Global);
 
@@ -201,37 +166,17 @@ int main(int argc, char* argv[])
 
 		bool IsBreak = 0;
 
-		if(IsSameAcq==0)TotalFcnt = 0;
 
-		fcnt = 0;
+		int fcnt = 0;
 		
 
 		while (1)
 		{
 			fcnt++;
-			TotalFcnt++;
 
 			IsBreak = (fcnt == TotalFrame);
 
-
-			if (TotalFcnt % 50 == 0)
-			{
-				printf("f%d \n", TotalFcnt);
-
-
-				FitRatio_Final_1E /= SumNum;
-				FitRatio_Final_2E /= SumNum;
-				FitRatio_Final_3E /= SumNum;
-				FitRatio_Final_4E /= SumNum;
-
-				printf("Final FitRatio_1E 2E 3E 4E: %.4f %.4f %.4f %.4f\n", FitRatio_Final_1E, FitRatio_Final_2E, FitRatio_Final_3E, FitRatio_Final_4E);
-
-				FitRatio_Final_1E = 0;
-				FitRatio_Final_2E = 0;
-				FitRatio_Final_3E = 0;
-				FitRatio_Final_4E = 0;
-				SumNum = 0;
-			}
+			if (fcnt % (TotalFrame / 10) == 0)printf("progress: %.2f%%\n", fcnt * 100.0f / TotalFrame);
 
 
 			TinyTIFFReader_getSampleData(tiffr, LDROIExtractData.h_RawImg, 0); // get image data
@@ -258,16 +203,6 @@ int main(int argc, char* argv[])
 				LDLocData.BFGS_MLELocalization(LDROIExtractData.h_ImageROI, LDROIExtractData.Get_h_WLEPara(), LocPara_Global, FluoNum, loc_stream1);
 
 
-				//
-				FitRatio_Final_1E += LDLocData.FitRatio_Final_1E; // single molecule fitting ratio
-				FitRatio_Final_2E += LDLocData.FitRatio_Final_2E; // two emitter fitting ratio
-				FitRatio_Final_3E += LDLocData.FitRatio_Final_3E; // three emitter fitting ratio
-				FitRatio_Final_4E += LDLocData.FitRatio_Final_4E; // four or more emitter fitting ratio
-
-				SumNum += 1;
-
-				//
-
 
 				// write localization data into file
 				WriteLocArry = LDLocData.h_LocArry;
@@ -282,10 +217,8 @@ int main(int argc, char* argv[])
 				WriteLocNum = ZeroLocRemovel.ValidFluoNum;
 
 
-
 				// write localization data into file
 				LocFile.Write(WriteLocArry, WriteLocNum * OutParaNumGS2D * sizeof(float));
-
 
 
 			}
@@ -319,6 +252,8 @@ int main(int argc, char* argv[])
 
 
 	FileToProc.Close();
+
+	printf("all process finished\n");
 
 	system("pause");
 

@@ -1,4 +1,4 @@
-E:\experiment data\20190512 density feedback 1\RawImage_2D_20190512_153853_Y0_X0 1 hd\raw images\MMStack_Pos-1.ome.tif
-E:\experiment data\20190512 density feedback 1\RawImage_2D_20190512_153853_Y0_X0 1 hd\raw images\MMStack_Pos-1_1.ome.tif
-E:\experiment data\20190512 density feedback 1\RawImage_2D_20190512_153853_Y0_X0 1 hd\raw images\MMStack_Pos-1_2.ome.tif
-E:\experiment data\20190512 density feedback 1\RawImage_2D_20190512_153853_Y0_X0 1 hd\raw images\MMStack_Pos-1_3.ome.tif
+G:\mid density-2500f-150x150.tif
+G:\MMStack_512x512x1500.tif
+G:\MMStack_Pos0_992x960x500.tif
+G:\Tubulins I_256x256x2400.tif
