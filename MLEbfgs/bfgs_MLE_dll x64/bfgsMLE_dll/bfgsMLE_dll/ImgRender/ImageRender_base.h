@@ -40,12 +40,18 @@ RenderingMode 2 : 1 as weight for each molecule, rendered by fixed localization 
 
 
 // regular RGB image
-#define RGBImage_EncodeMode_3Bytes			0
-// for ImageJ display
-#define RGBImage_EncodeMode_4Bytes			1
+#define RGBImage_EncodeMode_3B_BGR			0 // for bitmap image
+#define RGBImage_EncodeMode_3B_RGB			1 // for tiff RGB image
+
+// for ImageJ display,  imageJ RGB image is BGRA
+#define RGBImage_EncodeMode_4B_BRGA			2
+#define RGBImage_EncodeMode_4B_RGBA			3
+
+
 
 // blue is low depth or reg is low depth
 #define ImgRend_ColorMode_3D_BlueToRed		0
 #define ImgRend_ColorMode_3D_RedToBlue		1
 
 
+#define EncodeMode_Is_3B(x)	((x==RGBImage_EncodeMode_3B_BGR)||(x==RGBImage_EncodeMode_3B_RGB))

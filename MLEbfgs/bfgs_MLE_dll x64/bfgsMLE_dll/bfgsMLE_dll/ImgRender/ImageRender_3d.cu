@@ -226,7 +226,7 @@ __global__ void RenderDisplayImg_3d(float *d_SRIntensityImg, float *d_SRColorMap
 		ColorGenerate(CurZDepth, CurIntensity, MinZDepth, MaxZDepth, MaxIntensity, ColorMode_3D, &datr, &datg, &datb);
 
 
-		d_RendImg[OImgOffset + 0] = datb; //0;			//b for 24 color bitmap
+		d_RendImg[OImgOffset + 0] = datb; //0;				//b for 24 color bitmap
 		d_RendImg[OImgOffset + 1] = datg; //CurIntensity;	//g for 24 color bitmap
 		d_RendImg[OImgOffset + 2] = datr; //CurIntensity;	//r for 24 color bitmap
 	}
@@ -259,7 +259,7 @@ __global__ void RenderSaveImg_3D(float *d_SRIntensityImg, float *d_SRColorMapImg
 			int RendImgOffset = 0;
 
 			// result img Offset pos
-			if (RGBImageEncodeMode == RGBImage_EncodeMode_3Bytes)
+			if (EncodeMode_Is_3B(RGBImageEncodeMode))
 			{
 				RendImgOffset = (cury * SRImageWidth + curx) * 3;
 			}
@@ -270,18 +270,18 @@ __global__ void RenderSaveImg_3D(float *d_SRIntensityImg, float *d_SRColorMapImg
 
 			if (CurIntensity == 0)
 			{
-				if (RGBImageEncodeMode == RGBImage_EncodeMode_3Bytes)
+				if (EncodeMode_Is_3B(RGBImageEncodeMode))
 				{
-					d_RendImg[RendImgOffset + 0] = 0; //0;			//b for 24 color bitmap
+					d_RendImg[RendImgOffset + 0] = 0; //0;				//b for 24 color bitmap
 					d_RendImg[RendImgOffset + 1] = 0; //CurIntensity;	//g for 24 color bitmap
 					d_RendImg[RendImgOffset + 2] = 0; //CurIntensity;	//r for 24 color bitmap
 				}
 				else
 				{
-					d_RendImg[RendImgOffset + 0] = 0; //0;			//b for 24 color bitmap
+					d_RendImg[RendImgOffset + 0] = 0; //0;				//b for 24 color bitmap
 					d_RendImg[RendImgOffset + 1] = 0; //CurIntensity;	//g for 24 color bitmap
 					d_RendImg[RendImgOffset + 2] = 0; //CurIntensity;	//r for 24 color bitmap
-					d_RendImg[RendImgOffset + 3] = 0xff; //CurIntensity;	//r for 24 color bitmap
+					d_RendImg[RendImgOffset + 3] = 0xff; //CurIntensity;//a for 24 color bitmap
 				}
 				continue;
 			}
@@ -290,20 +290,37 @@ __global__ void RenderSaveImg_3D(float *d_SRIntensityImg, float *d_SRColorMapImg
 
 			ColorGenerate(CurZDepth, CurIntensity, MinZDepth, MaxZDepth, MaxIntensity, ColorMode_3D, &datr, &datg, &datb);
 
-
-			if (RGBImageEncodeMode == RGBImage_EncodeMode_3Bytes)
+			switch (RGBImageEncodeMode)
 			{
-				d_RendImg[RendImgOffset + 0] = datb; //0;			//b for 24 color bitmap
+			case RGBImage_EncodeMode_3B_BGR:
+				d_RendImg[RendImgOffset + 0] = datb; //0;				//b for 24 color bitmap
 				d_RendImg[RendImgOffset + 1] = datg; //CurIntensity;	//g for 24 color bitmap
 				d_RendImg[RendImgOffset + 2] = datr; //CurIntensity;	//r for 24 color bitmap
-			}
-			else
-			{
-				d_RendImg[RendImgOffset + 0] = datb; //0;			//b for 24 color bitmap
+
+				break;
+			case RGBImage_EncodeMode_3B_RGB:
+				d_RendImg[RendImgOffset + 0] = datr; //0;				//b for 24 color bitmap
+				d_RendImg[RendImgOffset + 1] = datg; //CurIntensity;	//g for 24 color bitmap
+				d_RendImg[RendImgOffset + 2] = datb; //CurIntensity;	//r for 24 color bitmap
+
+				break;
+			case RGBImage_EncodeMode_4B_BRGA:
+				d_RendImg[RendImgOffset + 0] = datb; //0;				//b for 24 color bitmap
 				d_RendImg[RendImgOffset + 1] = datg; //CurIntensity;	//g for 24 color bitmap
 				d_RendImg[RendImgOffset + 2] = datr; //CurIntensity;	//r for 24 color bitmap
 				d_RendImg[RendImgOffset + 3] = 0xff; //CurIntensity;	//r for 24 color bitmap
+			
+				break;
+			case RGBImage_EncodeMode_4B_RGBA:
+				d_RendImg[RendImgOffset + 0] = datr; //0;				//b for 24 color bitmap
+				d_RendImg[RendImgOffset + 1] = datg; //CurIntensity;	//g for 24 color bitmap
+				d_RendImg[RendImgOffset + 2] = datb; //CurIntensity;	//r for 24 color bitmap
+				d_RendImg[RendImgOffset + 3] = 0xff; //CurIntensity;	//r for 24 color bitmap
+
+				break;
+
 			}
+
 		}
 	}
 }
