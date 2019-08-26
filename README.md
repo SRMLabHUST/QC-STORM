@@ -55,7 +55,7 @@ The QC-STORM generates a super-resolution image and a binary txt file in the res
 
 There are 12 float parameters saved for each localizations in the binary txt file, please see the user's guide of QC-STORM. 
 
-In the downloaded release, we provide a MATLAB code LoadLocResult_BinaryTxt_Single_main.m to read the binary txt file. 
+In the downloaded release, we provide a MATLAB code file LoadLocResult_BinaryTxt_Single_main.m to read the binary txt file. 
 
 We also provide a ConvertBinLocArrayToCSV.exe file to convert the binary txt file into .csv file, just drag (multiple) binary txt files onto the ConvertBinLocArrayToCSV.exe to use.
 
