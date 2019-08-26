@@ -52,8 +52,14 @@ The open dataset evaluation of QC-STORM can be found in http://bigwww.epfl.ch/sm
 
 # Output file format
 The QC-STORM generates a super-resolution image and a binary txt file in the result save path. 
+
 There are 12 float parameters saved for each localizations, please see the user's guide of QC-STORM. 
-In the downloaded release, we provide a MATLAB code LoadLocResult_BinaryTxt_Single_main.m to read the binary txt file. We also provide a ConvertBinLocArrayToCSV.exe file to convert the binary txt file into .csv file, just drag the binary txt files onto the ConvertBinLocArrayToCSV.exe to use.
+
+In the downloaded release, we provide a MATLAB code LoadLocResult_BinaryTxt_Single_main.m to read the binary txt file. 
+
+We also provide a ConvertBinLocArrayToCSV.exe file to convert the binary txt file into .csv file, just drag (multiple) binary txt files onto the ConvertBinLocArrayToCSV.exe to use.
+
+We also provide a python code to read the binary txt file, called  py_LoadBinaryLocData.py
 
 
 # Recompile the source codes
