@@ -111,7 +111,7 @@ public class QC_STORM_ implements PlugInFilter{
 
     public native static void lm_ReleaseRerendResource();
 
-    public native static void lm_StartBatchImageLoc(String ImageFolderPath, String FileExtension);
+    public native static void lm_StartBatchImageLoc(String ImageFolderPath, String FileExtension, String ResultsPath);
     
     
     @Override

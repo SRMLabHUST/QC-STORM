@@ -7,8 +7,9 @@
 // call th_OnlineLocalizationLD etc.
 
 wstring BatchProc_FolderName;
-
 wstring BatchProc_Postfix;
+wstring BatchProc_SavePath;
+
 
 int TotalFileNum = 0;
 int CurFileCnt = 0;
@@ -43,6 +44,9 @@ UINT th_BatchLocalization(LPVOID params)
 	for (int cnt = 0; cnt < TotalFileNum; cnt++)
 	{
 		ImageName = FileNameList[cnt].c_str();
+
+
+
 		CurFileCnt = cnt + 1;
 
 		wprintf(L"Cur file: %d in %d, name: %s\n", CurFileCnt, TotalFileNum, ImageName);
@@ -63,6 +67,7 @@ UINT th_BatchLocalization(LPVOID params)
 
 
 		// update image size and frame number
+		printf("Reading image info ...\n");
 
 		int TotalFrame = TinyTIFFReader_countFrames(tiffr);
 
@@ -70,6 +75,11 @@ UINT th_BatchLocalization(LPVOID params)
 		int ImageHigh = TinyTIFFReader_getHeight(tiffr);
 		printf("Image size:%d x %d x %d frame\n", ImageWidth, ImageHigh, TotalFrame);
 
+		if (TotalFrame <= 1)
+		{
+			TinyTIFFReader_close(tiffr);
+			continue;
+		}
 
 		LocPara_Global.ImageWidth = ImageWidth;
 		LocPara_Global.ImageHigh = ImageHigh;
@@ -78,9 +88,10 @@ UINT th_BatchLocalization(LPVOID params)
 		LocPara_Global.UpdateSRImageSize();
 
 
-		// start batch localization, allocate resource and start parallel threads
 		ImgDataQueue.clear();
 
+		// start batch localization, allocate resource and start parallel threads
+		SetLocDataFileName_BatchProc(); // set proper localization data save name
 		StartLocalizationThread();
 
 
@@ -123,11 +134,9 @@ UINT th_BatchLocalization(LPVOID params)
 
 			}
 
-
 			CreateFeedImgMemory(CurImgInf, RawImgBuf, LocPara_Global.ImageWidth, LocPara_Global.ImageHigh, CurImgNum);
 
 			ImgDataQueue.push(CurImgInf);
-
 		}
 
 
@@ -158,6 +167,15 @@ UINT th_BatchLocalization(LPVOID params)
 
 		SRFileName.Format(L"%s_result%dD%d%s%s_rend%.2fnm.tif", SRFileName, LocPara_Global.LocType + 2, LocPara_Global.ROISize, MultiFitStr, ConsecFitStr, LocPara_Global.PixelSize / LocPara_Global.PixelZoom);
 		
+		// modify save path
+		SRFileName.TrimLeft(BatchProc_FolderName.c_str());
+		SRFileName.TrimLeft(L"\\");
+		SRFileName.Replace(L"\\", L"__");
+
+		CString SavePath = BatchProc_SavePath.c_str();
+		SavePath = SavePath + L"\\";
+		SRFileName = SavePath + SRFileName;
+
 		printf("Writing super-resolution image...\n");
 
 
@@ -216,21 +234,21 @@ void BatchProc_WriteSRImage3D(CString SRFileName)
 	RGBImage SRImg_RGB((unsigned char *)RendData.h_SaveRendImg, LocPara_Global.SRImageWidth, LocPara_Global.SRImageHigh);
 
 	WriteRGBImage(SRFileName, &SRImg_RGB);
-
 }
 
-int IsStringEndWithPostfix(wstring DirName, wstring PostFix)
+
+bool IsStringEndWithPostfix(wstring DirName, wstring PostFix)
 {
 	int str_len1 = DirName.size();
 	int str_len2 = PostFix.size();
 
 	int pos = DirName.rfind(PostFix);
 
-	int Valid = 0;
+	bool Valid = false;
 
 	if ((pos >= 0) && (pos == str_len1 - str_len2))
 	{
-		Valid = 1;
+		Valid = true;
 	}
 	return Valid;
 }
@@ -244,18 +262,39 @@ void SearchFilesInDir(wstring DirName, wstring PostFix, vector<wstring> & FileNa
 	WIN32_FIND_DATA data;
 	HANDLE hFind;
 
+	vector<wstring> FolderNameList;
+
 	if ((hFind = FindFirstFile(pattern.c_str(), &data)) != INVALID_HANDLE_VALUE) {
 		do {
-			int valid1 = IsStringEndWithPostfix(data.cFileName, PostFix);
-			int valid2 = IsStringEndWithPostfix(data.cFileName, L".tif");
-
-			if (valid1 && valid2)
+			bool valid0 = !IsStringEndWithPostfix(data.cFileName, L".");
+			if (valid0)
 			{
-				FileNameList.push_back(DirName + L"\\" + data.cFileName);
+				if (data.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY)
+				{
+					// is folder
+					FolderNameList.push_back(DirName + L"\\" + data.cFileName);
+				}
+				else
+				{
+					// is file
+					bool valid1 = IsStringEndWithPostfix(data.cFileName, PostFix);
+					bool valid2 = IsStringEndWithPostfix(data.cFileName, L".tif");
+					if (valid1 && valid2)
+					{
+						FileNameList.push_back(DirName + L"\\" + data.cFileName);
+					}
+
+//					wprintf(L"search file:%s\n",  data.cFileName);
+				}
 			}
 
 		} while (FindNextFile(hFind, &data) != 0);
 		FindClose(hFind);
 	}
-}
 
+	// search sub-folders
+	for (int i = 0; i < FolderNameList.size(); i++)
+	{
+		SearchFilesInDir(FolderNameList[i], PostFix, FileNameList);
+	}
+}

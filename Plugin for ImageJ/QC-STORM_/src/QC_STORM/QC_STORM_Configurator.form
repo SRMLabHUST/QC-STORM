@@ -1207,26 +1207,32 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <EmptySpace pref="19" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
-                              <Component id="jButton_StartBatchLoc" min="-2" pref="264" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jTextField_BatchProc_ResultPath" min="-2" pref="253" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jButton_LoadBatchImgSavePath1" min="-2" pref="186" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace pref="19" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jLabel34" min="-2" pref="154" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jTextField_batchImgExtension" min="-2" pref="72" max="-2" attributes="0"/>
+                                      <Component id="jTextField_BatchProc_FileExtension" min="-2" pref="72" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jTextField_BatchedImgSavePath" min="-2" pref="253" max="-2" attributes="0"/>
+                                  <Component id="jTextField_BatchProc_ImgPath" min="-2" pref="253" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jButton_LoadBatchImgSavePath" min="-2" pref="186" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace pref="33" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
+                      <Component id="jButton_StartBatchLoc" min="-2" pref="264" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1235,23 +1241,28 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jTextField_BatchedImgSavePath" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextField_BatchProc_ImgPath" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="jButton_LoadBatchImgSavePath" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel34" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
-                          <Component id="jTextField_batchImgExtension" alignment="3" max="32767" attributes="0"/>
+                          <Component id="jTextField_BatchProc_FileExtension" alignment="3" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="207" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jTextField_BatchProc_ResultPath" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButton_LoadBatchImgSavePath1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
                       <Component id="jButton_StartBatchLoc" min="-2" pref="56" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="143" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JTextField" name="jTextField_BatchedImgSavePath">
+            <Component class="javax.swing.JTextField" name="jTextField_BatchProc_ImgPath">
               <Properties>
                 <Property name="text" type="java.lang.String" value="G:\u005ctest images" containsInvalidXMLChars="true"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1280,16 +1291,35 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel34">
               <Properties>
-                <Property name="text" type="java.lang.String" value="File name extension:"/>
+                <Property name="text" type="java.lang.String" value="File name ending:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField_batchImgExtension">
+            <Component class="javax.swing.JTextField" name="jTextField_BatchProc_FileExtension">
               <Properties>
                 <Property name="text" type="java.lang.String" value="ome.tif"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[48, 26]"/>
                 </Property>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jTextField_BatchProc_ResultPath">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="D:\u005c" containsInvalidXMLChars="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[6, 26]"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton_LoadBatchImgSavePath1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Load results save path"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[153, 26]"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_LoadBatchImgSavePath1ActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

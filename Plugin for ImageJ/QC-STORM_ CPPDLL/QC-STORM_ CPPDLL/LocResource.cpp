@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "OnlineLocalizationLD.h"
 #include "StatInfDisplay.h"
 
+#include "BatchLocalization.h"
 
 // control whether thread running
 volatile bool OnlineLocAlive = false;
@@ -38,7 +39,7 @@ float *h_RendFloatImage2D = NULL;
 
 // image info
 CString ImageName; // image path of current processing
-
+CString LocFileName; // localization data file name
 
 cudaStream_t loc_stream1;
 
@@ -111,6 +112,9 @@ void FinishLocalizationThread()
 
 }
 
+
+
+
 void CreateFeedImgMemory(qImgData & CurImgInf, unsigned short* pImg, int ImageWidth, int ImageHigh, int FrameNum)
 {
 
@@ -146,6 +150,62 @@ void CreateFeedImgMemory(qImgData & CurImgInf, unsigned short* pImg, int ImageWi
 	memcpy(CurImgInf.pImgData, pImg, BatchedImgSize * sizeof(short));
 
 }
+
+// for nromal imageJ process
+void SetLocDataFileName()
+{
+	// set localization file name
+	LocFileName = ImageName;
+	LocFileName.TrimRight(_T(".tif"));
+
+	CString MultiFitStr;
+	if (LocPara_Global.MultiEmitterFitEn) MultiFitStr = L"_M";
+	else MultiFitStr = L"_S";
+
+	CString ConsecFitStr;
+	if (LocPara_Global.ConsecFitEn) ConsecFitStr.Format(L"_Consec%.0fnm", LocPara_Global.ConsecFit_DistanceTh_nm);
+	else ConsecFitStr = L"";
+
+
+	CString PostFix;
+	PostFix.Format(_T("_result%dD%d%s%s.txt"), LocPara_Global.LocType + 2, LocPara_Global.ROISize, MultiFitStr, ConsecFitStr);
+
+	LocFileName = LocFileName + PostFix;
+
+}
+
+// for batch processing
+void SetLocDataFileName_BatchProc()
+{
+	// set localization file name
+	LocFileName = ImageName;
+	LocFileName.TrimRight(_T(".tif"));
+
+	CString MultiFitStr;
+	if (LocPara_Global.MultiEmitterFitEn) MultiFitStr = L"_M";
+	else MultiFitStr = L"_S";
+
+	CString ConsecFitStr;
+	if (LocPara_Global.ConsecFitEn) ConsecFitStr.Format(L"_Consec%.0fnm", LocPara_Global.ConsecFit_DistanceTh_nm);
+	else ConsecFitStr = L"";
+
+
+	CString PostFix;
+	PostFix.Format(_T("_result%dD%d%s%s.txt"), LocPara_Global.LocType + 2, LocPara_Global.ROISize, MultiFitStr, ConsecFitStr);
+
+	LocFileName = LocFileName + PostFix;
+
+	// modify save path
+	LocFileName.TrimLeft(BatchProc_FolderName.c_str());
+	LocFileName.TrimLeft(L"\\");
+	LocFileName.Replace(L"\\", L"__");
+
+	CString SavePath = BatchProc_SavePath.c_str();
+	SavePath = SavePath + L"\\";
+	LocFileName = SavePath + LocFileName;
+
+}
+
 
 void InitAllLocResource(int IsPostprocess)
 {
@@ -218,7 +278,6 @@ void InitAllLocResource(int IsPostprocess)
 
 		IsLocResourceAllocated = true;
 	}
-
 }
 
 
@@ -287,7 +346,6 @@ void DeinitAllLocResource(int IsPostprocess)
 			// spatial resolution calculation
 			DimensionDensityCalc.DeInit();
 			SpatialResolutionCalc.DeInit();
-
 		}
 
 		//
@@ -316,7 +374,7 @@ void SelectBestGPU()
 	cudaGetDeviceCount(&DevNum);
 	printf("GPU num:%d\n", DevNum);
 
-	if ((DevNum < 1) || (DevNum > 10))
+	if ((DevNum < 1) || (DevNum > 20))
 	{
 		printf("error: No GPU find\n\n");
 
@@ -367,8 +425,10 @@ void SelectBestGPU()
 	printf("1st BestGPUId %d:%s\n", GPUID_1Best, iProp.name);
 	printf("Number of multiprocessors: %d\n", iProp.multiProcessorCount);
 
-
-	cudaGetDeviceProperties(&iProp, GPUID_2Best);
-	printf("2nd BestGPUId %d:%s\n", GPUID_2Best, iProp.name);
-	printf("Number of multiprocessors: %d\n", iProp.multiProcessorCount);
+	if (DevNum > 1)
+	{
+		cudaGetDeviceProperties(&iProp, GPUID_2Best);
+		printf("2nd BestGPUId %d:%s\n", GPUID_2Best, iProp.name);
+		printf("Number of multiprocessors: %d\n", iProp.multiProcessorCount);
+	}
 }

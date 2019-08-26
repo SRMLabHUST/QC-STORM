@@ -87,7 +87,8 @@ extern float *h_RendFloatImage2D;
 
 
 // image info
-extern CString ImageName;
+extern CString ImageName; // image path of current processing
+extern CString LocFileName; // localization data file name
 
 
 extern cudaStream_t loc_stream1;
@@ -131,6 +132,8 @@ void StartLocalizationThread();
 void FinishLocalizationThread();
 void CreateFeedImgMemory(qImgData & CurImgInf, unsigned short* pImg, int ImageWidth, int ImageHigh, int FrameNum);
 
+void SetLocDataFileName();
+void SetLocDataFileName_BatchProc();
 
 void InitAllLocResource(int IsPostprocess);
 void DeinitAllLocResource(int IsPostprocess);

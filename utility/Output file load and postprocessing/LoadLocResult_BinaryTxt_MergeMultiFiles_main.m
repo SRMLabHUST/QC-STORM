@@ -6,13 +6,19 @@
 clear,clc
 
 FileName={
-'MMStack_Pos-1.ome_txt.txt',
-'MMStack_Pos-1_1.ome_txt.txt',
-'MMStack_Pos-1_2.ome_txt.txt',
-'MMStack_Pos-1_3.ome_txt.txt',
-'MMStack_Pos-1_4.ome_txt.txt',
-
-    
+    'MMStack_Pos-1.ome_result2D7_M.txt',
+    'MMStack_Pos-1_1.ome_result2D7_M.txt',
+    'MMStack_Pos-1_2.ome_result2D7_M.txt',
+    'MMStack_Pos-1_3.ome_result2D7_M.txt',
+    'MMStack_Pos-1_4.ome_result2D7_M.txt',
+    'MMStack_Pos-1_5.ome_result2D7_M.txt',
+    'MMStack_Pos-1_6.ome_result2D7_M.txt',
+    'MMStack_Pos-1_7.ome_result2D7_M.txt',
+    'MMStack_Pos-1_8.ome_result2D7_M.txt',
+    'MMStack_Pos-1_9.ome_result2D7_M.txt',
+    'MMStack_Pos-1_10.ome_result2D7_M.txt',
+    'MMStack_Pos-1_11.ome_result2D7_M.txt',
+    'MMStack_Pos-1_12.ome_result2D7_M.txt',
     };
 
 FileNum = length(FileName);

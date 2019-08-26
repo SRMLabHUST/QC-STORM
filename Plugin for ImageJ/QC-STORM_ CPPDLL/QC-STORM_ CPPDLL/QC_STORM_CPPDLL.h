@@ -165,7 +165,7 @@ extern "C" {
 	* Signature: (III[C)V
 	*/
 	JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StartBatchImageLoc
-	(JNIEnv *env, jclass obj, jstring ImageFolderPath, jstring FileExtension);
+	(JNIEnv *env, jclass obj, jstring, jstring, jstring);
 
 #ifdef __cplusplus
 }

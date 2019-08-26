@@ -157,6 +157,8 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StartLocThread
 	IsBatchLocRunning = false;
 	IsLocRunning = true;
 
+	SetLocDataFileName(); // set proper localization data save name
+
 	StartLocalizationThread();
 
 }
@@ -541,8 +543,9 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1ReleaseRerendResource
 * Signature: (III[C)V
 */
 JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StartBatchImageLoc
-(JNIEnv *env, jclass obj, jstring ImageFolderPath, jstring FileExtension)
+(JNIEnv *env, jclass obj, jstring ImageFolderPath, jstring FileExtension, jstring ResultsPath)
 {
+	
 	OpenConsole();
 
 	// access string name
@@ -558,7 +561,13 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StartBatchImageLoc
 	BatchProc_Postfix = str_java;
 	env->ReleaseStringChars(FileExtension, (jchar*)str_java);
 
+	// access string name
+	str_java = (wchar_t *)env->GetStringChars(ResultsPath, NULL);
 
+	BatchProc_SavePath = str_java;
+	env->ReleaseStringChars(ResultsPath, (jchar*)str_java);
+
+	//
 	IsBatchLocRunning = true;
 	IsLocRunning = true;
 
