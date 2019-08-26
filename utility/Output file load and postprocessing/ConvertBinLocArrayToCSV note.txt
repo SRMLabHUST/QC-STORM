@@ -1,0 +1,1 @@
+drag the binary localization data files with 12 parameters for each molecule to the ConvertBinLocArrayToCSV.exe

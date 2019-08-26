@@ -1,8 +1,8 @@
-% load('FilteredLocArray.mat')
-
 %% generate Calibration Data from localizations of beads stack
-
 close all
+
+% first use LoadLocResult_BinaryTxt_Single_main to load localization array of beads
+% you shold remove localizations of depth that QC-STORM can't process very well
 
 FrameDepthGap = 10; % 2*15.625; % nm
 

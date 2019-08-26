@@ -3,7 +3,7 @@
 % copy the result file name to set following FileName, set current Matlab directory 
 % to result folder directory, then run
 
-FileName = 'loc_result3D11_20190416_122939_Y0_X1_M_ZDepthUpdated.txt';
+FileName = 'MMStack_Pos-1.ome-1_result3D13_S.txt';
 ParaNum = 12; 
 
 % parameters are 
