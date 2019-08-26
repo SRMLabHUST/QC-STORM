@@ -90,12 +90,15 @@ UINT th_OnlineSpatialResolutionCalc(LPVOID params)
 		if (IsBreak)break;
 	}
 
+	float CurSpatialResolution = SpatialResolutionCalc.CurSpatialResolution;
+	float CurNyquistResolution = SpatialResolutionCalc.CurNyquistResolution;
+	printf("Spatial, Nyquist resolution: %.2f, %.2f\n", CurSpatialResolution, CurNyquistResolution);
 
 	printf("Resolution calc time : %d ms\n", ResolutionTime);
 
 
-	cudaGetDevice(&CurDevice);
-	printf("Resolution dev: %d\n", CurDevice);
+	//	cudaGetDevice(&CurDevice);
+	// printf("Resolution dev: %d\n", CurDevice);
 
 	return 0;
 }

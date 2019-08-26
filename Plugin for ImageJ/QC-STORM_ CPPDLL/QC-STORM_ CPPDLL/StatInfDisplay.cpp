@@ -59,7 +59,6 @@ void DispSpatialResolutionInf_SingleImage(CImg <unsigned char> *CImg_Axis, int X
 	float CurNyquistResolution = SpatialResolutionCalc.CurNyquistResolution;
 
 
-
 	// display together
 	DisplayStatInf_SingleItem("Convolved Resolution XY (nm)", CurSpatialResolution, CImg_Axis, XPos, YPos + 0);
 	DisplayStatInf_SingleItem("Nyquist Resolution (nm)", CurNyquistResolution, CImg_Axis, XPos, YPos + 20);

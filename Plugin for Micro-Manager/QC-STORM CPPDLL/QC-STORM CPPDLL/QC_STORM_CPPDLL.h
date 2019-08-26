@@ -29,7 +29,7 @@ extern "C" {
 	* Signature: ([C)V
 	*/
 	JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetSavePath
-	(JNIEnv *, jclass, jcharArray);
+	(JNIEnv *, jclass, jstring);
 
 	/*
 	* Class:     hust_whno_SMLM_QC_STORM_Plug
@@ -61,7 +61,7 @@ extern "C" {
 	* Signature: ([C)V
 	*/
 	JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetAcquisitionPara
-	(JNIEnv *, jclass, jcharArray);
+	(JNIEnv *, jclass, jstring);
 
 	/*
 	* Class:     hust_whno_SMLM_QC_STORM_Plug

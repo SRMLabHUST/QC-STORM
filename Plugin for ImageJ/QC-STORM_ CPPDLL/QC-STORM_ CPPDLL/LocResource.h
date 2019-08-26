@@ -77,6 +77,8 @@ extern volatile bool OnlineRendAlive;
 
 extern volatile bool IsLocRunning;
 extern volatile bool IsRendRunning;
+extern volatile bool IsBatchLocRunning;
+
 
 
 extern volatile bool IsLocResourceAllocated;
@@ -123,6 +125,11 @@ extern SpatialResolutionCalc_TypeDef SpatialResolutionCalc;
 
 extern int GPUID_1Best;
 extern int GPUID_2Best;
+
+
+void StartLocalizationThread();
+void FinishLocalizationThread();
+void CreateFeedImgMemory(qImgData & CurImgInf, unsigned short* pImg, int ImageWidth, int ImageHigh, int FrameNum);
 
 
 void InitAllLocResource(int IsPostprocess);

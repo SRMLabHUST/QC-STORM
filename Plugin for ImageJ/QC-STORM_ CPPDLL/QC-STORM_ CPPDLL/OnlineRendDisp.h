@@ -19,4 +19,5 @@ void RendDispImage();
 
 extern ThreadCmdProcessState RenderingState;
 
+// imageJ RGB image is BGRA
 void ConvertCImgToImageJ(unsigned char*poImgData, unsigned char*piImgData, int ImageWidth, int ImageHigh);

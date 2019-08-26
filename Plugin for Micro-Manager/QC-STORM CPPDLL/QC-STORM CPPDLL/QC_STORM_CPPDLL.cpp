@@ -58,29 +58,17 @@ JNIEXPORT jint JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1GetProcessorID
 * Signature: ([C)V
 */
 JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetSavePath
-(JNIEnv *env, jclass obj, jcharArray JSavePath)
+(JNIEnv *env, jclass obj, jstring JSavePath)
 {
 #if DLL_CALL_DEBUG
 	printf("lm_SetSavePath called\n");
 #endif // DLL_CALL_DEBUG
 
-	// jni environment
-	int len = (*env).GetArrayLength(JSavePath);
-	jboolean IsCopy = true;
-	jchar * elems = (*env).GetCharArrayElements(JSavePath, &IsCopy);
+	// access string name
+	wchar_t * str_java = (wchar_t *)env->GetStringChars(JSavePath, NULL);
 
-	wchar_t *NameBuf = new wchar_t[200];
-	memcpy(NameBuf, elems, 2 * len);
-	NameBuf[len + 0] = 0;
-	NameBuf[len + 1] = 0;
-
-
-	ResultSavePath = NameBuf;
-
-
-	delete[] NameBuf;
-
-	env->ReleaseCharArrayElements(JSavePath, elems, 0);
+	ResultSavePath = str_java;
+	env->ReleaseStringChars(JSavePath, (jchar*)str_java);
 
 }
 
@@ -177,28 +165,18 @@ JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetImagePara
 * Signature: (I[C)V
 */
 JNIEXPORT void JNICALL Java_hust_whno_SMLM_QC_1STORM_1Plug_lm_1SetAcquisitionPara
-(JNIEnv *env, jclass obj, jcharArray iCreateTimeIdxS)
+(JNIEnv *env, jclass obj, jstring iCreateTimeIdxS)
 {
 #if DLL_CALL_DEBUG
 	printf("lm_SetAcquisitionPara called\n");
 #endif // DLL_CALL_DEBUG
 
-	// jni environment
-	int len = (*env).GetArrayLength(iCreateTimeIdxS);
-	jboolean IsCopy = true;
-	jchar * elems = (*env).GetCharArrayElements(iCreateTimeIdxS, &IsCopy);
 
-	wchar_t *NameBuf = new wchar_t[200];
-	memcpy(NameBuf, elems, 2 * len);
-	NameBuf[len + 0] = 0;
-	NameBuf[len + 1] = 0;
+	// access string name
+	wchar_t * str_java = (wchar_t *)env->GetStringChars(iCreateTimeIdxS, NULL);
 
-
-	CreateTimeIdxStr = NameBuf;
-
-	delete[] NameBuf;
-
-	env->ReleaseCharArrayElements(iCreateTimeIdxS, elems, 0);
+	CreateTimeIdxStr = str_java;
+	env->ReleaseStringChars(iCreateTimeIdxS, (jchar*)str_java);
 
 }
 

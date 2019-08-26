@@ -20,8 +20,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "OnlineLocalizationLD.h"
 #include "StatInfDisplay.h"
+
 #include "PostProcess.h"
 
+#include "BatchLocalization.h"
 
 /*
 * Class:     QC_STORM_
@@ -29,7 +31,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 * Signature: (III[C)V
 */
 JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetImagePara
-(JNIEnv *env, jclass obj, jint iImageWidth, jint iImageHigh, jint SRImageWidth, jint SRImageHigh, jint iFrameNum, jcharArray iJImageName)
+(JNIEnv *env, jclass obj, jint iImageWidth, jint iImageHigh, jint SRImageWidth, jint SRImageHigh, jint iFrameNum, jstring iJImageName)
 {
 
 
@@ -42,24 +44,11 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetImagePara
 
 
 
-	// jni environment
-	int len = (*env).GetArrayLength(iJImageName);
+	// access string name
+	wchar_t * str_java = (wchar_t *)env->GetStringChars(iJImageName, NULL);
 
-	jboolean IsCopy = true;
-	jchar * elems = (*env).GetCharArrayElements(iJImageName, &IsCopy);
-
-	wchar_t *NameBuf = new wchar_t[200];
-	memcpy(NameBuf, elems, 2 * len);
-	NameBuf[ len + 0] = 0;
-	NameBuf[ len + 1] = 0;
-
-
-	ImageName = NameBuf;
-
-	delete[] NameBuf;
-	
-	env->ReleaseCharArrayElements(iJImageName, elems, 0);
-
+	ImageName = str_java;
+	env->ReleaseStringChars(iJImageName, (jchar*)str_java);
 
 }
 
@@ -165,28 +154,10 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StartLocThread
 {
 	OpenConsole(); // open console window to display printf
 
-
-
-	OnlineLocAlive = true;
-	OnlineRendAlive = true;
-
-
-
-	InitAllLocResource(0);
-
-
-	AfxBeginThread(th_OnlineLocalizationLD, NULL);
-
-	AfxBeginThread(th_OnlineRendDispLD, NULL);
-
-
-	if (LocPara_Global.SpatialResolutionCalcEn)
-	{
-		AfxBeginThread(th_OnlineSpatialResolutionCalc, NULL);
-
-	}
-
+	IsBatchLocRunning = false;
 	IsLocRunning = true;
+
+	StartLocalizationThread();
 
 }
 
@@ -199,10 +170,7 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StopLocThread
 (JNIEnv *env, jclass obj)
 {
 
-	OnlineLocAlive = false;
-
-	DeinitAllLocResource(0);
-
+	FinishLocalizationThread();
 
 }
 
@@ -238,7 +206,6 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1FeedImageData
 	jboolean iscopy = false;
 	jshort * elems = (jshort *)env->GetPrimitiveArrayCritical(jImgArry, &iscopy);
 
-	qImgData CurImgInf;
 
 	// cur image info
 	int BatchedImgSize = FrameNumI*LocPara_Global.ImageWidth*LocPara_Global.ImageHigh;
@@ -250,34 +217,11 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1FeedImageData
 		Sleep(2);
 	}
 
-	CurImgInf.BatchFrameNum = FrameNumI;
 
+	qImgData CurImgInf;
 
-	cudaError_t err = cudaErrorMemoryAllocation;
+	CreateFeedImgMemory(CurImgInf, (unsigned short*)elems, LocPara_Global.ImageWidth, LocPara_Global.ImageHigh, FrameNumI);
 
-
-	// try allocate CPU memory
-	err = cudaMallocHost((void **)&CurImgInf.pImgData, BatchedImgSize * sizeof(short));
-
-
-	if (err == cudaSuccess)
-	{
-		//	printf("cuda suc:%s\n", str);
-		CurImgInf.ImageSource = ImageSource_CPU_Pinned;
-	}
-	else
-	{
-		while (1)
-		{
-			// if GPU memory is allocate error, then try CPU memory
-			CurImgInf.pImgData = new unsigned short[BatchedImgSize];
-			CurImgInf.ImageSource = ImageSource_CPU_Normal;
-
-			if (CurImgInf.pImgData != NULL)break;
-		}
-	}
-
-	memcpy(CurImgInf.pImgData, elems, BatchedImgSize * sizeof(short));
 
 	//
 	ImgDataQueue.push(CurImgInf);
@@ -497,7 +441,7 @@ JNIEXPORT jintArray JNICALL Java_QC_1STORM_1_lm_1GetStatInfImage
 JNIEXPORT jint JNICALL Java_QC_1STORM_1_lm_1IsLocFinish
 (JNIEnv *env, jclass obj)
 {
-	int IsFinish = IsLocRunning == false;
+	int IsFinish = (IsLocRunning == false) && (IsBatchLocRunning == false);
 
 
 	return IsFinish;
@@ -512,29 +456,18 @@ JNIEXPORT jint JNICALL Java_QC_1STORM_1_lm_1IsLocFinish
 * Signature: ([C)V
 */
 JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1SetRerendImagePara
-(JNIEnv *env, jclass obj, jcharArray DataPath, jint IsDriftCorrectionI, jint DriftCorrGroupFrameNumI)
+(JNIEnv *env, jclass obj, jstring DataPath, jint IsDriftCorrectionI, jint DriftCorrGroupFrameNumI)
 {
 
-	// jni environment
-	int len = (*env).GetArrayLength(DataPath);
+	// access string name
+	wchar_t * str_java = (wchar_t *)env->GetStringChars(DataPath, NULL);
 
-	jboolean IsCopy = true;
-	jchar * elems = (*env).GetCharArrayElements(DataPath, &IsCopy);
-
-	wchar_t *NameBuf = new wchar_t[1024];
-	memcpy(NameBuf, elems, 2 * len);
-	NameBuf[len + 0] = 0;
-	NameBuf[len + 1] = 0;
-
-
-	RerendDataPath = NameBuf;
+	RerendDataPath = str_java;
+	env->ReleaseStringChars(DataPath, (jchar*)str_java);
 
 	IsDriftCorrection = IsDriftCorrectionI;
 	DriftCorrGroupFrameNum = DriftCorrGroupFrameNumI;
 
-	delete[] NameBuf;
-
-	env->ReleaseCharArrayElements(DataPath, elems, 0);
 }
 /*
 * Class:     QC_STORM_
@@ -549,6 +482,8 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StartRerend
 
 	IsLocRunning = true;
 	OnlineRendAlive = true;
+
+	IsBatchLocRunning = false;
 
 
 	AfxBeginThread(th_RerendImage, NULL);
@@ -598,5 +533,38 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1ReleaseRerendResource
 
 	DeinitAllLocResource(1);
 
+}
+
+/*
+* Class:     QC_STORM_
+* Method:    lm_StartBatchImageLoc
+* Signature: (III[C)V
+*/
+JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StartBatchImageLoc
+(JNIEnv *env, jclass obj, jstring ImageFolderPath, jstring FileExtension)
+{
+	OpenConsole();
+
+	// access string name
+	wchar_t * str_java = (wchar_t *)env->GetStringChars(ImageFolderPath, NULL);
+
+	BatchProc_FolderName = str_java;
+	env->ReleaseStringChars(ImageFolderPath, (jchar*)str_java);
+
+
+	// access string name
+	str_java = (wchar_t *)env->GetStringChars(FileExtension, NULL);
+
+	BatchProc_Postfix = str_java;
+	env->ReleaseStringChars(FileExtension, (jchar*)str_java);
+
+
+	IsBatchLocRunning = true;
+	IsLocRunning = true;
+
+	AfxBeginThread(th_BatchLocalization, NULL);
+
+
+//	wprintf(L"%s %s\n", BatchProc_FolderName.c_str(), BatchProc_Postfix.c_str());
 }
 

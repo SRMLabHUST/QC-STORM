@@ -87,7 +87,7 @@ UINT th_OnlineRendDispLD(LPVOID params)
 void RendDispImage()
 {
 
-	RendData.GetDispImgTop(LocPara_Global, 1.0f, SR_IMAGE_DISPLAY_WIDTH, SR_IMAGE_DISPLAY_HIGH, CurDispPosX, CurDispPosY, CurDispZoom, render_stream1);
+	RendData.GetDispImgTop(LocPara_Global, 0.3f, SR_IMAGE_DISPLAY_WIDTH, SR_IMAGE_DISPLAY_HIGH, CurDispPosX, CurDispPosY, CurDispZoom, render_stream1);
 	WaitGPUStream(render_stream1);
 
 
@@ -108,7 +108,7 @@ void RendSaveImage()
 	{
 		// astigmatism 3d image
 		// double-helix 3d
-		RendData.GetSaveImgTop(LocPara_Global, 0.7f, RGBImage_EncodeMode_4Bytes, render_stream1);
+		RendData.GetSaveImgTop(LocPara_Global, 0.7f, RGBImage_EncodeMode_4B_BRGA, render_stream1);
 		WaitGPUStream(render_stream1);
 	}
 }

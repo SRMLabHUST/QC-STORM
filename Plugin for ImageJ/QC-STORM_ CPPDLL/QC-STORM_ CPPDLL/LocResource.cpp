@@ -20,21 +20,24 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "StatInfDisplay.h"
 
 
-
+// control whether thread running
 volatile bool OnlineLocAlive = false;
 volatile bool OnlineRendAlive = false;
 
-// 0:idle, 1:running, 2:is busy
+
+// thread state, 0:idle, 1:running, 2:is busy
 volatile bool IsLocRunning = false;
 volatile bool IsRendRunning = false;
+volatile bool IsBatchLocRunning = false;
 
 
 // image for display and save in ImageJ
 float *h_RendFloatImage2D = NULL;
 
-// image info
 
-CString ImageName;
+
+// image info
+CString ImageName; // image path of current processing
 
 
 cudaStream_t loc_stream1;
@@ -77,6 +80,72 @@ volatile bool IsLocResourceAllocated = false;
 
 LocalizationPara LocPara_Last;
 
+
+void StartLocalizationThread()
+{
+
+	OnlineLocAlive = true;
+	OnlineRendAlive = true;
+
+
+	InitAllLocResource(0);
+
+
+	AfxBeginThread(th_OnlineLocalizationLD, NULL);
+
+	AfxBeginThread(th_OnlineRendDispLD, NULL);
+
+
+	if (LocPara_Global.SpatialResolutionCalcEn)
+	{
+		AfxBeginThread(th_OnlineSpatialResolutionCalc, NULL);
+	}
+}
+
+
+void FinishLocalizationThread()
+{
+	OnlineLocAlive = false;
+
+	DeinitAllLocResource(0);
+
+}
+
+void CreateFeedImgMemory(qImgData & CurImgInf, unsigned short* pImg, int ImageWidth, int ImageHigh, int FrameNum)
+{
+
+	CurImgInf.BatchFrameNum = FrameNum;
+
+
+	cudaError_t err = cudaErrorMemoryAllocation;
+
+	int BatchedImgSize = ImageWidth * ImageHigh * FrameNum;
+
+	// try allocate CPU memory
+	err = cudaMallocHost((void **)&CurImgInf.pImgData, BatchedImgSize * sizeof(short));
+
+
+	if (err == cudaSuccess)
+	{
+		//	printf("cuda suc:%s\n", str);
+		CurImgInf.ImageSource = ImageSource_CPU_Pinned;
+	}
+	else
+	{
+		while (1)
+		{
+			// if GPU memory is allocate error, then try CPU memory
+			CurImgInf.pImgData = new unsigned short[BatchedImgSize];
+			CurImgInf.ImageSource = ImageSource_CPU_Normal;
+
+			if (CurImgInf.pImgData != NULL)break;
+		}
+	}
+
+
+	memcpy(CurImgInf.pImgData, pImg, BatchedImgSize * sizeof(short));
+
+}
 
 void InitAllLocResource(int IsPostprocess)
 {

@@ -24,7 +24,6 @@ import org.micromanager.Studio;
 import ij.ImagePlus;
 import ij.gui.ImageWindow;
 import ij.io.FileSaver;
-import ij.io.Opener;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
 import java.awt.image.ColorModel;
@@ -118,8 +117,8 @@ public class QC_STORM_Processor  extends Processor{
         // start loc thread
         
         ResultSavePathStr = MyConfigurator.GetResultsSavePath();
-        QC_STORM_Plug.lm_SetSavePath(ResultSavePathStr.toCharArray());
-        QC_STORM_Plug.lm_SetAcquisitionPara(CreateTimeIdxStr.toCharArray());
+        QC_STORM_Plug.lm_SetSavePath(ResultSavePathStr);
+        QC_STORM_Plug.lm_SetAcquisitionPara(CreateTimeIdxStr);
         
         
         QC_STORM_Plug.lm_StartLocThread();

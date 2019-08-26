@@ -19,6 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 
 
@@ -81,7 +83,7 @@ public class QC_STORM_Parameters {
         // statastic information display enable
         int StatDispSel = 0;
         
-        int SpatialResolutionEn = 1;
+        int SpatialResolutionEn = 0;
 
     }
         
@@ -109,7 +111,36 @@ public class QC_STORM_Parameters {
             }  
         }
         return null;
-    }    
+    }
+    
+    public static ArrayList<String> ListTxtFiles(String FolderPath) throws FileNotFoundException{
+        
+        ArrayList<String> FilesList = new ArrayList<String>();
+
+		File directory = new File(FolderPath);
+        
+        
+		if(directory.isDirectory()){
+            
+			File [] filelist = directory.listFiles();
+            
+			for(int i = 0; i < filelist.length; i ++){
+                
+				if(!filelist[i].isDirectory()){
+                    
+                    String CurFilePath = filelist[i].getAbsolutePath();
+                    
+                    if(CurFilePath.endsWith(".txt"))
+                    {
+                        FilesList.add(CurFilePath);
+                    }
+				}
+			}
+		}
+        return FilesList;
+	}
+    
+    
     public static ColorModel GetHotColorModel()
     {
                 // construct hot colormap

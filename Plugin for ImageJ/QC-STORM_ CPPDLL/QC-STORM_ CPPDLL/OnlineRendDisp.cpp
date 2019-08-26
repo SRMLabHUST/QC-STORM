@@ -33,8 +33,13 @@ void RendDispImage()
 	}
 	else
 	{
+		int EncodeMode = RGBImage_EncodeMode_4B_BRGA;
+
+		if(IsBatchLocRunning)EncodeMode = RGBImage_EncodeMode_3B_RGB;
+		else EncodeMode = RGBImage_EncodeMode_4B_BRGA;
+
 		// astigmatism 3d image
-		RendData.GetSaveImgTop(LocPara_Global, 1.0, RGBImage_EncodeMode_4Bytes, render_stream1);
+		RendData.GetSaveImgTop(LocPara_Global, 1.0, EncodeMode, render_stream1);
 		WaitGPUStream(render_stream1);
 
 	}
@@ -66,6 +71,7 @@ UINT th_OnlineRendDispLD(LPVOID params)
 	return 0;
 }
 
+// imageJ RGB image is BGRA
 
 void ConvertCImgToImageJ(unsigned char*poImgData, unsigned char*piImgData, int ImageWidth, int ImageHigh)
 {
@@ -79,7 +85,6 @@ void ConvertCImgToImageJ(unsigned char*poImgData, unsigned char*piImgData, int I
 
 	int cnt = 0;
 	int cpos = 0;
-	memset(poImgData, 0xff, ImageWidth*ImageHigh * 4);
 
 	for (cnt = 0; cnt < PixelNum; cnt++)
 	{
@@ -88,7 +93,7 @@ void ConvertCImgToImageJ(unsigned char*poImgData, unsigned char*piImgData, int I
 		poImgData[cpos + 0] = piImgData[rOffsetb + cnt]; // b
 		poImgData[cpos + 1] = piImgData[rOffsetg + cnt]; // g
 		poImgData[cpos + 2] = piImgData[rOffsetr + cnt]; // r
-		//		poImgData[cpos + 3] = 0xff; // alpha
+		poImgData[cpos + 3] = 0xff; // alpha
 
 	}
 }

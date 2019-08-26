@@ -24,6 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include <time.h>
 
+#include "BatchLocalization.h"
 
 
 #include <io.h>  
@@ -49,22 +50,22 @@ void OpenConsole()
 
 UINT th_OnlineLocalizationLD(LPVOID params)
 {
+	IsLocRunning = true;
 
 	cudaSetDevice(GPUID_1Best);
-
 
 	int CurDevice = 0;
 	cudaGetDevice(&CurDevice);
 	printf("Localization dev: %d\n", CurDevice);
 
 
-	IsLocRunning = true;
 
 	printf("image inf1:%d %d %d %d %d\n", LocPara_Global.ImageWidth, LocPara_Global.ImageHigh, LocPara_Global.TotalFrameNum, LocPara_Global.SRImageWidth, LocPara_Global.SRImageHigh);
 	printf("image inf2:%f %f %f\n", LocPara_Global.Offset, LocPara_Global.KAdc, LocPara_Global.QE);
 
 
-	CString LocFileName=ImageName;
+	// set localization file name
+	CString LocFileName = ImageName;
 	LocFileName.TrimRight(_T(".tif"));
 
 	CString MultiFitStr;
@@ -80,6 +81,7 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	PostFix.Format(_T("_result%dD%d%s%s.txt"), LocPara_Global.LocType + 2, LocPara_Global.ROISize, MultiFitStr, ConsecFitStr);
 
 	LocFileName = LocFileName + PostFix;
+
 
 	// write to file
 	float *WriteLocArry = NULL;
@@ -137,7 +139,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	bool IsBreak = false;
 
 
-
 	// reset rendered image
 	RendData.ResetFillImgTop(LocPara_Global);
 	FluoStatData.ResetAllDat(loc_stream1);
@@ -153,10 +154,12 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 	WholeProc_StartTime = clock();
 
+	int ProgressDispCnt = 0;
 
 	while (1)
 	{
-		IsBreak = !(OnlineLocAlive && (CurFrame < LocPara_Global.TotalFrameNum));
+		IsBreak = (CurFrame >= LocPara_Global.TotalFrameNum);
+
 
 		// get images and perform molecular detection
 		if (ImgDataQueue.try_pop(RecImg))
@@ -194,6 +197,15 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 
 			CurFrame += BatchFrameNum;
+
+			if (IsBatchLocRunning)
+			{
+				if (CurFrame > (LocPara_Global.TotalFrameNum / 10)*ProgressDispCnt)
+				{
+					printf("Process: %d in %d, %.0f %%\n", CurFileCnt, TotalFileNum, CurFrame * 100.0f / LocPara_Global.TotalFrameNum);
+					ProgressDispCnt++;
+				}
+			}
 
 
 			// after use the image

@@ -27,12 +27,9 @@ import static ij.plugin.filter.PlugInFilter.NO_IMAGE_REQUIRED;
 import ij.process.*;
 
 import java.awt.image.ColorModel;
-import java.io.File;
 import java.io.FileNotFoundException;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 
@@ -47,7 +44,6 @@ public class QC_STORM_ implements PlugInFilter{
     public int SRImageWidthI,SRImageHighI;
     
     public String RawImgName;
-    public String SaveFileName;
     
     
     // display of super resolution image
@@ -80,7 +76,7 @@ public class QC_STORM_ implements PlugInFilter{
     
     
     // wrapper of CPP & CUDA library
-    public native static void lm_SetImagePara(int ImageWidth, int ImageHigh, int SRImageWidth, int SRImageHigh, int FrameNum, char ImageName[]);
+    public native static void lm_SetImagePara(int ImageWidth, int ImageHigh, int SRImageWidth, int SRImageHigh, int FrameNum, String ImageName);
 
     public native static void lm_SetLocPara(float KAdc, float Offset, float QE, int ROISize, int LocType, int MultiEmitterFitEn, int WLEEn, int ConsecutiveFitEn, float ConsecFilterRadius, float RawPixelSize, float RenderPixelZoom, float SNR_th);
     public native static void lm_SetLocPara3D(float MinZDepth, float MaxZDepth, float ZDepthCorrFactor, float p4_XGY, float p3_XGY, float p2_XGY, float p1_XGY, float p0_XGY, float p4_XLY, float p3_XLY, float p2_XLY, float p1_XLY, float p0_XLY);
@@ -95,7 +91,7 @@ public class QC_STORM_ implements PlugInFilter{
 
     public native static void lm_FeedImageData(short ImgDataS[], int FrameNumI);
     
-
+    
     public native static float [] lm_GetSMLMImage();
     public native static int [] lm_GetSMLMImage3D();
     
@@ -108,14 +104,14 @@ public class QC_STORM_ implements PlugInFilter{
     public native static int lm_IsLocFinish();
 
     // rerend image
-    public native static void lm_SetRerendImagePara(char ImageName[], int IsDriftCorrectionI, int DriftCorrGroupFrameNum);
+    public native static void lm_SetRerendImagePara(String ImageName, int IsDriftCorrectionI, int DriftCorrGroupFrameNum);
     public native static void lm_StartRerend();
 
     public native static int [] lm_GetRerendImageInf();
 
     public native static void lm_ReleaseRerendResource();
 
-
+    public native static void lm_StartBatchImageLoc(String ImageFolderPath, String FileExtension);
     
     
     @Override
@@ -137,8 +133,7 @@ public class QC_STORM_ implements PlugInFilter{
 
             // batch processing
             BatchedImgNum = (2048 * 2048 / ImageWidthI / ImageHighI);
-            BatchedImgNum = BatchedImgNum * 5 / 7;
-            BatchedImgNum = (BatchedImgNum) / 2 * 2;
+            BatchedImgNum = (BatchedImgNum / 2) * 2;
             
             if(BatchedImgNum<1)BatchedImgNum=1;
             if(BatchedImgNum>FrameNum)BatchedImgNum=FrameNum;
@@ -149,7 +144,6 @@ public class QC_STORM_ implements PlugInFilter{
             PixelNumI=ImageWidthI*ImageHighI;
             
         }
-
                 
         CurSRImagePlus=new ImagePlus();
                            
@@ -164,7 +158,6 @@ public class QC_STORM_ implements PlugInFilter{
     @Override
     public void run(ImageProcessor ip) {
         CurImageProcessor = ip;
-        
       
     }
     
@@ -179,8 +172,6 @@ public class QC_STORM_ implements PlugInFilter{
             return;
         }
         
-        MyConfigurator.GetLocalizationPara();
-
         // set super resolution image size
         SRImageWidthI = (int) (ImageWidthI*MyConfigurator.LocPara.RenderingPixelZoom);
         SRImageHighI = (int) (ImageHighI*MyConfigurator.LocPara.RenderingPixelZoom);
@@ -200,7 +191,7 @@ public class QC_STORM_ implements PlugInFilter{
         SRImgName = RawImgName;
         SRImgName = SRImgName.replace(".tif", "");
 
-        SRImgName=String.format("%s_result%dD%d%s%s_rend%.2fnm.tif", SRImgName, MyConfigurator.LocPara.LocType+2, MyConfigurator.LocPara.RegionSize,MultiFitStr,ConsecFitStr, MyConfigurator.LocPara.RenderingPixelSize);
+        SRImgName = String.format("%s_result%dD%d%s%s_rend%.2fnm.tif", SRImgName, MyConfigurator.LocPara.LocType+2, MyConfigurator.LocPara.RegionSize,MultiFitStr,ConsecFitStr, MyConfigurator.LocPara.RenderingPixelSize);
 
 
         CurSRImagePlus.setTitle(SRImgName);
@@ -208,14 +199,17 @@ public class QC_STORM_ implements PlugInFilter{
         
         LocThread = new ImageLocalizationThread();
         LocThread.start();
-        
-       
     }
+    
+    public void StartBatchLocalization()
+    {
+        BatchLocalizationThread thread_Batch = new BatchLocalizationThread();
+        thread_Batch.start();
+    }
+    
     private void InitSRDisplay()
     {
-//            String str1=String.format("sr %d %d", SRImageWidthI, SRImageHighI);
-//            JOptionPane.showMessageDialog(null, "InitSRDisplay "+Integer.toString(MyConfigurator.LocPara.LocType), "InitSRDisplay finish!", JOptionPane.PLAIN_MESSAGE);
-           
+
         // for display rendered image, pre create them since create takes a lot of time
         if(MyConfigurator.LocPara.LocType == 0)
         {
@@ -227,21 +221,16 @@ public class QC_STORM_ implements PlugInFilter{
             CurSRImageProcessor2D = null;
             CurSRImageProcessor3D = new ColorProcessor(SRImageWidthI, SRImageHighI);
         }
-
     }
+    
     public class ImageLocalizationThread extends Thread
     {
         @Override
         public void run()
         {
-            
-            SaveFileName=MyConfigurator.GetResultsSavePath() + RawImgName;
+            String ImageName = MyConfigurator.GetResultsSavePath() + RawImgName;
 
-
-
-            MyConfigurator.SendLocalizationPara();
-
-            lm_SetImagePara(ImageWidthI, ImageHighI, SRImageWidthI, SRImageHighI, FrameNum, SaveFileName.toCharArray());
+            lm_SetImagePara(ImageWidthI, ImageHighI, SRImageWidthI, SRImageHighI, FrameNum, ImageName);
 
             lm_StartLocThread();    
 
@@ -254,17 +243,14 @@ public class QC_STORM_ implements PlugInFilter{
             recImgThread.start();
 
 
-            int curf=0;
             short RawImgDatS[];
 
             int ProcGroupNum = (FrameNum + BatchedImgNum-1)/BatchedImgNum;
             
-            int gcntI;
             int CurFrameNum;
             int CurFramePos=1;
-            int icntI;
             
-            for(gcntI=0;gcntI<ProcGroupNum;gcntI++)
+            for(int gcntI=0; gcntI<ProcGroupNum; gcntI++)
             {
                 if(gcntI == ProcGroupNum-1)
                 {
@@ -274,7 +260,7 @@ public class QC_STORM_ implements PlugInFilter{
                     CurFrameNum = BatchedImgNum;
                 }
                 
-                for(icntI=0;icntI<CurFrameNum;icntI++)
+                for(int icntI=0; icntI<CurFrameNum; icntI++)
                 {
                     CurFramePos = gcntI*BatchedImgNum + icntI + 1;
                     
@@ -299,7 +285,8 @@ public class QC_STORM_ implements PlugInFilter{
 
             try {
                 recImgThread.join();
-            } catch (InterruptedException ex) {
+            } catch (Exception ex) {
+                
             }
             
 
@@ -315,6 +302,26 @@ public class QC_STORM_ implements PlugInFilter{
           
         }
     }
+    
+    public class BatchLocalizationThread extends Thread
+    {
+        @Override
+        public void run()
+        {            
+            MyConfigurator.SetBatchLocEnable(false);
+            
+            while(true)
+            {
+                if(lm_IsLocFinish()!=0)
+                { 
+                    break;
+                }            
+            }
+            
+            MyConfigurator.SetBatchLocEnable(true);
+        }   
+    }
+    
     public void StartRerend() throws InterruptedException, FileNotFoundException
     {
 
@@ -347,7 +354,7 @@ public class QC_STORM_ implements PlugInFilter{
                 }
                 else
                 {
-                    ArrayList<String> FilesList = ListTxtFiles(MyConfigurator.RerendLocDataPath);
+                    ArrayList<String> FilesList = QC_STORM_Parameters.ListTxtFiles(MyConfigurator.RerendLocDataPath);
 
                     for(int i = 0; i < FilesList.size(); i ++)
                     {
@@ -383,7 +390,7 @@ public class QC_STORM_ implements PlugInFilter{
         {
             int [] ImgInf;
 
-            lm_SetRerendImagePara(LocFileName.toCharArray(), MyConfigurator.DriftCorrEnableI, MyConfigurator.DriftCorrGroupFrameNum);  
+            lm_SetRerendImagePara(LocFileName, MyConfigurator.DriftCorrEnableI, MyConfigurator.DriftCorrGroupFrameNum);  
             lm_StartRerend();
             
 
@@ -413,7 +420,7 @@ public class QC_STORM_ implements PlugInFilter{
             recImgThread.start();
             recImgThread.join();
             
-            } catch (InterruptedException ex) {
+            } catch (Exception ex) {
 
             }
 
@@ -436,16 +443,12 @@ public class QC_STORM_ implements PlugInFilter{
         @Override
         public void run()
         {
-            boolean IsBreakB=false;
-            boolean IsDispaly=false;
+            boolean IsBreakB = false;
+            boolean IsDispaly = false;
 
             while(true)
             {
-                if(lm_IsLocFinish()==0)
-                {
-                    IsBreakB = false;
- //                   continue;// for speed testing
-                }else
+                if(lm_IsLocFinish()!=0)
                 {
                     IsBreakB = true;
                 }              
@@ -469,7 +472,6 @@ public class QC_STORM_ implements PlugInFilter{
                         {
                             IsDispaly = true;
                             CurSRImageWindow = new ImageWindow(CurSRImagePlus); 
-
                         }
                         CurSRImagePlus.draw();   
                         CurSRImagePlus.updateImage();
@@ -509,6 +511,7 @@ public class QC_STORM_ implements PlugInFilter{
               
             
                 if(IsBreakB)break;
+                
                 try {
                     sleep(2000);
                 } catch (InterruptedException ex) {
@@ -614,32 +617,6 @@ public class QC_STORM_ implements PlugInFilter{
             }
         }
     }
-
-    public static ArrayList<String> ListTxtFiles(String FolderPath) throws FileNotFoundException{
-        
-        ArrayList<String> FilesList = new ArrayList<String>();
-
-		File directory = new File(FolderPath);
-        
-        
-		if(directory.isDirectory()){
-            
-			File [] filelist = directory.listFiles();
-            
-			for(int i = 0; i < filelist.length; i ++){
-                
-				if(!filelist[i].isDirectory()){
-                    
-                    String CurFilePath = filelist[i].getAbsolutePath();
-                    
-                    if(CurFilePath.endsWith(".txt"))
-                    {
-                        FilesList.add(CurFilePath);
-                    }
-				}
-			}
-		}
-        return FilesList;
-	}
+  
 }
 

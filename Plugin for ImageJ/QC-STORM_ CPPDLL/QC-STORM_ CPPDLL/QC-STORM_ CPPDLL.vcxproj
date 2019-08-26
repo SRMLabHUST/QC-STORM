@@ -78,7 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Program Files\Java\jdk1.6.0_45\include;C:\Program Files\Java\jdk1.6.0_45\include\win32;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\include;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\intel tbb\include;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\intel tbb\include\tbb;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\CImg;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\CImageDisplay;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\bfgs;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files\Java\jdk1.6.0_45\include;C:\Program Files\Java\jdk1.6.0_45\include\win32;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\include;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\intel tbb\include;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\intel tbb\include\tbb;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\CImg;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\CImageDisplay;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\bfgs;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\TinyTIFF;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\ImageReadWrite;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\lib\x64;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\intel tbb\lib\intel64_win\vc14;G:\0codes\c++ plus java\QC-STORM_ CPPDLL\QC-STORM_ CPPDLL\bfgs;$(LibraryPath)</LibraryPath>
     <OutDir>D:\Program Files\ImageJ</OutDir>
     <TargetName>QC-STORM_ CPPDLL</TargetName>
@@ -148,6 +148,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BatchLocalization.h" />
     <ClInclude Include="bfgs\bfgs_MLE_dll.h" />
     <ClInclude Include="bfgs\bfgs_MLE_para.h" />
     <ClInclude Include="bfgs\SpatialResolutionCalc.h" />
@@ -155,6 +156,9 @@
     <ClInclude Include="CImageDisplay\CImgCurveDisplayParameters.h" />
     <ClInclude Include="CImg\CImg.h" />
     <ClInclude Include="CppFileWrapper.h" />
+    <ClInclude Include="ImageReadWrite\FloatImage.h" />
+    <ClInclude Include="ImageReadWrite\ReadWriteTiffImage.h" />
+    <ClInclude Include="ImageReadWrite\RGBImage.h" />
     <ClInclude Include="LocResource.h" />
     <ClInclude Include="OnlineLocalizationLD.h" />
     <ClInclude Include="OnlineRendDisp.h" />
@@ -164,8 +168,11 @@
     <ClInclude Include="StatInfDisplay.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TinyTIFF\tinytiffreader.h" />
+    <ClInclude Include="TinyTIFF\tinytiffwriter.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BatchLocalization.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
@@ -180,6 +187,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ImageReadWrite\ReadWriteTiffImage.cpp" />
     <ClCompile Include="LocResource.cpp" />
     <ClCompile Include="OnlineLocalizationLD.cpp" />
     <ClCompile Include="OnlineRendDisp.cpp" />
@@ -193,6 +201,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TinyTIFF\tinytiffreader_modified.cpp" />
+    <ClCompile Include="TinyTIFF\tinytiffwriter_modified.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -17,8 +17,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 import ij.io.OpenDialog;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -45,7 +43,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     public int RerendMode = 0; // 0: single file, 1: dir
     
     
-    public QC_STORM_ fa_QC_STORM_;
+    public QC_STORM_ pQC_STORM_;
     
     public int DriftCorrEnableI=0;
     public int DriftCorrGroupFrameNum=800;
@@ -75,13 +73,13 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         }
 
     }
-    public QC_STORM_Configurator(QC_STORM_ fa_OnlineSMLM) {
+    public QC_STORM_Configurator(QC_STORM_ fa_QC_STORM_) {
         initComponents();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("QC-STORM");
         
-        fa_QC_STORM_ = fa_OnlineSMLM;
+        pQC_STORM_ = fa_QC_STORM_;
         
         LocPara = new QC_STORM_Parameters.LocalizationPara();
 
@@ -94,7 +92,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
            
         }
         
-//        jTabbedPane1.remove(jPanel_ROMP);
+        jTabbedPane1.remove(jPanel_ROMP);
 
     }
 
@@ -207,6 +205,12 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jButton_LoadLocDir = new javax.swing.JButton();
         jLabel25 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
+        jPanel_batch = new javax.swing.JPanel();
+        jTextField_BatchedImgSavePath = new javax.swing.JTextField();
+        jButton_LoadBatchImgSavePath = new javax.swing.JButton();
+        jButton_StartBatchLoc = new javax.swing.JButton();
+        jLabel34 = new javax.swing.JLabel();
+        jTextField_batchImgExtension = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
 
         jButton_Start2.setText("Rerendering");
@@ -239,11 +243,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
         jComboBox_RegionSize.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "5", "7", "9", "11", "13", "15", "17" }));
         jComboBox_RegionSize.setSelectedIndex(1);
-        jComboBox_RegionSize.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox_RegionSizeActionPerformed(evt);
-            }
-        });
 
         jLabel2.setText("Raw image pixel size (nm):");
 
@@ -253,11 +252,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
         jTextField_RenderPixelSize.setText("10");
         jTextField_RenderPixelSize.setToolTipText("Pixel Zoom from raw image to SR image");
-        jTextField_RenderPixelSize.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField_RenderPixelSizeActionPerformed(evt);
-            }
-        });
 
         jTextField_SNR_th.setText("5");
 
@@ -266,11 +260,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jLabel21.setText("Fitting type:");
 
         jComboBox_LocType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Gaussian 2D", "Astigmatism 3D", "Double-Helix 3D" }));
-        jComboBox_LocType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox_LocTypeActionPerformed(evt);
-            }
-        });
 
         jCheckBox_Stat_ConsecutiveFitEn.setText("Consecutive fitting (temporal grouping)");
 
@@ -497,11 +486,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
             jLabel33.setText("Rotation type:");
 
             jComboBox_DH_RotationType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0 - pi, focal = pi/2", "-pi/2 - pi/2, focal = 0", " " }));
-            jComboBox_DH_RotationType.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jComboBox_DH_RotationTypeActionPerformed(evt);
-                }
-            });
 
             javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
             jPanel2.setLayout(jPanel2Layout);
@@ -745,11 +729,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
             jCheckBox_Stat_LocPrecVary.setText("Localization precision");
 
             jCheckBox_Stat_OntimeVary.setText("Ontime");
-            jCheckBox_Stat_OntimeVary.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jCheckBox_Stat_OntimeVaryActionPerformed(evt);
-                }
-            });
 
             jCheckBox_Stat_SNRVary.setSelected(true);
             jCheckBox_Stat_SNRVary.setText("SNR");
@@ -924,6 +903,68 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
             jTabbedPane1.addTab("PostProc", jPanel4);
 
+            jTextField_BatchedImgSavePath.setText("G:\\test images");
+            jTextField_BatchedImgSavePath.setPreferredSize(new java.awt.Dimension(6, 26));
+
+            jButton_LoadBatchImgSavePath.setText("Load image save path");
+            jButton_LoadBatchImgSavePath.setPreferredSize(new java.awt.Dimension(153, 26));
+            jButton_LoadBatchImgSavePath.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton_LoadBatchImgSavePathActionPerformed(evt);
+                }
+            });
+
+            jButton_StartBatchLoc.setText("Start batch localization");
+            jButton_StartBatchLoc.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton_StartBatchLocActionPerformed(evt);
+                }
+            });
+
+            jLabel34.setText("File name extension:");
+
+            jTextField_batchImgExtension.setText("ome.tif");
+            jTextField_batchImgExtension.setPreferredSize(new java.awt.Dimension(48, 26));
+
+            javax.swing.GroupLayout jPanel_batchLayout = new javax.swing.GroupLayout(jPanel_batch);
+            jPanel_batch.setLayout(jPanel_batchLayout);
+            jPanel_batchLayout.setHorizontalGroup(
+                jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel_batchLayout.createSequentialGroup()
+                    .addGroup(jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel_batchLayout.createSequentialGroup()
+                            .addGap(85, 85, 85)
+                            .addComponent(jButton_StartBatchLoc, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel_batchLayout.createSequentialGroup()
+                            .addContainerGap(19, Short.MAX_VALUE)
+                            .addGroup(jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel_batchLayout.createSequentialGroup()
+                                    .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jTextField_batchImgExtension, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextField_BatchedImgSavePath, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jButton_LoadBatchImgSavePath, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addContainerGap(33, Short.MAX_VALUE))
+            );
+            jPanel_batchLayout.setVerticalGroup(
+                jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel_batchLayout.createSequentialGroup()
+                    .addGap(33, 33, 33)
+                    .addGroup(jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jTextField_BatchedImgSavePath, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton_LoadBatchImgSavePath, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField_batchImgExtension, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
+                    .addComponent(jButton_StartBatchLoc, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(50, 50, 50))
+            );
+
+            jTabbedPane1.addTab("BatchProc", jPanel_batch);
+
             jLabel19.setText("Parameters:");
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -959,16 +1000,11 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
 
     private void jButton_StartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_StartActionPerformed
-        int ErrorCodeI=0;
- //       if(ErrorCodeI!=0)return;
-       
-
-        GetLocalizationPara();
-
         
-        fa_QC_STORM_.StartLocalization();
+        SendLocalizationPara();
         
-        // start to localize
+        pQC_STORM_.StartLocalization(); // start  localize thread
+        
 
         try {
             SavePropertyFile(GetParaFileSavePath());
@@ -990,8 +1026,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
             
         }catch (Exception ex) {
             
-        }        
-        
+        }              
     }//GEN-LAST:event_jButton_LoadParaFileActionPerformed
 
     private void jButton_LoadResultPathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LoadResultPathActionPerformed
@@ -1010,7 +1045,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         
         jTextField_ResultPath.setText(ResultsFilePath);
                 
-        
     }//GEN-LAST:event_jButton_LoadResultPathActionPerformed
 
     private void jButton_LoadLocDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LoadLocDataActionPerformed
@@ -1046,7 +1080,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         DisableRerend();
         
         try {
-            fa_QC_STORM_.StartRerend();  
+            pQC_STORM_.StartRerend();  
             
             
         } catch (Exception ex) {
@@ -1072,25 +1106,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
         
     }//GEN-LAST:event_formWindowClosing
-
-    private void jTextField_RenderPixelSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_RenderPixelSizeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField_RenderPixelSizeActionPerformed
-
-    private void jComboBox_LocTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_LocTypeActionPerformed
-        // TODO add your handling code here:
-//        GetLocalizationPara();
-        
-    }//GEN-LAST:event_jComboBox_LocTypeActionPerformed
-
-    private void jComboBox_RegionSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_RegionSizeActionPerformed
-        // TODO add your handling code here:
- //       GetLocalizationPara();
-    }//GEN-LAST:event_jComboBox_RegionSizeActionPerformed
-
-    private void jCheckBox_Stat_OntimeVaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_Stat_OntimeVaryActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox_Stat_OntimeVaryActionPerformed
 
     private void jTextField_StructureSize2DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_StructureSize2DActionPerformed
         // TODO add your handling code here:
@@ -1131,9 +1146,54 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         RerendMode = 1;
     }//GEN-LAST:event_jButton_LoadLocDirActionPerformed
 
-    private void jComboBox_DH_RotationTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_DH_RotationTypeActionPerformed
+    private void jButton_LoadBatchImgSavePathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LoadBatchImgSavePathActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox_DH_RotationTypeActionPerformed
+     
+        String Path = jTextField_BatchedImgSavePath.getText();
+        
+        JFileChooser jf;
+        
+        if(Path.length()>2)
+        {
+            jf = new JFileChooser(Path);  
+        }else
+        {
+            jf = new JFileChooser();  
+        }
+        
+        
+        jf.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);  
+        jf.showDialog(null,null);  
+        File fi = jf.getSelectedFile();  
+        
+        String BatchProc_ImagePath = fi.getAbsolutePath();
+        
+        jTextField_BatchedImgSavePath.setText(BatchProc_ImagePath);
+        
+    }//GEN-LAST:event_jButton_LoadBatchImgSavePathActionPerformed
+
+    private void jButton_StartBatchLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_StartBatchLocActionPerformed
+        // TODO add your handling code here:
+        String ImageFolderPath = jTextField_BatchedImgSavePath.getText();
+        String FileExtension = jTextField_batchImgExtension.getText();
+        
+        if(ImageFolderPath.length()<=2) return;
+        
+        
+        SendLocalizationPara();
+        QC_STORM_.lm_StartBatchImageLoc(ImageFolderPath, FileExtension);
+
+        pQC_STORM_.StartBatchLocalization();
+        
+        
+        try {
+            SavePropertyFile(GetParaFileSavePath());
+        } catch (FileNotFoundException ex) {
+            
+        } catch (IOException ex) {
+            
+        }         
+    }//GEN-LAST:event_jButton_StartBatchLocActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1170,6 +1230,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton_LoadBatchImgSavePath;
     private javax.swing.JButton jButton_LoadLocData;
     private javax.swing.JButton jButton_LoadLocDir;
     private javax.swing.JButton jButton_LoadParaFile;
@@ -1177,6 +1238,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JButton jButton_Rerend;
     private javax.swing.JButton jButton_Start;
     private javax.swing.JButton jButton_Start2;
+    private javax.swing.JButton jButton_StartBatchLoc;
     private javax.swing.JCheckBox jCheckBox_ShiftCorrection;
     private javax.swing.JCheckBox jCheckBox_Stat_BackgroundVary;
     private javax.swing.JCheckBox jCheckBox_Stat_ConsecutiveFitEn;
@@ -1227,6 +1289,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1239,8 +1302,10 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel_ROMP;
+    private javax.swing.JPanel jPanel_batch;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextField_BatchedImgSavePath;
     private javax.swing.JTextField jTextField_ConsecFilterRadius;
     private javax.swing.JTextField jTextField_DH_DistanceTh;
     private javax.swing.JTextField jTextField_DH_MeanDistance;
@@ -1260,6 +1325,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField_SNR_th;
     private javax.swing.JTextField jTextField_StructureSize2D;
     private javax.swing.JTextField jTextField_ZDepthCorrFactor;
+    private javax.swing.JTextField jTextField_batchImgExtension;
     private javax.swing.JTextField jTextField_p0_XGY;
     private javax.swing.JTextField jTextField_p0_XLY;
     private javax.swing.JTextField jTextField_p1_XGY;
@@ -1625,5 +1691,9 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jButton_Rerend.setEnabled(false);
     }
 
+    public void SetBatchLocEnable(boolean States)
+    {
+        jButton_StartBatchLoc.setEnabled(States);
+    }
 
 }

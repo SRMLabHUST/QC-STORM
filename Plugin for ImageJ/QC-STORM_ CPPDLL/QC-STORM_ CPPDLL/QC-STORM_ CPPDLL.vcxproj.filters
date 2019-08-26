@@ -27,6 +27,12 @@
     <Filter Include="CImageDisplay">
       <UniqueIdentifier>{dff68ffb-004c-4690-b1b1-0b20c8391a1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TinyTiff">
+      <UniqueIdentifier>{3ef2fa13-a695-40a9-8f2b-de2b3a9e0ee8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImageReadWrite">
+      <UniqueIdentifier>{4419b1f5-2c5b-4ce5-b10f-14fe0c148707}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -80,6 +86,24 @@
     <ClInclude Include="OnlineSpatialResolutionCalc.h">
       <Filter>Online Localization</Filter>
     </ClInclude>
+    <ClInclude Include="BatchLocalization.h">
+      <Filter>Online Localization</Filter>
+    </ClInclude>
+    <ClInclude Include="TinyTIFF\tinytiffreader.h">
+      <Filter>TinyTiff</Filter>
+    </ClInclude>
+    <ClInclude Include="TinyTIFF\tinytiffwriter.h">
+      <Filter>TinyTiff</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageReadWrite\FloatImage.h">
+      <Filter>ImageReadWrite</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageReadWrite\ReadWriteTiffImage.h">
+      <Filter>ImageReadWrite</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageReadWrite\RGBImage.h">
+      <Filter>ImageReadWrite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -108,6 +132,18 @@
     </ClCompile>
     <ClCompile Include="OnlineSpatialResolutionCalc.cpp">
       <Filter>Online Localization</Filter>
+    </ClCompile>
+    <ClCompile Include="BatchLocalization.cpp">
+      <Filter>Online Localization</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyTIFF\tinytiffreader_modified.cpp">
+      <Filter>TinyTiff</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyTIFF\tinytiffwriter_modified.cpp">
+      <Filter>TinyTiff</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageReadWrite\ReadWriteTiffImage.cpp">
+      <Filter>ImageReadWrite</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
