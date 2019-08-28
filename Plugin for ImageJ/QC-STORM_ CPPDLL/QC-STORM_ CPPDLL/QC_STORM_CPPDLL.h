@@ -62,7 +62,13 @@ extern "C" {
 	*/
 	JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StopLocThread
 	(JNIEnv *, jclass);
-
+	/*
+	* Class:     QC_STORM_
+	* Method:    lm_ReleaseResource
+	* Signature: ()V
+	*/
+	JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1ReleaseResource
+	(JNIEnv *, jclass);
 	/*
 	* Class:     QC_STORM_
 	* Method:    lm_GetMaxDispVal
@@ -165,7 +171,7 @@ extern "C" {
 	* Signature: (III[C)V
 	*/
 	JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StartBatchImageLoc
-	(JNIEnv *env, jclass obj, jstring, jstring, jstring);
+	(JNIEnv *env, jclass obj, jstring, jstring, jstring, jstring, jint);
 
 #ifdef __cplusplus
 }

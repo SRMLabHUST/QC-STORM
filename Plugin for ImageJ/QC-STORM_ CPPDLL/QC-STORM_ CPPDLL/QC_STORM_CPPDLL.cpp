@@ -171,9 +171,19 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StartLocThread
 JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StopLocThread
 (JNIEnv *env, jclass obj)
 {
+	StopLocThread();
 
+}
+
+/*
+* Class:     QC_STORM_
+* Method:    lm_ReleaseResource
+* Signature: ()V
+*/
+JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1ReleaseResource
+(JNIEnv *, jclass)
+{
 	FinishLocalizationThread();
-
 }
 
 /*
@@ -543,10 +553,12 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1ReleaseRerendResource
 * Signature: (III[C)V
 */
 JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StartBatchImageLoc
-(JNIEnv *env, jclass obj, jstring ImageFolderPath, jstring FileExtension, jstring ResultsPath)
+(JNIEnv *env, jclass obj, jstring ImageFolderPath, jstring FileNameStart, jstring FileNameEnd, jstring ResultsPath, jint MergeBatchLoc)
 {
 	
 	OpenConsole();
+
+	BatchProc_MergeLocEn = MergeBatchLoc;
 
 	// access string name
 	wchar_t * str_java = (wchar_t *)env->GetStringChars(ImageFolderPath, NULL);
@@ -556,10 +568,18 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StartBatchImageLoc
 
 
 	// access string name
-	str_java = (wchar_t *)env->GetStringChars(FileExtension, NULL);
+	str_java = (wchar_t *)env->GetStringChars(FileNameStart, NULL);
 
-	BatchProc_Postfix = str_java;
-	env->ReleaseStringChars(FileExtension, (jchar*)str_java);
+	BatchProc_FileName_Prefix = str_java;
+	env->ReleaseStringChars(FileNameStart, (jchar*)str_java);
+
+
+	// access string name
+	str_java = (wchar_t *)env->GetStringChars(FileNameEnd, NULL);
+
+	BatchProc_FileName_Postfix = str_java;
+	env->ReleaseStringChars(FileNameEnd, (jchar*)str_java);
+
 
 	// access string name
 	str_java = (wchar_t *)env->GetStringChars(ResultsPath, NULL);
@@ -574,6 +594,6 @@ JNIEXPORT void JNICALL Java_QC_1STORM_1_lm_1StartBatchImageLoc
 	AfxBeginThread(th_BatchLocalization, NULL);
 
 
-//	wprintf(L"%s %s\n", BatchProc_FolderName.c_str(), BatchProc_Postfix.c_str());
+//	wprintf(L"%s %s\n", BatchProc_FolderName.c_str(), BatchProc_FileName_Postfix.c_str());
 }
 

@@ -9,8 +9,11 @@ using namespace std;
 
 
 extern wstring BatchProc_FolderName;
-extern wstring BatchProc_Postfix;
+
+extern wstring BatchProc_FileName_Prefix;
+extern wstring BatchProc_FileName_Postfix;
 extern wstring BatchProc_SavePath;
+extern int BatchProc_MergeLocEn;
 
 
 
@@ -22,11 +25,7 @@ extern int CurFileCnt;
 UINT th_BatchLocalization(LPVOID params);
 
 
+void FormatBatchLocSRImageName(CString & SRImageName);
 
-bool IsStringEndWithPostfix(wstring DirName, wstring PostFix);
-
-void SearchFilesInDir(wstring DirName, wstring PostFix, vector<wstring> & FileNameList);
-
-
-void BatchProc_WriteSRImage2D(CString SRFileName);
-void BatchProc_WriteSRImage3D(CString SRFileName);
+void BatchProc_WriteSRImage2D(CString SRImageName);
+void BatchProc_WriteSRImage3D(CString SRImageName);

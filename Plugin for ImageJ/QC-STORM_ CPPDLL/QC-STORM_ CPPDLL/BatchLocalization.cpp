@@ -7,9 +7,10 @@
 // call th_OnlineLocalizationLD etc.
 
 wstring BatchProc_FolderName;
-wstring BatchProc_Postfix;
+wstring BatchProc_FileName_Prefix;
+wstring BatchProc_FileName_Postfix;
 wstring BatchProc_SavePath;
-
+int BatchProc_MergeLocEn = 0;
 
 int TotalFileNum = 0;
 int CurFileCnt = 0;
@@ -17,6 +18,7 @@ int CurFileCnt = 0;
 #include "tinytiffreader.h"
 #include "tinytiffwriter.h"
 
+#include "FileNameProcess.h"
 
 // allocate resource
 // feed images
@@ -27,10 +29,14 @@ UINT th_BatchLocalization(LPVOID params)
 	IsBatchLocRunning = true;
 
 	vector<wstring>  FileNameList;
-	SearchFilesInDir(BatchProc_FolderName, BatchProc_Postfix, FileNameList);
+	vector<wstring>  FileNameList_Sorted;
+
+	SearchFilesInDir(BatchProc_FolderName, BatchProc_FileName_Prefix, BatchProc_FileName_Postfix, FileNameList);
+
+	FilesSort(FileNameList, FileNameList_Sorted); // sort file name
 
 
-	TotalFileNum = FileNameList.size();
+	TotalFileNum = FileNameList_Sorted.size();
 
 
 	printf("File number:%d\n", TotalFileNum);
@@ -40,17 +46,23 @@ UINT th_BatchLocalization(LPVOID params)
 
 	char TiffImgName_Buff[1024];
 
+	int StartBatchEn = 0;
+	int FinishBatchEn = 0;
 
-	for (int cnt = 0; cnt < TotalFileNum; cnt++)
+	CString SRImageName;
+
+	LocPara_Global.TotalFrameNum = 0;
+
+	for (int fcnt = 0; fcnt < TotalFileNum; fcnt++)
 	{
-		ImageName = FileNameList[cnt].c_str();
+		ImageName = FileNameList_Sorted[fcnt].c_str();
 
 
-
-		CurFileCnt = cnt + 1;
+		CurFileCnt = fcnt + 1;
 
 		wprintf(L"Cur file: %d in %d, name: %s\n", CurFileCnt, TotalFileNum, ImageName);
 
+		ImgDataQueue.clear();
 
 		WideCharToMultiByte(CP_ACP, 0, ImageName.GetBuffer(), -1, TiffImgName_Buff, 1024, NULL, NULL);
 
@@ -75,25 +87,57 @@ UINT th_BatchLocalization(LPVOID params)
 		int ImageHigh = TinyTIFFReader_getHeight(tiffr);
 		printf("Image size:%d x %d x %d frame\n", ImageWidth, ImageHigh, TotalFrame);
 
+		// don't loc if there is only 1 image
 		if (TotalFrame <= 1)
 		{
 			TinyTIFFReader_close(tiffr);
 			continue;
 		}
 
+		// image size of batch loc doesn't correct
+		if (BatchProc_MergeLocEn)
+		{
+			if (fcnt > 0)
+			{
+				if ((LocPara_Global.ImageWidth != ImageWidth) || (LocPara_Global.ImageHigh != ImageHigh))
+				{
+					printf("\nbatch loc image size error\n");
+					break;
+				}
+			}
+		}
+
+		// update sr image size
 		LocPara_Global.ImageWidth = ImageWidth;
 		LocPara_Global.ImageHigh = ImageHigh;
-		LocPara_Global.TotalFrameNum = TotalFrame;
-
 		LocPara_Global.UpdateSRImageSize();
 
-
-		ImgDataQueue.clear();
+		if (BatchProc_MergeLocEn)
+		{
+			LocPara_Global.TotalFrameNum += TotalFrame;
+		}
+		else
+		{
+			LocPara_Global.TotalFrameNum = TotalFrame;
+		}
 
 		// start batch localization, allocate resource and start parallel threads
-		SetLocDataFileName_BatchProc(); // set proper localization data save name
-		StartLocalizationThread();
 
+		if (BatchProc_MergeLocEn)
+		{
+			if (fcnt == 0)StartBatchEn = 1;
+			else StartBatchEn = 0;
+		}
+		else
+		{
+			StartBatchEn = 1;
+		}
+
+		if (StartBatchEn)
+		{
+			SetLocDataFileName_BatchProc(); // set proper localization data save name
+			StartLocalizationThread();
+		}
 
 
 		// feed images, just as imagej to cpp dll
@@ -108,7 +152,6 @@ UINT th_BatchLocalization(LPVOID params)
 		unsigned short *RawImgBuf = new unsigned short[BatchedImgNum*ImageWidth*ImageHigh];
 
 
-		qImgData CurImgInf;
 
 		int CurImgNum = 0;
 
@@ -126,19 +169,26 @@ UINT th_BatchLocalization(LPVOID params)
 			}
 
 			// read images and feed to ImgDataQueue
-			for (int fcnt = 0; fcnt < CurImgNum; fcnt++)
+			for (int i = 0; i < CurImgNum; i++)
 			{
 				// read images
-				TinyTIFFReader_getSampleData(tiffr, &RawImgBuf[fcnt*ImageWidth*ImageHigh], 0); // get image data
+				TinyTIFFReader_getSampleData(tiffr, &RawImgBuf[i*ImageWidth*ImageHigh], 0); // get image data
 				TinyTIFFReader_readNext(tiffr);
 
 			}
 
+			qImgData CurImgInf;
 			CreateFeedImgMemory(CurImgInf, RawImgBuf, LocPara_Global.ImageWidth, LocPara_Global.ImageHigh, CurImgNum);
 
 			ImgDataQueue.push(CurImgInf);
+
 		}
 
+
+		while (!ImgDataQueue.empty())
+		{
+			Sleep(2);
+		}
 
 		delete [] RawImgBuf;
 
@@ -146,51 +196,55 @@ UINT th_BatchLocalization(LPVOID params)
 		TinyTIFFReader_close(tiffr);
 
 
-		// wait localization thread to finish
-		while (IsLocRunning == true)
-		{
-			Sleep(2);
-		}
 
 		// save super-resolution image
-		CString SRFileName = ImageName;
-		SRFileName.TrimRight(L".tif");
-
-
-		CString MultiFitStr;
-		if (LocPara_Global.MultiEmitterFitEn) MultiFitStr = "_M";
-		else MultiFitStr = "_S";
-
-		CString ConsecFitStr;
-		if (LocPara_Global.ConsecFitEn) ConsecFitStr.Format(L"_Consec%.0fnm", LocPara_Global.ConsecFit_DistanceTh_nm);
-		else ConsecFitStr = "";
-
-		SRFileName.Format(L"%s_result%dD%d%s%s_rend%.2fnm.tif", SRFileName, LocPara_Global.LocType + 2, LocPara_Global.ROISize, MultiFitStr, ConsecFitStr, LocPara_Global.PixelSize / LocPara_Global.PixelZoom);
-		
-		// modify save path
-		SRFileName.TrimLeft(BatchProc_FolderName.c_str());
-		SRFileName.TrimLeft(L"\\");
-		SRFileName.Replace(L"\\", L"__");
-
-		CString SavePath = BatchProc_SavePath.c_str();
-		SavePath = SavePath + L"\\";
-		SRFileName = SavePath + SRFileName;
-
-		printf("Writing super-resolution image...\n");
-
-
-		if (LocPara_Global.LocType == LocType_GS2D)
+		if (BatchProc_MergeLocEn)
 		{
-			BatchProc_WriteSRImage2D(SRFileName);
+			if (fcnt == 0)SRImageName = ImageName;
 		}
 		else
 		{
-			BatchProc_WriteSRImage3D(SRFileName);
+			SRImageName = ImageName;
 		}
 
-		// release resources
-		FinishLocalizationThread();
+		if (BatchProc_MergeLocEn)
+		{
+			if (fcnt == TotalFileNum - 1)FinishBatchEn = 1;
+			else FinishBatchEn = 0;
+		}
+		else
+		{
+			FinishBatchEn = 1;
+		}
 
+		if (FinishBatchEn)
+		{
+			StopLocThread();
+
+			// wait localization thread to finish
+			while (IsLocRunning == true)
+			{
+				Sleep(2);
+			}
+
+
+			printf("Writing super-resolution image...\n");
+
+			FormatBatchLocSRImageName(SRImageName);
+
+			if (LocPara_Global.LocType == LocType_GS2D)
+			{
+				BatchProc_WriteSRImage2D(SRImageName);
+			}
+			else
+			{
+				BatchProc_WriteSRImage3D(SRImageName);
+			}
+
+			// release resources
+			FinishLocalizationThread();
+
+		}
 	}
 
 
@@ -202,8 +256,35 @@ UINT th_BatchLocalization(LPVOID params)
 	return 0;
 }
 
+void FormatBatchLocSRImageName(CString & SRImageName)
+{
+	// format sr image name
+	SRImageName.TrimRight(L".tif");
 
-void BatchProc_WriteSRImage2D(CString SRFileName)
+
+	CString MultiFitStr;
+	if (LocPara_Global.MultiEmitterFitEn) MultiFitStr = "_M";
+	else MultiFitStr = "_S";
+
+	CString ConsecFitStr;
+	if (LocPara_Global.ConsecFitEn) ConsecFitStr.Format(L"_Consec%.0fnm", LocPara_Global.ConsecFit_DistanceTh_nm);
+	else ConsecFitStr = "";
+
+	SRImageName.Format(L"%s_result%dD%d%s%s_rend%.2fnm.tif", SRImageName, LocPara_Global.LocType + 2, LocPara_Global.ROISize, MultiFitStr, ConsecFitStr, LocPara_Global.PixelSize / LocPara_Global.PixelZoom);
+
+	// modify save path
+	SRImageName.TrimLeft(BatchProc_FolderName.c_str());
+	SRImageName.TrimLeft(L"\\");
+	SRImageName.Replace(L"\\", L"__");
+
+	CString SavePath = BatchProc_SavePath.c_str();
+	SavePath = SavePath + L"\\";
+	SRImageName = SavePath + SRImageName;
+
+
+}
+
+void BatchProc_WriteSRImage2D(CString SRImageName)
 {
 	float* h_RendFloatImage2D = new float[LocPara_Global.SRImageWidth*LocPara_Global.SRImageHigh];
 
@@ -217,7 +298,7 @@ void BatchProc_WriteSRImage2D(CString SRFileName)
 	char SRImgFileName[BufLen];
 	//		sprintf_s(SRImgFileName, "ReRendered sr image_%d-%dnm.tif", GroupCnt, (int)RenderingPixelSize);
 
-	WideCharToMultiByte(CP_OEMCP, NULL, SRFileName.GetBuffer(), -1, SRImgFileName, BufLen, NULL, FALSE);
+	WideCharToMultiByte(CP_OEMCP, NULL, SRImageName.GetBuffer(), -1, SRImgFileName, BufLen, NULL, FALSE);
 
 	TinyTIFFFile* tif = TinyTIFFWriter_open(SRImgFileName, 32, LocPara_Global.SRImageWidth, LocPara_Global.SRImageHigh); // 32 bit float image
 	TinyTIFFWriter_writeImage(tif, h_RendFloatImage2D);
@@ -229,72 +310,10 @@ void BatchProc_WriteSRImage2D(CString SRFileName)
 
 }
 
-void BatchProc_WriteSRImage3D(CString SRFileName)
+void BatchProc_WriteSRImage3D(CString SRImageName)
 {
 	RGBImage SRImg_RGB((unsigned char *)RendData.h_SaveRendImg, LocPara_Global.SRImageWidth, LocPara_Global.SRImageHigh);
 
-	WriteRGBImage(SRFileName, &SRImg_RGB);
+	WriteRGBImage(SRImageName, &SRImg_RGB);
 }
 
-
-bool IsStringEndWithPostfix(wstring DirName, wstring PostFix)
-{
-	int str_len1 = DirName.size();
-	int str_len2 = PostFix.size();
-
-	int pos = DirName.rfind(PostFix);
-
-	bool Valid = false;
-
-	if ((pos >= 0) && (pos == str_len1 - str_len2))
-	{
-		Valid = true;
-	}
-	return Valid;
-}
-
-void SearchFilesInDir(wstring DirName, wstring PostFix, vector<wstring> & FileNameList)
-{
-	std::wstring pattern(DirName);
-
-	pattern.append(L"\\*");
-
-	WIN32_FIND_DATA data;
-	HANDLE hFind;
-
-	vector<wstring> FolderNameList;
-
-	if ((hFind = FindFirstFile(pattern.c_str(), &data)) != INVALID_HANDLE_VALUE) {
-		do {
-			bool valid0 = !IsStringEndWithPostfix(data.cFileName, L".");
-			if (valid0)
-			{
-				if (data.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY)
-				{
-					// is folder
-					FolderNameList.push_back(DirName + L"\\" + data.cFileName);
-				}
-				else
-				{
-					// is file
-					bool valid1 = IsStringEndWithPostfix(data.cFileName, PostFix);
-					bool valid2 = IsStringEndWithPostfix(data.cFileName, L".tif");
-					if (valid1 && valid2)
-					{
-						FileNameList.push_back(DirName + L"\\" + data.cFileName);
-					}
-
-//					wprintf(L"search file:%s\n",  data.cFileName);
-				}
-			}
-
-		} while (FindNextFile(hFind, &data) != 0);
-		FindClose(hFind);
-	}
-
-	// search sub-folders
-	for (int i = 0; i < FolderNameList.size(); i++)
-	{
-		SearchFilesInDir(FolderNameList[i], PostFix, FileNameList);
-	}
-}

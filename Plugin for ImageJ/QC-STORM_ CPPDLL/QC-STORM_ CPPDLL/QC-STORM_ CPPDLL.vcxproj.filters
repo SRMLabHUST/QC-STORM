@@ -104,6 +104,9 @@
     <ClInclude Include="ImageReadWrite\RGBImage.h">
       <Filter>ImageReadWrite</Filter>
     </ClInclude>
+    <ClInclude Include="FileNameProcess.h">
+      <Filter>Online Localization</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -144,6 +147,9 @@
     </ClCompile>
     <ClCompile Include="ImageReadWrite\ReadWriteTiffImage.cpp">
       <Filter>ImageReadWrite</Filter>
+    </ClCompile>
+    <ClCompile Include="FileNameProcess.cpp">
+      <Filter>Online Localization</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

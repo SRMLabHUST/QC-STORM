@@ -130,6 +130,8 @@ extern int GPUID_2Best;
 
 void StartLocalizationThread();
 void FinishLocalizationThread();
+void StopLocThread();
+
 void CreateFeedImgMemory(qImgData & CurImgInf, unsigned short* pImg, int ImageWidth, int ImageHigh, int FrameNum);
 
 void SetLocDataFileName();

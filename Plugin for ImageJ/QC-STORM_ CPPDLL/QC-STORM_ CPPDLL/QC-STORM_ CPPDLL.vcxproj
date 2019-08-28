@@ -156,6 +156,7 @@
     <ClInclude Include="CImageDisplay\CImgCurveDisplayParameters.h" />
     <ClInclude Include="CImg\CImg.h" />
     <ClInclude Include="CppFileWrapper.h" />
+    <ClInclude Include="FileNameProcess.h" />
     <ClInclude Include="ImageReadWrite\FloatImage.h" />
     <ClInclude Include="ImageReadWrite\ReadWriteTiffImage.h" />
     <ClInclude Include="ImageReadWrite\RGBImage.h" />
@@ -187,6 +188,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="FileNameProcess.cpp" />
     <ClCompile Include="ImageReadWrite\ReadWriteTiffImage.cpp" />
     <ClCompile Include="LocResource.cpp" />
     <ClCompile Include="OnlineLocalizationLD.cpp" />

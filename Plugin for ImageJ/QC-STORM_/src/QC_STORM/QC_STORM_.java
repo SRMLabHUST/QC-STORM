@@ -85,8 +85,11 @@ public class QC_STORM_ implements PlugInFilter{
     
     public native static void lm_SetStatInfSelection(int DispSel, int SpatialResolutionEn);
 
-    public native static void lm_StartLocThread();
-    public native static void lm_StopLocThread();
+    public native static void lm_StartLocThread(); // start localization thread
+    public native static void lm_StopLocThread(); // stop localization thread
+    public native static void lm_ReleaseResource(); // release resource
+
+    
     public native static int lm_GetMaxDispVal();
 
     public native static void lm_FeedImageData(short ImgDataS[], int FrameNumI);
@@ -111,7 +114,7 @@ public class QC_STORM_ implements PlugInFilter{
 
     public native static void lm_ReleaseRerendResource();
 
-    public native static void lm_StartBatchImageLoc(String ImageFolderPath, String FileExtension, String ResultsPath);
+    public native static void lm_StartBatchImageLoc(String ImageFolderPath, String FileNameStart, String FileNameEnd, String ResultsPath, int MergeBatchLoc);
     
     
     @Override
@@ -275,8 +278,9 @@ public class QC_STORM_ implements PlugInFilter{
             }
             
             CurImagePlus.setPosition(FrameNum);
-
-
+                    
+            lm_StopLocThread(); // stop localization thread (when feeded images approach total frame number)
+            
             while(lm_IsLocFinish()==0)
             {
                 // wait GPU localization finsih
@@ -298,7 +302,7 @@ public class QC_STORM_ implements PlugInFilter{
             JOptionPane.showMessageDialog(null, "loc finish", "loc finish!", JOptionPane.PLAIN_MESSAGE);
             
        
-            lm_StopLocThread(); // finish localization and release resources
+            lm_ReleaseResource(); // finish localization and release resources
           
         }
     }

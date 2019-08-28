@@ -103,6 +103,11 @@ void StartLocalizationThread()
 	}
 }
 
+void StopLocThread()
+{
+	OnlineLocAlive = false;
+
+}
 
 void FinishLocalizationThread()
 {

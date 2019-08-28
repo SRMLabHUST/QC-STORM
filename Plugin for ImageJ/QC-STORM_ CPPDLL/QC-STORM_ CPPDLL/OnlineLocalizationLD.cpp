@@ -59,11 +59,8 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	printf("Localization dev: %d\n", CurDevice);
 
 
-
 	printf("image inf1:%d %d %d %d %d\n", LocPara_Global.ImageWidth, LocPara_Global.ImageHigh, LocPara_Global.TotalFrameNum, LocPara_Global.SRImageWidth, LocPara_Global.SRImageHigh);
 	printf("image inf2:%f %f %f\n", LocPara_Global.Offset, LocPara_Global.KAdc, LocPara_Global.QE);
-
-
 
 
 	// write to file
@@ -115,9 +112,6 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 	const int RawImageResource = 0; // from cpu
 
-	CurFrame = 0;
-	LastFrame = 0;
-
 
 	bool IsBreak = false;
 
@@ -138,10 +132,12 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 	WholeProc_StartTime = clock();
 
 	int ProgressDispCnt = 0;
+	int ProgressDispGap = -1;
 
 	while (1)
 	{
-		IsBreak = (CurFrame >= LocPara_Global.TotalFrameNum);
+//		IsBreak = (CurFrame >= LocPara_Global.TotalFrameNum);
+		IsBreak = (!OnlineLocAlive) && (CurFrame >= LocPara_Global.TotalFrameNum);
 
 
 		// get images and perform molecular detection
@@ -183,9 +179,12 @@ UINT th_OnlineLocalizationLD(LPVOID params)
 
 			if (IsBatchLocRunning)
 			{
-				if (CurFrame > (LocPara_Global.TotalFrameNum / 10)*ProgressDispCnt)
+				if (ProgressDispGap < 0)ProgressDispGap = LocPara_Global.TotalFrameNum / 10;
+
+				// display progress
+				if (CurFrame > ProgressDispGap*ProgressDispCnt)
 				{
-					printf("Process: %d in %d, %.0f %%\n", CurFileCnt, TotalFileNum, CurFrame * 100.0f / LocPara_Global.TotalFrameNum);
+					printf("Progress: %d in %d, %d %%\n", CurFileCnt, TotalFileNum, ProgressDispCnt * 10);
 					ProgressDispCnt++;
 				}
 			}

@@ -210,9 +210,12 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         jButton_LoadBatchImgSavePath = new javax.swing.JButton();
         jButton_StartBatchLoc = new javax.swing.JButton();
         jLabel34 = new javax.swing.JLabel();
-        jTextField_BatchProc_FileExtension = new javax.swing.JTextField();
+        jTextField_BatchProc_FileNameEnd = new javax.swing.JTextField();
         jTextField_BatchProc_ResultPath = new javax.swing.JTextField();
         jButton_LoadBatchImgSavePath1 = new javax.swing.JButton();
+        jLabel35 = new javax.swing.JLabel();
+        jTextField_BatchProc_FileNameStart = new javax.swing.JTextField();
+        jCheckBox_MergeBatchLoc = new javax.swing.JCheckBox();
         jLabel19 = new javax.swing.JLabel();
 
         jButton_Start2.setText("Rerendering");
@@ -925,8 +928,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
 
             jLabel34.setText("File name ending:");
 
-            jTextField_BatchProc_FileExtension.setText("ome.tif");
-            jTextField_BatchProc_FileExtension.setPreferredSize(new java.awt.Dimension(48, 26));
+            jTextField_BatchProc_FileNameEnd.setText("ome.tif");
+            jTextField_BatchProc_FileNameEnd.setPreferredSize(new java.awt.Dimension(48, 26));
 
             jTextField_BatchProc_ResultPath.setText("D:\\");
                 jTextField_BatchProc_ResultPath.setPreferredSize(new java.awt.Dimension(6, 26));
@@ -939,31 +942,44 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                     }
                 });
 
+                jLabel35.setText("File name starting:");
+
+                jTextField_BatchProc_FileNameStart.setText("MMStack_Pos-1");
+                jTextField_BatchProc_FileNameStart.setPreferredSize(new java.awt.Dimension(48, 26));
+
+                jCheckBox_MergeBatchLoc.setSelected(true);
+                jCheckBox_MergeBatchLoc.setText("Merge localizations of multi images");
+
                 javax.swing.GroupLayout jPanel_batchLayout = new javax.swing.GroupLayout(jPanel_batch);
                 jPanel_batch.setLayout(jPanel_batchLayout);
                 jPanel_batchLayout.setHorizontalGroup(
                     jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_batchLayout.createSequentialGroup()
-                        .addContainerGap(19, Short.MAX_VALUE)
-                        .addGroup(jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel_batchLayout.createSequentialGroup()
-                                .addComponent(jTextField_BatchProc_ResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton_LoadBatchImgSavePath1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel_batchLayout.createSequentialGroup()
-                                .addGroup(jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel_batchLayout.createSequentialGroup()
-                                        .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jTextField_BatchProc_FileExtension, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jTextField_BatchProc_ImgPath, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton_LoadBatchImgSavePath, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(33, Short.MAX_VALUE))
-                    .addGroup(jPanel_batchLayout.createSequentialGroup()
-                        .addGap(79, 79, 79)
+                        .addGap(85, 85, 85)
                         .addComponent(jButton_StartBatchLoc, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel_batchLayout.createSequentialGroup()
+                        .addContainerGap(19, Short.MAX_VALUE)
+                        .addGroup(jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jCheckBox_MergeBatchLoc, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel_batchLayout.createSequentialGroup()
+                                    .addComponent(jTextField_BatchProc_ImgPath, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jButton_LoadBatchImgSavePath, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel_batchLayout.createSequentialGroup()
+                                    .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jTextField_BatchProc_FileNameStart, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel_batchLayout.createSequentialGroup()
+                                    .addComponent(jTextField_BatchProc_ResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jButton_LoadBatchImgSavePath1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_batchLayout.createSequentialGroup()
+                                    .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jTextField_BatchProc_FileNameEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(33, Short.MAX_VALUE))
                 );
                 jPanel_batchLayout.setVerticalGroup(
                     jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -974,18 +990,24 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
                             .addComponent(jButton_LoadBatchImgSavePath, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField_BatchProc_FileNameStart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(3, 3, 3)
+                        .addGroup(jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField_BatchProc_FileExtension, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
+                            .addComponent(jTextField_BatchProc_FileNameEnd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(16, 16, 16)
+                        .addComponent(jCheckBox_MergeBatchLoc)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel_batchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField_BatchProc_ResultPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton_LoadBatchImgSavePath1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(69, 69, 69)
+                        .addGap(73, 73, 73)
                         .addComponent(jButton_StartBatchLoc, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(143, 143, 143))
+                        .addGap(82, 82, 82))
                 );
 
-                jTabbedPane1.addTab("BatchProc", jPanel_batch);
+                jTabbedPane1.addTab("BatchLoc", jPanel_batch);
 
                 jLabel19.setText("Parameters:");
 
@@ -1066,7 +1088,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         }
         
         jTextField_ResultPath.setText(ResultsFilePath);
-                
     }//GEN-LAST:event_jButton_LoadResultPathActionPerformed
 
     private void jButton_LoadLocDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LoadLocDataActionPerformed
@@ -1104,7 +1125,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         try {
             pQC_STORM_.StartRerend();  
             
-            
         } catch (Exception ex) {
 
         }
@@ -1114,9 +1134,6 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
         }catch (Exception ex) {
             
         }
-        
-        
-        
     }//GEN-LAST:event_jButton_RerendActionPerformed
 
     private void jButton_Start2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Start2ActionPerformed
@@ -1197,15 +1214,18 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private void jButton_StartBatchLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_StartBatchLocActionPerformed
         // TODO add your handling code here:
         String ImageFolderPath = jTextField_BatchProc_ImgPath.getText();
-        String FileExtension = jTextField_BatchProc_FileExtension.getText();
+        String FileNameStart = jTextField_BatchProc_FileNameStart.getText();
+        String FileNameEnd = jTextField_BatchProc_FileNameEnd.getText();
         String ResultsPath = jTextField_BatchProc_ResultPath.getText();
+        
+        int MergeBatchLoc = jCheckBox_MergeBatchLoc.isSelected()? 1:0;
         
         if(ImageFolderPath.length()<=2) return;
         
         
         SendLocalizationPara();
         
-        QC_STORM_.lm_StartBatchImageLoc(ImageFolderPath, FileExtension, ResultsPath);
+        QC_STORM_.lm_StartBatchImageLoc(ImageFolderPath, FileNameStart, FileNameEnd, ResultsPath, MergeBatchLoc);
 
         pQC_STORM_.StartBatchLocalization();
         
@@ -1268,6 +1288,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JButton jButton_Start;
     private javax.swing.JButton jButton_Start2;
     private javax.swing.JButton jButton_StartBatchLoc;
+    private javax.swing.JCheckBox jCheckBox_MergeBatchLoc;
     private javax.swing.JCheckBox jCheckBox_ShiftCorrection;
     private javax.swing.JCheckBox jCheckBox_Stat_BackgroundVary;
     private javax.swing.JCheckBox jCheckBox_Stat_ConsecutiveFitEn;
@@ -1319,6 +1340,7 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1334,7 +1356,8 @@ public class QC_STORM_Configurator extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel_batch;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField_BatchProc_FileExtension;
+    private javax.swing.JTextField jTextField_BatchProc_FileNameEnd;
+    private javax.swing.JTextField jTextField_BatchProc_FileNameStart;
     private javax.swing.JTextField jTextField_BatchProc_ImgPath;
     private javax.swing.JTextField jTextField_BatchProc_ResultPath;
     private javax.swing.JTextField jTextField_ConsecFilterRadius;
