@@ -59,11 +59,11 @@ __device__ void MLELocalization_GS2D_2E(float ImageROI[][ROIPixelNum], float Ini
 
 
 template <int ROISize, int ROIPixelNum, int FitParaNum>
-__device__ void poissonfGradient_GS2D_2E(float ImageROI[][ROIPixelNum], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float* WLE_Weight, int tid);
+__device__ void NumericalGradient_GS2D_2E(float ImageROI[][ROIPixelNum], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float* WLE_Weight, int tid);
 
 
 template <int ROISize, int ROIPixelNum, int FitParaNum>
-__device__ float MLEFit_TargetF_GS2D_2E(float ImageROI[][ROIPixelNum], float Ininf[], float* WLE_Weight, int tid);
+__device__ float MLEFit_LossFunction_GS2D_2E(float ImageROI[][ROIPixelNum], float Ininf[], float* WLE_Weight, int tid);
 
 
 template <int ROISize, int ROIPixelNum, int FitParaNum>
@@ -390,7 +390,7 @@ __device__ void MLELocalization_GS2D_2E(float ImageROI[][ROIPixelNum], float Ini
 
 
 	// initialize
-	poissonfGradient_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, Ininf, grad, WLE_Weight, tid);
+	NumericalGradient_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, Ininf, grad, WLE_Weight, tid);
 
 #pragma unroll
 	for (int rcnt = 0; rcnt < FitParaNum; rcnt++)
@@ -428,8 +428,8 @@ __device__ void MLELocalization_GS2D_2E(float ImageROI[][ROIPixelNum], float Ini
 		VectorAddMul1<FitParaNum>(&xd[0], Ininf, d0, 0.0001f, tid);
 		VectorAddMul1<FitParaNum>(&xd[FitParaNum], Ininf, d0, 1.0f, tid);
 
-		ddat[0] = MLEFit_TargetF_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, &xd[0], WLE_Weight, tid);
-		ddat[1] = MLEFit_TargetF_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, &xd[FitParaNum], WLE_Weight, tid);
+		ddat[0] = MLEFit_LossFunction_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, &xd[0], WLE_Weight, tid);
+		ddat[1] = MLEFit_LossFunction_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, &xd[FitParaNum], WLE_Weight, tid);
 		
 		// bisection method to find optimal walk length
 		for (int cnt = 0; cnt < IterateNum_bs; cnt++)
@@ -443,7 +443,7 @@ __device__ void MLELocalization_GS2D_2E(float ImageROI[][ROIPixelNum], float Ini
 			if (cnt < IterateNum_bs - 1)
 			{
 				VectorAddMul1<FitParaNum>(&xd[xdsel*FitParaNum], Ininf, d0, dpos[xdsel], tid);// xd=ininf+d0*scale
-				ddat[xdsel] = MLEFit_TargetF_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, &xd[xdsel*FitParaNum], WLE_Weight, tid);
+				ddat[xdsel] = MLEFit_LossFunction_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, &xd[xdsel*FitParaNum], WLE_Weight, tid);
 			}
 		}
 
@@ -471,7 +471,7 @@ __device__ void MLELocalization_GS2D_2E(float ImageROI[][ROIPixelNum], float Ini
 				tgrad[rcnt] = grad[rcnt][tid];
 			}
 
-			poissonfGradient_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, Ininf, grad, WLE_Weight, tid);
+			NumericalGradient_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, Ininf, grad, WLE_Weight, tid);
 
 #pragma unroll
 			for (int rcnt = 0; rcnt < FitParaNum; rcnt++)
@@ -487,7 +487,7 @@ __device__ void MLELocalization_GS2D_2E(float ImageROI[][ROIPixelNum], float Ini
 
 
 template <int ROISize, int ROIPixelNum, int FitParaNum>
-__device__ void poissonfGradient_GS2D_2E(float ImageROI[][ROIPixelNum], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float* WLE_Weight, int tid)
+__device__ void NumericalGradient_GS2D_2E(float ImageROI[][ROIPixelNum], float Ininf[][ThreadsPerBlock], float grad[][ThreadsPerBlock], float* WLE_Weight, int tid)
 {
 	float tIninf[FitParaNum];
 	float tgradn;
@@ -503,10 +503,10 @@ __device__ void poissonfGradient_GS2D_2E(float ImageROI[][ROIPixelNum], float In
 	for (cnt = 0; cnt<FitParaNum; cnt++)
 	{
 		tIninf[cnt] = tIninf[cnt] - 0.002f;
-		tgradn = MLEFit_TargetF_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, tIninf, WLE_Weight, tid);
+		tgradn = MLEFit_LossFunction_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, tIninf, WLE_Weight, tid);
 
 		tIninf[cnt] = tIninf[cnt] + 0.004f;
-		tgradp = MLEFit_TargetF_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, tIninf, WLE_Weight, tid);
+		tgradp = MLEFit_LossFunction_GS2D_2E<ROISize, ROIPixelNum, FitParaNum>(ImageROI, tIninf, WLE_Weight, tid);
 
 		grad[cnt][tid] = (tgradp - tgradn)*250.0f; // /0.004f;
 		tIninf[cnt] = tIninf[cnt] - 0.002f;
@@ -516,7 +516,7 @@ __device__ void poissonfGradient_GS2D_2E(float ImageROI[][ROIPixelNum], float In
 
 
 template <int ROISize, int ROIPixelNum, int FitParaNum>
-__device__ float MLEFit_TargetF_GS2D_2E(float ImageROI[][ROIPixelNum], float Ininf[], float* WLE_Weight, int tid)
+__device__ float MLEFit_LossFunction_GS2D_2E(float ImageROI[][ROIPixelNum], float Ininf[], float* WLE_Weight, int tid)
 {
 	int row, col;
 
