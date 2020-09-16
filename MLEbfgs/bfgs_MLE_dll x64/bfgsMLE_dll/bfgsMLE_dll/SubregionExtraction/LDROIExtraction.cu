@@ -311,6 +311,7 @@ void LDROIExtractData_TypeDef::Deinit()
 	err = cudaFree(d_LineFilterImage_t);
 	err = cudaFree(d_LineFilterImage_t1);
 
+	err = cudaFree(d_MoleculePosImage); //ÐÞ¸Ä zzw 20200915
 	// image std use
 
 	err = cudaFreeHost(h_MeanDataX);
